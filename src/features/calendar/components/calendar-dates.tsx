@@ -10,7 +10,7 @@ export const CalendarDates = () => {
   ];
 
   return (
-    <div className="ml-20 mr-4 mb-3 h-12">
+    <div className="ml-20 mr-4 mb h-12">
       <ul className="flex justify-between ml-2 ">
         {weekDaysArray.map(({ day, name, time }) => (
           <li className="flex-grow" key={name}>

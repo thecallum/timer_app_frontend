@@ -20,7 +20,7 @@ export const CalendarGrid = () => {
   ];
 
   return (
-    <div className="flex flex-row flex-shrink-0 justify-between flex-grow border-t border-l border-slate-200  h-[100rem]">
+    <div className="flex flex-row flex-shrink-0 justify-between flex-grow border-l border-slate-200  h-[100rem]">
       {[...Array(7)].map((_, index) => {
         return (
           <CalendarColumn events={events.filter((x) => x.column === index)} />

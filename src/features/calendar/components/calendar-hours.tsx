@@ -17,11 +17,11 @@ export const CalendarHours = () => {
   });
 
   return (
-    <ul className="flex flex-col w-20 mt-8">
+    <ul className="flex flex-col  mt-8 mr-2">
       {hours.map((hour) => (
         <li
           key={hour}
-          className="flex-grow flex-shrink-0 flex justify-start items-center h-16 bg-red"
+          className="flex-grow flex-shrink-0 text-xs flex justify-end items-center h-16 bg-red"
         >
           {hour}
         </li>
