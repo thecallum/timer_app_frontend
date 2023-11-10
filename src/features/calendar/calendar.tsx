@@ -21,7 +21,7 @@ export const Calendar = () => {
           </ContainerFullWidth>
         }
       >
-        <div className="flex justify-center mt-8 h-full  ">
+        <div className="flex justify-center mt-4 h-full  ">
           <PageContainerLarge>
             <div className="h-full flex flex-col">
               <CalendarDates />
