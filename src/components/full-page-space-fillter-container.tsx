@@ -7,9 +7,9 @@ export const FullPageSpaceFillerContailer = (props: Props) => {
   const { top, children } = props;
 
   return (
-    <div className="w-screen h-screen flex flex-col overflow-hidden">
+    <div className="w-full h-full flex flex-col overflow-hidden">
       <div>{top}</div>
-      <div className="flex-grow overflow-hidden">
+      <div className="flex-grow overflow-hidden h-full">
         {/* <div className="bg-orange-100 h-full "> */}
         {children}
 
