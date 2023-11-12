@@ -28,7 +28,7 @@ export const AddEventPopover = (props: Props) => {
             Start
           </label>
           <input
-            type="time"
+            type="datetime-local"
             name=""
             id=""
             className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
@@ -40,7 +40,7 @@ export const AddEventPopover = (props: Props) => {
             End
           </label>
           <input
-            type="time"
+            type="datetime-local"
             name=""
             id=""
             className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
