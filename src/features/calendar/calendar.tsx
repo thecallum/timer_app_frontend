@@ -1,3 +1,7 @@
+
+import dayjs from "dayjs";
+import { useState } from "react"
+
 import {
   ContainerFullWidth,
   PageContainerLarge,
@@ -29,6 +33,26 @@ export const Calendar = () => {
     },
   ];
 
+  const [currentWeek, setCurrentWeek] = useState(0)
+
+  const getWeekDates = (weeksInFuture = 0) => {
+    const currentDate = dayjs().add(weeksInFuture * 7, 'day');
+    const currentDayOfWeek = currentDate.day();
+    const daysSinceMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1; // Sunday is a special case
+
+    let weekDates = [];
+    for (let i = 0; i < 7; i++) {
+      const date = currentDate.day(-daysSinceMonday + i);
+
+      weekDates.push(date);
+    }
+
+    return weekDates;
+};
+
+const weeks = getWeekDates(currentWeek)
+
+
   return (
     <PopoverContextProvider>
       <FullPageSpaceFillerContailer
@@ -36,7 +60,12 @@ export const Calendar = () => {
           <ContainerFullWidth>
             <>
               <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
-              <CalendarControls />
+              <CalendarControls
+              weeks={weeks}
+              next={() => setCurrentWeek(x => x+1)}
+              previous={() => setCurrentWeek(x => x-1)}
+              reset={() => setCurrentWeek(x => 0)}
+              />
             </>
           </ContainerFullWidth>
         }
@@ -44,7 +73,7 @@ export const Calendar = () => {
         <div className="flex justify-center mt-4 h-full  ">
           <PageContainerLarge>
             <div className="h-full flex flex-col">
-              <CalendarDates />
+              <CalendarDates weeks={weeks} />
 
               <div className="flex overflow-y-auto border-t border-slate-200 relative">
                 <CalendarHours />

@@ -1,5 +1,4 @@
-import { Popover } from "@headlessui/react";
-import { useState } from "react";
+import dayjs from "dayjs";
 
 const CalendarWeekSummary = () => {
   return (
@@ -12,11 +11,21 @@ const CalendarWeekSummary = () => {
   );
 };
 
-const CalendarWeekSelect = () => {
+const CalendarWeekSelect = (props: {
+  next: () => void;
+  previous: () => void;
+  reset: () => void;
+  weeks: dayjs.Dayjs[];
+}) => {
+  const { next, previous, reset, weeks } = props;
+
+  const startOfWeek = weeks[0].format("DD MMM");
+  const endOfWeek = weeks[6].format("DD MMM");
+
   return (
     <div className="mr-8">
       <div className="bg-white rounded border-slate-300 border h-14 px-6 shadow-sm text-slate-800 flex justify-center items-center">
-        <button>
+        <button onClick={previous}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -30,8 +39,10 @@ const CalendarWeekSelect = () => {
           </svg>
         </button>
 
-        <span className="mx-3">13 Nov - 19 Nov </span>
-        <button>
+        <span className="mx-3">
+          {startOfWeek} - {endOfWeek}
+        </span>
+        <button onClick={next}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -46,14 +57,23 @@ const CalendarWeekSelect = () => {
         </button>
       </div>
       <div className="flex justify-between">
-        <button className="underline cursor-pointer text-sm text-slate-600">
+        <button
+          onClick={previous}
+          className="underline cursor-pointer text-sm text-slate-600"
+        >
           Previous
         </button>
         <span>
-          <button className="mr-6 underline cursor-pointer text-sm text-slate-600">
+          <button
+            onClick={reset}
+            className="mr-6 underline cursor-pointer text-sm text-slate-600"
+          >
             Today
           </button>
-          <button className="underline cursor-pointer text-sm text-slate-600">
+          <button
+            onClick={next}
+            className="underline cursor-pointer text-sm text-slate-600"
+          >
             Next
           </button>
         </span>
@@ -83,27 +103,25 @@ const CalendarViewSelect = () => {
   );
 };
 
-const PopoverWrapper = ({ children }) => {
-  return (
-    <Popover className="relative">
-      <Popover.Button>openn</Popover.Button>
-
-      <Popover.Panel className="absolute z-10 bg-white shadow-xl rounded p-4">
-        {children}
-      </Popover.Panel>
-    </Popover>
-  );
-};
-
-export const CalendarControls = () => {
-  // const [isOpen, setIsOpen] = useState(false);
+export const CalendarControls = (props: {
+  next: () => void;
+  previous: () => void;
+  reset: () => void;
+  weeks: dayjs.Dayjs[];
+}) => {
+  const { next, previous, reset, weeks } = props;
 
   return (
     <div className="flex justify-between items-start">
       <CalendarWeekSummary />
 
       <div className="flex items-start">
-        <CalendarWeekSelect />
+        <CalendarWeekSelect
+          weeks={weeks}
+          next={next}
+          previous={previous}
+          reset={reset}
+        />
         <CalendarViewSelect />
       </div>
     </div>

@@ -1,23 +1,14 @@
-import dayjs from "dayjs";
 import classNames from "classnames";
+import dayjs from "dayjs";
 
-export const CalendarDates = () => {
-  const getWeekDates = () => {
-    const currentDate = dayjs();
-    const currentDayOfWeek = currentDate.day();
-    const daysSinceMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1; // Sunday is a special case
+interface Props {
+  weeks: dayjs.Dayjs[];
+}
 
-    let weekDates = [];
-    for (let i = 0; i < 7; i++) {
-      const date = dayjs().day(currentDate.day() - daysSinceMonday + i);
+export const CalendarDates = (props: Props) => {
+  const { weeks } = props;
 
-      weekDates.push(date);
-    }
-
-    return weekDates;
-  };
-
-  const weekDaysArray = getWeekDates().map((x) => ({
+  const weekDaysArray = weeks.map((x) => ({
     day: x.format("DD"),
     name: x.format("ddd"),
     time: "5:28:48",
