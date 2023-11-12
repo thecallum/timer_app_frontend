@@ -32,6 +32,8 @@ export const CalendarEvent = (props: Props) => {
     return `${hours}:${pad(minutes)}:${pad(remainingSeconds)}`;
   };
 
+  const duration = formatTime(durationInSeconds)
+
   const eventStyles = {
     height: `${elementHeight}px`,
     top: `${elementTop}px`,
@@ -41,7 +43,9 @@ export const CalendarEvent = (props: Props) => {
   return (
     <li className="relative">
       <PopoverWrapper
-        popoverComponent={({ close }) => <EditEventPopover close={close} />}
+        popoverComponent={({ close }) => <EditEventPopover event={event}
+        duration={duration}
+        close={close} />}
       >
         {({ ref, onClick }) => (
           <button
@@ -59,7 +63,7 @@ export const CalendarEvent = (props: Props) => {
               </div>
             </span>
             <div className="text-pink-950 text-s whitespace-nowrap">
-              {formatTime(durationInSeconds)}
+              {duration}
             </div>
           </button>
         )}

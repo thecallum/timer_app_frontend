@@ -1,22 +1,27 @@
+import { CalendarEvent } from "../../types/calendar-event";
+
 interface Props {
   close: () => void;
+  event: CalendarEvent;
+  duration: string;
 }
 
 export const EditEventPopover = (props: Props) => {
-  const { close } = props;
+  const { close, event, duration } = props;
+  const {description, project, start, end} = event
 
   return (
     <div className="bg-white shadow-xl rounded p-4 border border-slate-50">
       <h2 className="text-slate-800 text-xs mb-2">Edit Task</h2>
 
       <div className="shadow-sm bg-slate-100 p-2 text-xs text-slate-800 mb-2 rounded">
-        Planning session
+        {description}
       </div>
 
       <div className="inline-block">
         <div className="flex flex-row justify-start items-center bg-pink-200 p-1 px-2 rounded-md">
           <div className="w-2 h-2 rounded-full bg-pink-600 block "></div>
-          <div className="ml-2 text-xs text-pink-600 leading-tight">Work</div>
+          <div className="ml-2 text-xs text-pink-600 leading-tight">{project}</div>
         </div>
       </div>
 
@@ -26,9 +31,10 @@ export const EditEventPopover = (props: Props) => {
             Start
           </label>
           <input
-            type="time"
+            type="datetime-local"
             name=""
             id=""
+            defaultValue={start.format("YYYY-MM-DDThh:mm")}
             className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
           />
         </div>
@@ -38,9 +44,10 @@ export const EditEventPopover = (props: Props) => {
             End
           </label>
           <input
-            type="time"
+            type="datetime-local"
             name=""
-            id=""
+            defaultValue={end.format("YYYY-MM-DDThh:mm")}
+
             className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
           />
         </div>
@@ -52,7 +59,7 @@ export const EditEventPopover = (props: Props) => {
         </label>
         <div>
           <span className="bg-slate-100 p-2 text-xs text-slate-800 mb-2 rounded">
-            1:15:22
+            {duration}
           </span>
         </div>
       </div>
