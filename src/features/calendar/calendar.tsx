@@ -9,6 +9,7 @@ import { CalendarControls } from "./components/calendar-controls";
 import { FullPageSpaceFillerContailer } from "@/components/full-page-space-fillter-container";
 import { CalendarEvents } from "./components/calendar-events";
 import { CalendarEvent as CalendarEventType } from "./types/calendar-event";
+import { PopoverContextProvider } from "./context";
 
 export const Calendar = () => {
   const events: CalendarEventType[] = [
@@ -29,7 +30,7 @@ export const Calendar = () => {
   ];
 
   return (
-    <div>
+    <PopoverContextProvider>
       <FullPageSpaceFillerContailer
         top={
           <ContainerFullWidth>
@@ -56,6 +57,6 @@ export const Calendar = () => {
           </PageContainerLarge>
         </div>
       </FullPageSpaceFillerContailer>
-    </div>
+    </PopoverContextProvider>
   );
 };

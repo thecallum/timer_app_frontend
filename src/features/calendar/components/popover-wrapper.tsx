@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
+import { usePopoverContext } from "../context";
 
 interface Props {
   popoverComponent: (props: { close: () => void }) => JSX.Element;
+  requireNoOtherPopovers?: boolean;
   children: (props: {
     ref: React.Dispatch<React.SetStateAction<Element>>;
     onClick: () => void;
@@ -11,7 +13,9 @@ interface Props {
 }
 
 export const PopoverWrapper = (props: Props) => {
-  const { popoverComponent, children } = props;
+  const { popoverComponent, children, requireNoOtherPopovers = false } = props;
+
+  const popoverContext = usePopoverContext();
 
   const [referenceElement, setReferenceElement] = useState<Element>();
   const [popperElement, setPopperElement] = useState<Element>();
@@ -45,21 +49,39 @@ export const PopoverWrapper = (props: Props) => {
     if (popperElement && !popperElement.contains(event.target)) {
       // close modal
       console.info("closing modal");
-      setShowPopover(() => false);
+      handleClose();
     }
+  };
+
+  const handleOpen = () => {
+    if (requireNoOtherPopovers && popoverContext?.popoverIsOpen) {
+      console.info(
+        "This popover cannot be opened when another popover is open"
+      );
+
+      return;
+    }
+
+    setTimeout(() => {
+      setShowPopover(true);
+      popoverContext?.setPopoverAsOpen();
+    });
+  };
+
+  const handleClose = () => {
+    setShowPopover(() => false);
+    popoverContext?.setPopoverAsClosed();
   };
 
   return (
     <>
       {children({
         ref: setReferenceElement,
-        onClick: () => {
-          setTimeout(() => {
-            setShowPopover(true);
-          });
-        },
+        onClick: handleOpen,
         showPopover,
       })}
+
+      {/* <p>Open: {popoverContext?.popoverIsOpen ? "T" : "F"}</p> */}
 
       {showPopover && (
         <div
@@ -70,7 +92,7 @@ export const PopoverWrapper = (props: Props) => {
         >
           {popoverComponent({
             close: () => {
-              setShowPopover(() => false)
+              handleClose();
             },
           })}
         </div>
