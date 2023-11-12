@@ -1,14 +1,15 @@
+import dayjs from "dayjs";
+
 interface Props {
   close: () => void;
+  time: dayjs.Dayjs;
 }
 
 export const AddEventPopover = (props: Props) => {
-  const { close } = props 
+  const { close, time } = props;
 
   return (
-    <div
-      className="bg-white shadow-xl rounded p-4 border border-slate-50"
-    >
+    <div className="bg-white shadow-xl rounded p-4 border border-slate-50">
       <h2 className="text-slate-800 text-xs mb-2">Add Task</h2>
 
       <div className="shadow-sm bg-slate-100 p-2 text-xs text-slate-800 mb-2 rounded">
@@ -18,7 +19,9 @@ export const AddEventPopover = (props: Props) => {
       <div className="inline-block">
         <div className="flex flex-row justify-start items-center bg-slate-200 p-1 px-2 rounded-md">
           <div className="w-2 h-2 rounded-full bg-slate-600 block "></div>
-          <div className="ml-2 text-xs text-slate-600 leading-tight">No project</div>
+          <div className="ml-2 text-xs text-slate-600 leading-tight">
+            No project
+          </div>
         </div>
       </div>
 
@@ -31,6 +34,8 @@ export const AddEventPopover = (props: Props) => {
             type="datetime-local"
             name=""
             id=""
+            defaultValue={time.format("YYYY-MM-DDThh:mm")}
+            autoFocus
             className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
           />
         </div>
@@ -42,7 +47,7 @@ export const AddEventPopover = (props: Props) => {
           <input
             type="datetime-local"
             name=""
-            id=""
+            defaultValue={time.add(15, "minute").format("YYYY-MM-DDThh:mm")}
             className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
           />
         </div>
@@ -64,9 +69,10 @@ export const AddEventPopover = (props: Props) => {
         <button className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2">
           Add
         </button>
-        <button 
-        onClick={close}
-        className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md">
+        <button
+          onClick={close}
+          className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
+        >
           Close
         </button>
       </div>

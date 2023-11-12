@@ -1,14 +1,26 @@
 import classNames from "classnames";
 import { PopoverWrapper } from "./popover-wrapper";
 import { AddEventPopover } from "./popovers/add-event-popover";
+import dayjs from "dayjs";
 
-export const CalendarCell = () => {
+interface Props {
+  day: dayjs.Dayjs;
+}
+
+export const CalendarCell = (props: Props) => {
+  const { day } = props;
+
   return (
     <div className="border-slate-200 h-16 border-b flex flex-col">
       {[...Array(4)].map((_, index) => (
         <PopoverWrapper
           requireNoOtherPopovers
-          popoverComponent={({ close }) => <AddEventPopover close={close} />}
+          popoverComponent={({ close }) => (
+            <AddEventPopover
+              close={close}
+              time={day.add(15 * index, "minute")}
+            />
+          )}
           key={index}
         >
           {({ ref, onClick, showPopover }) => (

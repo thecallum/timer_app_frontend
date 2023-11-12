@@ -14,7 +14,7 @@ export const CalendarHours = () => {
     const amPm = index < 12 ? "AM" : "PM";
 
     return `${formattedHour}:00 ${amPm}`;
-  });
+  }).slice(1);
 
   return (
     <ul className="flex flex-col w-14 mt-8 mr-2">
