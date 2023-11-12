@@ -36,7 +36,9 @@ export const CalendarEvent = (props: Props) => {
 
   return (
     <li className="relative">
-      <PopoverWrapper popoverComponent={<EditEventPopover />}>
+      <PopoverWrapper
+        popoverComponent={({ close }) => <EditEventPopover close={close} />}
+      >
         {({ ref, onClick }) => (
           <button
             className={`absolute rounded-sm w-[calc(100%/7)] bg-pink-200 hover:bg-pink-300 p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}

@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 
 interface Props {
-  popoverComponent: JSX.Element;
+  popoverComponent: (props: { close: () => void }) => JSX.Element;
   children: (props: {
     ref: React.Dispatch<React.SetStateAction<Element>>;
     onClick: () => void;
+    showPopover: boolean;
   }) => JSX.Element;
 }
 
@@ -27,7 +28,7 @@ export const PopoverWrapper = (props: Props) => {
     ],
   });
 
-  const [showModal, setShowModal] = useState(false);
+  const [showPopover, setShowPopover] = useState(false);
 
   useEffect(() => {
     window.addEventListener("click", handleClick);
@@ -35,16 +36,16 @@ export const PopoverWrapper = (props: Props) => {
     return () => {
       window.removeEventListener("click", handleClick);
     };
-  }, [showModal, popperElement]);
+  }, [showPopover, popperElement]);
 
   const handleClick = (event: MouseEvent) => {
     // ignore, modal closed
-    if (!showModal) return;
+    if (!showPopover) return;
 
     if (popperElement && !popperElement.contains(event.target)) {
       // close modal
       console.info("closing modal");
-      setShowModal(() => false);
+      setShowPopover(() => false);
     }
   };
 
@@ -54,19 +55,24 @@ export const PopoverWrapper = (props: Props) => {
         ref: setReferenceElement,
         onClick: () => {
           setTimeout(() => {
-            setShowModal(true);
+            setShowPopover(true);
           });
         },
+        showPopover,
       })}
 
-      {showModal && (
+      {showPopover && (
         <div
           className="z-50 absolute "
           ref={setPopperElement}
           style={styles.popper}
           {...attributes.popper}
         >
-          {popoverComponent}
+          {popoverComponent({
+            close: () => {
+              setShowPopover(() => false)
+            },
+          })}
         </div>
       )}
     </>

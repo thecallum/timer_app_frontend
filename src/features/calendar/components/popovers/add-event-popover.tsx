@@ -2,21 +2,23 @@ interface Props {
   close: () => void;
 }
 
-export const EditEventPopover = (props: Props) => {
-  const { close } = props;
+export const AddEventPopover = (props: Props) => {
+  const { close } = props 
 
   return (
-    <div className="bg-white shadow-xl rounded p-4 border border-slate-50">
-      <h2 className="text-slate-800 text-xs mb-2">Edit Task</h2>
+    <div
+      className="bg-white shadow-xl rounded p-4 border border-slate-50"
+    >
+      <h2 className="text-slate-800 text-xs mb-2">Add Task</h2>
 
       <div className="shadow-sm bg-slate-100 p-2 text-xs text-slate-800 mb-2 rounded">
-        Planning session
+        What have you done?
       </div>
 
       <div className="inline-block">
-        <div className="flex flex-row justify-start items-center bg-pink-200 p-1 px-2 rounded-md">
-          <div className="w-2 h-2 rounded-full bg-pink-600 block "></div>
-          <div className="ml-2 text-xs text-pink-600 leading-tight">Work</div>
+        <div className="flex flex-row justify-start items-center bg-slate-200 p-1 px-2 rounded-md">
+          <div className="w-2 h-2 rounded-full bg-slate-600 block "></div>
+          <div className="ml-2 text-xs text-slate-600 leading-tight">No project</div>
         </div>
       </div>
 
@@ -52,7 +54,7 @@ export const EditEventPopover = (props: Props) => {
         </label>
         <div>
           <span className="bg-slate-100 p-2 text-xs text-slate-800 mb-2 rounded">
-            1:15:22
+            0:00:00
           </span>
         </div>
       </div>
@@ -60,12 +62,11 @@ export const EditEventPopover = (props: Props) => {
       {/* bottom */}
       <div className="pt-4 border-t border-slate-200 mt-4">
         <button className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2">
-          Save
+          Add
         </button>
-        <button
-          onClick={close}
-          className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
-        >
+        <button 
+        onClick={close}
+        className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md">
           Close
         </button>
       </div>
