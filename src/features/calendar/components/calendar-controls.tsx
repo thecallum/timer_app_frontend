@@ -1,3 +1,6 @@
+import { Popover } from "@headlessui/react";
+import { useState } from "react";
+
 const CalendarWeekSummary = () => {
   return (
     <div className="bg-slate-100 h-14 px-6 flex items-center text-slate-600 shadow-sm rounded">
@@ -80,7 +83,21 @@ const CalendarViewSelect = () => {
   );
 };
 
+const PopoverWrapper = ({ children }) => {
+  return (
+    <Popover className="relative">
+      <Popover.Button>openn</Popover.Button>
+
+      <Popover.Panel className="absolute z-10 bg-white shadow-xl rounded p-4">
+        {children}
+      </Popover.Panel>
+    </Popover>
+  );
+};
+
 export const CalendarControls = () => {
+  // const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="flex justify-between items-start">
       <CalendarWeekSummary />
