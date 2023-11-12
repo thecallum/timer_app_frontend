@@ -23,7 +23,7 @@ const CalendarWeekSelect = (props: {
   const endOfWeek = weeks[6].format("DD MMM");
 
   return (
-    <div className="mr-8">
+    <div>
       <div className="bg-white rounded border-slate-300 border h-14 px-6 shadow-sm text-slate-800 flex justify-center items-center">
         <button onClick={previous}>
           <svg
@@ -82,27 +82,6 @@ const CalendarWeekSelect = (props: {
   );
 };
 
-const CalendarViewSelect = () => {
-  return (
-    <div className="bg-white rounded shadow-sm border-slate-300  border h-14 px-6 text-slate-800 flex justify-center items-center">
-      <span className="mr-3">Week view</span>
-      <button>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-        >
-          <path
-            fill="currentColor"
-            d="m12 15.4l-6-6L7.4 8l4.6 4.6L16.6 8L18 9.4l-6 6Z"
-          />
-        </svg>
-      </button>
-    </div>
-  );
-};
-
 export const CalendarControls = (props: {
   next: () => void;
   previous: () => void;
@@ -115,15 +94,12 @@ export const CalendarControls = (props: {
     <div className="flex justify-between items-start">
       <CalendarWeekSummary />
 
-      <div className="flex items-start">
-        <CalendarWeekSelect
-          weeks={weeks}
-          next={next}
-          previous={previous}
-          reset={reset}
-        />
-        <CalendarViewSelect />
-      </div>
+      <CalendarWeekSelect
+        weeks={weeks}
+        next={next}
+        previous={previous}
+        reset={reset}
+      />
     </div>
   );
 };
