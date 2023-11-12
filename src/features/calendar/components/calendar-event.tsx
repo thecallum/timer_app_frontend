@@ -10,10 +10,14 @@ const ONE_HOUR_IN_SECONDS = 3600;
 
 export const CalendarEvent = (props: Props) => {
   const { event } = props;
-  const { description, project, duration, startTime, column } = event;
+  const { description, project, start, end } = event;
 
-  const durationByFifteen = Math.ceil(duration / 60 / 15);
-  const topByFifteen = Math.ceil((startTime + ONE_HOUR_IN_SECONDS) / 60 / 15);
+  const durationInSeconds = end.diff(start, "second")
+  const startTimeInSeconds = start.diff(start.startOf("day"), "second")
+  const column = start.day() -1
+
+  const durationByFifteen = Math.ceil(durationInSeconds / 60 / 15);
+  const topByFifteen = Math.ceil((startTimeInSeconds + ONE_HOUR_IN_SECONDS) / 60 / 15);
 
   const elementHeight = durationByFifteen * 16; // 15 minutes is 16px
   const elementTop = topByFifteen * 16;
@@ -55,7 +59,7 @@ export const CalendarEvent = (props: Props) => {
               </div>
             </span>
             <div className="text-pink-950 text-s whitespace-nowrap">
-              {formatTime(duration)}
+              {formatTime(durationInSeconds)}
             </div>
           </button>
         )}

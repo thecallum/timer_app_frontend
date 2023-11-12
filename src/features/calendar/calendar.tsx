@@ -11,27 +11,27 @@ import { CalendarHours } from "./components/calendar-hours";
 import { CalendarControls } from "./components/calendar-controls";
 import { FullPageSpaceFillerContailer } from "@/components/full-page-space-fillter-container";
 import { CalendarEvents } from "./components/calendar-events";
-import { CalendarEvent as CalendarEventType } from "./types/calendar-event";
+import {
+  CalendarEvent
+} from "./types/calendar-event";
 import { PopoverContextProvider } from "./context";
 
-export const Calendar = () => {
+export const Calendar = (): CalendarEvent => {
   const getCalendarEvents = (week = 0) => {
     if (week !== 0) return [];
 
     return [
       {
         description: "Planning session",
-        duration: 4524,
-        startTime: 3600,
+        start: dayjs("Tue Nov 07 2023 01:15:53 GMT+0000"),
+        end: dayjs("Tue Nov 07 2023 03:15:53 GMT+0000"),
         project: "Work",
-        column: 1,
       },
       {
         description: "Standup meeting",
-        duration: 7254,
-        startTime: 3600 * 3,
+        start: dayjs("Thu Nov 09 2023 03:30:53 GMT+0000"),
+        end: dayjs("Thu Nov 09 2023 05:02:28 GMT+0000"),
         project: "Work",
-        column: 2,
       },
     ];
   };

@@ -1,9 +1,8 @@
-
+import dayjs from "dayjs";
 
 export type CalendarEvent = {
-    description: string;
-    project: string;
-    duration: number;
-    startTime: number;
-    column: number;
-}
+  description: string;
+  start: dayjs.Dayjs;
+  end: dayjs.Dayjs;
+  project: string;
+};
