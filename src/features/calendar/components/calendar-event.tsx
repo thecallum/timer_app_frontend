@@ -6,18 +6,42 @@ interface Props {
   event: CalendarEventType;
 }
 
+const ONE_HOUR_IN_SECONDS = 3600;
+
 export const CalendarEvent = (props: Props) => {
   const { event } = props;
-  const { description, project, duration } = event;
+  const { description, project, duration, startTime, column } = event;
+
+  const durationByFifteen = Math.ceil(duration / 60 / 15);
+  const topByFifteen = Math.ceil((startTime + ONE_HOUR_IN_SECONDS) / 60 / 15);
+
+  const elementHeight = durationByFifteen * 16; // 15 minutes is 16px
+  const elementTop = topByFifteen * 16;
+
+  const formatTime = (seconds: number) => {
+    const pad = (num: number) => num.toString().padStart(2, "0");
+
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${hours}:${pad(minutes)}:${pad(remainingSeconds)}`;
+  };
+
+  const eventStyles = {
+    height: `${elementHeight}px`,
+    top: `${elementTop}px`,
+    left: `calc((100%/7)*${column})`,
+  };
 
   return (
     <li className="relative">
-      <PopoverWrapper event={event} popoverComponent={<EditEventPopover />}>
-        {({ ref, styles, onClick, formatTime }) => (
+      <PopoverWrapper popoverComponent={<EditEventPopover />}>
+        {({ ref, onClick }) => (
           <button
             className={`absolute rounded-sm w-[calc(100%/7)] bg-pink-200 hover:bg-pink-300 p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
             ref={ref}
-            style={styles}
+            style={eventStyles}
             onClick={onClick}
           >
             <span className="text-start">

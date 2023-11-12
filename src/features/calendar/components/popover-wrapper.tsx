@@ -1,27 +1,16 @@
-import { CalendarEvent as CalendarEventType } from "../types/calendar-event";
 import { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 
 interface Props {
-  event: CalendarEventType;
   popoverComponent: JSX.Element;
   children: (props: {
     ref: React.Dispatch<React.SetStateAction<Element>>;
-    styles: {
-      height: string;
-      top: string;
-      left: string;
-    };
     onClick: () => void;
-    formatTime: (seconds: number) => string;
   }) => JSX.Element;
 }
 
-const ONE_HOUR_IN_SECONDS = 3600;
-
 export const PopoverWrapper = (props: Props) => {
-  const { event, popoverComponent, children } = props;
-  const { duration, startTime, column } = event;
+  const { popoverComponent, children } = props;
 
   const [referenceElement, setReferenceElement] = useState<Element>();
   const [popperElement, setPopperElement] = useState<Element>();
@@ -37,30 +26,6 @@ export const PopoverWrapper = (props: Props) => {
       },
     ],
   });
-
-  //   divide by 15
-
-  const durationByFifteen = Math.ceil(duration / 60 / 15);
-  const topByFifteen = Math.ceil((startTime + ONE_HOUR_IN_SECONDS) / 60 / 15);
-
-  const elementHeight = durationByFifteen * 16; // 15 minutes is 16px
-  const elementTop = topByFifteen * 16;
-
-  const formatTime = (seconds: number) => {
-    const pad = (num: number) => num.toString().padStart(2, "0");
-
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-
-    return `${hours}:${pad(minutes)}:${pad(remainingSeconds)}`;
-  };
-
-  const eventStyles = {
-    height: `${elementHeight}px`,
-    top: `${elementTop}px`,
-    left: `calc((100%/7)*${column})`,
-  };
 
   const [showModal, setShowModal] = useState(false);
 
@@ -87,13 +52,11 @@ export const PopoverWrapper = (props: Props) => {
     <>
       {children({
         ref: setReferenceElement,
-        styles: eventStyles,
         onClick: () => {
           setTimeout(() => {
             setShowModal(true);
           });
         },
-        formatTime,
       })}
 
       {showModal && (
