@@ -1,22 +1,13 @@
 import dayjs from "dayjs";
 
-const CalendarWeekSummary = () => {
-  return (
-    <div className="bg-slate-100 h-14 px-6 flex items-center text-slate-600 shadow-sm rounded">
-      {" "}
-      <span>Week Total</span>
-      <span className="w-2 h-2 bg-slate-600 block rounded-full mx-3"></span>
-      <span>62:15:44</span>
-    </div>
-  );
-};
-
-const CalendarWeekSelect = (props: {
+interface Props {
   next: () => void;
   previous: () => void;
   reset: () => void;
   weeks: dayjs.Dayjs[];
-}) => {
+}
+
+export const CalendarWeekSelect = (props: Props) => {
   const { next, previous, reset, weeks } = props;
 
   const startOfWeek = weeks[0].format("DD MMM");
@@ -78,28 +69,6 @@ const CalendarWeekSelect = (props: {
           </button>
         </span>
       </div>
-    </div>
-  );
-};
-
-export const CalendarControls = (props: {
-  next: () => void;
-  previous: () => void;
-  reset: () => void;
-  weeks: dayjs.Dayjs[];
-}) => {
-  const { next, previous, reset, weeks } = props;
-
-  return (
-    <div className="flex justify-between items-start">
-      <CalendarWeekSummary />
-
-      <CalendarWeekSelect
-        weeks={weeks}
-        next={next}
-        previous={previous}
-        reset={reset}
-      />
     </div>
   );
 };

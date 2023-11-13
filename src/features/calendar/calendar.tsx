@@ -8,13 +8,12 @@ import {
 import { CalendarDates } from "./components/calendar-dates";
 import { CalendarGrid } from "./components/calendar-grid";
 import { CalendarHours } from "./components/calendar-hours";
-import { CalendarControls } from "./components/calendar-controls";
 import { FullPageSpaceFillerContailer } from "@/components/full-page-space-fillter-container";
 import { CalendarEvents } from "./components/calendar-events";
-import {
-  CalendarEvent
-} from "./types/calendar-event";
+import { CalendarEvent } from "./types/calendar-event";
 import { PopoverContextProvider } from "./context";
+import { CalendarWeekSelect } from "./components/calendar-week-select";
+import { CalendarWeekSummary } from "./components/calendar-week-summary";
 
 export const Calendar = (): CalendarEvent => {
   const getCalendarEvents = (week = 0) => {
@@ -63,12 +62,16 @@ export const Calendar = (): CalendarEvent => {
           <ContainerFullWidth>
             <>
               <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
-              <CalendarControls
-                weeks={weeks}
-                next={() => setCurrentWeek((x) => x + 1)}
-                previous={() => setCurrentWeek((x) => x - 1)}
-                reset={() => setCurrentWeek((x) => 0)}
-              />
+              <div className="flex justify-between items-start">
+                <CalendarWeekSummary />
+
+                <CalendarWeekSelect
+                  weeks={weeks}
+                  next={() => setCurrentWeek((x) => x + 1)}
+                  previous={() => setCurrentWeek((x) => x - 1)}
+                  reset={() => setCurrentWeek((x) => 0)}
+                />
+              </div>
             </>
           </ContainerFullWidth>
         }
