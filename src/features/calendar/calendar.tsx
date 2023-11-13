@@ -8,7 +8,6 @@ import { CalendarHours } from "./components/calendar-hours";
 import { FullPageSpaceFillerContailer } from "@/components/full-page-space-fillter-container";
 import { CalendarEvents } from "./components/calendar-events";
 import { ICalendarEvent } from "./types/types";
-import { PopoverContextProvider } from "./context";
 import { CalendarWeekSelect } from "./components/calendar-week-select";
 import { CalendarWeekSummary } from "./components/calendar-week-summary";
 import { useCalendar } from "./hooks/useCalendar";
@@ -17,42 +16,40 @@ export const Calendar = (): ICalendarEvent => {
   const { events, weeks, next, previous, reset } = useCalendar();
 
   return (
-    <PopoverContextProvider>
-      <FullPageSpaceFillerContailer
-        top={
-          <ContainerFullWidth>
-            <>
-              <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
-              <div className="flex justify-between items-start">
-                <CalendarWeekSummary />
+    <FullPageSpaceFillerContailer
+      top={
+        <ContainerFullWidth>
+          <>
+            <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
+            <div className="flex justify-between items-start">
+              <CalendarWeekSummary />
 
-                <CalendarWeekSelect
-                  weeks={weeks}
-                  next={next}
-                  previous={previous}
-                  reset={reset}
-                />
-              </div>
-            </>
-          </ContainerFullWidth>
-        }
-      >
-        <div className="flex justify-center mt-4 h-full  ">
-          <PageContainerLarge>
-            <div className="h-full flex flex-col">
-              <CalendarDates weeks={weeks} />
+              <CalendarWeekSelect
+                weeks={weeks}
+                next={next}
+                previous={previous}
+                reset={reset}
+              />
+            </div>
+          </>
+        </ContainerFullWidth>
+      }
+    >
+      <div className="flex justify-center mt-4 h-full  ">
+        <PageContainerLarge>
+          <div className="h-full flex flex-col">
+            <CalendarDates weeks={weeks} />
 
-              <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
-                <CalendarHours />
-                <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
-                  <CalendarGrid weeks={weeks} />
-                  <CalendarEvents events={events} />
-                </div>
+            <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
+              <CalendarHours />
+              <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
+                <CalendarGrid weeks={weeks} />
+                <CalendarEvents events={events} />
               </div>
             </div>
-          </PageContainerLarge>
-        </div>
-      </FullPageSpaceFillerContailer>
-    </PopoverContextProvider>
+          </div>
+        </PageContainerLarge>
+      </div>
+    </FullPageSpaceFillerContailer>
   );
 };

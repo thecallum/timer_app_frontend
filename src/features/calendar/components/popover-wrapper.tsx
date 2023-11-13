@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
-import { usePopoverContext } from "../context";
 import { Placement, Offsets } from "@popperjs/core";
 
 interface Props {
   popoverComponent: (props: { close: () => void }) => JSX.Element;
-  requireNoOtherPopovers?: boolean;
+  useOverlay?: boolean;
   placement?: Placement | undefined;
   offset?: Offsets | undefined;
   children: (props: {
@@ -21,10 +20,8 @@ export const PopoverWrapper = (props: Props) => {
     children,
     placement = "top-start",
     offset = [10, -10],
-    requireNoOtherPopovers = false,
+    useOverlay: requireNoOtherPopovers = false,
   } = props;
-
-  // const popoverContext = usePopoverContext();
 
   const [referenceElement, setReferenceElement] = useState<Element>();
   const [popperElement, setPopperElement] = useState<Element>();
@@ -63,24 +60,13 @@ export const PopoverWrapper = (props: Props) => {
   };
 
   const handleOpen = () => {
-    // if (
-    //   requireNoOtherPopovers && popoverContext?.popoverIsOpen) {
-    //   console.info(
-    //     "This popover cannot be opened when another popover is open"
-    //   );
-
-    //   return;
-    // }
-
     setTimeout(() => {
       setShowPopover(true);
-      // popoverContext?.setPopoverAsOpen();
     });
   };
 
   const handleClose = () => {
     setShowPopover(() => false);
-    // popoverContext?.setPopoverAsClosed();
   };
 
   return (

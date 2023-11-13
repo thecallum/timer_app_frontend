@@ -15,7 +15,7 @@ export const Project = (props: Props) => {
       <PopoverWrapper
         placement="bottom"
         offset={[0, 0]}
-        requireNoOtherPopovers
+        useOverlay
         popoverComponent={({ close }) => (
           <SelectProjectPopover
             currentProject={project}
