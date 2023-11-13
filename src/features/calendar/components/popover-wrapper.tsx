@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
 import { usePopoverContext } from "../context";
+import { Placement, Offsets } from "@popperjs/core";
 
 interface Props {
   popoverComponent: (props: { close: () => void }) => JSX.Element;
   requireNoOtherPopovers?: boolean;
+  placement?: Placement | undefined;
+  offset?: Offsets | undefined;
   children: (props: {
     ref: React.Dispatch<React.SetStateAction<Element>>;
     onClick: () => void;
@@ -13,7 +16,13 @@ interface Props {
 }
 
 export const PopoverWrapper = (props: Props) => {
-  const { popoverComponent, children, requireNoOtherPopovers = false } = props;
+  const {
+    popoverComponent,
+    children,
+    placement = "top-start",
+    offset = [10, -10],
+    requireNoOtherPopovers = false,
+  } = props;
 
   // const popoverContext = usePopoverContext();
 
@@ -21,12 +30,12 @@ export const PopoverWrapper = (props: Props) => {
   const [popperElement, setPopperElement] = useState<Element>();
 
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement: "top-start",
+    placement,
     modifiers: [
       {
         name: "offset",
         options: {
-          offset: [10, -10],
+          offset,
         },
       },
     ],
@@ -84,7 +93,7 @@ export const PopoverWrapper = (props: Props) => {
 
       {showPopover && (
         <>
-        {/* overlay */}
+          {/* overlay */}
           {requireNoOtherPopovers && (
             <div className="bg-gray-50 opacity-30 absolute top-[-50vh] left-[-50vw] w-[200vw] h-[200vh] z-50"></div>
           )}

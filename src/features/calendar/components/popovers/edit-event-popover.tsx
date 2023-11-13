@@ -1,4 +1,5 @@
 import { CalendarEvent } from "../../types/calendar-event";
+import { Project } from "../project";
 
 interface Props {
   close: () => void;
@@ -19,10 +20,7 @@ export const EditEventPopover = (props: Props) => {
       </div>
 
       <div className="inline-block">
-        <div className="flex flex-row justify-start items-center bg-pink-200 p-1 px-2 rounded-md">
-          <div className="w-2 h-2 rounded-full bg-pink-600 block "></div>
-          <div className="ml-2 text-xs text-pink-600 leading-tight">{project}</div>
-        </div>
+      <Project />
       </div>
 
       <div className="flex mb-2">
