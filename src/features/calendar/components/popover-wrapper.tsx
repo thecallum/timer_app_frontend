@@ -1,4 +1,4 @@
-import { Placement, Offsets, reference } from "@popperjs/core";
+import { Placement, Offsets } from "@popperjs/core";
 import { usePopover } from "../hooks/usePopover";
 
 interface Props {
@@ -29,7 +29,11 @@ export const PopoverWrapper = (props: Props) => {
 
   return (
     <>
-      {children(referenceProps)}
+      {children({
+        ref: referenceProps.ref,
+        onClick: referenceProps.onClick,
+        showPopover: referenceProps.showPopover,
+      })}
 
       {showPopover && (
         <>
@@ -38,7 +42,12 @@ export const PopoverWrapper = (props: Props) => {
             <div className="bg-gray-50 opacity-30 absolute top-[-50vh] left-[-50vw] w-[200vw] h-[200vh] z-50"></div>
           )}
 
-          <div className="z-50 absolute " {...elementProps}>
+          <div
+            className="z-50 absolute "
+            ref={elementProps.ref}
+            style={elementProps.styles}
+            {...elementProps.otherAttributes}
+          >
             {popoverComponent({
               close: handleClose,
             })}

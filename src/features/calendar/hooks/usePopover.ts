@@ -61,7 +61,7 @@ export const usePopover = (
   const elementProps = {
     ref: setPopperElement,
     styles: styles.popper,
-    ...attributes.popper
+    otherAttributes: attributes.popper,
   };
 
   return {
