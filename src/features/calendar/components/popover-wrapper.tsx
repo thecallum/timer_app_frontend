@@ -15,7 +15,7 @@ interface Props {
 export const PopoverWrapper = (props: Props) => {
   const { popoverComponent, children, requireNoOtherPopovers = false } = props;
 
-  const popoverContext = usePopoverContext();
+  // const popoverContext = usePopoverContext();
 
   const [referenceElement, setReferenceElement] = useState<Element>();
   const [popperElement, setPopperElement] = useState<Element>();
@@ -54,23 +54,24 @@ export const PopoverWrapper = (props: Props) => {
   };
 
   const handleOpen = () => {
-    if (requireNoOtherPopovers && popoverContext?.popoverIsOpen) {
-      console.info(
-        "This popover cannot be opened when another popover is open"
-      );
+    // if (
+    //   requireNoOtherPopovers && popoverContext?.popoverIsOpen) {
+    //   console.info(
+    //     "This popover cannot be opened when another popover is open"
+    //   );
 
-      return;
-    }
+    //   return;
+    // }
 
     setTimeout(() => {
       setShowPopover(true);
-      popoverContext?.setPopoverAsOpen();
+      // popoverContext?.setPopoverAsOpen();
     });
   };
 
   const handleClose = () => {
     setShowPopover(() => false);
-    popoverContext?.setPopoverAsClosed();
+    // popoverContext?.setPopoverAsClosed();
   };
 
   return (
@@ -81,21 +82,26 @@ export const PopoverWrapper = (props: Props) => {
         showPopover,
       })}
 
-      {/* <p>Open: {popoverContext?.popoverIsOpen ? "T" : "F"}</p> */}
-
       {showPopover && (
-        <div
-          className="z-50 absolute "
-          ref={setPopperElement}
-          style={styles.popper}
-          {...attributes.popper}
-        >
-          {popoverComponent({
-            close: () => {
-              handleClose();
-            },
-          })}
-        </div>
+        <>
+        {/* overlay */}
+          {requireNoOtherPopovers && (
+            <div className="bg-gray-50 opacity-30 absolute top-[-50vh] left-[-50vw] w-[200vw] h-[200vh] z-50"></div>
+          )}
+
+          <div
+            className="z-50 absolute "
+            ref={setPopperElement}
+            style={styles.popper}
+            {...attributes.popper}
+          >
+            {popoverComponent({
+              close: () => {
+                handleClose();
+              },
+            })}
+          </div>
+        </>
       )}
     </>
   );

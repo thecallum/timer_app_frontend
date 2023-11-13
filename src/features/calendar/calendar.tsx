@@ -42,9 +42,9 @@ export const Calendar = (): CalendarEvent => {
             <div className="h-full flex flex-col">
               <CalendarDates weeks={weeks} />
 
-              <div className="flex overflow-y-auto border-t border-slate-200 relative">
+              <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
                 <CalendarHours />
-                <div className="relative h-full flex-grow flex-shrink-0">
+                <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
                   <CalendarGrid weeks={weeks} />
                   <CalendarEvents events={events} />
                 </div>
