@@ -1,4 +1,4 @@
-import { CalendarEvent as CalendarEventType } from "../types/calendar-event";
+import { ICalendarEvent as CalendarEventType } from "../types/types";
 import { CalendarEvent } from "./calendar-event";
 
 interface Props {

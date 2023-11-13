@@ -7,13 +7,13 @@ import { CalendarGrid } from "./components/calendar-grid";
 import { CalendarHours } from "./components/calendar-hours";
 import { FullPageSpaceFillerContailer } from "@/components/full-page-space-fillter-container";
 import { CalendarEvents } from "./components/calendar-events";
-import { CalendarEvent } from "./types/calendar-event";
+import { ICalendarEvent } from "./types/types";
 import { PopoverContextProvider } from "./context";
 import { CalendarWeekSelect } from "./components/calendar-week-select";
 import { CalendarWeekSummary } from "./components/calendar-week-summary";
 import { useCalendar } from "./hooks/useCalendar";
 
-export const Calendar = (): CalendarEvent => {
+export const Calendar = (): ICalendarEvent => {
   const { events, weeks, next, previous, reset } = useCalendar();
 
   return (

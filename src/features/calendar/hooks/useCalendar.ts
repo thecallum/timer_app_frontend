@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
+import { ICalendarEvent, ProjectColors, projectColors } from "../types/types";
 
 export const useCalendar = () => {
   const [currentWeek, setCurrentWeek] = useState(0);
@@ -8,7 +9,7 @@ export const useCalendar = () => {
   const previous = () => setCurrentWeek((x) => x - 1);
   const reset = () => setCurrentWeek((x) => 0);
 
-  const getCalendarEvents = (week = 0) => {
+  const getCalendarEvents = (week = 0): ICalendarEvent[] => {
     if (week !== 0) return [];
 
     return [
@@ -16,13 +17,19 @@ export const useCalendar = () => {
         description: "Planning session",
         start: dayjs("Tue Nov 07 2023 01:15:53 GMT+0000"),
         end: dayjs("Tue Nov 07 2023 03:15:53 GMT+0000"),
-        project: "Work",
+        project: {
+          name: "Work",
+          colors: projectColors[ProjectColors.Amber]
+        },
       },
       {
         description: "Standup meeting",
         start: dayjs("Thu Nov 09 2023 03:30:53 GMT+0000"),
         end: dayjs("Thu Nov 09 2023 05:02:28 GMT+0000"),
-        project: "Work",
+        project: {
+          name: "Planning",
+          colors: projectColors[ProjectColors.Lime]
+        }
       },
     ];
   };

@@ -1,4 +1,7 @@
-import { CalendarEvent as CalendarEventType } from "../types/calendar-event";
+import {
+  ICalendarEvent as CalendarEventType,
+  defaultProject,
+} from "../types/types";
 import { PopoverWrapper } from "./popover-wrapper";
 import { EditEventPopover } from "./popovers/edit-event-popover";
 
@@ -12,12 +15,14 @@ export const CalendarEvent = (props: Props) => {
   const { event } = props;
   const { description, project, start, end } = event;
 
-  const durationInSeconds = end.diff(start, "second")
-  const startTimeInSeconds = start.diff(start.startOf("day"), "second")
-  const column = start.day() -1
+  const durationInSeconds = end.diff(start, "second");
+  const startTimeInSeconds = start.diff(start.startOf("day"), "second");
+  const column = start.day() - 1;
 
   const durationByFifteen = Math.ceil(durationInSeconds / 60 / 15);
-  const topByFifteen = Math.ceil((startTimeInSeconds + ONE_HOUR_IN_SECONDS) / 60 / 15);
+  const topByFifteen = Math.ceil(
+    (startTimeInSeconds + ONE_HOUR_IN_SECONDS) / 60 / 15
+  );
 
   const elementHeight = durationByFifteen * 16; // 15 minutes is 16px
   const elementTop = topByFifteen * 16;
@@ -32,7 +37,7 @@ export const CalendarEvent = (props: Props) => {
     return `${hours}:${pad(minutes)}:${pad(remainingSeconds)}`;
   };
 
-  const duration = formatTime(durationInSeconds)
+  const duration = formatTime(durationInSeconds);
 
   const eventStyles = {
     height: `${elementHeight}px`,
@@ -43,26 +48,48 @@ export const CalendarEvent = (props: Props) => {
   return (
     <li className="relative">
       <PopoverWrapper
-        popoverComponent={({ close }) => <EditEventPopover event={event}
-        duration={duration}
-        close={close} />}
+        popoverComponent={({ close }) => (
+          <EditEventPopover event={event} duration={duration} close={close} />
+        )}
       >
         {({ ref, onClick }) => (
           <button
-            className={`absolute rounded-sm w-[calc(100%/7)] bg-pink-200 hover:bg-pink-300 p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
+            className={`absolute rounded-sm w-[calc(100%/7)] p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
             ref={ref}
-            style={eventStyles}
+            style={{
+              ...eventStyles,
+              background: project?.colors.light ?? defaultProject.colors.light,
+              // hover: {
+              //   background: "bg-pink-300",
+              // },
+            }}
             onClick={onClick}
           >
             <span className="text-start">
-              <div className="text-pink-950 font-semibold text-s">
+              <div
+                className="font-semibold text-s"
+                style={{
+                  color:
+                    project?.colors.darkest ?? defaultProject.colors.darkest,
+                }}
+              >
                 {description}
               </div>
-              <div className="text-pink-500 text-xs whitespace-nowrap">
-                {project}
+              <div
+                className="text-xs whitespace-nowrap"
+                style={{
+                  color: project?.colors.dark ?? defaultProject.colors.dark,
+                }}
+              >
+                {project?.name ?? defaultProject.name}
               </div>
             </span>
-            <div className="text-pink-950 text-s whitespace-nowrap">
+            <div
+              className="text-s whitespace-nowrap"
+              style={{
+                color: project?.colors.darkest ?? defaultProject.colors.darkest,
+              }}
+            >
               {duration}
             </div>
           </button>
