@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { PopoverWrapper } from "./popover-wrapper";
 import { SelectProjectPopover } from "./popovers/select-project-popover";
-import { IProject, ProjectColors, defaultProject, projectColors } from "../types/types";
+import { IProject, defaultProject } from "../types/types";
 
 interface Props {
   project?: IProject;
 }
 
 export const Project = (props: Props) => {
-  const [project, setProject] = useState(props?.project ?? defaultProject)
+  const [project, setProject] = useState(props?.project ?? defaultProject);
 
   return (
     <>
@@ -20,8 +20,9 @@ export const Project = (props: Props) => {
           <SelectProjectPopover
             currentProject={project}
             selectProject={(x) => {
-              console.log("Selcted project", x);
-              setProject(x)
+              setProject(x);
+
+              setTimeout(close);
             }}
           />
         )}

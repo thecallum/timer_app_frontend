@@ -2,7 +2,7 @@ import classNames from "classnames";
 import { IProject, ProjectColors, projectColors } from "../../types/types";
 
 interface Props {
-  //   close: () => void;
+    // close: () => void;
   currentProject: IProject;
   selectProject: (project: IProject) => void;
 }
