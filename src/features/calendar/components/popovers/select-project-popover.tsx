@@ -1,8 +1,12 @@
 import classNames from "classnames";
-import { IProject, ProjectColors, projectColors } from "../../types/types";
+import {
+  IProject,
+  ProjectColors,
+  defaultProject,
+  projectColors,
+} from "../../types/types";
 
 interface Props {
-    // close: () => void;
   currentProject: IProject;
   selectProject: (project: IProject) => void;
 }
@@ -11,10 +15,7 @@ export const SelectProjectPopover = (props: Props) => {
   const { selectProject, currentProject } = props;
 
   const projects: IProject[] = [
-    {
-      name: "No project",
-      colors: projectColors[ProjectColors.Slate],
-    },
+    defaultProject,
     {
       name: "Work",
       colors: projectColors[ProjectColors.Amber],
