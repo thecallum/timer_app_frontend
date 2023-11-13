@@ -1,6 +1,3 @@
-import dayjs from "dayjs";
-import { useState } from "react";
-
 import {
   ContainerFullWidth,
   PageContainerLarge,
@@ -14,46 +11,10 @@ import { CalendarEvent } from "./types/calendar-event";
 import { PopoverContextProvider } from "./context";
 import { CalendarWeekSelect } from "./components/calendar-week-select";
 import { CalendarWeekSummary } from "./components/calendar-week-summary";
+import { useCalendar } from "./hooks/useCalendar";
 
 export const Calendar = (): CalendarEvent => {
-  const getCalendarEvents = (week = 0) => {
-    if (week !== 0) return [];
-
-    return [
-      {
-        description: "Planning session",
-        start: dayjs("Tue Nov 07 2023 01:15:53 GMT+0000"),
-        end: dayjs("Tue Nov 07 2023 03:15:53 GMT+0000"),
-        project: "Work",
-      },
-      {
-        description: "Standup meeting",
-        start: dayjs("Thu Nov 09 2023 03:30:53 GMT+0000"),
-        end: dayjs("Thu Nov 09 2023 05:02:28 GMT+0000"),
-        project: "Work",
-      },
-    ];
-  };
-
-  const [currentWeek, setCurrentWeek] = useState(0);
-
-  const getWeekDates = (weeksInFuture = 0) => {
-    const currentDate = dayjs().add(weeksInFuture * 7, "day");
-    const currentDayOfWeek = currentDate.day();
-    const daysSinceMonday = currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1; // Sunday is a special case
-
-    let weekDates = [];
-    for (let i = 0; i < 7; i++) {
-      const date = currentDate.day(-daysSinceMonday + i);
-
-      weekDates.push(date);
-    }
-
-    return weekDates;
-  };
-
-  const events = getCalendarEvents(currentWeek);
-  const weeks = getWeekDates(currentWeek);
+  const { events, weeks, next, previous, reset } = useCalendar();
 
   return (
     <PopoverContextProvider>
@@ -67,9 +28,9 @@ export const Calendar = (): CalendarEvent => {
 
                 <CalendarWeekSelect
                   weeks={weeks}
-                  next={() => setCurrentWeek((x) => x + 1)}
-                  previous={() => setCurrentWeek((x) => x - 1)}
-                  reset={() => setCurrentWeek((x) => 0)}
+                  next={next}
+                  previous={previous}
+                  reset={reset}
                 />
               </div>
             </>
