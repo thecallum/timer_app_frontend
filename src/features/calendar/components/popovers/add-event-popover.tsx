@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { Project } from "../project";
+import { PopoverContainer } from "./popover-container";
 
 interface Props {
   close: () => void;
@@ -10,68 +11,68 @@ export const AddEventPopover = (props: Props) => {
   const { close, time } = props;
 
   return (
-    <div className="bg-white shadow-xl rounded p-4 border border-slate-50">
-      <h2 className="text-slate-800 text-xs mb-2">Add Task</h2>
+    <PopoverContainer title="Add Task">
+      <>
+        <div className="shadow-sm bg-slate-100 p-2 text-xs text-slate-800 mb-2 rounded">
+          What have you done?
+        </div>
 
-      <div className="shadow-sm bg-slate-100 p-2 text-xs text-slate-800 mb-2 rounded">
-        What have you done?
-      </div>
+        <div className="inline-block">
+          <Project />
+        </div>
 
-      <div className="inline-block">
-        <Project />
-      </div>
+        <div className="flex mb-2">
+          <div className="mr-4">
+            <label htmlFor="" className="text-slate-500 text-xs">
+              Start
+            </label>
+            <input
+              type="datetime-local"
+              name=""
+              id=""
+              defaultValue={time.format("YYYY-MM-DDThh:mm")}
+              autoFocus
+              className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
+            />
+          </div>
 
-      <div className="flex mb-2">
-        <div className="mr-4">
-          <label htmlFor="" className="text-slate-500 text-xs">
-            Start
-          </label>
-          <input
-            type="datetime-local"
-            name=""
-            id=""
-            defaultValue={time.format("YYYY-MM-DDThh:mm")}
-            autoFocus
-            className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
-          />
+          <div>
+            <label htmlFor="" className="text-slate-500 text-xs">
+              End
+            </label>
+            <input
+              type="datetime-local"
+              name=""
+              defaultValue={time.add(15, "minute").format("YYYY-MM-DDThh:mm")}
+              className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
+            />
+          </div>
         </div>
 
         <div>
           <label htmlFor="" className="text-slate-500 text-xs">
-            End
+            Duration
           </label>
-          <input
-            type="datetime-local"
-            name=""
-            defaultValue={time.add(15, "minute").format("YYYY-MM-DDThh:mm")}
-            className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
-          />
+          <div>
+            <span className="bg-slate-100 p-2 text-xs text-slate-800 mb-2 rounded">
+              0:00:00
+            </span>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <label htmlFor="" className="text-slate-500 text-xs">
-          Duration
-        </label>
-        <div>
-          <span className="bg-slate-100 p-2 text-xs text-slate-800 mb-2 rounded">
-            0:00:00
-          </span>
+        {/* bottom */}
+        <div className="pt-4 border-t border-slate-200 mt-4">
+          <button className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2">
+            Add
+          </button>
+          <button
+            onClick={close}
+            className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
+          >
+            Close
+          </button>
         </div>
-      </div>
-
-      {/* bottom */}
-      <div className="pt-4 border-t border-slate-200 mt-4">
-        <button className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2">
-          Add
-        </button>
-        <button
-          onClick={close}
-          className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
-        >
-          Close
-        </button>
-      </div>
-    </div>
+      </>
+    </PopoverContainer>
   );
 };
