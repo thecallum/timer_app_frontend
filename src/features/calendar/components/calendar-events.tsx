@@ -10,8 +10,8 @@ export const CalendarEvents = (props: Props) => {
 
   return (
     <ul className="absolute top-0 left-0 w-full ">
-      {events.map((event) => (
-        <CalendarEvent key={event.description} event={event} />
+      {events.map((event, index) => (
+        <CalendarEvent key={index} event={event} />
       ))}
     </ul>
   );

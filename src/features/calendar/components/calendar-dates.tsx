@@ -1,19 +1,29 @@
 import classNames from "classnames";
 import dayjs from "dayjs";
+import { ICalendarEvent } from "../types/types";
+import { calculateDuration } from "../helpers/duration";
+import { formatDuration } from "../helpers/formatter";
 
 interface Props {
   weeks: dayjs.Dayjs[];
+  events: ICalendarEvent[];
 }
 
 export const CalendarDates = (props: Props) => {
-  const { weeks } = props;
+  const { weeks, events } = props;
 
-  const weekDaysArray = weeks.map((x) => ({
-    day: x.format("DD"),
-    name: x.format("ddd"),
-    time: "5:28:48",
-    current: x.isSame(dayjs()),
-  }));
+  const weekDaysArray = weeks.map((x) => {
+    const eventsOnThisDay = events.filter((e) =>
+      e.start.startOf("day").isSame(x.startOf("day"))
+    );
+
+    return {
+      day: x.format("DD"),
+      name: x.format("ddd"),
+      time: formatDuration(calculateDuration(eventsOnThisDay)),
+      current: x.isSame(dayjs()),
+    };
+  });
 
   return (
     <div className="ml-16 mr-4 mb-2 h-12">

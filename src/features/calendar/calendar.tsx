@@ -22,7 +22,7 @@ export const Calendar = (): ICalendarEvent => {
           <>
             <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
             <div className="flex justify-between items-start">
-              <CalendarWeekSummary />
+              <CalendarWeekSummary events={events} />
 
               <CalendarWeekSelect
                 weeks={weeks}
@@ -38,7 +38,7 @@ export const Calendar = (): ICalendarEvent => {
       <div className="flex justify-center mt-4 h-full  ">
         <PageContainerLarge>
           <div className="h-full flex flex-col">
-            <CalendarDates weeks={weeks} />
+            <CalendarDates weeks={weeks} events={events} />
 
             <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
               <CalendarHours />

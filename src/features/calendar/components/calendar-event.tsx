@@ -1,3 +1,4 @@
+import { formatDuration } from "../helpers/formatter";
 import {
   ICalendarEvent as CalendarEventType,
   defaultProject,
@@ -27,17 +28,8 @@ export const CalendarEvent = (props: Props) => {
   const elementHeight = durationByFifteen * 16; // 15 minutes is 16px
   const elementTop = topByFifteen * 16;
 
-  const formatTime = (seconds: number) => {
-    const pad = (num: number) => num.toString().padStart(2, "0");
 
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const remainingSeconds = seconds % 60;
-
-    return `${hours}:${pad(minutes)}:${pad(remainingSeconds)}`;
-  };
-
-  const duration = formatTime(durationInSeconds);
+  const duration = formatDuration(durationInSeconds);
 
   const eventStyles = {
     height: `${elementHeight}px`,
