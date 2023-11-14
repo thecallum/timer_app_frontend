@@ -5,11 +5,12 @@ import { IProject, defaultProject } from "../types/types";
 
 interface Props {
   project?: IProject;
+  projects: IProject[];
   showAddProjectModal: () => void;
 }
 
 export const Project = (props: Props) => {
-  const  { showAddProjectModal } = props
+  const { showAddProjectModal, projects } = props;
   const [project, setProject] = useState(props?.project ?? defaultProject);
 
   return (
@@ -19,7 +20,8 @@ export const Project = (props: Props) => {
         offset={[0, 0]}
         popoverComponent={({ close }) => (
           <SelectProjectPopover
-          showAddProjectModal={showAddProjectModal}
+            projects={projects}
+            showAddProjectModal={showAddProjectModal}
             currentProject={project}
             selectProject={(x) => {
               setProject(x);

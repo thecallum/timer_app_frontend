@@ -1,30 +1,17 @@
 import classNames from "classnames";
-import {
-  IProject,
-  ProjectColors,
-  defaultProject,
-  projectColors,
-} from "../../types/types";
+import { IProject } from "../../types/types";
 import { PopoverContainer } from "./popover-container";
 
 interface Props {
   currentProject: IProject;
   selectProject: (project: IProject) => void;
   showAddProjectModal: () => void;
+  projects: IProject[];
 }
 
 export const SelectProjectPopover = (props: Props) => {
-  const { selectProject, currentProject, showAddProjectModal } = props;
-
-  const projects: IProject[] = [
-    defaultProject,
-    {
-      name: "Work",
-      colors: projectColors[ProjectColors.Amber],
-    },
-    { name: "Planning", colors: projectColors[ProjectColors.Teal] },
-    { name: "Emails", colors: projectColors[ProjectColors.Lime] },
-  ];
+  const { selectProject, currentProject, showAddProjectModal, projects } =
+    props;
 
   return (
     <PopoverContainer title="Project" width="w-48">
@@ -62,7 +49,10 @@ export const SelectProjectPopover = (props: Props) => {
 
         {/* bottom */}
         <div className="pt-2 border-t border-slate-200 mt-4 flex items-center justify-center">
-          <button onClick={showAddProjectModal} className="text-slate-600  underline underline-offset-1 mt-2 text-sm">
+          <button
+            onClick={showAddProjectModal}
+            className="text-slate-600  underline underline-offset-1 mt-2 text-sm"
+          >
             Create a new project
           </button>
         </div>

@@ -1,12 +1,14 @@
 import Modal from "react-modal";
+import { IProject, ProjectColors, projectColors } from "../../types/types";
 
 interface Props {
   isOpen: boolean;
   close: () => void;
+  onCreate: (project: IProject) => void;
 }
 
 export const CreateProjectModal = (props: Props) => {
-  const { isOpen, close } = props;
+  const { isOpen, close, onCreate } = props;
 
   return (
     <Modal
@@ -26,7 +28,14 @@ export const CreateProjectModal = (props: Props) => {
         </div>
 
         <div className="pt-4 border-t border-slate-200 mt-4">
-          <button className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2">
+          <button 
+            onClick={() => {
+              onCreate({
+                name: "Finances",
+                colors: projectColors[ProjectColors.Teal]
+              })
+            }}
+          className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2">
             Create project
           </button>
           <button

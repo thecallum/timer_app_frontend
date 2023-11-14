@@ -2,14 +2,16 @@ import classNames from "classnames";
 import { PopoverWrapper } from "./popover-wrapper";
 import { AddEventPopover } from "./popovers/add-event-popover";
 import dayjs from "dayjs";
+import { IProject } from "../types/types";
 
 interface Props {
   day: dayjs.Dayjs;
   showAddProjectModal: () => void;
+  projects: IProject[];
 }
 
 export const CalendarCell = (props: Props) => {
-  const { day, showAddProjectModal } = props;
+  const { day, showAddProjectModal, projects } = props;
 
   return (
     <div className="border-slate-200 h-16 border-b flex flex-col">
@@ -17,7 +19,8 @@ export const CalendarCell = (props: Props) => {
         <PopoverWrapper
           popoverComponent={({ close }) => (
             <AddEventPopover
-            showAddProjectModal={showAddProjectModal}
+              projects={projects}
+              showAddProjectModal={showAddProjectModal}
               close={close}
               time={day.add(15 * index, "minute")}
             />

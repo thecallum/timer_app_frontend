@@ -1,15 +1,17 @@
 import dayjs from "dayjs";
 import { Project } from "../project";
 import { PopoverContainer } from "./popover-container";
+import { IProject } from "../../types/types";
 
 interface Props {
   close: () => void;
   time: dayjs.Dayjs;
   showAddProjectModal: () => void;
+  projects: IProject[];
 }
 
 export const AddEventPopover = (props: Props) => {
-  const { close, time, showAddProjectModal } = props;
+  const { close, time, showAddProjectModal, projects } = props;
 
   return (
     <PopoverContainer title="Add Task">
@@ -19,7 +21,7 @@ export const AddEventPopover = (props: Props) => {
         </div>
 
         <div className="inline-block">
-          <Project showAddProjectModal={showAddProjectModal} />
+          <Project projects={projects} showAddProjectModal={showAddProjectModal} />
         </div>
 
         <div className="flex mb-2">

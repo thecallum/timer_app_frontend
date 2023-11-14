@@ -35,7 +35,7 @@ export const usePopover = (
     // ignore, modal closed
     if (!showPopover) return;
 
-    console.log("click", event)
+    // console.log("click", event)
 
     // if (popperElement && !popperElement.contains(event.target)) {
     //   // close modal

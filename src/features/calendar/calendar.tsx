@@ -7,7 +7,13 @@ import { CalendarGrid } from "./components/calendar-grid";
 import { CalendarHours } from "./components/calendar-hours";
 import { FullPageSpaceFillerContailer } from "@/components/full-page-space-fillter-container";
 import { CalendarEvents } from "./components/calendar-events";
-import { ICalendarEvent } from "./types/types";
+import {
+  ICalendarEvent,
+  IProject,
+  ProjectColors,
+  defaultProject,
+  projectColors,
+} from "./types/types";
 import { CalendarWeekSelect } from "./components/calendar-week-select";
 import { CalendarWeekSummary } from "./components/calendar-week-summary";
 import { useCalendar } from "./hooks/useCalendar";
@@ -19,13 +25,27 @@ export const Calendar = (): ICalendarEvent => {
 
   const [modalOpen, setModalOpen] = useState(false);
 
+  const [projects, setProjects] = useState<IProject[]>([
+    defaultProject,
+    {
+      name: "Work",
+      colors: projectColors[ProjectColors.Amber],
+    },
+    { name: "Planning", colors: projectColors[ProjectColors.Teal] },
+    { name: "Emails", colors: projectColors[ProjectColors.Lime] },
+  ]);
+
   const closeModal = () => {
-    console.log("closing modal");
     setTimeout(() => setModalOpen(false));
   };
 
   const openModal = () => {
     setModalOpen(true);
+  };
+
+  const onCreateProject = (newProject: IProject) => {
+    setProjects((x) => [...x, newProject]);
+    closeModal();
   };
 
   return (
@@ -58,10 +78,12 @@ export const Calendar = (): ICalendarEvent => {
                 <CalendarHours />
                 <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
                   <CalendarGrid
+                    projects={projects}
                     showAddProjectModal={() => setModalOpen(true)}
                     weeks={weeks}
                   />
                   <CalendarEvents
+                    projects={projects}
                     showAddProjectModal={openModal}
                     events={events}
                   />
@@ -72,7 +94,11 @@ export const Calendar = (): ICalendarEvent => {
         </div>
       </FullPageSpaceFillerContailer>
       <div className="z-20">
-        <CreateProjectModal isOpen={modalOpen} close={closeModal} />
+        <CreateProjectModal
+          isOpen={modalOpen}
+          close={closeModal}
+          onCreate={onCreateProject}
+        />
       </div>
     </>
   );

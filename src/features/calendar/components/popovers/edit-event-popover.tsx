@@ -1,4 +1,4 @@
-import { ICalendarEvent } from "../../types/types";
+import { ICalendarEvent, IProject } from "../../types/types";
 import { Project } from "../project";
 import { PopoverContainer } from "./popover-container";
 
@@ -7,10 +7,11 @@ interface Props {
   event: ICalendarEvent;
   duration: string;
   showAddProjectModal: () => void;
+  projects: IProject[];
 }
 
 export const EditEventPopover = (props: Props) => {
-  const { close, event, duration, showAddProjectModal } = props;
+  const { close, event, duration, showAddProjectModal, projects } = props;
   const { description, project, start, end } = event;
 
   return (
@@ -21,7 +22,11 @@ export const EditEventPopover = (props: Props) => {
         </div>
 
         <div className="inline-block">
-          <Project showAddProjectModal={showAddProjectModal} project={project} />
+          <Project
+            projects={projects}
+            showAddProjectModal={showAddProjectModal}
+            project={project}
+          />
         </div>
 
         <div className="flex mb-2">
