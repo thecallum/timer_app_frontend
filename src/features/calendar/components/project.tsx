@@ -5,9 +5,11 @@ import { IProject, defaultProject } from "../types/types";
 
 interface Props {
   project?: IProject;
+  showAddProjectModal: () => void;
 }
 
 export const Project = (props: Props) => {
+  const  { showAddProjectModal } = props
   const [project, setProject] = useState(props?.project ?? defaultProject);
 
   return (
@@ -15,9 +17,9 @@ export const Project = (props: Props) => {
       <PopoverWrapper
         placement="bottom"
         offset={[0, 0]}
-        useOverlay
         popoverComponent={({ close }) => (
           <SelectProjectPopover
+          showAddProjectModal={showAddProjectModal}
             currentProject={project}
             selectProject={(x) => {
               setProject(x);

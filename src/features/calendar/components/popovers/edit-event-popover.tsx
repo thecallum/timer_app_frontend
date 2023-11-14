@@ -6,10 +6,11 @@ interface Props {
   close: () => void;
   event: ICalendarEvent;
   duration: string;
+  showAddProjectModal: () => void;
 }
 
 export const EditEventPopover = (props: Props) => {
-  const { close, event, duration } = props;
+  const { close, event, duration, showAddProjectModal } = props;
   const { description, project, start, end } = event;
 
   return (
@@ -20,7 +21,7 @@ export const EditEventPopover = (props: Props) => {
         </div>
 
         <div className="inline-block">
-          <Project project={project} />
+          <Project showAddProjectModal={showAddProjectModal} project={project} />
         </div>
 
         <div className="flex mb-2">

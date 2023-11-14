@@ -35,11 +35,13 @@ export const usePopover = (
     // ignore, modal closed
     if (!showPopover) return;
 
-    if (popperElement && !popperElement.contains(event.target)) {
-      // close modal
-      console.info("closing modal");
-      handleClose();
-    }
+    console.log("click", event)
+
+    // if (popperElement && !popperElement.contains(event.target)) {
+    //   // close modal
+    //   console.info("closing modal");
+    //   handleClose();
+    // }
   };
 
   const handleOpen = () => {

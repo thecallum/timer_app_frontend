@@ -11,45 +11,69 @@ import { ICalendarEvent } from "./types/types";
 import { CalendarWeekSelect } from "./components/calendar-week-select";
 import { CalendarWeekSummary } from "./components/calendar-week-summary";
 import { useCalendar } from "./hooks/useCalendar";
+import { useState } from "react";
+import { CreateProjectModal } from "./components/modals/create-project-modal";
 
 export const Calendar = (): ICalendarEvent => {
   const { events, weeks, next, previous, reset } = useCalendar();
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const closeModal = () => {
+    console.log("closing modal");
+    setTimeout(() => setModalOpen(false));
+  };
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
   return (
-    <FullPageSpaceFillerContailer
-      top={
-        <ContainerFullWidth>
-          <>
-            <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
-            <div className="flex justify-between items-start">
-              <CalendarWeekSummary events={events} />
+    <>
+      <FullPageSpaceFillerContailer
+        top={
+          <ContainerFullWidth>
+            <>
+              <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
+              <div className="flex justify-between items-start">
+                <CalendarWeekSummary events={events} />
 
-              <CalendarWeekSelect
-                weeks={weeks}
-                next={next}
-                previous={previous}
-                reset={reset}
-              />
-            </div>
-          </>
-        </ContainerFullWidth>
-      }
-    >
-      <div className="flex justify-center mt-4 h-full  ">
-        <PageContainerLarge>
-          <div className="h-full flex flex-col">
-            <CalendarDates weeks={weeks} events={events} />
+                <CalendarWeekSelect
+                  weeks={weeks}
+                  next={next}
+                  previous={previous}
+                  reset={reset}
+                />
+              </div>
+            </>
+          </ContainerFullWidth>
+        }
+      >
+        <div className="flex justify-center mt-4 h-full  ">
+          <PageContainerLarge>
+            <div className="h-full flex flex-col">
+              <CalendarDates weeks={weeks} events={events} />
 
-            <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
-              <CalendarHours />
-              <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
-                <CalendarGrid weeks={weeks} />
-                <CalendarEvents events={events} />
+              <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
+                <CalendarHours />
+                <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
+                  <CalendarGrid
+                    showAddProjectModal={() => setModalOpen(true)}
+                    weeks={weeks}
+                  />
+                  <CalendarEvents
+                    showAddProjectModal={openModal}
+                    events={events}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </PageContainerLarge>
+          </PageContainerLarge>
+        </div>
+      </FullPageSpaceFillerContailer>
+      <div className="z-20">
+        <CreateProjectModal isOpen={modalOpen} close={closeModal} />
       </div>
-    </FullPageSpaceFillerContailer>
+    </>
   );
 };

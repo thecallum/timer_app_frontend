@@ -10,6 +10,11 @@
 body {
   font-family: "Inter", sans-serif;
 }
+
+.ReactModal__Overlay {
+  z-index: 20;
+}
+
 /* 
 
 :root {

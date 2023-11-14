@@ -5,18 +5,19 @@ import dayjs from "dayjs";
 
 interface Props {
   day: dayjs.Dayjs;
+  showAddProjectModal: () => void;
 }
 
 export const CalendarCell = (props: Props) => {
-  const { day } = props;
+  const { day, showAddProjectModal } = props;
 
   return (
     <div className="border-slate-200 h-16 border-b flex flex-col">
       {[...Array(4)].map((_, index) => (
         <PopoverWrapper
-          useOverlay
           popoverComponent={({ close }) => (
             <AddEventPopover
+            showAddProjectModal={showAddProjectModal}
               close={close}
               time={day.add(15 * index, "minute")}
             />
