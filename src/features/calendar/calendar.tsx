@@ -7,10 +7,7 @@ import { CalendarGrid } from "./components/calendar-grid";
 import { CalendarHours } from "./components/calendar-hours";
 import { FullPageSpaceFillerContailer } from "@/components/layout/full-page-space-fillter-container";
 import { CalendarEvents } from "./components/calendar-events";
-import {
-  ICalendarEvent,
-  IProject,
-} from "./types/types";
+import { ICalendarEvent, IProject } from "./types/types";
 import { CalendarWeekSelect } from "./components/calendar-week-select";
 import { CalendarWeekSummary } from "./components/calendar-week-summary";
 import { useCalendar } from "./hooks/useCalendar";
@@ -79,7 +76,6 @@ export const Calendar = (): ICalendarEvent => {
                     showAddProjectModal={() => setModalOpen(true)}
                     weeks={weeks}
                     addEvent={addEvent}
-                    addProject={addProject}
                   />
                   <CalendarEvents
                     projects={projects}
@@ -98,6 +94,7 @@ export const Calendar = (): ICalendarEvent => {
           isOpen={modalOpen}
           close={closeModal}
           onCreate={onCreateProject}
+          projects={projects}
         />
       </div>
     </>

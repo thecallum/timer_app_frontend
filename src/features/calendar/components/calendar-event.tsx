@@ -1,3 +1,4 @@
+import { getColor } from "../helpers/colors";
 import { formatDuration } from "../helpers/formatter";
 import {
   ICalendarEvent as CalendarEventType,
@@ -57,48 +58,51 @@ export const CalendarEvent = (props: Props) => {
           />
         )}
       >
-        {({ ref, onClick }) => (
-          <button
-            className={`absolute rounded-sm w-[calc(100%/7)] p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
-            ref={ref}
-            style={{
-              ...eventStyles,
-              background: project?.colors.light ?? defaultProject.colors.light,
-              // hover: {
-              //   background: "bg-pink-300",
-              // },
-            }}
-            onClick={onClick}
-          >
-            <span className="text-start">
-              <div
-                className="font-semibold text-s"
-                style={{
-                  color:
-                    project?.colors.darkest ?? defaultProject.colors.darkest,
-                }}
-              >
-                {description}
-              </div>
-              <div
-                className="text-xs whitespace-nowrap"
-                style={{
-                  color: project?.colors.dark ?? defaultProject.colors.dark,
-                }}
-              >
-                {project?.name ?? defaultProject.name}
-              </div>
-            </span>
-            <div
-              className="text-s whitespace-nowrap"
+        {({ ref, onClick }) => {
+          const projectColor = getColor(project?.color);
+
+          return (
+            <button
+              className={`absolute rounded-sm w-[calc(100%/7)] p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
+              ref={ref}
               style={{
-                color: project?.colors.darkest ?? defaultProject.colors.darkest,
+                ...eventStyles,
+                background: projectColor.light,
+                // hover: {
+                //   background: "bg-pink-300",
+                // },
               }}
+              onClick={onClick}
             >
-              {duration}
-            </div>
-          </button>
-        )}
+              <span className="text-start">
+                <div
+                  className="font-semibold text-s"
+                  style={{
+                    color: projectColor.darkest,
+                  }}
+                >
+                  {description}
+                </div>
+                <div
+                  className="text-xs whitespace-nowrap"
+                  style={{
+                    color: projectColor.dark,
+                  }}
+                >
+                  {project?.name ?? defaultProject.name}
+                </div>
+              </span>
+              <div
+                className="text-s whitespace-nowrap"
+                style={{
+                  color: projectColor.darkest,
+                }}
+              >
+                {duration}
+              </div>
+            </button>
+          );
+        }}
       </PopoverWrapper>
     </li>
   );

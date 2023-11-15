@@ -5,6 +5,7 @@ import {
   PopoverControls,
   PopoverLayout,
 } from "@/components/popover";
+import { getColor } from "../../helpers/colors";
 
 interface Props {
   currentProject: IProject;
@@ -22,13 +23,15 @@ export const SelectProjectPopover = (props: Props) => {
       <>
         <PopoverLayout title="Project">
           <ul className="">
-            {projects.map((x, index) => {
-              const { name, colors, id } = x;
+            {projects.map((x) => {
+              const { name, color, id } = x;
+
+              const projectColor = getColor(color);
 
               return (
                 <li key={id}>
                   <button
-                  type="button"
+                    type="button"
                     className={classNames(
                       "flex flex-row justify-start items-center p-2 my-1 rounded-md w-full hover:bg-slate-100",
                       {
@@ -39,11 +42,11 @@ export const SelectProjectPopover = (props: Props) => {
                   >
                     <div
                       className="w-2 h-2 rounded-full block "
-                      style={{ background: colors.dark }}
+                      style={{ background: projectColor.dark }}
                     ></div>
                     <div
                       className="ml-2 text-sm leading-tight"
-                      style={{ color: colors.dark }}
+                      style={{ color: projectColor.dark }}
                     >
                       {name}
                     </div>
@@ -55,15 +58,15 @@ export const SelectProjectPopover = (props: Props) => {
         </PopoverLayout>
 
         <PopoverControls>
-         <div className="flex items-center justify-center">
-         <button
-         type="button"
-            onClick={showAddProjectModal}
-            className="text-slate-600  underline underline-offset-1 text-sm"
-          >
-            Create a new project
-          </button>
-         </div>
+          <div className="flex items-center justify-center">
+            <button
+              type="button"
+              onClick={showAddProjectModal}
+              className="text-slate-600  underline underline-offset-1 text-sm"
+            >
+              Create a new project
+            </button>
+          </div>
         </PopoverControls>
       </>
     </PopoverContainer>

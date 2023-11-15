@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { PopoverWrapper } from "./popover-wrapper";
 import { SelectProjectPopover } from "./popovers/select-project-popover";
 import { IProject, defaultProject } from "../types/types";
+import { getColor } from "../helpers/colors";
 
 interface Props {
   project: IProject | null;
@@ -31,32 +31,36 @@ export const Project = (props: Props) => {
           />
         )}
       >
-        {({ ref, onClick }) => (
-          <button
-            type="button"
-            onClick={onClick}
-            ref={ref}
-            className="flex flex-row justify-start items-center  p-1 px-2 rounded-md"
-            style={{
-              background: project?.colors.light ?? defaultProject.colors.light,
-            }}
-          >
-            <div
-              className="w-2 h-2 rounded-full block "
+        {({ ref, onClick }) => {
+          const projectColor = getColor(project?.color);
+
+          return (
+            <button
+              type="button"
+              onClick={onClick}
+              ref={ref}
+              className="flex flex-row justify-start items-center  p-1 px-2 rounded-md"
               style={{
-                background: project?.colors.dark ?? defaultProject.colors.dark,
-              }}
-            ></div>
-            <div
-              className="ml-2 text-xs leading-tight"
-              style={{
-                color: project?.colors.dark ?? defaultProject.colors.dark,
+                background: projectColor.light,
               }}
             >
-              {project?.name ?? defaultProject.name}
-            </div>
-          </button>
-        )}
+              <div
+                className="w-2 h-2 rounded-full block "
+                style={{
+                  background: projectColor.dark,
+                }}
+              ></div>
+              <div
+                className="ml-2 text-xs leading-tight"
+                style={{
+                  color: projectColor.dark,
+                }}
+              >
+                {project?.name ?? defaultProject.name}
+              </div>
+            </button>
+          );
+        }}
       </PopoverWrapper>
     </>
   );

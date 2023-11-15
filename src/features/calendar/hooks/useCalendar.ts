@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import { useState } from "react";
-import { ICalendarEvent, IProject, ProjectColors, defaultProject, projectColors } from "../types/types";
+import { ICalendarEvent, IProject, ProjectColor, defaultProject, ProjectColors } from "../types/types";
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,10 +12,10 @@ const placeholderProjects: IProject[] = [
   {
     id: uuidv4(),
     name: "Work",
-    colors: projectColors[ProjectColors.Amber],
+    color: ProjectColor.Amber,
   },
-  { id: uuidv4(), name: "Planning", colors: projectColors[ProjectColors.Teal] },
-  { id: uuidv4(), name: "Emails", colors: projectColors[ProjectColors.Lime] },
+  { id: uuidv4(), name: "Planning", color: ProjectColor.Teal },
+  { id: uuidv4(), name: "Emails", color: ProjectColor.Lime },
 ]
 
 const placeholderEvents: ICalendarEvent[] = [

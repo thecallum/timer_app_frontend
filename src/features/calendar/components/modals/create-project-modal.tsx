@@ -1,37 +1,55 @@
 import { v4 as uuidv4 } from "uuid";
-import { IProject, IProjectColor, ProjectColors, projectColors } from "../../types/types";
+import { IProject, ProjectColor } from "../../types/types";
 import { ModalControls, ModalLayout, ModalContainer } from "@/components/modal";
 import { useEffect, useState } from "react";
 import { ErrorMessage, TextInput } from "@/components/form";
+import { getColor } from "../../helpers/colors";
 
 interface Props {
   isOpen: boolean;
   close: () => void;
   onCreate: (project: IProject) => void;
+  projects: IProject[];
 }
 
 export const CreateProjectModal = (props: Props) => {
-  const { isOpen, close, onCreate } = props;
+  const { isOpen, close, onCreate, projects } = props;
 
   const [name, setName] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const getRandomProjectColor = (): IProjectColor => {
-    const enumValues: ProjectColors[] = Object.values(ProjectColors).filter(value => typeof value === 'number') as ProjectColors[];
+  const getRandomProjectColor = (): ProjectColor => {
+    const usedColors: Set<ProjectColor> = new Set(
+      projects
+        .map((x) => x?.color ?? null)
+        .filter((x) => x !== null) as ProjectColor[]
+    );
 
-    const randomIndex = Math.floor(Math.random() * enumValues.length); // Generate a random index
+    const enumValues: ProjectColor[] = Object.values(ProjectColor).filter(
+      (value) => typeof value === "number"
+    ) as ProjectColor[];
+
+    const unusedEnumValues = enumValues.filter((x) => !usedColors.has(x));
+
+    // if unused values, take from that list. else just use random values
+    const randomIndex = Math.floor(
+      Math.random() *
+        (unusedEnumValues.length === 0
+          ? enumValues.length
+          : unusedEnumValues.length)
+    ); // Generate a random index
+
     const randomEnumKey = enumValues[randomIndex]; // Get the enum key
 
-    return projectColors[randomEnumKey]; // Return the color object
-  ;
+    return randomEnumKey;
   };
 
-  const [modalColor, setModalColor] = useState(getRandomProjectColor())
+  const [modalColor, setModalColor] = useState(getRandomProjectColor());
 
   const resetState = () => {
     setName("");
     setErrors({});
-    setModalColor(getRandomProjectColor())
+    setModalColor(getRandomProjectColor());
   };
 
   useEffect(() => {
@@ -54,7 +72,7 @@ export const CreateProjectModal = (props: Props) => {
     const newProject: IProject = {
       id: uuidv4(),
       name,
-      colors: modalColor,
+      color: modalColor,
     };
 
     const errors = validate();
@@ -67,6 +85,8 @@ export const CreateProjectModal = (props: Props) => {
     onCreate(newProject);
   };
 
+  const projectColor = getColor(modalColor);
+
   return (
     <ModalContainer
       isOpen={isOpen}
@@ -77,10 +97,10 @@ export const CreateProjectModal = (props: Props) => {
         <ModalLayout title="Create project">
           <>
             <div className="flex justify-start items-center mt-4 mb-2">
-              <div className="w-6 h-6 rounded-full mr-4" 
-              
+              <div
+                className="w-6 h-6 rounded-full mr-4"
                 style={{
-                  background: modalColor.dark
+                  background: projectColor.dark,
                 }}
               />
 
