@@ -1,4 +1,4 @@
-import { IProject } from "../types/types";
+import { ICalendarEvent, IProject } from "../types/types";
 import { CalendarCell } from "./calendar-cell";
 import dayjs from "dayjs";
 
@@ -6,10 +6,11 @@ interface Props {
   day: dayjs.Dayjs;
   showAddProjectModal: () => void;
   projects: IProject[];
+  addEvent: (event: ICalendarEvent) => void;
 }
 
 export const CalendarColumn = (props: Props) => {
-  const { day, showAddProjectModal, projects } = props;
+  const { day, showAddProjectModal, projects, addEvent } = props;
 
   return (
     <div className=" border-r border-slate-200 flex-grow flex-shrink-0 relative h-full">
@@ -19,6 +20,7 @@ export const CalendarColumn = (props: Props) => {
           key={index}
           day={day.add(index, "hour")}
           showAddProjectModal={showAddProjectModal}
+          addEvent={addEvent}
         />
       ))}
     </div>

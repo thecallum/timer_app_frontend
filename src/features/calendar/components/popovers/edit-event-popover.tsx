@@ -148,6 +148,7 @@ export const EditEventPopover = (props: Props) => {
                   End
                 </label>
                 <input
+                step={1}
                   type="time"
                   name="eventEndTime"
                   value={endTime}
@@ -184,6 +185,7 @@ export const EditEventPopover = (props: Props) => {
             </button>
             <button
               onClick={close}
+              type="button"
               className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
             >
               Close

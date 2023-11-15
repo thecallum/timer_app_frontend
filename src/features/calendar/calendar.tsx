@@ -21,7 +21,8 @@ import { useState } from "react";
 import { CreateProjectModal } from "./components/modals/create-project-modal";
 
 export const Calendar = (): ICalendarEvent => {
-  const { events, weeks, next, previous, reset, updateEvent } = useCalendar();
+  const { events, weeks, next, previous, reset, updateEvent, addEvent } =
+    useCalendar();
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -81,6 +82,7 @@ export const Calendar = (): ICalendarEvent => {
                     projects={projects}
                     showAddProjectModal={() => setModalOpen(true)}
                     weeks={weeks}
+                    addEvent={addEvent}
                   />
                   <CalendarEvents
                     projects={projects}

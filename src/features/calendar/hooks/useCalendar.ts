@@ -12,7 +12,7 @@ const placeholderEvents: ICalendarEvent[] = [
     id: uuidv4(),
     description: "Planning session",
     start: dayjs("Tue Nov 07 2023 01:15:53 GMT+0000"),
-    end: dayjs("Tue Nov 07 2023 03:15:53 GMT+0000"),
+    end: dayjs("Tue Nov 07 2023 03:15:00 GMT+0000"),
     project: {
       name: "Work",
       colors: projectColors[ProjectColors.Amber],
@@ -46,10 +46,19 @@ export const useCalendar = () => {
   const [events, setEvents] = useState(placeholderEvents)
 
   const updateEvent = (event: ICalendarEvent) => {
+    setEvents(currentState => {
+      return currentState.slice().map(x => (x.id === event.id) ? event : x)
+    })
 
+  }
 
-    setEvents(currentState => currentState.slice().map(x => (x.id === event.id) ? event : x))
-
+  const addEvent = (event: ICalendarEvent) => {
+    setEvents(currentState => {
+      return [
+        ...currentState,
+        event
+      ]
+    })
   }
 
 
@@ -93,6 +102,7 @@ export const useCalendar = () => {
     next,
     previous,
     reset,
-    updateEvent
+    updateEvent,
+    addEvent
   };
 };
