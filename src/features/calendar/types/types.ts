@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { v4 as uuidv4 } from 'uuid';
 
 export interface ICalendarEvent {
   id: string;
@@ -15,15 +16,22 @@ export interface IProjectColor {
 }
 
 export interface IProject {
+  id: string;
   name: string;
   colors: IProjectColor;
 }
 
 export enum ProjectColors {
   Amber,
-  Slate,
+  // Slate,
   Lime,
   Teal,
+}
+
+const defaultProjectColor: IProjectColor = {
+  light: "#e2e8f0",
+  dark: "#475569",
+  darkest: "#020617",
 }
 
 // https://tailwindcss.com/docs/customizing-colors
@@ -33,11 +41,7 @@ export const projectColors: { [key in ProjectColors]: IProjectColor } = {
     dark: "#d97706",
     darkest: "#431407",
   },
-  [ProjectColors.Slate]: {
-    light: "#e2e8f0",
-    dark: "#475569",
-    darkest: "#020617",
-  },
+
   [ProjectColors.Lime]: {
     light: "#d9f99d",
     dark: "#65a30d",
@@ -50,7 +54,8 @@ export const projectColors: { [key in ProjectColors]: IProjectColor } = {
   },
 };
 
-export const defaultProject = {
+export const defaultProject: IProject = {
+  id: uuidv4(),
   name: "No project",
-  colors: projectColors[ProjectColors.Slate],
+  colors: defaultProjectColor,
 };

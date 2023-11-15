@@ -10,9 +10,6 @@ import { CalendarEvents } from "./components/calendar-events";
 import {
   ICalendarEvent,
   IProject,
-  ProjectColors,
-  defaultProject,
-  projectColors,
 } from "./types/types";
 import { CalendarWeekSelect } from "./components/calendar-week-select";
 import { CalendarWeekSummary } from "./components/calendar-week-summary";
@@ -21,20 +18,19 @@ import { useState } from "react";
 import { CreateProjectModal } from "./components/modals/create-project-modal";
 
 export const Calendar = (): ICalendarEvent => {
-  const { events, weeks, next, previous, reset, updateEvent, addEvent } =
-    useCalendar();
+  const {
+    events,
+    weeks,
+    next,
+    previous,
+    reset,
+    updateEvent,
+    addEvent,
+    projects,
+    addProject,
+  } = useCalendar();
 
   const [modalOpen, setModalOpen] = useState(false);
-
-  const [projects, setProjects] = useState<IProject[]>([
-    defaultProject,
-    {
-      name: "Work",
-      colors: projectColors[ProjectColors.Amber],
-    },
-    { name: "Planning", colors: projectColors[ProjectColors.Teal] },
-    { name: "Emails", colors: projectColors[ProjectColors.Lime] },
-  ]);
 
   const closeModal = () => {
     setTimeout(() => setModalOpen(false));
@@ -45,7 +41,7 @@ export const Calendar = (): ICalendarEvent => {
   };
 
   const onCreateProject = (newProject: IProject) => {
-    setProjects((x) => [...x, newProject]);
+    addProject(newProject);
     closeModal();
   };
 
@@ -83,6 +79,7 @@ export const Calendar = (): ICalendarEvent => {
                     showAddProjectModal={() => setModalOpen(true)}
                     weeks={weeks}
                     addEvent={addEvent}
+                    addProject={addProject}
                   />
                   <CalendarEvents
                     projects={projects}

@@ -11,6 +11,7 @@ import { formatDuration } from "../../helpers/formatter";
 import { ErrorMessage } from "@/components/form/error-message";
 import classNames from "classnames";
 import { v4 as uuidv4 } from "uuid";
+import { TextInput } from "@/components/form";
 
 interface Props {
   close: () => void;
@@ -85,23 +86,14 @@ export const AddEventPopover = (props: Props) => {
       <form onSubmit={handleSubmit}>
         <PopoverLayout title="Add Task">
           <>
-            <div>
-              <input
-                type="text"
-                name="description"
-                aria-label="Event description"
-                id="description"
-                value={description}
-                onInput={(e) => setDescription(e.target.value)}
-                placeholder="What have you done?"
-                className={classNames(
-                  "shadow-sm text-xs text-slate-800 rounded block p-2 w-full mb-2 border bg-slate-100 outline-none",
-                  {
-                    "border-red-600": errors?.description,
-                  }
-                )}
-              />
-            </div>
+           <div className="mb-2"> <TextInput
+              value={description}
+              setValue={setDescription}
+              id="description"
+              name="description"
+              ariaLabel="Event description"
+              error={errors?.description}
+            /></div>
 
             {errors?.description && (
               <ErrorMessage message={errors?.description} />

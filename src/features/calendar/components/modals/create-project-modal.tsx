@@ -1,5 +1,8 @@
-import Modal from "react-modal";
-import { IProject, ProjectColors, projectColors } from "../../types/types";
+import { v4 as uuidv4 } from "uuid";
+import { IProject, IProjectColor, ProjectColors, projectColors } from "../../types/types";
+import { ModalControls, ModalLayout, ModalContainer } from "@/components/modal";
+import { useEffect, useState } from "react";
+import { ErrorMessage, TextInput } from "@/components/form";
 
 interface Props {
   isOpen: boolean;
@@ -10,42 +13,109 @@ interface Props {
 export const CreateProjectModal = (props: Props) => {
   const { isOpen, close, onCreate } = props;
 
+  const [name, setName] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const getRandomProjectColor = (): IProjectColor => {
+    const enumValues: ProjectColors[] = Object.values(ProjectColors).filter(value => typeof value === 'number') as ProjectColors[];
+
+    const randomIndex = Math.floor(Math.random() * enumValues.length); // Generate a random index
+    const randomEnumKey = enumValues[randomIndex]; // Get the enum key
+
+    return projectColors[randomEnumKey]; // Return the color object
+  ;
+  };
+
+  const [modalColor, setModalColor] = useState(getRandomProjectColor())
+
+  const resetState = () => {
+    setName("");
+    setErrors({});
+    setModalColor(getRandomProjectColor())
+  };
+
+  useEffect(() => {
+    resetState();
+  }, [isOpen]);
+
+  const validate = () => {
+    const errors: { [key: string]: string } = {};
+
+    if (name === null || name.trim() === "") {
+      errors["name"] = "Name cannot be empty";
+    }
+
+    return errors;
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newProject: IProject = {
+      id: uuidv4(),
+      name,
+      colors: modalColor,
+    };
+
+    const errors = validate();
+    setErrors(errors);
+
+    if (Object.keys(errors).length >= 1) {
+      return;
+    }
+
+    onCreate(newProject);
+  };
+
   return (
-    <Modal
+    <ModalContainer
       isOpen={isOpen}
-      onRequestClose={close}
-      contentLabel="Example Modal"
-      className={`absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] w-[600px] max-w-[calc(100%-120px)] outline-none z-30 bg-white shadow-xl rounded p-8 border border-slate-50`}
+      close={close}
+      contentLabel="Create a project"
     >
-      <div>
-        <h2 className="text-slate-800 text-xs mb-2">Create project</h2>
+      <form onSubmit={handleSubmit}>
+        <ModalLayout title="Create project">
+          <>
+            <div className="flex justify-start items-center mt-4 mb-2">
+              <div className="w-6 h-6 rounded-full mr-4" 
+              
+                style={{
+                  background: modalColor.dark
+                }}
+              />
 
-        <div className="flex justify-start items-center mt-4  mb-4">
-          <div className="bg-purple-600 w-6 h-6 rounded-full mr-4"></div>
-          <div className="shadow-sm bg-slate-100 p-2 text-xs flex-grow text-slate-800 rounded">
-            Project name
-          </div>
-        </div>
+              <TextInput
+                value={name}
+                setValue={setName}
+                id="name"
+                name="name"
+                ariaLabel="Project name"
+                placeholder="Planning"
+                error={errors?.name}
+              />
+            </div>
+            {errors?.name && <ErrorMessage message={errors?.name} />}
+          </>
+        </ModalLayout>
 
-        <div className="pt-4 border-t border-slate-200 mt-4">
-          <button 
-            onClick={() => {
-              onCreate({
-                name: "Finances",
-                colors: projectColors[ProjectColors.Teal]
-              })
-            }}
-          className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2">
-            Create project
-          </button>
-          <button
-            onClick={close}
-            className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </Modal>
+        <ModalControls>
+          <>
+            <button
+              type="submit"
+              className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2"
+            >
+              Create project
+            </button>
+            <button
+              onClick={close}
+              type="button"
+              className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
+            >
+              Close
+            </button>
+          </>
+        </ModalControls>
+      </form>
+    </ModalContainer>
   );
 };

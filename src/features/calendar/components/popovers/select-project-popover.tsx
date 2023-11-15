@@ -23,16 +23,16 @@ export const SelectProjectPopover = (props: Props) => {
         <PopoverLayout title="Project">
           <ul className="">
             {projects.map((x, index) => {
-              const { name, colors } = x;
+              const { name, colors, id } = x;
 
               return (
-                <li key={name}>
+                <li key={id}>
                   <button
                   type="button"
                     className={classNames(
                       "flex flex-row justify-start items-center p-2 my-1 rounded-md w-full hover:bg-slate-100",
                       {
-                        "bg-slate-200": name === currentProject?.name,
+                        "bg-slate-200": id === currentProject?.id,
                       }
                     )}
                     onClick={() => selectProject(x)}
