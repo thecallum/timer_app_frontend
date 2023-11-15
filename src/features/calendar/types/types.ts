@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 
 export interface ICalendarEvent {
+  id: string;
   description: string;
   start: dayjs.Dayjs;
   end: dayjs.Dayjs;

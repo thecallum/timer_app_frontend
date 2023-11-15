@@ -1,6 +1,7 @@
 import { formatDuration } from "../helpers/formatter";
 import {
   ICalendarEvent as CalendarEventType,
+  ICalendarEvent,
   IProject,
   defaultProject,
 } from "../types/types";
@@ -11,12 +12,13 @@ interface Props {
   event: CalendarEventType;
   showAddProjectModal: () => void;
   projects: IProject[];
+  updateEvent: (event: ICalendarEvent) => void;
 }
 
 const ONE_HOUR_IN_SECONDS = 3600;
 
 export const CalendarEvent = (props: Props) => {
-  const { event, showAddProjectModal, projects } = props;
+  const { event, showAddProjectModal, projects, updateEvent } = props;
   const { description, project, start, end } = event;
 
   const durationInSeconds = end.diff(start, "second");
@@ -31,7 +33,6 @@ export const CalendarEvent = (props: Props) => {
   const elementHeight = durationByFifteen * 16; // 15 minutes is 16px
   const elementTop = topByFifteen * 16;
 
-
   const duration = formatDuration(durationInSeconds);
 
   const eventStyles = {
@@ -44,9 +45,16 @@ export const CalendarEvent = (props: Props) => {
     <li className="relative">
       <PopoverWrapper
         popoverComponent={({ close }) => (
-          <EditEventPopover 
+          <EditEventPopover
             projects={projects}
-          showAddProjectModal={showAddProjectModal} event={event} duration={duration} close={close} />
+            onProjectUpdated={(x) => {
+              updateEvent(x);
+              setTimeout(close);
+            }}
+            showAddProjectModal={showAddProjectModal}
+            event={event}
+            close={close}
+          />
         )}
       >
         {({ ref, onClick }) => (

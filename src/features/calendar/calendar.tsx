@@ -1,11 +1,11 @@
 import {
   ContainerFullWidth,
   PageContainerLarge,
-} from "@/components/page-container";
+} from "@/components/layout/page-container";
 import { CalendarDates } from "./components/calendar-dates";
 import { CalendarGrid } from "./components/calendar-grid";
 import { CalendarHours } from "./components/calendar-hours";
-import { FullPageSpaceFillerContailer } from "@/components/full-page-space-fillter-container";
+import { FullPageSpaceFillerContailer } from "@/components/layout/full-page-space-fillter-container";
 import { CalendarEvents } from "./components/calendar-events";
 import {
   ICalendarEvent,
@@ -21,7 +21,7 @@ import { useState } from "react";
 import { CreateProjectModal } from "./components/modals/create-project-modal";
 
 export const Calendar = (): ICalendarEvent => {
-  const { events, weeks, next, previous, reset } = useCalendar();
+  const { events, weeks, next, previous, reset, updateEvent } = useCalendar();
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -86,6 +86,7 @@ export const Calendar = (): ICalendarEvent => {
                     projects={projects}
                     showAddProjectModal={openModal}
                     events={events}
+                    updateEvent={updateEvent}
                   />
                 </div>
               </div>

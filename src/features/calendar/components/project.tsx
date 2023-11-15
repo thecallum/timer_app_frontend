@@ -4,14 +4,14 @@ import { SelectProjectPopover } from "./popovers/select-project-popover";
 import { IProject, defaultProject } from "../types/types";
 
 interface Props {
-  project?: IProject;
+  project: IProject | null;
   projects: IProject[];
   showAddProjectModal: () => void;
+  setProject: (project: IProject | null) => void;
 }
 
 export const Project = (props: Props) => {
-  const { showAddProjectModal, projects } = props;
-  const [project, setProject] = useState(props?.project ?? defaultProject);
+  const { showAddProjectModal, projects, project, setProject } = props;
 
   return (
     <>
@@ -22,7 +22,7 @@ export const Project = (props: Props) => {
           <SelectProjectPopover
             projects={projects}
             showAddProjectModal={showAddProjectModal}
-            currentProject={project}
+            currentProject={project ?? defaultProject}
             selectProject={(x) => {
               setProject(x);
 
@@ -33,6 +33,7 @@ export const Project = (props: Props) => {
       >
         {({ ref, onClick }) => (
           <button
+            type="button"
             onClick={onClick}
             ref={ref}
             className="flex flex-row justify-start items-center  p-1 px-2 rounded-md"

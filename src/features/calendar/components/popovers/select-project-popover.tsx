@@ -4,7 +4,7 @@ import {
   PopoverContainer,
   PopoverControls,
   PopoverLayout,
-} from "@/features/popover";
+} from "@/components/popover";
 
 interface Props {
   currentProject: IProject;
@@ -28,6 +28,7 @@ export const SelectProjectPopover = (props: Props) => {
               return (
                 <li key={name}>
                   <button
+                  type="button"
                     className={classNames(
                       "flex flex-row justify-start items-center p-2 my-1 rounded-md w-full hover:bg-slate-100",
                       {
@@ -56,6 +57,7 @@ export const SelectProjectPopover = (props: Props) => {
         <PopoverControls>
          <div className="flex items-center justify-center">
          <button
+         type="button"
             onClick={showAddProjectModal}
             className="text-slate-600  underline underline-offset-1 text-sm"
           >

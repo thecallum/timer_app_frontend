@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { Project } from "../project";
 import { IProject } from "../../types/types";
-import { PopoverContainer, PopoverControls, PopoverLayout } from "@/features/popover";
+import { PopoverContainer, PopoverControls, PopoverLayout } from "@/components/popover";
 
 interface Props {
   close: () => void;
