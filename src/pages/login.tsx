@@ -40,7 +40,9 @@ export default function Login() {
       return;
     }
 
-    router.push("/dashboard",);
+    if (confirm("Continue to calendar")) {
+        router.push("/calendar");
+    }
   };
 
   return (
