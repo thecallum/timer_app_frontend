@@ -12,6 +12,7 @@ import { ErrorMessage } from "@/components/form/error-message";
 import classNames from "classnames";
 import { v4 as uuidv4 } from "uuid";
 import { TextInput } from "@/components/form";
+import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
 
 interface Props {
   close: () => void;
@@ -169,16 +170,8 @@ export const AddEventPopover = (props: Props) => {
 
         <PopoverControls>
           <>
-            <button className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2">
-              Add
-            </button>
-            <button
-              onClick={close}
-              type="button"
-              className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
-            >
-              Close
-            </button>
+            <ButtonPrimary type="submit">Save</ButtonPrimary>
+            <ButtonSecondary onClick={close}>Close</ButtonSecondary>
           </>
         </PopoverControls>
       </form>

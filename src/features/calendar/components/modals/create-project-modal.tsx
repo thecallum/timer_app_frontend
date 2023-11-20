@@ -4,6 +4,7 @@ import { ModalControls, ModalLayout, ModalContainer } from "@/components/modal";
 import { useEffect, useState } from "react";
 import { ErrorMessage, TextInput } from "@/components/form";
 import { getColor } from "../../helpers/colors";
+import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
 
 interface Props {
   isOpen: boolean;
@@ -121,19 +122,8 @@ export const CreateProjectModal = (props: Props) => {
 
         <ModalControls>
           <>
-            <button
-              type="submit"
-              className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2"
-            >
-              Create project
-            </button>
-            <button
-              onClick={close}
-              type="button"
-              className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
-            >
-              Close
-            </button>
+            <ButtonPrimary type="submit">Create project</ButtonPrimary>
+            <ButtonSecondary onClick={close}>Close</ButtonSecondary>
           </>
         </ModalControls>
       </form>
