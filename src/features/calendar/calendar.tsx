@@ -1,13 +1,9 @@
-import {
-  ContainerFullWidth,
-  PageContainerLarge,
-} from "@/components/layout/page-container";
 import { CalendarDates } from "./components/calendar-dates";
 import { CalendarGrid } from "./components/calendar-grid";
 import { CalendarHours } from "./components/calendar-hours";
 import { FullPageSpaceFillerContailer } from "@/components/layout/full-page-space-fillter-container";
 import { CalendarEvents } from "./components/calendar-events";
-import { ICalendarEvent, IProject } from "./types/types";
+import { IProject } from "./types/types";
 import { CalendarWeekSelect } from "./components/calendar-week-select";
 import { CalendarWeekSummary } from "./components/calendar-week-summary";
 import { useCalendar } from "./hooks/useCalendar";
@@ -15,6 +11,8 @@ import { useState } from "react";
 import { CreateProjectModal } from "./components/modals/create-project-modal";
 import { useCalendarEvents } from "./hooks/useCalendarEvents";
 import { useCalendarProjects } from "./hooks/useCalendarProjects";
+import { ContainerFullWidth } from "@/components/layout/container-full-width";
+import { Page } from "@/components/layout/page";
 
 export const Calendar = () => {
   const { weeks, next, previous, reset } = useCalendar();
@@ -58,7 +56,8 @@ export const Calendar = () => {
         }
       >
         <div className="flex justify-center mt-4 h-full  ">
-          <PageContainerLarge>
+          <ContainerFullWidth>
+            <Page>
             <div className="h-full flex flex-col">
               <CalendarDates weeks={weeks} events={events} />
 
@@ -81,7 +80,8 @@ export const Calendar = () => {
                 </div>
               </div>
             </div>
-          </PageContainerLarge>
+            </Page>
+          </ContainerFullWidth>
         </div>
       </FullPageSpaceFillerContailer>
       <div className="z-20">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SignupForm } from "./components/signup-form";
+import { Page } from "@/components/layout/page";
 
 export const Signup = () => {
   const router = useRouter();
@@ -25,9 +26,9 @@ export const Signup = () => {
           </div>
         </div>
 
-        <div className="bg-white p-8 shadow-lg rounded border-purple-600  border-t-8   ">
+        <Page>
           <SignupForm onSubmit={onSubmit} />
-        </div>
+        </Page>
       </div>
     </div>
   );
