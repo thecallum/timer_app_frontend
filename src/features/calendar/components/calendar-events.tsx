@@ -6,10 +6,11 @@ interface Props {
   showAddProjectModal: () => void;
   projects: IProject[];
   updateEvent: (event: ICalendarEvent) => void;
+  deleteEvent: (event: ICalendarEvent) => void;
 }
 
 export const CalendarEvents = (props: Props) => {
-  const { events, showAddProjectModal, projects, updateEvent } = props;
+  const { events, showAddProjectModal, projects, updateEvent, deleteEvent } = props;
 
   return (
     <ul className="absolute top-0 left-0 w-full ">
@@ -20,6 +21,7 @@ export const CalendarEvents = (props: Props) => {
           event={event}
           showAddProjectModal={showAddProjectModal}
           updateEvent={updateEvent}
+          deleteEvent={() => deleteEvent(event)}
         />
       ))}
     </ul>

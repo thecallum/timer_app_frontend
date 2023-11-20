@@ -14,12 +14,13 @@ interface Props {
   showAddProjectModal: () => void;
   projects: IProject[];
   updateEvent: (event: ICalendarEvent) => void;
+  deleteEvent: () => void;
 }
 
 const ONE_HOUR_IN_SECONDS = 3600;
 
 export const CalendarEvent = (props: Props) => {
-  const { event, showAddProjectModal, projects, updateEvent } = props;
+  const { event, showAddProjectModal, projects, updateEvent, deleteEvent } = props;
   const { description, project, start, end } = event;
 
   const durationInSeconds = end.diff(start, "second");
@@ -55,6 +56,10 @@ export const CalendarEvent = (props: Props) => {
             showAddProjectModal={showAddProjectModal}
             event={event}
             close={close}
+            deleteEvent={() => {
+              deleteEvent()
+              close()
+            }}
           />
         )}
       >

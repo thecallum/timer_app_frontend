@@ -56,9 +56,16 @@ export const useCalendarEvents = (weekDates: Dayjs[]) => {
     });
   };
 
+  const deleteEvent = (event: ICalendarEvent) => {
+    setEvents((currentState) => {
+      return [...currentState].filter((x) => x.id !== event.id);
+    });
+  };
+
   return {
     events: getCalendarEvents(),
     updateEvent,
     addEvent,
+    deleteEvent
   };
 };

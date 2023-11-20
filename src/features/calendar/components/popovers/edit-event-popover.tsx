@@ -10,7 +10,6 @@ import dayjs from "dayjs";
 import { formatDuration } from "../../helpers/formatter";
 import classNames from "classnames";
 import { ErrorMessage } from "@/components/form/error-message";
-import { v4 as uuidv4 } from "uuid";
 import { TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
 
@@ -20,10 +19,11 @@ interface Props {
   showAddProjectModal: () => void;
   onProjectUpdated: (event: ICalendarEvent) => void;
   projects: IProject[];
+  deleteEvent: () => void;
 }
 
 export const EditEventPopover = (props: Props) => {
-  const { close, event, showAddProjectModal, projects, onProjectUpdated } =
+  const { close, event, showAddProjectModal, projects, onProjectUpdated, deleteEvent } =
     props;
   const {
     description: currentDescription,
@@ -91,7 +91,7 @@ export const EditEventPopover = (props: Props) => {
   return (
     <PopoverContainer>
       <form onSubmit={handleSubmit}>
-        <PopoverLayout title="Edit Task">
+        <PopoverLayout title="Edit Task" onDelete={deleteEvent}>
           <>
             <div className="mb-2">
               <TextInput

@@ -18,7 +18,7 @@ import { useCalendarProjects } from "./hooks/useCalendarProjects";
 
 export const Calendar = (): ICalendarEvent => {
   const { weeks, next, previous, reset } = useCalendar();
-  const { events, addEvent, updateEvent } = useCalendarEvents(weeks);
+  const { events, addEvent, updateEvent, deleteEvent } = useCalendarEvents(weeks);
   const { projects, addProject } = useCalendarProjects();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -76,6 +76,7 @@ export const Calendar = (): ICalendarEvent => {
                     showAddProjectModal={openModal}
                     events={events}
                     updateEvent={updateEvent}
+                    deleteEvent={deleteEvent}
                   />
                 </div>
               </div>
