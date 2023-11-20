@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import { useState } from "react";
 
@@ -11,19 +11,14 @@ export const useCalendar = () => {
   const previous = () => setCurrentWeek((x) => x - 1);
   const reset = () => setCurrentWeek((x) => 0);
 
+  const getStartOfWeek = (date: Dayjs) => {
+    return date.startOf("week").add(1, "day"); // Adjust to start week on Monday
+  };
+
   const getWeekDates = (weeksInFuture = 0) => {
-    const currentDate = dayjs().add(weeksInFuture * 7, "day");
-    const currentDayOfWeek = currentDate.day();
-    const daysSinceMonday = currentDayOfWeek === 0 ? -6 : 1 - currentDayOfWeek;
+    const startOfWeek = getStartOfWeek(dayjs().add(weeksInFuture * 7, "day"));
 
-    let weekDates = [];
-    for (let i = 0; i < 7; i++) {
-      const date = currentDate.add(daysSinceMonday + i, "day");
-
-      weekDates.push(date);
-    }
-
-    return weekDates;
+    return [...Array(7)].map((_, index) => startOfWeek.add(index, "day"));
   };
 
   return {
