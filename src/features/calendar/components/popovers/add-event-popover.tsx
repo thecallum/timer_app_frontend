@@ -87,7 +87,6 @@ export const AddEventPopover = (props: Props) => {
         <PopoverLayout title="Add Task">
           <>
             <div className="mb-2">
-              {" "}
               <TextInput
                 autoFocus
                 value={description}
