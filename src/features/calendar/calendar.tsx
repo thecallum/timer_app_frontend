@@ -16,7 +16,7 @@ import { CreateProjectModal } from "./components/modals/create-project-modal";
 import { useCalendarEvents } from "./hooks/useCalendarEvents";
 import { useCalendarProjects } from "./hooks/useCalendarProjects";
 
-export const Calendar = (): ICalendarEvent => {
+export const Calendar = () => {
   const { weeks, next, previous, reset } = useCalendar();
   const { events, addEvent, updateEvent, deleteEvent } = useCalendarEvents(weeks);
   const { projects, addProject } = useCalendarProjects();
