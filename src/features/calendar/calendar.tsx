@@ -13,19 +13,13 @@ import { CalendarWeekSummary } from "./components/calendar-week-summary";
 import { useCalendar } from "./hooks/useCalendar";
 import { useState } from "react";
 import { CreateProjectModal } from "./components/modals/create-project-modal";
+import { useCalendarEvents } from "./hooks/useCalendarEvents";
+import { useCalendarProjects } from "./hooks/useCalendarProjects";
 
 export const Calendar = (): ICalendarEvent => {
-  const {
-    events,
-    weeks,
-    next,
-    previous,
-    reset,
-    updateEvent,
-    addEvent,
-    projects,
-    addProject,
-  } = useCalendar();
+  const { weeks, next, previous, reset } = useCalendar();
+  const { events, addEvent, updateEvent } = useCalendarEvents(weeks);
+  const { projects, addProject } = useCalendarProjects();
 
   const [modalOpen, setModalOpen] = useState(false);
 
