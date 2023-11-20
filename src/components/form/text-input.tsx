@@ -7,11 +7,12 @@ interface Props {
   name: string;
   ariaLabel: string;
   error?: string;
+  autoFocus?: boolean;
   placeholder?: string;
 }
 
 export const TextInput = (props: Props) => {
-  const { value, setValue, id, name, ariaLabel, error, placeholder } = props;
+  const { value, setValue, id, name, ariaLabel, error, placeholder, autoFocus = false } = props;
 
   return (
       <input
@@ -20,6 +21,7 @@ export const TextInput = (props: Props) => {
         aria-label={ariaLabel}
         id={id}
         placeholder={placeholder}
+        autoFocus={autoFocus}
         value={value}
         onInput={(e) => setValue(e.target.value)}
         className={classNames(

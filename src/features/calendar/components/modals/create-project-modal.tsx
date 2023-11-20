@@ -98,13 +98,14 @@ export const CreateProjectModal = (props: Props) => {
           <>
             <div className="flex justify-start items-center mt-4 mb-2">
               <div
-                className="w-6 h-6 rounded-full mr-4"
+                className="w-6 h-6 rounded-full mr-4 flex-shrink-0"
                 style={{
                   background: projectColor.dark,
                 }}
               />
 
               <TextInput
+                autoFocus
                 value={name}
                 setValue={setName}
                 id="name"

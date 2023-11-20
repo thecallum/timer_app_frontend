@@ -86,14 +86,18 @@ export const AddEventPopover = (props: Props) => {
       <form onSubmit={handleSubmit}>
         <PopoverLayout title="Add Task">
           <>
-           <div className="mb-2"> <TextInput
-              value={description}
-              setValue={setDescription}
-              id="description"
-              name="description"
-              ariaLabel="Event description"
-              error={errors?.description}
-            /></div>
+            <div className="mb-2">
+              {" "}
+              <TextInput
+                autoFocus
+                value={description}
+                setValue={setDescription}
+                id="description"
+                name="description"
+                ariaLabel="Event description"
+                error={errors?.description}
+              />
+            </div>
 
             {errors?.description && (
               <ErrorMessage message={errors?.description} />

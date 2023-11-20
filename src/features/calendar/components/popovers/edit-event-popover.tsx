@@ -94,6 +94,7 @@ export const EditEventPopover = (props: Props) => {
           <>
             <div className="mb-2">
               <TextInput
+                autoFocus
                 value={description}
                 setValue={setDescription}
                 id="description"
