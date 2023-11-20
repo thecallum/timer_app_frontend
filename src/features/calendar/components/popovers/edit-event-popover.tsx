@@ -91,7 +91,7 @@ export const EditEventPopover = (props: Props) => {
   return (
     <PopoverContainer>
       <form onSubmit={handleSubmit}>
-        <PopoverLayout title="Edit Task" onDelete={deleteEvent}>
+        <PopoverLayout title="Edit Event" onDelete={deleteEvent}>
           <>
             <div className="mb-2">
               <TextInput

@@ -85,7 +85,7 @@ export const AddEventPopover = (props: Props) => {
   return (
     <PopoverContainer>
       <form onSubmit={handleSubmit}>
-        <PopoverLayout title="Add Task">
+        <PopoverLayout title="Add Event">
           <>
             <div className="mb-2">
               <TextInput
