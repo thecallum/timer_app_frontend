@@ -5,7 +5,7 @@ import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 
 // routes to show sidebar
-const sidebarRoutes = new Set(["/calendar"]);
+const sidebarRoutes = new Set(["/calendar", "/projects"]);
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
