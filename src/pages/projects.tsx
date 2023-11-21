@@ -74,7 +74,10 @@ export default function Index() {
         <div className="w-[calc(100%-60px)] max-w-[800px] ">
           <div className="mb-4 flex  items-center justify-between">
             <h1 className="text-2xl text-slate-700">Projects</h1>
-            <button onClick={openCreateModal} className="bg-purple-600 text-white rounded px-4 py-2 text-lg">
+
+
+
+            <button onClick={openCreateModal} className="bg-purple-600 shadow-md text-white rounded px-4 py-2 text-lg">
               Create project
             </button>
           </div>
