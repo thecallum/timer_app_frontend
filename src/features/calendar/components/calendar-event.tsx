@@ -1,27 +1,20 @@
 import { getColor } from "../helpers/colors";
 import { formatDuration } from "../helpers/formatter";
-import {
-  ICalendarEvent as CalendarEventType,
-  ICalendarEvent,
-  IProject,
-  defaultProject,
-} from "../types/types";
+import { ICalendarEvent, IProject, defaultProject } from "../types/types";
 import { PopoverWrapper } from "./popover-wrapper";
 import { EditEventPopover } from "./popovers/edit-event-popover";
 
 interface Props {
-  event: CalendarEventType;
+  event: ICalendarEvent;
   showAddProjectModal: () => void;
   projects: IProject[];
-  updateEvent: (event: ICalendarEvent) => void;
-  deleteEvent: () => void;
 }
 
+const MIN_HEIGHT = 16;
 const ONE_HOUR_IN_SECONDS = 3600;
 
 export const CalendarEvent = (props: Props) => {
-  const { event, showAddProjectModal, projects, updateEvent, deleteEvent } =
-    props;
+  const { event, showAddProjectModal, projects } = props;
   const { description, project, start, end } = event;
 
   const durationInSeconds = end.diff(start, "second");
@@ -33,7 +26,7 @@ export const CalendarEvent = (props: Props) => {
     (startTimeInSeconds + ONE_HOUR_IN_SECONDS) / 60 / 15
   );
 
-  const elementHeight = durationByFifteen * 16; // 15 minutes is 16px
+  const elementHeight = Math.max(durationByFifteen * 16, MIN_HEIGHT); // 15 minutes is 16px
   const elementTop = topByFifteen * 16;
 
   const duration = formatDuration(durationInSeconds);
@@ -50,17 +43,9 @@ export const CalendarEvent = (props: Props) => {
         popoverComponent={({ close }) => (
           <EditEventPopover
             projects={projects}
-            onProjectUpdated={(x) => {
-              updateEvent(x);
-              setTimeout(close);
-            }}
             showAddProjectModal={showAddProjectModal}
             event={event}
             close={close}
-            deleteEvent={() => {
-              deleteEvent();
-              close();
-            }}
           />
         )}
       >
@@ -87,7 +72,7 @@ export const CalendarEvent = (props: Props) => {
                     color: projectColor.darkest,
                   }}
                 >
-                  {description}
+                  {description || "(no description)"}
                 </div>
                 <div
                   className="text-xs whitespace-nowrap"

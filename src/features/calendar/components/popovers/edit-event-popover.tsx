@@ -12,25 +12,25 @@ import classNames from "classnames";
 import { ErrorMessage } from "@/components/form/error-message";
 import { TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
+import { useCalendarEvents } from "@/contexts/calendarEventContext";
 
 interface Props {
   close: () => void;
   event: ICalendarEvent;
   showAddProjectModal: () => void;
-  onProjectUpdated: (event: ICalendarEvent) => void;
   projects: IProject[];
-  deleteEvent: () => void;
 }
 
 export const EditEventPopover = (props: Props) => {
-  const { close, event, showAddProjectModal, projects, onProjectUpdated, deleteEvent } =
-    props;
+  const { close, event, showAddProjectModal, projects } = props;
   const {
     description: currentDescription,
     project: currentProject,
     start,
     end,
   } = event;
+
+  const { updateEvent, deleteEvent } = useCalendarEvents();
 
   const [description, setDescription] = useState(currentDescription);
   const [project, setProject] = useState<IProject | null>(
@@ -52,6 +52,11 @@ export const EditEventPopover = (props: Props) => {
     dayjs(startDate),
     "second"
   );
+
+  const onDeleteEvent = () => {
+    deleteEvent(event);
+    close();
+  };
 
   const validate = () => {
     const errors: { [key: string]: string } = {};
@@ -85,13 +90,14 @@ export const EditEventPopover = (props: Props) => {
       project: project ?? defaultProject,
     };
 
-    setTimeout(() => onProjectUpdated(updatedEvent));
+    updateEvent(updatedEvent);
+    close();
   };
 
   return (
     <PopoverContainer>
       <form onSubmit={handleSubmit}>
-        <PopoverLayout title="Edit Event" onDelete={deleteEvent}>
+        <PopoverLayout title="Edit Event" onDelete={onDeleteEvent}>
           <>
             <div className="mb-2">
               <TextInput
@@ -101,6 +107,7 @@ export const EditEventPopover = (props: Props) => {
                 id="description"
                 name="description"
                 ariaLabel="Event description"
+                placeholder="(no description)"
                 error={errors?.description}
               />
             </div>
@@ -131,7 +138,6 @@ export const EditEventPopover = (props: Props) => {
                   name=""
                   id="eventStartTime"
                   onInput={(e) => setStartDate(e.target.value)}
-                  // defaultValue={start.format("YYYY-MM-DDThh:mm")}
                   value={startDate}
                   className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
                 />

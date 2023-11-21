@@ -15,6 +15,11 @@ body {
   z-index: 20;
 }
 
+
+html {
+  scroll-behavior: smooth;
+}
+
 /* 
 
 :root {

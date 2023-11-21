@@ -13,7 +13,7 @@ export const useTimer = () => {
 
     if (savedStartTime !== null) {
       const time = getElapsedSeconds(savedStartTime);
-      console.log({ time });
+
       setTime(time);
       startTimer();
     }
@@ -57,6 +57,7 @@ export const useTimer = () => {
   const stopTimer = () => {
     setIsRunning(false);
     window.localStorage.removeItem(LOCAL_STORAGE_KEY);
+
     reset();
   };
 

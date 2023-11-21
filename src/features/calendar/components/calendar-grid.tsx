@@ -1,4 +1,4 @@
-import { ICalendarEvent, IProject } from "../types/types";
+import { IProject } from "../types/types";
 import { CalendarColumn } from "./calendar-column";
 import dayjs from "dayjs";
 
@@ -6,16 +6,20 @@ interface Props {
   weeks: dayjs.Dayjs[];
   showAddProjectModal: () => void;
   projects: IProject[];
-  addEvent: (event: ICalendarEvent) => void;
 }
 
 export const CalendarGrid = (props: Props) => {
-  const { weeks, showAddProjectModal, projects, addEvent } = props;
+  const { weeks, showAddProjectModal, projects } = props;
 
   return (
     <div className="flex flex-row justify-between border-l border-slate-200  h-[96rem]">
       {weeks.map((day, index) => (
-        <CalendarColumn addEvent={addEvent} projects={projects} key={index} day={day.startOf("day")} showAddProjectModal={showAddProjectModal} />
+        <CalendarColumn
+          projects={projects}
+          key={index}
+          day={day.startOf("day")}
+          showAddProjectModal={showAddProjectModal}
+        />
       ))}
     </div>
   );

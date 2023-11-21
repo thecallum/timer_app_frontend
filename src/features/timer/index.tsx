@@ -1,24 +1,45 @@
 import { Project } from "@/features/calendar/components/project";
 import { formatDuration } from "@/features/calendar/helpers/formatter";
 import { useCalendarProjects } from "@/features/calendar/hooks/useCalendarProjects";
-import { IProject } from "@/features/calendar/types/types";
-import { useState } from "react";
+import { ICalendarEvent, IProject } from "@/features/calendar/types/types";
+import { useState, useRef } from "react";
 import { useTimer } from "./hooks/useTimer";
+import { useCalendarEvents } from "@/contexts/calendarEventContext";
+import { v4 as uuidv4 } from "uuid";
+import dayjs from "dayjs";
 
 export const Timer = () => {
   const [project, setProject] = useState<IProject | null>(null);
   const { projects } = useCalendarProjects();
 
-  const { startTimer, stopTimer, time, isRunning } = useTimer();
+  const { addEvent } = useCalendarEvents();
 
+  const { startTimer, stopTimer, time, isRunning } = useTimer();
+  const input = useRef(null); 
   const [description, setDescription] = useState("");
 
   const handleStartTimer = () => {
+    if (description === null || description.trim() === "") {
+      input.current?.focus();
+      return;
+    }
+
     startTimer();
   };
 
   const handleStopTimer = () => {
     stopTimer();
+
+    const newEvent: ICalendarEvent = {
+      id: uuidv4(),
+      description,
+      start: dayjs().add(time * -1, "second"),
+      end: dayjs(),
+      project: project ?? undefined,
+    };
+
+    addEvent(newEvent);
+
     reset();
   };
 
@@ -31,6 +52,7 @@ export const Timer = () => {
     <div className="flex flex-row items-center justify-end w-full ml-2">
       <div className="flex-grow max-w-sm mr-2">
         <input
+          ref={input}
           type="text"
           name="description"
           id="description"

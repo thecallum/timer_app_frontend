@@ -34,14 +34,6 @@ export const usePopover = (
   const handleClick = (event: MouseEvent) => {
     // ignore, modal closed
     if (!showPopover) return;
-
-    // console.log("click", event)
-
-    // if (popperElement && !popperElement.contains(event.target)) {
-    //   // close modal
-    //   console.info("closing modal");
-    //   handleClose();
-    // }
   };
 
   const handleOpen = () => {

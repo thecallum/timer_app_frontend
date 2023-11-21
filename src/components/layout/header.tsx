@@ -1,9 +1,4 @@
-import { Project } from "@/features/calendar/components/project";
-import { formatDuration } from "@/features/calendar/helpers/formatter";
-import { useCalendarProjects } from "@/features/calendar/hooks/useCalendarProjects";
-import { IProject } from "@/features/calendar/types/types";
 import { Timer } from "@/features/timer";
-import { useState, useEffect, useRef } from "react";
 
 const Logo = () => {
   return (
@@ -19,7 +14,6 @@ const Logo = () => {
     </div>
   );
 };
-
 
 export const Header = () => {
   return (

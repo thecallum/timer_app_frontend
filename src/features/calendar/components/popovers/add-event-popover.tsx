@@ -13,17 +13,32 @@ import classNames from "classnames";
 import { v4 as uuidv4 } from "uuid";
 import { TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
+import { useCalendarEvents } from "@/contexts/calendarEventContext";
+import { useEffect, useRef } from "react"
 
 interface Props {
   close: () => void;
   time: dayjs.Dayjs;
   showAddProjectModal: () => void;
   projects: IProject[];
-  onEventAdded: (event: ICalendarEvent) => void;
 }
 
 export const AddEventPopover = (props: Props) => {
-  const { close, time, showAddProjectModal, projects, onEventAdded } = props;
+  const { close, time, showAddProjectModal, projects } = props;
+
+  const { addEvent } = useCalendarEvents();
+
+  const element = useRef(null)
+
+  useEffect(() => {
+    console.log("me visible")
+
+    setTimeout(() => {
+      // this is a temporary solution. overlay breaks scrolling
+    element.current.scrollIntoView({ behavior: 'smooth', block: 'end',  })
+
+    })
+  }, [])
 
   const [project, setProject] = useState<IProject | null>(null);
 
@@ -79,12 +94,13 @@ export const AddEventPopover = (props: Props) => {
       project: project ?? defaultProject,
     };
 
-    setTimeout(() => onEventAdded(newEvent));
+    addEvent(newEvent);
+    close();
   };
 
   return (
     <PopoverContainer>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} ref={element}>
         <PopoverLayout title="Add Event">
           <>
             <div className="mb-2">

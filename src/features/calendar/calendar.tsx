@@ -9,14 +9,16 @@ import { CalendarWeekSummary } from "./components/calendar-week-summary";
 import { useCalendar } from "./hooks/useCalendar";
 import { useState } from "react";
 import { CreateProjectModal } from "../../modals/create-project-modal";
-import { useCalendarEvents } from "./hooks/useCalendarEvents";
 import { useCalendarProjects } from "./hooks/useCalendarProjects";
 import { ContainerFullWidth } from "@/components/layout/container-full-width";
 import { Page } from "@/components/layout/page";
+import { useCalendarEvents } from "@/contexts/calendarEventContext";
 
 export const Calendar = () => {
   const { weeks, next, previous, reset } = useCalendar();
-  const { events, addEvent, updateEvent, deleteEvent } = useCalendarEvents(weeks);
+  const { getCalendarEvents } = useCalendarEvents();
+  const events = getCalendarEvents(weeks);
+
   const { projects, addProject } = useCalendarProjects();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -58,28 +60,25 @@ export const Calendar = () => {
         <div className="flex justify-center mt-4 h-full  ">
           <ContainerFullWidth>
             <Page>
-            <div className="h-full flex flex-col">
-              <CalendarDates weeks={weeks} events={events} />
+              <div className="h-full flex flex-col">
+                <CalendarDates weeks={weeks} events={events} />
 
-              <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
-                <CalendarHours />
-                <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
-                  <CalendarGrid
-                    projects={projects}
-                    showAddProjectModal={() => setModalOpen(true)}
-                    weeks={weeks}
-                    addEvent={addEvent}
-                  />
-                  <CalendarEvents
-                    projects={projects}
-                    showAddProjectModal={openModal}
-                    events={events}
-                    updateEvent={updateEvent}
-                    deleteEvent={deleteEvent}
-                  />
+                <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
+                  <CalendarHours />
+                  <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
+                    <CalendarGrid
+                      projects={projects}
+                      showAddProjectModal={() => setModalOpen(true)}
+                      weeks={weeks}
+                    />
+                    <CalendarEvents
+                      projects={projects}
+                      showAddProjectModal={openModal}
+                      events={events}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
             </Page>
           </ContainerFullWidth>
         </div>
