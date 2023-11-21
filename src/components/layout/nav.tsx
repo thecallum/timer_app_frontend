@@ -9,14 +9,18 @@ export const Nav = () => {
 
         <ul>
           <li className="line-through">Timer</li>
-          <li><Link  href="/calendar">Calendar</Link></li>
+          <li>
+            <Link href="/calendar">Calendar</Link>
+          </li>
           <li className="line-through">Analytics</li>
         </ul>
 
         <h2 className="text-slate-400 text-xs mt-4 mb-1">Manage</h2>
         <hr className="w-full border-slate-400 mb-2" />
         <ul>
-          <li><Link  href="/projects">Projects</Link></li>
+          <li>
+            <Link href="/projects">Projects</Link>
+          </li>
         </ul>
       </div>
 
