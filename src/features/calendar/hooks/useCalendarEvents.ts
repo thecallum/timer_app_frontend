@@ -1,8 +1,11 @@
 import dayjs, { Dayjs } from "dayjs";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import { ICalendarEvent } from "../types/types";
 import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import { placeholderProjects } from "./useCalendarProjects";
+
+dayjs.extend(isSameOrAfter);
 
 const placeholderEvents: ICalendarEvent[] = [
   {
@@ -64,6 +67,7 @@ export const useCalendarEvents = (weekDates: Dayjs[]) => {
 
   return {
     events: getCalendarEvents(),
+    allEvents: events,
     updateEvent,
     addEvent,
     deleteEvent

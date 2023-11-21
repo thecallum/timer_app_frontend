@@ -9,7 +9,7 @@ export const PopoverLayout = (props: Props) => {
 
   return (
     <div className="p-4">
-      <div className="flex items-top justify-between mb-2">
+      <div className="flex items-start justify-between mb-2">
         <h2 className="text-slate-800 text-xs ">{title}</h2>
 
        {onDelete &&  <button type="button" onClick={onDelete}>

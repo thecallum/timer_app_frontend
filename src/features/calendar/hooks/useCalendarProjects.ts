@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { IProject, ProjectColor, defaultProject } from "../types/types";
+import { IProject, ProjectColor } from "../types/types";
 import { v4 as uuidv4 } from "uuid";
 
 export const placeholderProjects: IProject[] = [
-  defaultProject,
   {
     id: uuidv4(),
     name: "Work",
@@ -20,8 +19,23 @@ export const useCalendarProjects = () => {
     setProjects((x) => [...x, newProject]);
   };
 
+  const updateProject = (project: IProject) => {
+    setProjects((state) =>
+      state.map((x) => {
+        if (x.id === project.id) return project;
+        return x;
+      })
+    );
+  };
+
+  const deleteProject = (project: IProject) => {
+    setProjects((state) => [...state].filter((x) => x.id !== project.id));
+  };
+
   return {
     projects,
     addProject,
+    updateProject,
+    deleteProject,
   };
 };

@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { IProject } from "../../types/types";
+import { IProject, defaultProject } from "../../types/types";
 import {
   PopoverContainer,
   PopoverControls,
@@ -23,7 +23,7 @@ export const SelectProjectPopover = (props: Props) => {
       <>
         <PopoverLayout title="Project">
           <ul className="">
-            {projects.map((x) => {
+            {[defaultProject, ...projects].map((x) => {
               const { name, color, id } = x;
 
               const projectColor = getColor(color);

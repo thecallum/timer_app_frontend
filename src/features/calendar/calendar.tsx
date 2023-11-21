@@ -8,7 +8,7 @@ import { CalendarWeekSelect } from "./components/calendar-week-select";
 import { CalendarWeekSummary } from "./components/calendar-week-summary";
 import { useCalendar } from "./hooks/useCalendar";
 import { useState } from "react";
-import { CreateProjectModal } from "./components/modals/create-project-modal";
+import { CreateProjectModal } from "../../modals/create-project-modal";
 import { useCalendarEvents } from "./hooks/useCalendarEvents";
 import { useCalendarProjects } from "./hooks/useCalendarProjects";
 import { ContainerFullWidth } from "@/components/layout/container-full-width";
