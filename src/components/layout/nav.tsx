@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export const Nav = () => {
   return (
-    <nav className="bg-slate-700 w-32 p-2 flex-shrink-0 text-white flex flex-col justify-between items-start">
+    <nav className="bg-slate-700 w-40 p-2 flex-shrink-0 text-white flex flex-col justify-between items-start">
       <div className="w-full">
         <h2 className="text-slate-400 text-xs mb-1">Track</h2>
         <hr className="w-full border-slate-400 mb-2" />
