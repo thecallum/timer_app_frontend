@@ -1,7 +1,6 @@
 import { Page } from "@/components/layout/page";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
 import { getColor } from "@/features/calendar/helpers/colors";
-// import { useCalendarEvents } from "@/features/calendar/hooks/useCalendarEvents";
 import { useCalendarProjects } from "@/features/calendar/hooks/useCalendarProjects";
 import { IProject } from "@/features/calendar/types/types";
 import { CreateProjectModal } from "@/modals/create-project-modal";
@@ -9,8 +8,6 @@ import { EditProjectModal } from "@/modals/edit-project-modal";
 import { useState } from "react";
 
 export const Projects = () => {
-  // const { allEvents } = useCalendarEvents([]);
-
   const { events } = useCalendarEvents()
   const { projects, updateProject, deleteProject, addProject } =
     useCalendarProjects();

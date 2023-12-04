@@ -12,12 +12,18 @@ import { CreateProjectModal } from "../../modals/create-project-modal";
 import { useCalendarProjects } from "./hooks/useCalendarProjects";
 import { ContainerFullWidth } from "@/components/layout/container-full-width";
 import { Page } from "@/components/layout/page";
+import { filterEvents } from "./helpers/filterEvents";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
+
+
+
 
 export const Calendar = () => {
   const { weeks, next, previous, reset } = useCalendar();
-  const { getCalendarEvents } = useCalendarEvents();
-  const events = getCalendarEvents(weeks);
+  const { events } = useCalendarEvents();
+
+
+  const eventsThisWeek = filterEvents(events, weeks[0], weeks[6])
 
   const { projects, addProject } = useCalendarProjects();
 
@@ -44,7 +50,7 @@ export const Calendar = () => {
             <>
               <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
               <div className="flex justify-between items-start">
-                <CalendarWeekSummary events={events} />
+                <CalendarWeekSummary events={eventsThisWeek} />
 
                 <CalendarWeekSelect
                   weeks={weeks}
@@ -74,7 +80,7 @@ export const Calendar = () => {
                     <CalendarEvents
                       projects={projects}
                       showAddProjectModal={openModal}
-                      events={events}
+                      events={eventsThisWeek}
                     />
                   </div>
                 </div>

@@ -70,7 +70,7 @@ export const EditProjectModal = (props: Props) => {
 
             <ModalControls>
               <>
-                <ButtonPrimary type="submit">Create project</ButtonPrimary>
+                <ButtonPrimary type="submit">Edit project</ButtonPrimary>
                 <ButtonSecondary onClick={close}>Close</ButtonSecondary>
               </>
             </ModalControls>

@@ -36,10 +36,7 @@ export const CalendarCell = (props: Props) => {
                 }
               )}
               ref={ref}
-              onClick={() => {
-                onClick()
-                ref.current.scrollIntoView()
-              }}
+              onClick={onClick}
             ></button>
           )}
         </PopoverWrapper>
