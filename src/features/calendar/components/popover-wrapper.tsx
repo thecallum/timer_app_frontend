@@ -3,7 +3,8 @@ import { usePopover } from "../hooks/usePopover";
 
 interface Props {
   popoverComponent: (props: { close: () => void }) => JSX.Element;
-  placement?: Placement | undefined;
+  // placement?: Placement | undefined;
+  containerRef: HTMLDivElement | null;
   offset?: Offsets | undefined;
   children: (props: {
     ref: React.Dispatch<React.SetStateAction<Element>>;
@@ -16,13 +17,15 @@ export const PopoverWrapper = (props: Props) => {
   const {
     popoverComponent,
     children,
-    placement = "top-start",
-    offset = [10, -10],
+    containerRef,
+    // placement = "top-start",
+    // offset = [10, -10],
   } = props;
 
   const { showPopover, handleClose, referenceProps, elementProps } = usePopover(
-    placement,
-    offset
+    containerRef
+    // placement,
+    // offset
   );
 
   return (
@@ -36,10 +39,10 @@ export const PopoverWrapper = (props: Props) => {
       {showPopover && (
         <>
           {/* overlay */}
-          <div
+          {/* <div
             onClick={handleClose}
             className="bg-transparent fixed inset-0 z-20"
-          />
+          /> */}
 
           <div
             className=" absolute z-20"

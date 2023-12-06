@@ -8,17 +8,20 @@ interface Props {
   day: dayjs.Dayjs;
   showAddProjectModal: () => void;
   projects: IProject[];
+  containerRef: HTMLDivElement | null;
 }
 
 export const CalendarCell = (props: Props) => {
-  const { day, showAddProjectModal, projects } = props;
+  const { day, showAddProjectModal, projects, containerRef } = props;
 
   return (
     <div className="border-slate-200 h-16 border-b flex flex-col">
       {[...Array(4)].map((_, index) => (
         <PopoverWrapper
+          containerRef={containerRef}
           popoverComponent={({ close }) => (
             <AddEventPopover
+              containerRef={containerRef}
               projects={projects}
               showAddProjectModal={showAddProjectModal}
               close={close}

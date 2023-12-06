@@ -14,35 +14,20 @@ import { v4 as uuidv4 } from "uuid";
 import { TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
-import { useEffect, useRef } from "react"
-
 interface Props {
   close: () => void;
   time: dayjs.Dayjs;
   showAddProjectModal: () => void;
   projects: IProject[];
+  containerRef: HTMLDivElement | null;
 }
 
 export const AddEventPopover = (props: Props) => {
-  const { close, time, showAddProjectModal, projects } = props;
-
+  const { close, time, showAddProjectModal, projects, containerRef } = props;
   const { addEvent } = useCalendarEvents();
-
-  const element = useRef(null)
-
-  useEffect(() => {
-    console.log("me visible")
-
-    setTimeout(() => {
-      // this is a temporary solution. overlay breaks scrolling
-    element.current.scrollIntoView({ behavior: 'smooth', block: 'end',  })
-
-    })
-  }, [])
-
   const [project, setProject] = useState<IProject | null>(null);
-
   const [description, setDescription] = useState("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const [startDate, setStartDate] = useState<string>(
     time.format("YYYY-MM-DDThh:mm:ss")
@@ -50,7 +35,6 @@ export const AddEventPopover = (props: Props) => {
   const [endTime, setEndTime] = useState<string>(
     time.add(15, "minute").format("hh:mm:ss")
   );
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const getEndTimeAsDate = () => {
     const [hour, minute, second] = endTime.split(":").map(Number);
@@ -100,7 +84,7 @@ export const AddEventPopover = (props: Props) => {
 
   return (
     <PopoverContainer>
-      <form onSubmit={handleSubmit} ref={element}>
+      <form onSubmit={handleSubmit}>
         <PopoverLayout title="Add Event">
           <>
             <div className="mb-2">
@@ -121,6 +105,7 @@ export const AddEventPopover = (props: Props) => {
 
             <div className="inline-block">
               <Project
+                containerRef={containerRef}
                 setProject={setProject}
                 project={project}
                 projects={projects}

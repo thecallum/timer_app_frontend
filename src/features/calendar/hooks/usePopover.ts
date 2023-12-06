@@ -1,25 +1,58 @@
 import { useEffect, useState } from "react";
 import { usePopper } from "react-popper";
-import { Placement, Offsets } from "@popperjs/core";
+import { Placement, Offsets, Options } from "@popperjs/core";
 
 export const usePopover = (
-  placement?: Placement | undefined,
-  offset?: Offsets | undefined
+  containerRef: HTMLDivElement | null
+  // placement?: Placement | undefined,
+  // offset?: Offsets | undefined
 ) => {
-  const [referenceElement, setReferenceElement] = useState<Element>();
-  const [popperElement, setPopperElement] = useState<Element>();
+  const [referenceElement, setReferenceElement] = useState<Element | null>(
+    null
+  );
+  const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
 
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
-    placement,
+  const options: Options = {
+    // placement: "top",
+    placement: "right-start",
+
+    // mainAxis: false,
+    strategy: "fixed",
     modifiers: [
+      // {
+      //   name: "keepTogether",
+      //   enabled: false,
+      // }
       {
         name: "offset",
         options: {
-          offset,
+          // offset: [30, -20],
+          offset: [20, -60],
+        },
+      },
+
+      {
+        name: "preventOverflow",
+        enabled: true,
+        options: {
+          // mainAxis: true,
+          altAxis: true,
+          tether: false,
+          escapeWithReference: false,
+          // boundariesElement: containerRef,
+          // boundariesElement: "viewport",
+          rootBoundary: containerRef,
         },
       },
     ],
-  });
+  };
+
+  const { styles, attributes } = usePopper(
+    referenceElement,
+    popperElement,
+
+    options
+  );
 
   const [showPopover, setShowPopover] = useState(false);
 

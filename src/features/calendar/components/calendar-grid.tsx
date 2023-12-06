@@ -6,15 +6,17 @@ interface Props {
   weeks: dayjs.Dayjs[];
   showAddProjectModal: () => void;
   projects: IProject[];
+  containerRef: HTMLDivElement | null;
 }
 
 export const CalendarGrid = (props: Props) => {
-  const { weeks, showAddProjectModal, projects } = props;
+  const { weeks, showAddProjectModal, projects, containerRef } = props;
 
   return (
     <div className="flex flex-row justify-between border-l border-slate-200  h-[96rem]">
       {weeks.map((day, index) => (
         <CalendarColumn
+          containerRef={containerRef}
           projects={projects}
           key={index}
           day={day.startOf("day")}

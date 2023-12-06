@@ -19,10 +19,11 @@ interface Props {
   event: ICalendarEvent;
   showAddProjectModal: () => void;
   projects: IProject[];
+  containerRef: HTMLDivElement | null;
 }
 
 export const EditEventPopover = (props: Props) => {
-  const { close, event, showAddProjectModal, projects } = props;
+  const { close, event, showAddProjectModal, projects, containerRef } = props;
   const {
     description: currentDescription,
     project: currentProject,
@@ -118,6 +119,7 @@ export const EditEventPopover = (props: Props) => {
 
             <div className="inline-block">
               <Project
+                containerRef={containerRef}
                 projects={projects}
                 showAddProjectModal={showAddProjectModal}
                 project={project}

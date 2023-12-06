@@ -8,13 +8,14 @@ interface Props {
   event: ICalendarEvent;
   showAddProjectModal: () => void;
   projects: IProject[];
+  containerRef: HTMLDivElement | null;
 }
 
 const MIN_HEIGHT = 16;
 const ONE_HOUR_IN_SECONDS = 3600;
 
 export const CalendarEvent = (props: Props) => {
-  const { event, showAddProjectModal, projects } = props;
+  const { event, showAddProjectModal, projects, containerRef } = props;
   const { description, project, start, end } = event;
 
   const durationInSeconds = end.diff(start, "second");
@@ -40,8 +41,10 @@ export const CalendarEvent = (props: Props) => {
   return (
     <li className="relative">
       <PopoverWrapper
+        containerRef={containerRef}
         popoverComponent={({ close }) => (
           <EditEventPopover
+            containerRef={containerRef}
             projects={projects}
             showAddProjectModal={showAddProjectModal}
             event={event}

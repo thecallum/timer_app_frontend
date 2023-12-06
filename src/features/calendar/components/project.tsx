@@ -6,18 +6,21 @@ import { getColor } from "../helpers/colors";
 interface Props {
   project: IProject | null;
   projects: IProject[];
+  containerRef: HTMLDivElement | null;
   showAddProjectModal: () => void;
   setProject: (project: IProject | null) => void;
 }
 
 export const Project = (props: Props) => {
-  const { showAddProjectModal, projects, project, setProject } = props;
+  const { showAddProjectModal, projects, project, setProject, containerRef } =
+    props;
 
   return (
     <>
       <PopoverWrapper
-        placement="bottom"
-        offset={[0, 0]}
+        containerRef={containerRef}
+        // placement="bottom"
+        // offset={[0, 0]}
         popoverComponent={({ close }) => (
           <SelectProjectPopover
             projects={projects}

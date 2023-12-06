@@ -15,7 +15,7 @@ export const Timer = () => {
   const { addEvent } = useCalendarEvents();
 
   const { startTimer, stopTimer, time, isRunning } = useTimer();
-  const input = useRef(null); 
+  const input = useRef(null);
   const [description, setDescription] = useState("");
 
   const handleStartTimer = () => {
@@ -66,6 +66,7 @@ export const Timer = () => {
 
       <div className="mr-2">
         <Project
+          containerRef={null}
           project={project}
           projects={projects}
           setProject={setProject}
