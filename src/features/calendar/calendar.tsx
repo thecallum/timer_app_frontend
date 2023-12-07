@@ -20,7 +20,7 @@ export const Calendar = () => {
   const { events } = useCalendarEvents();
   const { projects, addProject } = useCalendarProjects();
   const [modalOpen, setModalOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
 
   const eventsThisWeek = filterEvents(events, weeks[0], weeks[6]);
 
@@ -61,23 +61,19 @@ export const Calendar = () => {
         <div className="flex justify-center mt-4 h-full  ">
           <ContainerFullWidth>
             <Page>
-              <div className="h-full flex flex-col">
+              <div className="h-full flex flex-col" ref={setContainerRef}>
                 <CalendarDates weeks={weeks} events={events} />
-
-                <div
-                  ref={containerRef}
-                  className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative"
-                >
+                <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
                   <CalendarHours />
                   <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
                     <CalendarGrid
-                      containerRef={containerRef.current}
+                      containerRef={containerRef}
                       projects={projects}
                       showAddProjectModal={() => setModalOpen(true)}
                       weeks={weeks}
                     />
                     <CalendarEvents
-                      containerRef={containerRef.current}
+                      containerRef={containerRef}
                       projects={projects}
                       showAddProjectModal={openModal}
                       events={eventsThisWeek}

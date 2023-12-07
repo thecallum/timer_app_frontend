@@ -40,7 +40,7 @@ export const usePopover = (
           tether: false,
           escapeWithReference: false,
           // boundariesElement: containerRef,
-          // boundariesElement: "viewport",
+          boundariesElement: "viewport",
           rootBoundary: containerRef,
         },
       },
