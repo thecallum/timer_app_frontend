@@ -11,8 +11,7 @@ interface Props {
   containerRef: HTMLDivElement | null;
 }
 
-const MIN_HEIGHT = 16;
-const ONE_HOUR_IN_SECONDS = 3600;
+const HEIGHT_ONE_MINUTE = (64 / 60)
 
 export const CalendarEvent = (props: Props) => {
   const { event, showAddProjectModal, projects, containerRef } = props;
@@ -22,13 +21,12 @@ export const CalendarEvent = (props: Props) => {
   const startTimeInSeconds = start.diff(start.startOf("day"), "second");
   const column = start.day() - 1;
 
-  const durationByFifteen = Math.ceil(durationInSeconds / 60 / 15);
-  const topByFifteen = Math.ceil(
-    (startTimeInSeconds + ONE_HOUR_IN_SECONDS) / 60 / 15
-  );
 
-  const elementHeight = Math.max(durationByFifteen * 16, MIN_HEIGHT); // 15 minutes is 16px
-  const elementTop = topByFifteen * 16;
+  const durationByMinute = Math.ceil(durationInSeconds / 60 );
+
+  const topByMinute = Math.ceil(startTimeInSeconds / 60);
+  const elementHeight = durationByMinute * HEIGHT_ONE_MINUTE
+  const elementTop = topByMinute * HEIGHT_ONE_MINUTE
 
   const duration = formatDuration(durationInSeconds);
 
