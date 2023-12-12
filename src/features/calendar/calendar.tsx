@@ -17,7 +17,8 @@ import { useCalendarEvents } from "@/contexts/calendarEventContext";
 
 export const Calendar = () => {
   const { weeks, next, previous, reset } = useCalendar();
-  const { events } = useCalendarEvents();
+  const { state } = useCalendarEvents();
+  const { events } = state
   const { projects, addProject } = useCalendarProjects();
   const [modalOpen, setModalOpen] = useState(false);
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);

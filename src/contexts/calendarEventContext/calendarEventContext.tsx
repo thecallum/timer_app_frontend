@@ -3,15 +3,19 @@ import { ICalendarEvent } from "../../features/calendar/types/types";
 import { placeholderEvents } from "./placeholderEvents";
 
 interface ICalendarEventContext {
-  events: ICalendarEvent[];
-  updateEvent: (event: ICalendarEvent) => void;
-  addEvent: (event: ICalendarEvent) => void;
-  deleteEvent: (event: ICalendarEvent) => void;
+  state: {
+    events: ICalendarEvent[];
+  };
+  actions: {
+    updateEvent: (event: ICalendarEvent) => void;
+    addEvent: (event: ICalendarEvent) => void;
+    deleteEvent: (event: ICalendarEvent) => void;
+  };
 }
 
-export const CalendarEventContext = createContext<ICalendarEventContext | undefined>(
-  undefined
-);
+export const CalendarEventContext = createContext<
+  ICalendarEventContext | undefined
+>(undefined);
 
 interface Props {
   children: JSX.Element;
@@ -41,10 +45,14 @@ export const CalendarContextProvider = (props: Props) => {
   };
 
   const value: ICalendarEventContext = {
-    events,
-    updateEvent,
-    addEvent,
-    deleteEvent,
+    state: {
+      events,
+    },
+    actions: {
+      updateEvent,
+      addEvent,
+      deleteEvent,
+    },
   };
 
   return (

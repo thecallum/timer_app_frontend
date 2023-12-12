@@ -24,7 +24,8 @@ interface Props {
 
 export const AddEventPopover = (props: Props) => {
   const { close, time, showAddProjectModal, projects, containerRef } = props;
-  const { addEvent } = useCalendarEvents();
+  const { actions } = useCalendarEvents();
+  const { addEvent } = actions
   const [project, setProject] = useState<IProject | null>(null);
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});

@@ -12,7 +12,8 @@ export const Timer = () => {
   const [project, setProject] = useState<IProject | null>(null);
   const { projects } = useCalendarProjects();
 
-  const { addEvent } = useCalendarEvents();
+  const { actions } = useCalendarEvents();
+  const { addEvent } = actions
 
   const { startTimer, stopTimer, time, isRunning } = useTimer();
   const input = useRef(null);
