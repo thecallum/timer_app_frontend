@@ -15,9 +15,7 @@ export const usePubSub = () => {
   };
 
   const call = () => {
-    subscribers.forEach((cb) => {
-      cb();
-    });
+    subscribers.forEach((cb) => cb());
   };
 
   return {
