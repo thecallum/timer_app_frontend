@@ -1,9 +1,9 @@
-import { Placement, Offsets } from "@popperjs/core";
+import { Offsets } from "@popperjs/core";
 import { usePopover } from "../hooks/usePopover";
 
 interface Props {
   popoverComponent: (props: { close: () => void }) => JSX.Element;
-  // placement?: Placement | undefined;
+  primaryPopover: boolean;
   containerRef: HTMLDivElement | null;
   offset?: Offsets | undefined;
   children: (props: {
@@ -14,19 +14,10 @@ interface Props {
 }
 
 export const PopoverWrapper = (props: Props) => {
-  const {
-    popoverComponent,
-    children,
-    containerRef,
-    // placement = "top-start",
-    // offset = [10, -10],
-  } = props;
+  const { popoverComponent, children, containerRef, primaryPopover = true } = props;
 
-  const { showPopover, handleClose, referenceProps, elementProps } = usePopover(
-    containerRef
-    // placement,
-    // offset
-  );
+  const { showPopover, handleClose, referenceProps, elementProps } =
+    usePopover(containerRef, primaryPopover);
 
   return (
     <>
@@ -37,24 +28,16 @@ export const PopoverWrapper = (props: Props) => {
       })}
 
       {showPopover && (
-        <>
-          {/* overlay */}
-          {/* <div
-            onClick={handleClose}
-            className="bg-transparent fixed inset-0 z-20"
-          /> */}
-
-          <div
-            className=" absolute z-20"
-            ref={elementProps.ref}
-            style={elementProps.styles}
-            {...elementProps.otherAttributes}
-          >
-            {popoverComponent({
-              close: handleClose,
-            })}
-          </div>
-        </>
+        <div
+          className=" absolute z-20 "
+          ref={elementProps.ref}
+          style={elementProps.styles}
+          {...elementProps.otherAttributes}
+        >
+          {popoverComponent({
+            close: handleClose,
+          })}
+        </div>
       )}
     </>
   );

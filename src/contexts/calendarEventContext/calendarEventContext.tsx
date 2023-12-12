@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState } from "react";
 import { ICalendarEvent } from "../../features/calendar/types/types";
 import { placeholderEvents } from "./placeholderEvents";
 

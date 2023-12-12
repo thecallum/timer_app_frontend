@@ -18,9 +18,8 @@ export const Project = (props: Props) => {
   return (
     <>
       <PopoverWrapper
+        primaryPopover={false}
         containerRef={containerRef}
-        // placement="bottom"
-        // offset={[0, 0]}
         popoverComponent={({ close }) => (
           <SelectProjectPopover
             projects={projects}

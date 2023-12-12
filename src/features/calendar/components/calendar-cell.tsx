@@ -18,6 +18,7 @@ export const CalendarCell = (props: Props) => {
     <div className="border-slate-200 h-16 border-b flex flex-col">
       {[...Array(4)].map((_, index) => (
         <PopoverWrapper
+          primaryPopover={true}
           containerRef={containerRef}
           popoverComponent={({ close }) => (
             <AddEventPopover
