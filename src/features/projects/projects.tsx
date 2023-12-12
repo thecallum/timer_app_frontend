@@ -8,7 +8,8 @@ import { EditProjectModal } from "@/modals/edit-project-modal";
 import { useState } from "react";
 
 export const Projects = () => {
-  const { events } = useCalendarEvents()
+  const { state } = useCalendarEvents()
+  const { events } = state 
   const { projects, updateProject, deleteProject, addProject } =
     useCalendarProjects();
 
