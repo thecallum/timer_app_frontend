@@ -1,9 +1,9 @@
 import { calculateDuration } from "../helpers/duration";
 import { formatDuration } from "../helpers/formatter";
-import { ICalendarEvent } from "../types/types";
+import { CalendarEvent } from "../types/types";
 
 interface Props {
-  events: ICalendarEvent[];
+  events: CalendarEvent[];
 }
 
 export const CalendarWeekSummary = (props: Props) => {

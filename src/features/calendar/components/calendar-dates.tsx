@@ -1,12 +1,12 @@
 import classNames from "classnames";
 import dayjs from "dayjs";
-import { ICalendarEvent } from "../types/types";
+import { CalendarEvent } from "../types/types";
 import { calculateDuration } from "../helpers/duration";
 import { formatDuration } from "../helpers/formatter";
 
 interface Props {
   weeks: dayjs.Dayjs[];
-  events: ICalendarEvent[];
+  events: CalendarEvent[];
 }
 
 export const CalendarDates = (props: Props) => {

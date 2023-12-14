@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { Project } from "../project";
-import { ICalendarEvent, IProject, defaultProject } from "../../types/types";
+import { CalendarEvent, IProject, defaultProject } from "../../types/types";
 import {
   PopoverContainer,
   PopoverControls,
@@ -10,10 +10,10 @@ import { useState } from "react";
 import { formatDuration } from "../../helpers/formatter";
 import { ErrorMessage } from "@/components/form/error-message";
 import classNames from "classnames";
-import { v4 as uuidv4 } from "uuid";
 import { TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
+
 interface Props {
   close: () => void;
   time: dayjs.Dayjs;
@@ -25,7 +25,7 @@ interface Props {
 export const AddEventPopover = (props: Props) => {
   const { close, time, showAddProjectModal, projects, containerRef } = props;
   const { actions } = useCalendarEvents();
-  const { addEvent } = actions
+  const { addEvent } = actions;
   const [project, setProject] = useState<IProject | null>(null);
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -71,13 +71,12 @@ export const AddEventPopover = (props: Props) => {
       return;
     }
 
-    const newEvent: ICalendarEvent = {
-      id: uuidv4(),
-      start: dayjs(startDate),
-      end: getEndTimeAsDate(),
+    const newEvent = new CalendarEvent(
       description,
-      project: project ?? defaultProject,
-    };
+      dayjs(startDate),
+      getEndTimeAsDate(),
+      project ?? defaultProject
+    );
 
     addEvent(newEvent);
     close();

@@ -3,7 +3,7 @@ import {
   PopoverControls,
   PopoverLayout,
 } from "@/components/popover";
-import { ICalendarEvent, IProject, defaultProject } from "../../types/types";
+import { CalendarEvent, IProject, defaultProject } from "../../types/types";
 import { Project } from "../project";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -16,7 +16,7 @@ import { useCalendarEvents } from "@/contexts/calendarEventContext";
 
 interface Props {
   close: () => void;
-  event: ICalendarEvent;
+  event: CalendarEvent;
   showAddProjectModal: () => void;
   projects: IProject[];
   containerRef: HTMLDivElement | null;
@@ -84,15 +84,12 @@ export const EditEventPopover = (props: Props) => {
       return;
     }
 
-    const updatedEvent: ICalendarEvent = {
-      id: event.id,
-      start: dayjs(startDate),
-      end: getEndTimeAsDate(),
-      description,
-      project: project ?? defaultProject,
-    };
+    event.start = dayjs(startDate)
+    event.end = getEndTimeAsDate()
+    event.description = description
+    event.project = project ?? defaultProject
 
-    updateEvent(updatedEvent);
+    updateEvent(event);
     close();
   };
 

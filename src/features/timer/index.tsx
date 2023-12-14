@@ -1,11 +1,10 @@
 import { Project } from "@/features/calendar/components/project";
 import { formatDuration } from "@/features/calendar/helpers/formatter";
 import { useCalendarProjects } from "@/features/calendar/hooks/useCalendarProjects";
-import { ICalendarEvent, IProject } from "@/features/calendar/types/types";
+import { CalendarEvent, IProject } from "@/features/calendar/types/types";
 import { useState, useRef } from "react";
 import { useTimer } from "./hooks/useTimer";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
-import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 
 export const Timer = () => {
@@ -13,7 +12,7 @@ export const Timer = () => {
   const { projects } = useCalendarProjects();
 
   const { actions } = useCalendarEvents();
-  const { addEvent } = actions
+  const { addEvent } = actions;
 
   const { startTimer, stopTimer, time, isRunning } = useTimer();
   const input = useRef(null);
@@ -31,13 +30,12 @@ export const Timer = () => {
   const handleStopTimer = () => {
     stopTimer();
 
-    const newEvent: ICalendarEvent = {
-      id: uuidv4(),
+    const newEvent = new CalendarEvent(
       description,
-      start: dayjs().add(time * -1, "second"),
-      end: dayjs(),
-      project: project ?? undefined,
-    };
+      dayjs().add(time * -1, "second"),
+      dayjs(),
+      project ?? undefined
+    );
 
     addEvent(newEvent);
 

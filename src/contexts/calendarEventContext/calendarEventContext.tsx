@@ -1,17 +1,17 @@
 import { createContext, useReducer } from "react";
-import { ICalendarEvent } from "../../features/calendar/types/types";
+import { CalendarEvent } from "../../features/calendar/types/types";
 import { placeholderEvents } from "./placeholderEvents";
 
 interface IEventState {
-  events: ICalendarEvent[];
+  events: CalendarEvent[];
 }
 
 interface ICalendarEventContext {
   state: IEventState;
   actions: {
-    updateEvent: (event: ICalendarEvent) => void;
-    addEvent: (event: ICalendarEvent) => void;
-    deleteEvent: (event: ICalendarEvent) => void;
+    updateEvent: (event: CalendarEvent) => void;
+    addEvent: (event: CalendarEvent) => void;
+    deleteEvent: (event: CalendarEvent) => void;
   };
 }
 
@@ -36,9 +36,9 @@ interface Props {
 // parallelEvents (either a number, or the list of events. But listing related events might be dificult. Unless we pass the ids)
 
 type Action =
-  | { type: "update_event"; event: ICalendarEvent }
-  | { type: "add_event"; event: ICalendarEvent }
-  | { type: "delete_event"; event: ICalendarEvent };
+  | { type: "update_event"; event: CalendarEvent }
+  | { type: "add_event"; event: CalendarEvent }
+  | { type: "delete_event"; event: CalendarEvent };
 
 const reducer = (state: IEventState, action: Action): IEventState => {
   switch (action.type) {
@@ -74,21 +74,21 @@ export const CalendarContextProvider = (props: Props) => {
     events: placeholderEvents,
   });
 
-  const updateEvent = (event: ICalendarEvent) => {
+  const updateEvent = (event: CalendarEvent) => {
     dispatch({
       type: "update_event",
       event,
     });
   };
 
-  const addEvent = (event: ICalendarEvent) => {
+  const addEvent = (event: CalendarEvent) => {
     dispatch({
       type: "add_event",
       event,
     });
   };
 
-  const deleteEvent = (event: ICalendarEvent) => {
+  const deleteEvent = (event: CalendarEvent) => {
     dispatch({
       type: "delete_event",
       event,

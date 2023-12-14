@@ -1,38 +1,34 @@
 import { getColor } from "../helpers/colors";
 import { formatDuration } from "../helpers/formatter";
-import { ICalendarEvent, IProject, defaultProject } from "../types/types";
+import {
+  CalendarEvent as CalendarEventType,
+  IProject,
+  defaultProject,
+} from "../types/types";
 import { PopoverWrapper } from "./popover-wrapper";
 import { EditEventPopover } from "./popovers/edit-event-popover";
 
 interface Props {
-  event: ICalendarEvent;
+  event: CalendarEventType;
   showAddProjectModal: () => void;
   projects: IProject[];
   containerRef: HTMLDivElement | null;
 }
 
-const HEIGHT_ONE_MINUTE = (64 / 60)
+const HEIGHT_ONE_MINUTE = 64 / 60;
 
 export const CalendarEvent = (props: Props) => {
   const { event, showAddProjectModal, projects, containerRef } = props;
-  const { description, project, start, end } = event;
+  const { description, project, start } = event;
 
-  const durationInSeconds = end.diff(start, "second");
-  const startTimeInSeconds = start.diff(start.startOf("day"), "second");
+  const { durationInSeconds, durationInMinutes, startTimeInMinutes } =
+    event.duration;
+
   const column = start.day() - 1;
 
-
-  const durationByMinute = Math.ceil(durationInSeconds / 60 );
-
-  const topByMinute = Math.ceil(startTimeInSeconds / 60);
-  const elementHeight = durationByMinute * HEIGHT_ONE_MINUTE
-  const elementTop = topByMinute * HEIGHT_ONE_MINUTE
-
-  const duration = formatDuration(durationInSeconds);
-
   const eventStyles = {
-    height: `${elementHeight}px`,
-    top: `${elementTop}px`,
+    height: `${durationInMinutes * HEIGHT_ONE_MINUTE}px`,
+    top: `${startTimeInMinutes * HEIGHT_ONE_MINUTE}px`,
     left: `calc((100%/7)*${column})`,
   };
 
@@ -91,7 +87,7 @@ export const CalendarEvent = (props: Props) => {
                   color: projectColor.darkest,
                 }}
               >
-                {duration}
+                {formatDuration(durationInSeconds)}
               </div>
             </button>
           );

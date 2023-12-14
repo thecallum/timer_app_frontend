@@ -1,18 +1,11 @@
-import { ICalendarEvent } from "../types/types";
+import { CalendarEvent } from "../types/types";
 
-export const calculateDuration = (events: ICalendarEvent[]) => {
-    const totalDurationInSeconds = events.reduce(
-        (accumulator, currentValue) => {
-            const eventDurationInSeconds = currentValue.end.diff(
-                currentValue.start,
-                "second"
-            );
-            return accumulator + eventDurationInSeconds;
-        },
-        0
-    );
+export const calculateDuration = (events: CalendarEvent[]) => {
+  const totalDurationInSeconds = events.reduce(
+    (accumulator, currentValue) =>
+      accumulator + currentValue.duration.durationInSeconds,
+    0
+  );
 
-    return totalDurationInSeconds;
+  return totalDurationInSeconds;
 };
-
-

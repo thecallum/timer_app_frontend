@@ -8,8 +8,8 @@ import { EditProjectModal } from "@/modals/edit-project-modal";
 import { useState } from "react";
 
 export const Projects = () => {
-  const { state } = useCalendarEvents()
-  const { events } = state 
+  const { state } = useCalendarEvents();
+  const { events } = state;
   const { projects, updateProject, deleteProject, addProject } =
     useCalendarProjects();
 
@@ -54,14 +54,11 @@ export const Projects = () => {
       return e.project?.id === x.id;
     });
 
-    const minutes = projectEvents.reduce((accumulator, currentValue) => {
-      const durationInMinutes = currentValue.end.diff(
-        currentValue.start,
-        "minute"
-      );
-
-      return accumulator + durationInMinutes;
-    }, 0);
+    const minutes = projectEvents.reduce(
+      (accumulator, currentValue) =>
+        accumulator + currentValue.duration.durationInMinutes,
+      0
+    );
 
     return {
       ...x,

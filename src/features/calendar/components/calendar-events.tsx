@@ -1,8 +1,8 @@
-import { ICalendarEvent, IProject } from "../types/types";
+import { CalendarEvent as CalendarEventType, IProject } from "../types/types";
 import { CalendarEvent } from "./calendar-event";
 
 interface Props {
-  events: ICalendarEvent[];
+  events: CalendarEventType[];
   showAddProjectModal: () => void;
   projects: IProject[];
   containerRef: HTMLDivElement | null;

@@ -1,14 +1,14 @@
 import dayjs, { Dayjs } from "dayjs";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import { CalendarEvent } from "../types/types";
 
-import { ICalendarEvent } from "../types/types";
 dayjs.extend(isSameOrAfter);
 
 export const filterEvents = (
-  events: ICalendarEvent[],
+  events: CalendarEvent[],
   startDate: Dayjs,
   endDate: Dayjs
-): ICalendarEvent[] => {
+): CalendarEvent[] => {
   return events.filter((x) => {
     const eventDay = x.start.startOf("day");
 
