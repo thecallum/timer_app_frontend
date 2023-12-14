@@ -19,10 +19,14 @@ const HEIGHT_ONE_MINUTE = 64 / 60;
 
 export const CalendarEvent = (props: Props) => {
   const { event, showAddProjectModal, projects, containerRef } = props;
-  const { description, project, start } = event;
-
-  const { durationInSeconds, durationInMinutes, startTimeInMinutes } =
-    event.duration;
+  const {
+    description,
+    project,
+    start,
+    durationInSeconds,
+    durationInMinutes,
+    startTimeInMinutes,
+  } = event;
 
   const column = start.day() - 1;
 

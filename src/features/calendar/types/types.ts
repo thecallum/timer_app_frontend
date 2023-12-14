@@ -1,13 +1,6 @@
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
-interface ICalendarEventDuration {
-  durationInSeconds: number;
-  durationInMinutes: number;
-  startTimeInSeconds: number;
-  startTimeInMinutes: number;
-}
-
 export class CalendarEvent {
   public readonly id: string;
   public description: string;
@@ -28,22 +21,20 @@ export class CalendarEvent {
     this.project = project;
   }
 
-  public get duration(): ICalendarEventDuration {
-    const durationInSeconds = this.end.diff(this.start, "second");
-    const durationInMinutes = Math.ceil(durationInSeconds / 60);
+  public get durationInSeconds() {
+    return this.end.diff(this.start, "second");
+  }
 
-    const startTimeInSeconds = this.start.diff(
-      this.start.startOf("day"),
-      "second"
-    );
-    const startTimeInMinutes = Math.ceil(startTimeInSeconds / 60);
+  public get durationInMinutes() {
+    return Math.ceil(this.durationInSeconds / 60);
+  }
 
-    return {
-      durationInSeconds,
-      durationInMinutes,
-      startTimeInSeconds,
-      startTimeInMinutes,
-    };
+  public get startTimeInSeconds() {
+    return this.start.diff(this.start.startOf("day"), "second");
+  }
+
+  public get startTimeInMinutes() {
+    return Math.ceil(this.startTimeInSeconds / 60);
   }
 }
 

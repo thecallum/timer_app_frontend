@@ -56,7 +56,7 @@ export const Projects = () => {
 
     const minutes = projectEvents.reduce(
       (accumulator, currentValue) =>
-        accumulator + currentValue.duration.durationInMinutes,
+        accumulator + currentValue.durationInMinutes,
       0
     );
 
