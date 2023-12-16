@@ -8,6 +8,11 @@ export class CalendarEvent {
   public end: dayjs.Dayjs;
   public project?: IProject;
 
+  public parallelEvents: { events: string[]; columnCount: number } = {
+    events: [],
+    columnCount: 0
+  };
+
   constructor(
     description: string,
     start: dayjs.Dayjs,
@@ -19,6 +24,10 @@ export class CalendarEvent {
     this.start = start;
     this.end = end;
     this.project = project;
+  }
+
+  public get dayOfWeek() {
+    return this.start.day();
   }
 
   public get durationInSeconds() {
@@ -35,6 +44,10 @@ export class CalendarEvent {
 
   public get startTimeInMinutes() {
     return Math.ceil(this.startTimeInSeconds / 60);
+  }
+
+  public get endTimeInSeconds() {
+    return this.startTimeInSeconds + this.durationInSeconds;
   }
 }
 

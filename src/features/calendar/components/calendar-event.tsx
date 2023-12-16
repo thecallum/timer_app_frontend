@@ -20,21 +20,33 @@ const HEIGHT_ONE_MINUTE = 64 / 60;
 export const CalendarEvent = (props: Props) => {
   const { event, showAddProjectModal, projects, containerRef } = props;
   const {
+    id,
     description,
     project,
-    start,
+    dayOfWeek,
     durationInSeconds,
     durationInMinutes,
     startTimeInMinutes,
+    parallelEvents,
   } = event;
 
-  const column = start.day() - 1;
+  const parallelPosition =
+    parallelEvents.events.length === 1 ? 0 : parallelEvents.events.indexOf(id);
 
   const eventStyles = {
     height: `${durationInMinutes * HEIGHT_ONE_MINUTE}px`,
     top: `${startTimeInMinutes * HEIGHT_ONE_MINUTE}px`,
-    left: `calc((100%/7)*${column})`,
+    // left: `calc((100% / 7 * ${dayOfWeek - 1}) + ((100% / 7 / ${
+    //   parallelEvents.events.length
+    // }) * ${parallelPosition}))`,
+    left: `calc((100% / 7 * ${dayOfWeek - 1}) + ((100% / 7 / ${
+      parallelEvents.columnCount
+    }) * ${parallelPosition}))`,
+    // width: `calc((100%/7)/${parallelEvents.events.length})`,
+    width: `calc((100%/7)/${parallelEvents.columnCount})`,
   };
+
+  // parallelEvents.columnCount
 
   return (
     <li className="relative">
@@ -56,7 +68,7 @@ export const CalendarEvent = (props: Props) => {
 
           return (
             <button
-              className={`absolute rounded-sm w-[calc(100%/7)] p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
+              className={`absolute rounded-sm p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
               ref={ref}
               style={{
                 ...eventStyles,
@@ -74,6 +86,7 @@ export const CalendarEvent = (props: Props) => {
                     color: projectColor.darkest,
                   }}
                 >
+                  [{parallelEvents.columnCount}]:{" "}
                   {description || "(no description)"}
                 </div>
                 <div
