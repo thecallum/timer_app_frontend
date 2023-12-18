@@ -1,5 +1,8 @@
 import { createContext, useReducer } from "react";
-import { CalendarEvent } from "../../features/calendar/types/types";
+import {
+  CalendarEvent,
+  ICalendarEventParallelEvents,
+} from "../../features/calendar/types/types";
 import { placeholderEvents } from "./placeholderEvents";
 import dayjs from "dayjs";
 
@@ -68,15 +71,11 @@ const reducer = (state: IEventState, action: Action): IEventState => {
   }
 };
 
-// enum DayOfWeek {
-//   Sunday = 1,
-//   Monday = 2,
-//   Tuesday = 3,
-//   Wednesday = 4,
-//   Thursday = 5,
-//   Friday = 6,
-//   Saturday = 7,
-// }
+interface ICalendarFiveMinuteSlot {
+  startTimeInSeconds: number;
+  endTimeInSeconds: number;
+  eventIds: string[];
+}
 
 export const CalendarContextProvider = (props: Props) => {
   const { children } = props;
@@ -85,156 +84,140 @@ export const CalendarContextProvider = (props: Props) => {
     events: placeholderEvents,
   });
 
-  const getEvents = () => {
-    interface IGroupedEvent {
-      startTimeInSeconds: number;
-      endTimeInSeconds: number;
-      columnCount: number;
-    }
-
+  const mapEventsGroupedByFiveMinutes = () => {
     const eventsPerFiveMinutes: {
-      [key: number]: IGroupedEvent[];
+      [key: number]: ICalendarFiveMinuteSlot[];
     } = {};
 
-    for (let dayOfWeek = 1; dayOfWeek < 8; dayOfWeek++) {
-    // for (const dayOfWeek in DayOfWeek) {
-      const events: IGroupedEvent[] = [];
+    // 2. For each row, populate each calendar event that exists within that 5 minute window
 
-      const eventsToday = state.events.filter(
-        (x) => x.dayOfWeek === dayOfWeek
-      );
+    for (let dayOfWeek = 1; dayOfWeek < 8; dayOfWeek++) {
+      const events: ICalendarFiveMinuteSlot[] = [];
+
+      const eventsToday = state.events.filter((x) => x.dayOfWeek === dayOfWeek);
 
       for (let hour = 0; hour < 24; hour++) {
         for (let minute = 0; minute < 60; minute += 5) {
-          // const formattedTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-
-          // const parallelEvents: string[] = []
-
-          // const now = dayjs();
-          // const [hours, minutes] = timeString.split(':').map(Number);
-          // const start = now.hour(hour).minute(minute).second(0).millisecond(0);
-          // const end = start.add(5, "minute")
-
-          // console.log({ start, end })
-
           const startTimeInSeconds = (hour * 60 + minute) * 60;
           const endTimeInSeconds = startTimeInSeconds + 300;
 
-          // console.log(startTimeInSeconds, endTimeInSeconds)
-
-          const parallelEvents = eventsToday
-            .filter((x) => {
-              return (
-                (endTimeInSeconds >= x.startTimeInSeconds &&
-                  endTimeInSeconds <= x.endTimeInSeconds) ||
-                (startTimeInSeconds >= x.startTimeInSeconds &&
-                  startTimeInSeconds <= x.endTimeInSeconds)
-              );
-            })
-            // .filter(x => {
-            //   return x.startTimeInSeconds >= startTimeInSeconds
-            // })
-            .map((x) => x.id);
-
-          // timeEvents.push({ time: formattedTime, events: [] });
+          const parallelEvents = eventsToday.filter((x) => {
+            return (
+              (endTimeInSeconds >= x.startTimeInSeconds &&
+                endTimeInSeconds <= x.endTimeInSeconds) ||
+              (startTimeInSeconds >= x.startTimeInSeconds &&
+                startTimeInSeconds <= x.endTimeInSeconds)
+            );
+          });
 
           events.push({
             startTimeInSeconds,
             endTimeInSeconds,
-            columnCount: parallelEvents.length,
+            eventIds: parallelEvents.map((x) => x.id),
           });
         }
       }
 
-      // console.log({ dayOfWeek }, DayOfWeek[dayOfWeek]);
-
       eventsPerFiveMinutes[dayOfWeek] = events;
-      // eventsPerFiveMinutes[dayOfWeek] = events
-
-      // = events;
-
     }
-    console.log({ eventsPerFiveMinutes: eventsPerFiveMinutes })
-    // console.log({ eventsPerFiveMinutes: eventsPerFiveMinutes[DayOfWeek.Monday]})
 
-    // =======================
+    return eventsPerFiveMinutes;
+  };
 
+  const findRowWithMostColumns = (rows: ICalendarFiveMinuteSlot[]) => {
+    let largestRow: ICalendarFiveMinuteSlot = rows[0];
+
+    if (rows.length > 1) {
+      rows.forEach((row) => {
+        if (row.eventIds.length > largestRow.eventIds.length) {
+          largestRow = row;
+        }
+      });
+    }
+
+    return largestRow;
+  };
+
+  const mapParallelEventsToEventById = (eventsPerFiveMinutes: {
+    [key: number]: ICalendarFiveMinuteSlot[];
+  }) => {
     const parallelEventsById: {
-      [key: string]: {
-        events: string[];
-        columnCount: number;
-      };
+      [key: string]: ICalendarEventParallelEvents;
     } = {};
 
-    // 1. Calculate parallel events
     state.events.forEach((event) => {
-      const parallelEvents = state.events
-        .filter((x) => x.dayOfWeek === event.dayOfWeek) // same column
-        .filter((x) => {
-          return (
-            (event.endTimeInSeconds >= x.startTimeInSeconds &&
-              event.endTimeInSeconds <= x.endTimeInSeconds) ||
-            (event.startTimeInSeconds >= x.startTimeInSeconds &&
-              event.startTimeInSeconds <= x.endTimeInSeconds)
-          );
-        });
-
-      const eventsById = parallelEvents.map((x) => x.id);
-
-      // 2. Work out the expected width
-
-      // not expected width, column count (use highest common denominator)
-      // const yee =
-      // filter all of the rows that contain this event
-
-      // DayOfWeek[dayOfWeek as keyof typeof DayOfWeek]
-
-      // const dow = DayOfWeek[event.dayOfWeek]
-      // const dow = DayOfWeek[DayOfWeek[event.dayOfWeek] as keyof typeof DayOfWeek]
-
-      const containingRows = eventsPerFiveMinutes[event.dayOfWeek]
-      .filter(
+      const containingRows = eventsPerFiveMinutes[event.dayOfWeek].filter(
         (x) => {
-
-          const result =  (
-event.startTimeInSeconds < x.endTimeInSeconds && event.endTimeInSeconds > x.startTimeInSeconds
-            
-            // (event.endTimeInSeconds >= x.startTimeInSeconds &&
-            //   event.endTimeInSeconds <= x.endTimeInSeconds) ||
-            // (event.startTimeInSeconds >= x.startTimeInSeconds &&
-            //   event.startTimeInSeconds <= x.endTimeInSeconds)
-          );
-
-          // console.log(event.description, event.startTimeInSeconds, x.startTimeInSeconds, result)
+          const result =
+            event.startTimeInSeconds < x.endTimeInSeconds &&
+            event.endTimeInSeconds > x.startTimeInSeconds;
 
           return result;
         }
-      )
-      // .map(x => x.columnCount)
+      );
 
-      const largestColumnCount = Math.max(...containingRows.map(x => x.columnCount))
+      // find largest row
+      const rowWithMostColumns = findRowWithMostColumns(containingRows);
+      // const parallelIds = [...new Set(...containingRows.map(x => x.eventIds))].filter(x => x !== event.id)
 
-      console.log(event.description, { largestColumnCount, containingRows });
+        let parallelIds: string[] = []
+        
+        containingRows.forEach(row => {
+          parallelIds.push(...row.eventIds.filter(x => x !== event.id))
+        });
 
-      // const expectedWidth = 1 / eventsById.length;
+        parallelIds = [...new Set(parallelIds)]
 
-      // 3. Work out allocated width (if left over space, use that)
+        // const parallelIds: string[] = [
+        //   ...containingRows.map(x => x.eventIds)
+        // ]
+
+
+      // console.log(containingRows.map(x => x.eventIds))
+      // console.log({ parallelIds})
+
+      const largestColumnCount = rowWithMostColumns.eventIds.length;
 
       parallelEventsById[event.id] = {
-        events: eventsById,
-        columnCount: largestColumnCount
-        // expectedWidth: 1 / largestColumnCount,
+        columnCount: largestColumnCount,
+        displayPosition:
+          rowWithMostColumns.eventIds.length === 1
+            ? 0
+            : rowWithMostColumns.eventIds.indexOf(event.id),
+            columnIds: [...parallelIds],
+          columnCountOfOtherEvents: []
+        // columnCountOfOtherEvents: rowWithMostColumns.map(x => x.)
       };
     });
+
+    // calculate the column width of other columns
+    Object.keys(parallelEventsById).forEach(key => {
+      const event = parallelEventsById[key]
+
+      event.columnCountOfOtherEvents = event.columnIds.map(id => {
+        return parallelEventsById[id].columnCount
+      })
+      
+    });
+
+    return parallelEventsById;
+  };
+
+  const getEvents = () => {
+    // 1. Create an object, for each day of week, add a row every 5 minutes
+    const eventsPerFiveMinutes = mapEventsGroupedByFiveMinutes();
+
+    /*
+      Next, take an event. Find every 5 minute slot that the event exists in.
+      The size of the event can be calculate by selecting the 5 minute slot with the most parallel columns
+    */
+
+    const parallelEventsById =
+      mapParallelEventsToEventById(eventsPerFiveMinutes);
 
     return state.events.map((event) => {
       const parallelEvents = parallelEventsById[event.id];
 
-      // calculate initial width fraction
-      // const widthFraction = 1 / parallelEvents.length;
-
-      // map ids
-      // event.
       event.parallelEvents = parallelEvents;
 
       return event;

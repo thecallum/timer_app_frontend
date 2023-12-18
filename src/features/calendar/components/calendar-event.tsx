@@ -20,7 +20,6 @@ const HEIGHT_ONE_MINUTE = 64 / 60;
 export const CalendarEvent = (props: Props) => {
   const { event, showAddProjectModal, projects, containerRef } = props;
   const {
-    id,
     description,
     project,
     dayOfWeek,
@@ -30,23 +29,21 @@ export const CalendarEvent = (props: Props) => {
     parallelEvents,
   } = event;
 
-  const parallelPosition =
-    parallelEvents.events.length === 1 ? 0 : parallelEvents.events.indexOf(id);
+  const parallelPosition = parallelEvents.displayPosition;
+  
+  let width = (1/parallelEvents.columnCount)
+
+  if (parallelEvents.columnCount < Math.max(...parallelEvents.columnCountOfOtherEvents)) {
+    width += ((1/Math.max(...parallelEvents.columnCountOfOtherEvents)) /2)
+  }
+
 
   const eventStyles = {
     height: `${durationInMinutes * HEIGHT_ONE_MINUTE}px`,
     top: `${startTimeInMinutes * HEIGHT_ONE_MINUTE}px`,
-    // left: `calc((100% / 7 * ${dayOfWeek - 1}) + ((100% / 7 / ${
-    //   parallelEvents.events.length
-    // }) * ${parallelPosition}))`,
-    left: `calc((100% / 7 * ${dayOfWeek - 1}) + ((100% / 7 / ${
-      parallelEvents.columnCount
-    }) * ${parallelPosition}))`,
-    // width: `calc((100%/7)/${parallelEvents.events.length})`,
-    width: `calc((100%/7)/${parallelEvents.columnCount})`,
+    left: `calc((100% / 7 * ${dayOfWeek - 1}) + ((100% / 7 / ${parallelEvents.columnCount }) * ${parallelPosition}))`,
+    width: `calc((100%/7)*${width})`,
   };
-
-  // parallelEvents.columnCount
 
   return (
     <li className="relative">
@@ -86,7 +83,7 @@ export const CalendarEvent = (props: Props) => {
                     color: projectColor.darkest,
                   }}
                 >
-                  [{parallelEvents.columnCount}]:{" "}
+                  [{parallelEvents.columnCount}]:[{parallelEvents.columnCountOfOtherEvents.join(",")}]:{" "}
                   {description || "(no description)"}
                 </div>
                 <div

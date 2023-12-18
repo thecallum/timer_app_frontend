@@ -1,6 +1,13 @@
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
+export interface ICalendarEventParallelEvents {
+  columnIds: string[],
+  columnCount: number;
+  displayPosition: number;
+  columnCountOfOtherEvents: number[];
+}
+
 export class CalendarEvent {
   public readonly id: string;
   public description: string;
@@ -8,9 +15,11 @@ export class CalendarEvent {
   public end: dayjs.Dayjs;
   public project?: IProject;
 
-  public parallelEvents: { events: string[]; columnCount: number } = {
-    events: [],
-    columnCount: 0
+  public parallelEvents: ICalendarEventParallelEvents = {
+    columnIds: [],
+    columnCount: 0,
+    displayPosition: 0,
+    columnCountOfOtherEvents: []
   };
 
   constructor(
