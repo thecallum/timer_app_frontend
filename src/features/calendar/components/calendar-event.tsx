@@ -76,7 +76,6 @@ export const CalendarEvent = (props: Props) => {
                     color: projectColor.darkest,
                   }}
                 >
-                  [{parallelEvents.columnCount}]:
                   {description || "(no description)"}
                 </div>
                 <div

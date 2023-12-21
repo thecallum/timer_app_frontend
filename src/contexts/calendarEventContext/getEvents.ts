@@ -86,125 +86,67 @@ const mapParallelEventsToEventById = (
     [key: string]: ICalendarEventParallelEvents;
   } = {};
 
+  const maxRows = findRowWithMostColumns(eventsPerFiveMinutes);
+
   allEvents.forEach((event) => {
     const containingRows = findContainingRows(event, eventsPerFiveMinutes);
 
     // find largest row
     const rowWithMostColumns = findRowWithMostColumns(containingRows);
+    const largestColumnCount = rowWithMostColumns.eventIds.length;
 
     const parallelIds = getParallelIds(containingRows);
-
-    const largestColumnCount = rowWithMostColumns.eventIds.length;
-  
 
     parallelEventsById[event.id] = {
       columnCount: largestColumnCount,
       columnIds: [...parallelIds],
       left: 0,
       displayPosition: 0,
-      width: 1 / largestColumnCount,
-      // width: 1 / parallelIds.length,
+      width: 1 / maxRows.eventIds.length,
     };
   });
 
+  allEvents
+    .sort((a, b) => a.startTimeInSeconds - b.startTimeInSeconds)
+    .forEach(({ id }) => {
+      const event = parallelEventsById[id];
 
-// sort by start time
+      const eventsByDisplayPosition: {
+        [key: number]: ICalendarEventParallelEvents;
+      } = event.columnIds.reduce((obj, id) => {
+        const event = parallelEventsById[id];
 
-let i = 1
+        return {
+          ...obj,
+          [event.displayPosition]: event,
+        };
+      }, {});
 
-  allEvents.sort((a, b) => {
-    return a.startTimeInSeconds - b.startTimeInSeconds
-  }).forEach(({ id }) => {
-    const event = parallelEventsById[id];
+      // check if display positoin 1 is taken
+      const largestDisplayPositon = Math.max(
+        ...Object.keys(eventsByDisplayPosition).map(Number)
+      );
 
-    const displayPosition =
-      event.columnIds.length === 1 ? 0 : event.columnIds.indexOf(id);
+      const takenPositions = new Set<number>(
+        Object.keys(eventsByDisplayPosition).map(Number)
+      );
 
-    // console.log({ displayPosition, id });
+      for (let i = 0; i < largestDisplayPositon + 1; i++) {
+        if (!takenPositions.has(i + 1)) {
+          event.displayPosition = i + 1;
 
-    // event.left = displayPosition / event.columnCount;
-    // event.left = (i++) 
+          if (i === 0) {
+            event.left = i / event.columnCount;
+          } else {
+            const previousEl = eventsByDisplayPosition[i];
 
-    // get other column displayPositions
-    const otherEvents = event.columnIds.map(id => parallelEventsById[id])
-    console.log(event.columnIds, { otherEvents })
+            event.left = previousEl.width + previousEl.left;
+          }
 
-    // check if display positoin 1 is taken
-    const largestDisplayPositon = Math.max(...otherEvents.map(x => x.displayPosition))
-    // const smallestDisplayPositon = Math.max(...otherEvents.map(x => x.displayPosition))
-
-    const takenPositions = new Set<number>(otherEvents.map(x => x.displayPosition))
-    console.log(takenPositions, largestDisplayPositon)
-
-    // let nextPosition = 1;
-
-    for (let i = 0; i < largestDisplayPositon + 1; i++) {
-      // console.log("i", i)
-      // nextPosition = i
-
-      // const element = array[i];
-      if (!takenPositions.has(i + 1)) {
-        console.log("break at i", i + 1)
-        event.displayPosition = i+1
-        // event.left =   i+1 / event.columnCount
-
-        // event.left = (100/event.columnCount) * i 
-        // event.left = 1/event.columnCount
-
-        // or add the left+width of previous item
-
-        if (i === 0) {
-          event.left = i/event.columnCount
-        } else {
-          const previousEl = otherEvents.filter(x => x.displayPosition == i)[0]
-          console.log({ previousEl, i})
-  
-          event.left = previousEl.width + previousEl.left
+          break;
         }
-
-      
-
-
-        // event.left = i/event.columnCount
-        break
       }
-
-      
-    }
-
-    // console.log({i})
-
-
-
-
-    // if (largestDisplayPositon === 0) {
-    //   event.displayPosition = 1
-    // } else {
-    //   event.displayPosition = largestDisplayPositon + 1
-    // }
-
-    // // event.displayPosition = 1
-    // event.left = event.displayPosition
-
-
-
-    // how to check if an event exists before me?
-
-  })
-
-
-
-  // Object.keys(parallelEventsById).forEach((key) => {
-  //   const event = parallelEventsById[key];
-
-  //   const displayPosition =
-  //     event.columnIds.length === 1 ? 0 : event.columnIds.indexOf(key);
-
-  //   console.log({ displayPosition, key });
-
-  //   // event.left = 0;
-  //   event.left = displayPosition / event.columnCount;
-  // });
+    });
 
   return parallelEventsById;
 };
