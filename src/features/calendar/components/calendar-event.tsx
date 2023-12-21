@@ -29,20 +29,13 @@ export const CalendarEvent = (props: Props) => {
     parallelEvents,
   } = event;
 
-  const parallelPosition = parallelEvents.displayPosition;
-  
-  let width = (1/parallelEvents.columnCount)
-
-  if (parallelEvents.columnCount < Math.max(...parallelEvents.columnCountOfOtherEvents)) {
-    width += ((1/Math.max(...parallelEvents.columnCountOfOtherEvents)) /2)
-  }
-
-
   const eventStyles = {
     height: `${durationInMinutes * HEIGHT_ONE_MINUTE}px`,
     top: `${startTimeInMinutes * HEIGHT_ONE_MINUTE}px`,
-    left: `calc((100% / 7 * ${dayOfWeek - 1}) + ((100% / 7 / ${parallelEvents.columnCount }) * ${parallelPosition}))`,
-    width: `calc((100%/7)*${width})`,
+    left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${
+      parallelEvents.left
+    }))`,
+    width: `calc((100%/7)*${parallelEvents.width})`,
   };
 
   return (
@@ -83,7 +76,7 @@ export const CalendarEvent = (props: Props) => {
                     color: projectColor.darkest,
                   }}
                 >
-                  [{parallelEvents.columnCount}]:[{parallelEvents.columnCountOfOtherEvents.join(",")}]:{" "}
+                  [{parallelEvents.columnCount}]:
                   {description || "(no description)"}
                 </div>
                 <div

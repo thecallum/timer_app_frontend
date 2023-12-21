@@ -5,7 +5,9 @@ export interface ICalendarEventParallelEvents {
   columnIds: string[],
   columnCount: number;
   displayPosition: number;
-  columnCountOfOtherEvents: number[];
+  // columnCountOfOtherEvents: number[];
+  left: number;
+  width: number;
 }
 
 export class CalendarEvent {
@@ -19,7 +21,9 @@ export class CalendarEvent {
     columnIds: [],
     columnCount: 0,
     displayPosition: 0,
-    columnCountOfOtherEvents: []
+    // columnCountOfOtherEvents: [],
+    left: 0,
+    width: 0
   };
 
   constructor(
