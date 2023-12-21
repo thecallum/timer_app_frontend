@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
+export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+
 export class CalendarEvent {
   public readonly id: string;
   public description: string;
@@ -24,8 +26,13 @@ export class CalendarEvent {
     this.project = project;
   }
 
-  public get dayOfWeek() {
-    return this.start.day();
+  public get dayOfWeek(): DayOfWeek {
+    // Sunday is zero, replace with 7
+    const dayOfWeek = this.start.day();
+
+    if (dayOfWeek === 0) return 7;
+
+    return dayOfWeek as DayOfWeek;
   }
 
   public get durationInSeconds() {

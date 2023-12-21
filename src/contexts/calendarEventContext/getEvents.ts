@@ -10,12 +10,15 @@ interface ICalendarEventParallelEvents {
   columnIds: string[];
   columnCount: number;
   displayPosition: number;
-  left: number;
-  width: number;
 }
 
+type ParallelEventSlot = {
+  startTimeInSeconds: number;
+  endTimeInSeconds: number;
+};
+
 const generateFiveMinuteSlots = () => {
-  const slots = [];
+  const slots: ParallelEventSlot[] = [];
 
   for (let hour = 0; hour < 24; hour++) {
     for (let minute = 0; minute < 60; minute += 5) {
@@ -30,7 +33,7 @@ const generateFiveMinuteSlots = () => {
 };
 
 const findParallelEvents = (
-  slot: { startTimeInSeconds: number; endTimeInSeconds: number },
+  slot: ParallelEventSlot,
   events: CalendarEvent[]
 ) => {
   return events.filter((x) => {
@@ -43,34 +46,17 @@ const findParallelEvents = (
   });
 };
 
-const mapEventsGroupedByFiveMinutes = (
-  eventsPerDayOfWeek: CalendarEvent[][]
+
+const populateSlotsWithParallelEvents = (
+  eventsToday: CalendarEvent[],
+  slots: ParallelEventSlot[]
 ) => {
-  const slots = generateFiveMinuteSlots();
+  // Iterate through each slot, and map any events
 
-  const slotsByDayOfWeek: {
-    eventIds: string[];
-    startTimeInSeconds: number;
-    endTimeInSeconds: number;
-  }[][] = [];
-
-  for (let index = 0; index < eventsPerDayOfWeek.length; index++) {
-    const eventsToday = eventsPerDayOfWeek[index];
-
-    const slotsToday = slots.map((slot) => ({
-      ...slot,
-      eventIds: findParallelEvents(slot, eventsToday).map((x) => x.id),
-    }));
-
-    slotsByDayOfWeek.push(slotsToday);
-  }
-
-  return slotsByDayOfWeek;
-
-  // return slots.map((slot) => ({
-  //   ...slot,
-  //   eventIds: findParallelEvents(slot, allEvents).map((x) => x.id),
-  // }));
+  return slots.map((slot) => ({
+    ...slot,
+    eventIds: findParallelEvents(slot, eventsToday).map((x) => x.id),
+  }));
 };
 
 const findRowWithMostColumns = (rows: ICalendarFiveMinuteSlot[]) => {
@@ -123,17 +109,12 @@ const mapParallelEventsToEventById = (
       );
 
       // find largest row
-      const rowWithMostColumns = findRowWithMostColumns(containingRows);
-      const largestColumnCount = rowWithMostColumns.eventIds.length;
-
       const parallelIds = getParallelIds(containingRows);
 
       parallelEventsById[event.id] = {
-        columnCount: largestColumnCount,
+        columnCount: maxRows.eventIds.length,
         columnIds: [...parallelIds],
-        left: 0,
         displayPosition: 0,
-        width: 1 / maxRows.eventIds.length,
       };
     });
 
@@ -153,26 +134,14 @@ const mapParallelEventsToEventById = (
           };
         }, {});
 
-        // check if display positoin 1 is taken
-        const largestDisplayPositon = Math.max(
-          ...Object.keys(eventsByDisplayPosition).map(Number)
-        );
-
         const takenPositions = new Set<number>(
           Object.keys(eventsByDisplayPosition).map(Number)
         );
 
-        for (let i = 0; i < largestDisplayPositon + 1; i++) {
+        // find the smallest, non-taken position
+        for (let i = 0; i < maxRows.eventIds.length + 1; i++) {
           if (!takenPositions.has(i + 1)) {
             event.displayPosition = i + 1;
-
-            if (i === 0) {
-              event.left = i / event.columnCount;
-            } else {
-              const previousEl = eventsByDisplayPosition[i];
-
-              event.left = previousEl.width + previousEl.left;
-            }
 
             break;
           }
@@ -183,38 +152,39 @@ const mapParallelEventsToEventById = (
   return parallelEventsById;
 };
 
-export const getEvents = (allEvents: CalendarEvent[]) => {
-  // lets just use 1 column for simplicity
-  // const mondayEvents = allEvents.filter((x) => x.dayOfWeek === 1);
-
-  // 1. Create an object, for each day of week, add a row every 5 minutes
-
-  // const eventsToday = allEvents.filter((x) => x.dayOfWeek === dayOfWeek);
-
+const groupEventsByDayOfWeek = (allEvents: CalendarEvent[]) => {
   const eventsPerDayOfWeek: CalendarEvent[][] = [[], [], [], [], [], [], []];
 
   allEvents.forEach((event) => {
     eventsPerDayOfWeek[event.dayOfWeek - 1].push(event);
   });
 
-  const eventsPerFiveMinutes =
-    mapEventsGroupedByFiveMinutes(eventsPerDayOfWeek);
+  return eventsPerDayOfWeek;
+};
 
-  /*
-      Next, take an event. Find every 5 minute slot that the event exists in.
-      The size of the event can be calculate by selecting the 5 minute slot with the most parallel columns
-    */
+export const getEvents = (allEvents: CalendarEvent[]) => {
+  // 1. Group events by day of week
+  const eventsPerDayOfWeek = groupEventsByDayOfWeek(allEvents);
+
+  // 2. Group each event into 5 minute slots
+  const fiveMinuteSlots = generateFiveMinuteSlots();
+
+  const parallelEventsGroupedByFiveMinuteSlots = eventsPerDayOfWeek.map(
+    (eventsToday) =>
+      populateSlotsWithParallelEvents(eventsToday, fiveMinuteSlots)
+  );
 
   const parallelEventsById = mapParallelEventsToEventById(
     eventsPerDayOfWeek,
-    eventsPerFiveMinutes
+    parallelEventsGroupedByFiveMinuteSlots
   );
 
   return allEvents.map((event) => {
     const parallelEvents = parallelEventsById[event.id];
+    const computedWidth = 1 / parallelEvents.columnCount;
 
-    event.left = parallelEvents.left;
-    event.width = parallelEvents.width;
+    event.width = computedWidth;
+    event.left = (parallelEvents.displayPosition - 1) * computedWidth;
 
     return event;
   });
