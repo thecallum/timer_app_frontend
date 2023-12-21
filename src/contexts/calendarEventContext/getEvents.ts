@@ -46,7 +46,6 @@ const findParallelEvents = (
   });
 };
 
-
 const populateSlotsWithParallelEvents = (
   eventsToday: CalendarEvent[],
   slots: ParallelEventSlot[]
@@ -90,64 +89,70 @@ function getParallelIds(containingRows: ICalendarFiveMinuteSlot[]) {
 }
 
 const mapParallelEventsToEventById = (
-  eventsPerDayOfWeek: CalendarEvent[][],
-  eventsPerFiveMinutes: ICalendarFiveMinuteSlot[][]
+  eventsToday: CalendarEvent[],
+  eventsPerFiveMinutes: ICalendarFiveMinuteSlot[]
 ) => {
   const parallelEventsById: {
     [key: string]: ICalendarEventParallelEvents;
   } = {};
 
-  for (let index = 0; index < eventsPerDayOfWeek.length; index++) {
-    const eventsThisWeek = eventsPerDayOfWeek[index];
+  const largestColumnCount =
+    findRowWithMostColumns(eventsPerFiveMinutes).eventIds.length;
 
-    const maxRows = findRowWithMostColumns(eventsPerFiveMinutes[index]);
+  eventsToday.forEach((event) => {
+    const containingRows = findContainingRows(event, eventsPerFiveMinutes);
 
-    eventsThisWeek.forEach((event) => {
-      const containingRows = findContainingRows(
-        event,
-        eventsPerFiveMinutes[index]
-      );
+    // find largest row
+    const parallelIds = getParallelIds(containingRows);
 
-      // find largest row
-      const parallelIds = getParallelIds(containingRows);
+    parallelEventsById[event.id] = {
+      columnCount: largestColumnCount,
+      columnIds: [...parallelIds],
+      displayPosition: 0,
+    };
+  });
 
-      parallelEventsById[event.id] = {
-        columnCount: maxRows.eventIds.length,
-        columnIds: [...parallelIds],
-        displayPosition: 0,
-      };
-    });
+  calculatePosition(eventsToday, parallelEventsById, largestColumnCount);
 
-    eventsThisWeek
-      .sort((a, b) => a.startTimeInSeconds - b.startTimeInSeconds)
-      .forEach(({ id }) => {
+  return parallelEventsById;
+};
+
+const calculatePosition = (
+  eventsToday: CalendarEvent[],
+  parallelEventsById: {
+    [key: string]: ICalendarEventParallelEvents;
+  },
+  maxRows: number
+) => {
+  eventsToday
+    .sort((a, b) => a.startTimeInSeconds - b.startTimeInSeconds)
+    .forEach(({ id }) => {
+      const event = parallelEventsById[id];
+
+      const eventsByDisplayPosition: {
+        [key: number]: ICalendarEventParallelEvents;
+      } = event.columnIds.reduce((obj, id) => {
         const event = parallelEventsById[id];
 
-        const eventsByDisplayPosition: {
-          [key: number]: ICalendarEventParallelEvents;
-        } = event.columnIds.reduce((obj, id) => {
-          const event = parallelEventsById[id];
+        return {
+          ...obj,
+          [event.displayPosition]: event,
+        };
+      }, {});
 
-          return {
-            ...obj,
-            [event.displayPosition]: event,
-          };
-        }, {});
+      const takenPositions = new Set<number>(
+        Object.keys(eventsByDisplayPosition).map(Number)
+      );
 
-        const takenPositions = new Set<number>(
-          Object.keys(eventsByDisplayPosition).map(Number)
-        );
+      // find the smallest, non-taken position
+      for (let i = 0; i < maxRows + 1; i++) {
+        if (!takenPositions.has(i + 1)) {
+          event.displayPosition = i + 1;
 
-        // find the smallest, non-taken position
-        for (let i = 0; i < maxRows.eventIds.length + 1; i++) {
-          if (!takenPositions.has(i + 1)) {
-            event.displayPosition = i + 1;
-
-            break;
-          }
+          break;
         }
-      });
-  }
+      }
+    });
 
   return parallelEventsById;
 };
@@ -174,10 +179,18 @@ export const getEvents = (allEvents: CalendarEvent[]) => {
       populateSlotsWithParallelEvents(eventsToday, fiveMinuteSlots)
   );
 
-  const parallelEventsById = mapParallelEventsToEventById(
-    eventsPerDayOfWeek,
-    parallelEventsGroupedByFiveMinuteSlots
-  );
+  // Hard to say what this does
+  const parallelEventsById = eventsPerDayOfWeek
+    .map((eventsThisWeek, index) =>
+      mapParallelEventsToEventById(
+        eventsThisWeek,
+        parallelEventsGroupedByFiveMinuteSlots[index]
+      )
+    )
+    .reduce((obj, parallelEvents) => ({
+      ...obj,
+      ...parallelEvents,
+    }));
 
   return allEvents.map((event) => {
     const parallelEvents = parallelEventsById[event.id];
