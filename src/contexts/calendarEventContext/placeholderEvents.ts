@@ -22,6 +22,19 @@ export const placeholderEvents: CalendarEvent[] = [
     dayjs("Mon Dec 18 2023 11:05:00 GMT+0000"),
     placeholderProjects[2]
   ),
+
+  new CalendarEvent(
+    "BBB",
+    dayjs("Mon Dec 19 2023 08:50:00 GMT+0000"),
+    dayjs("Mon Dec 19 2023 10:20:00 GMT+0000"),
+    placeholderProjects[1]
+  ),
+  new CalendarEvent(
+    "CCC",
+    dayjs("Mon Dec 19 2023 09:30:00 GMT+0000"),
+    dayjs("Mon Dec 19 2023 11:05:00 GMT+0000"),
+    placeholderProjects[2]
+  ),
   new CalendarEvent(
     "DDD",
     dayjs("Mon Dec 18 2023 10:10:00 GMT+0000"),

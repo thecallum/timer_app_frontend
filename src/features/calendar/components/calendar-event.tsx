@@ -26,16 +26,15 @@ export const CalendarEvent = (props: Props) => {
     durationInSeconds,
     durationInMinutes,
     startTimeInMinutes,
-    parallelEvents,
+    left,
+    width,
   } = event;
 
   const eventStyles = {
     height: `${durationInMinutes * HEIGHT_ONE_MINUTE}px`,
     top: `${startTimeInMinutes * HEIGHT_ONE_MINUTE}px`,
-    left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${
-      parallelEvents.left
-    }))`,
-    width: `calc((100%/7)*${parallelEvents.width})`,
+    left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${left}))`,
+    width: `calc((100%/7)*${width})`,
   };
 
   return (
