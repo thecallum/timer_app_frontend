@@ -56,45 +56,46 @@ export const CalendarEvent = (props: Props) => {
           const projectColor = getColor(project?.color);
 
           return (
-            <button
-              className={`absolute rounded-sm p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
-              ref={ref}
-              style={{
-                ...eventStyles,
-                background: projectColor.light,
-                // hover: {
-                //   background: "bg-pink-300",
-                // },
-              }}
-              onClick={onClick}
-            >
-              <span className="text-start">
+            <div style={eventStyles} className="absolute p-[1px]">
+              <button
+                className={`w-full rounded-sm p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
+                ref={ref}
+                style={{
+                  background: projectColor.light,
+                  // hover: {
+                  //   background: "bg-pink-300",
+                  // },
+                }}
+                onClick={onClick}
+              >
+                <span className="text-start">
+                  <div
+                    className="font-semibold text-s"
+                    style={{
+                      color: projectColor.darkest,
+                    }}
+                  >
+                    {description || "(no description)"}
+                  </div>
+                  <div
+                    className="text-xs whitespace-nowrap"
+                    style={{
+                      color: projectColor.dark,
+                    }}
+                  >
+                    {project?.name ?? defaultProject.name}
+                  </div>
+                </span>
                 <div
-                  className="font-semibold text-s"
+                  className="text-s whitespace-nowrap"
                   style={{
                     color: projectColor.darkest,
                   }}
                 >
-                  {description || "(no description)"}
+                  {formatDuration(durationInSeconds)}
                 </div>
-                <div
-                  className="text-xs whitespace-nowrap"
-                  style={{
-                    color: projectColor.dark,
-                  }}
-                >
-                  {project?.name ?? defaultProject.name}
-                </div>
-              </span>
-              <div
-                className="text-s whitespace-nowrap"
-                style={{
-                  color: projectColor.darkest,
-                }}
-              >
-                {formatDuration(durationInSeconds)}
-              </div>
-            </button>
+              </button>
+            </div>
           );
         }}
       </PopoverWrapper>
