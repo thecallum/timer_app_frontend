@@ -58,7 +58,7 @@ export const CalendarEvent = (props: Props) => {
           return (
             <div style={eventStyles} className="absolute p-[1px]">
               <button
-                className={`w-full rounded-sm p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
+                className={`w-full h-full rounded-sm p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
                 ref={ref}
                 style={{
                   background: projectColor.light,

@@ -14,11 +14,12 @@ import { ContainerFullWidth } from "@/components/layout/container-full-width";
 import { Page } from "@/components/layout/page";
 import { filterEvents } from "./helpers/filterEvents";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
+import { CurrentEventHover } from "./components/currentEventHover";
 
 export const Calendar = () => {
   const { weeks, next, previous, reset } = useCalendar();
   const { state } = useCalendarEvents();
-  const { events } = state
+  const { events } = state;
   const { projects, addProject } = useCalendarProjects();
   const [modalOpen, setModalOpen] = useState(false);
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
@@ -79,6 +80,7 @@ export const Calendar = () => {
                       showAddProjectModal={openModal}
                       events={eventsThisWeek}
                     />
+                    <CurrentEventHover />
                   </div>
                 </div>
               </div>

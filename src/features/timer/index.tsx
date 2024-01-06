@@ -14,7 +14,10 @@ export const Timer = () => {
   const { actions } = useCalendarEvents();
   const { addEvent } = actions;
 
-  const { startTimer, stopTimer, time, isRunning } = useTimer();
+  const { state: timerState, actions: timerActions } = useTimer();
+  const { startTimer, stopTimer } = timerActions;
+  const { time, isRunning } = timerState;
+
   const input = useRef(null);
   const [description, setDescription] = useState("");
 
