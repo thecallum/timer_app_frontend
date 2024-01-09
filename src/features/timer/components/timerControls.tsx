@@ -77,13 +77,13 @@ export const TimerControls = () => {
       </div>
 
       <div className="mr-4 text-slate-200 text-xl">
-        <span>{formatDuration(time)}</span>
+        <span className="font-mono">{formatDuration(time)}</span>
       </div>
 
       {isRunning ? (
         <button
           onClick={handleStopTimer}
-          className="w-8 h-8 rounded-full bg-rose-200 flex items-center justify-center"
+          className="w-8 h-8 rounded-full bg-rose-200 flex items-center justify-center shadow-sm"
         >
           <span>
             <svg
@@ -103,7 +103,7 @@ export const TimerControls = () => {
       ) : (
         <button
           onClick={handleStartTimer}
-          className="w-8 h-8 rounded-full bg-emerald-200 flex items-center justify-center"
+          className="w-8 h-8 rounded-full bg-emerald-200 flex items-center justify-center shadow-sm "
         >
           <span>
             <svg
