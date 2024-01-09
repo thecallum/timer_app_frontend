@@ -17,7 +17,7 @@ export const TimerControls = () => {
   const { startTimer, stopTimer, setProject, setDescription } = timerActions;
   const { time, isRunning, project, description } = timerState;
 
-  const input = useRef(null);
+  const input = useRef<HTMLInputElement>(null);
 
   const handleStartTimer = () => {
     if (description === null || description.trim() === "") {
@@ -58,7 +58,9 @@ export const TimerControls = () => {
           id="description"
           aria-label="Event description"
           value={description}
-          onInput={(e) => setDescription(e.target.value)}
+          onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setDescription(e.target.value)
+          }
           className="text-white w-full   bg-slate-600 rounded-md mr-2 px-2 h-9"
           placeholder="(no description)"
         />
