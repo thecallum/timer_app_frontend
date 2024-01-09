@@ -61,7 +61,7 @@ export const TimerControls = () => {
           onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
             setDescription(e.target.value)
           }
-          className="text-white w-full   bg-slate-600 rounded-md mr-2 px-2 h-9"
+          className="text-white w-full outline-none border border-transparent focus:border-slate-400   bg-slate-600 rounded-md mr-2 px-2 h-9"
           placeholder="(no description)"
         />
       </div>
