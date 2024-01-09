@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef } from "react";
 import { IProject } from "@/features/calendar/types/types";
-import useLocalStorage from "../../../components/hooks/useLocalStorage";
+import useLocalStorage from "../../../../components/hooks/useLocalStorage";
 import { ITimerSnapshot, TimerState } from "../types";
 import { timerReducer } from "../timerReducer";
 

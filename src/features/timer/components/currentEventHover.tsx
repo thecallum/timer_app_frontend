@@ -1,7 +1,7 @@
-import { useTimer } from "@/features/timer/hooks/useTimer";
+import { useTimer } from "@/features/timer/context/hooks/useTimer";
 import dayjs from "dayjs";
-import { getColor } from "../helpers/colors";
-import { formatDuration } from "../helpers/formatter";
+import { getColor } from "../../calendar/helpers/colors";
+import { formatDuration } from "../../calendar/helpers/formatter";
 
 const HEIGHT_ONE_MINUTE = 64 / 60;
 

@@ -1,4 +1,4 @@
-import { Timer } from "@/features/timer";
+import { TimerControls } from "@/features/timer";
 
 const Logo = () => {
   return (
@@ -21,7 +21,7 @@ export const Header = () => {
       <div className="flex flex-row justify-between items-center w-full pr-2">
         <Logo />
 
-        <Timer />
+        <TimerControls />
       </div>
     </header>
   );

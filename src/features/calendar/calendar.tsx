@@ -14,7 +14,7 @@ import { ContainerFullWidth } from "@/components/layout/container-full-width";
 import { Page } from "@/components/layout/page";
 import { filterEvents } from "./helpers/filterEvents";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
-import { CurrentEventHover } from "./components/currentEventHover";
+import { CurrentEventHover } from "../timer/components/currentEventHover";
 
 export const Calendar = () => {
   const { weeks, next, previous, reset } = useCalendar();

@@ -2,7 +2,7 @@ import { Header } from "@/components/layout/header";
 import { Nav } from "@/components/layout/nav";
 import { CalendarContextProvider } from "@/contexts/calendarEventContext";
 import { PopoverOverlayContextProvider } from "@/contexts/popoverOverlayContext";
-import { TimerContextProvider } from "@/contexts/timerContext";
+import { TimerContextProvider } from "@/features/timer/context";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
