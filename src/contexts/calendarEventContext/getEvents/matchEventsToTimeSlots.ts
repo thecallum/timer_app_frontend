@@ -21,8 +21,8 @@ const findParallelEvents = (
   return events.filter(
     (x) =>
       (slot.endTimeInSeconds >= x.startTimeInSeconds &&
-        slot.endTimeInSeconds <= x.endTimeInSeconds) ||
+        slot.endTimeInSeconds < x.endTimeInSeconds) ||
       (slot.startTimeInSeconds >= x.startTimeInSeconds &&
-        slot.startTimeInSeconds <= x.endTimeInSeconds)
+        slot.startTimeInSeconds < x.endTimeInSeconds)
   );
 };

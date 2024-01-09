@@ -7,7 +7,7 @@ const HEIGHT_ONE_MINUTE = 64 / 60;
 
 export const CurrentEventHover = () => {
   const { state: timerState } = useTimer();
-  const { time, isRunning, startedAt } = timerState;
+  const { time, isRunning, startedAt, description, project } = timerState;
 
   const startedAtInMinutes = dayjs(startedAt).diff(
     dayjs(startedAt).startOf("day"),
@@ -19,7 +19,7 @@ export const CurrentEventHover = () => {
   let dayOfWeek = dayjs(startedAt).day();
   if (dayOfWeek === 0) dayOfWeek = 7;
 
-  const projectColor = getColor();
+  const projectColor = getColor(project?.color);
 
   if (!isRunning) return null;
 
@@ -37,6 +37,7 @@ export const CurrentEventHover = () => {
           className="p-2 w-full shadow-lg h-full overflow-hidden rounded-sm justify-between border-slate-400 border border-dashed"
           style={{
             background: `repeating-linear-gradient(-45deg, transparent 0px, transparent 0.5em, rgba(201, 128, 107, 0.08) 0.5em, rgba(201, 128, 107, 0.08) 0.6em) ${projectColor.light}`,
+            borderColor: projectColor.dark
           }}
         >
           <div
@@ -45,7 +46,7 @@ export const CurrentEventHover = () => {
               color: projectColor.darkest,
             }}
           >
-            {"(no description)"}
+            {description}
           </div>
 
           <div

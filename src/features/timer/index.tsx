@@ -1,25 +1,23 @@
 import { Project } from "@/features/calendar/components/project";
 import { formatDuration } from "@/features/calendar/helpers/formatter";
 import { useCalendarProjects } from "@/features/calendar/hooks/useCalendarProjects";
-import { CalendarEvent, IProject } from "@/features/calendar/types/types";
-import { useState, useRef } from "react";
+import { CalendarEvent } from "@/features/calendar/types/types";
+import { useRef } from "react";
 import { useTimer } from "./hooks/useTimer";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
 import dayjs from "dayjs";
 
 export const Timer = () => {
-  const [project, setProject] = useState<IProject | null>(null);
   const { projects } = useCalendarProjects();
 
   const { actions } = useCalendarEvents();
   const { addEvent } = actions;
 
   const { state: timerState, actions: timerActions } = useTimer();
-  const { startTimer, stopTimer } = timerActions;
-  const { time, isRunning } = timerState;
+  const { startTimer, stopTimer, setProject, setDescription } = timerActions;
+  const { time, isRunning, project, description } = timerState;
 
   const input = useRef(null);
-  const [description, setDescription] = useState("");
 
   const handleStartTimer = () => {
     if (description === null || description.trim() === "") {
