@@ -1,7 +1,7 @@
 import { ErrorMessage, TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
 import { ModalControls, ModalLayout } from "@/modals/components";
-import { getColor } from "@/features/calendar/helpers/colors";
+import { getColor } from "@/helpers/colors";
 import { IProject, ProjectColor } from "@/features/calendar/types/types";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";

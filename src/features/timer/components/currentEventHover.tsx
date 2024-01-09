@@ -1,6 +1,6 @@
 import { useTimer } from "@/features/timer/context/hooks/useTimer";
 import dayjs from "dayjs";
-import { getColor } from "../../calendar/helpers/colors";
+import { getColor } from "../../../helpers/colors";
 import { formatDuration } from "../../calendar/helpers/formatter";
 
 const HEIGHT_ONE_MINUTE = 64 / 60;

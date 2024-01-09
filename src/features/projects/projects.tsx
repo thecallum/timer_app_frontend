@@ -1,6 +1,6 @@
 import { Page } from "@/components/layout/page";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
-import { getColor } from "@/features/calendar/helpers/colors";
+import { getColor } from "@/helpers/colors";
 import { useCalendarProjects } from "@/features/calendar/hooks/useCalendarProjects";
 import { IProject } from "@/features/calendar/types/types";
 import { CreateProjectModal } from "@/modals/create-project-modal";

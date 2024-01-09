@@ -1,7 +1,7 @@
 import { PopoverWrapper } from "../../features/calendar/components/popover-wrapper";
-import { SelectProjectPopover } from "../../features/calendar/components/popovers/select-project-popover";
+import { SelectProjectPopover } from "./select-project-popover";
 import { IProject, defaultProject } from "../../features/calendar/types/types";
-import { getColor } from "../../features/calendar/helpers/colors";
+import { getColor } from "../../helpers/colors";
 
 interface Props {
   project: IProject | null;

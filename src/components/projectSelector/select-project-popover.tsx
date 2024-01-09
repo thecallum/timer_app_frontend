@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { IProject, defaultProject } from "../../types/types";
+import { IProject, defaultProject } from "../../features/calendar/types/types";
 import {
   PopoverContainer,
   PopoverControls,

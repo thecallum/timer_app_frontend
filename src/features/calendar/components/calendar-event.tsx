@@ -1,4 +1,4 @@
-import { getColor } from "../helpers/colors";
+import { getColor } from "../../../helpers/colors";
 import { formatDuration } from "../helpers/formatter";
 import {
   CalendarEvent as CalendarEventType,

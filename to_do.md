@@ -1,5 +1,4 @@
 # TODO
-
 - Timer overlay
     - improve styling (unspecified)
 - Update title for each page
