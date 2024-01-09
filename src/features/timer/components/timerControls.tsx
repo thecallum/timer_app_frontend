@@ -1,4 +1,4 @@
-import { Project } from "@/features/calendar/components/project";
+import { ProjectSelector } from "@/components/projectSelector";
 import { formatDuration } from "@/features/calendar/helpers/formatter";
 import { useCalendarProjects } from "@/features/calendar/hooks/useCalendarProjects";
 import { CalendarEvent } from "@/features/calendar/types/types";
@@ -67,7 +67,7 @@ export const TimerControls = () => {
       </div>
 
       <div className="mr-2">
-        <Project
+        <ProjectSelector
           containerRef={null}
           project={project}
           projects={projects}

@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Project } from "../project";
+import { ProjectSelector } from "../../../../components/projectSelector";
 import { CalendarEvent, IProject, defaultProject } from "../../types/types";
 import {
   PopoverContainer,
@@ -104,7 +104,7 @@ export const AddEventPopover = (props: Props) => {
             )}
 
             <div className="inline-block">
-              <Project
+              <ProjectSelector
                 containerRef={containerRef}
                 setProject={setProject}
                 project={project}

@@ -1,7 +1,7 @@
-import { PopoverWrapper } from "./popover-wrapper";
-import { SelectProjectPopover } from "./popovers/select-project-popover";
-import { IProject, defaultProject } from "../types/types";
-import { getColor } from "../helpers/colors";
+import { PopoverWrapper } from "../../features/calendar/components/popover-wrapper";
+import { SelectProjectPopover } from "../../features/calendar/components/popovers/select-project-popover";
+import { IProject, defaultProject } from "../../features/calendar/types/types";
+import { getColor } from "../../features/calendar/helpers/colors";
 
 interface Props {
   project: IProject | null;
@@ -11,7 +11,7 @@ interface Props {
   setProject: (project: IProject | null) => void;
 }
 
-export const Project = (props: Props) => {
+export const ProjectSelector = (props: Props) => {
   const { showAddProjectModal, projects, project, setProject, containerRef } =
     props;
 
@@ -41,7 +41,7 @@ export const Project = (props: Props) => {
               type="button"
               onClick={onClick}
               ref={ref}
-              className="flex flex-row justify-start items-center  p-1 px-2 rounded-md"
+              className="flex flex-row justify-start items-center  p-1 px-2 rounded-md shadow-sm"
               style={{
                 background: projectColor.light,
               }}

@@ -4,7 +4,7 @@ import {
   PopoverLayout,
 } from "@/components/popover";
 import { CalendarEvent, IProject, defaultProject } from "../../types/types";
-import { Project } from "../project";
+import { ProjectSelector } from "../../../../components/projectSelector";
 import { useState } from "react";
 import dayjs from "dayjs";
 import { formatDuration } from "../../helpers/formatter";
@@ -116,7 +116,7 @@ export const EditEventPopover = (props: Props) => {
             )}
 
             <div className="inline-block">
-              <Project
+              <ProjectSelector
                 containerRef={containerRef}
                 projects={projects}
                 showAddProjectModal={showAddProjectModal}
