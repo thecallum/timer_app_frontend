@@ -1,7 +1,6 @@
 # TODO
 
 - Timer overlay
-    - Show only on correct week
     - improve styling (unspecified)
 - Update title for each page
 - Fix current day logic
@@ -10,3 +9,6 @@
 - Remove timer page
 - Update timer value as static width (may be possible with text styles, or may need a specific font)
 
+## Done
+- Timer overlay
+    - Show only on correct week

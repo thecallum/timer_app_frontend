@@ -17,7 +17,7 @@ import { useCalendarEvents } from "@/contexts/calendarEventContext";
 import { CurrentEventHover } from "../timer/components/currentEventHover";
 
 export const Calendar = () => {
-  const { weeks, next, previous, reset } = useCalendar();
+  const { weeks, next, previous, reset, showingCurrentWeek } = useCalendar();
   const { state } = useCalendarEvents();
   const { events } = state;
   const { projects, addProject } = useCalendarProjects();
@@ -80,7 +80,9 @@ export const Calendar = () => {
                       showAddProjectModal={openModal}
                       events={eventsThisWeek}
                     />
-                    <CurrentEventHover />
+                    <CurrentEventHover
+                      showingCurrentWeek={showingCurrentWeek}
+                    />
                   </div>
                 </div>
               </div>

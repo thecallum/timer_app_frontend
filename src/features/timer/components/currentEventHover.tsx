@@ -5,7 +5,13 @@ import { formatDuration } from "../../calendar/helpers/formatter";
 
 const HEIGHT_ONE_MINUTE = 64 / 60;
 
-export const CurrentEventHover = () => {
+interface Props {
+  showingCurrentWeek: boolean;
+}
+
+export const CurrentEventHover = (props: Props) => {
+  const { showingCurrentWeek } = props;
+
   const { state: timerState } = useTimer();
   const { time, isRunning, startedAt, description, project } = timerState;
 
@@ -21,7 +27,7 @@ export const CurrentEventHover = () => {
 
   const projectColor = getColor(project?.color);
 
-  if (!isRunning) return null;
+  if (!isRunning || !showingCurrentWeek) return null;
 
   return (
     <div
@@ -37,7 +43,7 @@ export const CurrentEventHover = () => {
           className="p-2 w-full shadow-lg h-full overflow-hidden rounded-sm justify-between border-slate-400 border border-dashed"
           style={{
             background: `repeating-linear-gradient(-45deg, transparent 0px, transparent 0.5em, rgba(201, 128, 107, 0.08) 0.5em, rgba(201, 128, 107, 0.08) 0.6em) ${projectColor.light}`,
-            borderColor: projectColor.dark
+            borderColor: projectColor.dark,
           }}
         >
           <div
