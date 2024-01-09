@@ -15,7 +15,7 @@ interface Props {
   containerRef: HTMLDivElement | null;
 }
 
-const HEIGHT_ONE_MINUTE = 64 / 60;
+const HEIGHT_ONE_MINUTE = 64 / 60 * 2;
 
 export const CalendarEvent = (props: Props) => {
   const { event, showAddProjectModal, projects, containerRef } = props;

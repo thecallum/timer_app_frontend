@@ -14,7 +14,7 @@ export const CalendarGrid = (props: Props) => {
   const { weeks, showAddProjectModal, projects, containerRef } = props;
 
   return (
-    <div className="flex flex-row justify-between border-l border-slate-200  h-[96rem]">
+    <div className="flex flex-row justify-between border-l border-slate-200  h-[192rem]">
       <PopoverOverlay />
 
       {weeks.map((day, index) => (

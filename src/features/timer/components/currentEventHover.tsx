@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { getColor } from "../../../helpers/colors";
 import { formatDuration } from "../../calendar/helpers/formatter";
 
-const HEIGHT_ONE_MINUTE = 64 / 60;
+const HEIGHT_ONE_MINUTE = 64 / 60 * 2;
 
 interface Props {
   showingCurrentWeek: boolean;

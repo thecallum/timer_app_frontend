@@ -3,7 +3,6 @@ import { usePopper } from "react-popper";
 import { usePopoverOverlayContext } from "@/contexts/popoverOverlayContext";
 import { getPopoverOptions } from "./popoverOptions";
 
-
 export const usePopover = (
   containerRef: HTMLDivElement | null,
   primaryPopover: boolean // closing me closes the overlay

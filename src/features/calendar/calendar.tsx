@@ -67,7 +67,7 @@ export const Calendar = () => {
                 <CalendarDates weeks={weeks} events={events} />
                 <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
                   <CalendarHours />
-                  <div className="relative h-[calc(24*64px)] overflow-hidden flex-grow flex-shrink-0">
+                  <div className="relative h-[calc(24*2*64px)] overflow-hidden flex-grow flex-shrink-0">
                     <CalendarGrid
                       containerRef={containerRef}
                       projects={projects}
