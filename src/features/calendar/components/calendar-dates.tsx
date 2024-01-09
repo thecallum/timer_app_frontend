@@ -21,7 +21,7 @@ export const CalendarDates = (props: Props) => {
       day: x.format("DD"),
       name: x.format("ddd"),
       time: formatDuration(calculateDuration(eventsOnThisDay)),
-      current: x.isSame(dayjs()),
+      current: x.isSame(dayjs(), "day"),
     };
   });
 
