@@ -8,7 +8,6 @@ export const Nav = () => {
         <hr className="w-full border-slate-400 mb-2" />
 
         <ul>
-          <li className="line-through">Timer</li>
           <li>
             <Link href="/calendar">Calendar</Link>
           </li>
