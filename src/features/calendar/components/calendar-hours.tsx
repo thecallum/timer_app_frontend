@@ -17,7 +17,7 @@ export const CalendarHours = () => {
   }).slice(1);
 
   return (
-    <ul className="flex flex-col w-14 mt-8 mr-2">
+    <ul className="flex flex-col w-14 mt-16 mr-2">
       {hours.map((hour) => (
         <li
           key={hour}
