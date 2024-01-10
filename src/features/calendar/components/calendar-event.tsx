@@ -1,10 +1,6 @@
-import { getColor } from "../../../helpers/colors";
-import { formatDuration } from "../helpers/formatter";
-import {
-  CalendarEvent as CalendarEventType,
-  IProject,
-  defaultProject,
-} from "../types/types";
+import { getColor } from "@/helpers/colors";
+import { CalendarEvent as CalendarEventType, IProject } from "../types/types";
+import { CalendarEventView } from "./calendar-event-view";
 import { PopoverWrapper } from "./popover-wrapper";
 import { EditEventPopover } from "./popovers/edit-event-popover";
 
@@ -15,7 +11,7 @@ interface Props {
   containerRef: HTMLDivElement | null;
 }
 
-const HEIGHT_ONE_MINUTE = 64 / 60 * 2;
+const HEIGHT_ONE_MINUTE = (64 / 60) * 2;
 
 export const CalendarEvent = (props: Props) => {
   const { event, showAddProjectModal, projects, containerRef } = props;
@@ -58,42 +54,18 @@ export const CalendarEvent = (props: Props) => {
           return (
             <div style={eventStyles} className="absolute p-[1px]">
               <button
-                className={`w-full h-full rounded-sm p-2 flex flex-col justify-between overflow-hidden text-ellipsis cursor-pointer`}
+                className={`w-full h-full cursor-pointer rounded-sm`}
                 ref={ref}
+                onClick={onClick}
                 style={{
                   background: projectColor.light,
-                  // hover: {
-                  //   background: "bg-pink-300",
-                  // },
                 }}
-                onClick={onClick}
               >
-                <span className="text-start">
-                  <div
-                    className="font-semibold text-s"
-                    style={{
-                      color: projectColor.darkest,
-                    }}
-                  >
-                    {description || "(no description)"}
-                  </div>
-                  <div
-                    className="text-xs whitespace-nowrap"
-                    style={{
-                      color: projectColor.dark,
-                    }}
-                  >
-                    {project?.name ?? defaultProject.name}
-                  </div>
-                </span>
-                <div
-                  className="text-s whitespace-nowrap"
-                  style={{
-                    color: projectColor.darkest,
-                  }}
-                >
-                  {formatDuration(durationInSeconds)}
-                </div>
+                <CalendarEventView
+                  description={description}
+                  durationInSeconds={durationInSeconds}
+                  project={project ?? null}
+                />
               </button>
             </div>
           );

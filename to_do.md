@@ -1,6 +1,5 @@
 # TODO
 - Timer overlay
-    - improve styling (unspecified)
 - Update title for each page
 - Integrate 'Create a new project' modal logic into timer overlay
 - Project overlay clickout doesnt work
@@ -12,5 +11,6 @@
 - Remove ugly outxline from timer description input field
 - Timer overlay
     - Show only on correct week
+    - improve styling (unspecified)
 - Remove timer page
 - Fix current day logic

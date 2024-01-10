@@ -2,8 +2,9 @@ import { useTimer } from "@/features/timer/context/hooks/useTimer";
 import dayjs from "dayjs";
 import { getColor } from "../../../helpers/colors";
 import { formatDuration } from "../../calendar/helpers/formatter";
+import { CalendarEventView } from "@/features/calendar/components/calendar-event-view";
 
-const HEIGHT_ONE_MINUTE = 64 / 60 * 2;
+const HEIGHT_ONE_MINUTE = (64 / 60) * 2;
 
 interface Props {
   showingCurrentWeek: boolean;
@@ -31,41 +32,26 @@ export const CurrentEventHover = (props: Props) => {
 
   return (
     <div
-      className={`absolute w-[calc(100%/7)]`}
+      className={`absolute w-[calc(100%/7)] p-[2px]`}
       style={{
         left: `calc(100%/7 * ${dayOfWeek - 1} )`,
         top: `${startedAtInMinutes * HEIGHT_ONE_MINUTE}px`,
         height: `${Math.max(timeInMinutes, 15) * HEIGHT_ONE_MINUTE}px`,
       }}
     >
-      <div className="w-full h-full p-[2px] overflow-hidden">
-        <div
-          className="p-2 w-full shadow-lg h-full overflow-hidden rounded-sm justify-between border-slate-400 border border-dashed"
-          style={{
-            background: `repeating-linear-gradient(-45deg, transparent 0px, transparent 0.5em, rgba(201, 128, 107, 0.08) 0.5em, rgba(201, 128, 107, 0.08) 0.6em) ${projectColor.light}`,
-            borderColor: projectColor.dark,
-          }}
-        >
-          <div
-            className="font-semibold text-s"
-            style={{
-              color: projectColor.darkest,
-            }}
-          >
-            {description}
-          </div>
-
-          <div
-            className="text-s whitespace-nowrap"
-            style={{
-              color: projectColor.darkest,
-            }}
-          >
-            {formatDuration(time)}
-          </div>
-        </div>
+      <div
+        className="w-full h-full rounded-sm border border-dashed shadow-lg"
+        style={{
+          background: `repeating-linear-gradient(-45deg, transparent 0px, transparent 0.5em, rgba(201, 128, 107, 0.08) 0.5em, rgba(201, 128, 107, 0.08) 0.6em) ${projectColor.lightest}`,
+          borderColor: projectColor.dark,
+        }}
+      >
+        <CalendarEventView
+          description={description}
+          durationInSeconds={time}
+          project={project}
+        />
       </div>
-      <div className="bg-rose-900 w-full h-[4px] rounded-sm absolute bottom-0 left-0 shadow-2xl"></div>
     </div>
   );
 };
