@@ -31,10 +31,10 @@ export const AddEventPopover = (props: Props) => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const [startDate, setStartDate] = useState<string>(
-    time.format("YYYY-MM-DDThh:mm:ss")
+    time.format("YYYY-MM-DDTHH:mm:ss")
   );
   const [endTime, setEndTime] = useState<string>(
-    time.add(15, "minute").format("hh:mm:ss")
+    time.add(15, "minute").format("HH:mm:ss")
   );
 
   const getEndTimeAsDate = () => {
