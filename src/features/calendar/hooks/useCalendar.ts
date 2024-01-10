@@ -28,6 +28,7 @@ export const useCalendar = () => {
     next,
     previous,
     reset,
+    currentWeek,
     showingCurrentWeek: currentWeek === 0,
   };
 };

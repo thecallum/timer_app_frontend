@@ -10,8 +10,7 @@ import dayjs from "dayjs";
 export const TimerControls = () => {
   const { projects } = useCalendarProjects();
 
-  const { actions } = useCalendarEvents();
-  const { addEvent } = actions;
+  const { addEvent } = useCalendarEvents();
 
   const { state: timerState, actions: timerActions } = useTimer();
   const { startTimer, stopTimer, setProject, setDescription } = timerActions;

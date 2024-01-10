@@ -31,9 +31,7 @@ export const EditEventPopover = (props: Props) => {
     end,
   } = event;
 
-  const { actions } = useCalendarEvents();
-  const { updateEvent, deleteEvent } = actions
-
+  const { updateEvent, deleteEvent } = useCalendarEvents();
   const [description, setDescription] = useState(currentDescription);
   const [project, setProject] = useState<IProject | null>(
     currentProject ?? null

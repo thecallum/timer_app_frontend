@@ -12,20 +12,18 @@ import { CreateProjectModal } from "../../modals/create-project-modal";
 import { useCalendarProjects } from "./hooks/useCalendarProjects";
 import { ContainerFullWidth } from "@/components/layout/container-full-width";
 import { Page } from "@/components/layout/page";
-import { filterEvents } from "./helpers/filterEvents";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
 import { CurrentEventHover } from "../timer/components/currentEventHover";
 
 export const Calendar = () => {
-  const { weeks, next, previous, reset, showingCurrentWeek } = useCalendar();
-  const { state } = useCalendarEvents();
-  const { events } = state;
+  const { weeks, next, previous, reset, currentWeek, showingCurrentWeek } = useCalendar();
+  const { getEvents } = useCalendarEvents();
   const { projects, addProject } = useCalendarProjects();
   const [modalOpen, setModalOpen] = useState(false);
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
 
-  const eventsThisWeek = filterEvents(events, weeks[0], weeks[6]);
-
+  const eventsThisWeek = getEvents(currentWeek)
+  
   const closeModal = () => {
     setTimeout(() => setModalOpen(false));
   };
@@ -64,7 +62,7 @@ export const Calendar = () => {
           <ContainerFullWidth>
             <Page>
               <div className="h-full flex flex-col" ref={setContainerRef}>
-                <CalendarDates weeks={weeks} events={events} />
+                <CalendarDates weeks={weeks} events={eventsThisWeek} />
                 <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
                   <CalendarHours />
                   <div className="relative h-[calc(24*2*64px)] overflow-hidden flex-grow flex-shrink-0">
