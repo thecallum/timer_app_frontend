@@ -1,12 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePopper } from "react-popper";
-import { usePopoverOverlayContext } from "@/contexts/popoverOverlayContext";
 import { getPopoverOptions } from "./popoverOptions";
+import { useClickOutContext } from "@/contexts/clickOutContext";
 
-export const usePopover = (
-  containerRef: HTMLDivElement | null,
-  primaryPopover: boolean // closing me closes the overlay
-) => {
+export const usePopover = (containerRef: HTMLDivElement | null) => {
   const [referenceElement, setReferenceElement] = useState<Element | null>(
     null
   );
@@ -18,45 +15,48 @@ export const usePopover = (
     getPopoverOptions(containerRef)
   );
 
-  const { actions } = usePopoverOverlayContext();
-  const { hideOverlay, showOverlay, subscribe, unsubscribe } = actions;
-
   const [showPopover, setShowPopover] = useState(false);
+  const subscriberId = useRef<string | null>(null);
 
-  useEffect(() => {
-    if (showPopover) {
-      subscribe(handleCallback);
-    } else {
-      unsubscribe(handleCallback);
-    }
+  const { actions } = useClickOutContext();
+  const { subscribe, unsubscribe } = actions;
 
-    return () => {
-      unsubscribe(handleCallback);
-    };
-  }, [showPopover]);
-
-  const handleCallback = () => {
-    if (primaryPopover) {
-      // if not a primary popover
-      // dont close overlay
-      handleClose();
-    }
+  const callback = () => {
+    handleClose();
   };
 
-  const handleOpen = () => {
-    showOverlay();
+  const setupSubscription = () => {
+    if (subscriberId.current !== null) return;
+    if (popperElement === null) return;
 
-    setTimeout(() => {
-      setShowPopover(true);
-    });
+    subscriberId.current = subscribe(popperElement, callback);
+  };
+
+  const closeSubscription = () => {
+    if (subscriberId.current === null) return;
+
+    unsubscribe(subscriberId.current);
+    subscriberId.current = null;
+  };
+
+  useEffect(() => {
+    if (!showPopover || popperElement === null) {
+      closeSubscription();
+      return;
+    }
+
+    setupSubscription();
+
+    return () => {
+      closeSubscription();
+    };
+  }, [showPopover, popperElement]);
+
+  const handleOpen = () => {
+    setTimeout(() => setShowPopover(true));
   };
 
   const handleClose = () => {
-    if (primaryPopover) {
-      // close overlat
-      hideOverlay();
-    }
-
     setShowPopover(() => false);
   };
 

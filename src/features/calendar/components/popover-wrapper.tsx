@@ -3,7 +3,6 @@ import { usePopover } from "../hooks/usePopover";
 
 interface Props {
   popoverComponent: (props: { close: () => void }) => JSX.Element;
-  primaryPopover: boolean;
   containerRef: HTMLDivElement | null;
   offset?: Offsets | undefined;
   children: (props: {
@@ -14,10 +13,10 @@ interface Props {
 }
 
 export const PopoverWrapper = (props: Props) => {
-  const { popoverComponent, children, containerRef, primaryPopover = true } = props;
+  const { popoverComponent, children, containerRef } = props;
 
   const { showPopover, handleClose, referenceProps, elementProps } =
-    usePopover(containerRef, primaryPopover);
+    usePopover(containerRef);
 
   return (
     <>

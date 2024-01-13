@@ -36,7 +36,6 @@ export const CalendarEvent = (props: Props) => {
   return (
     <li className="relative">
       <PopoverWrapper
-        primaryPopover={true}
         containerRef={containerRef}
         popoverComponent={({ close }) => (
           <EditEventPopover

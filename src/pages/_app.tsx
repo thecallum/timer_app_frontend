@@ -1,7 +1,7 @@
 import { Header } from "@/components/layout/header";
 import { Nav } from "@/components/layout/nav";
 import { CalendarContextProvider } from "@/contexts/calendarEventContext";
-import { PopoverOverlayContextProvider } from "@/contexts/popoverOverlayContext";
+import { ClickOutContextProvider } from "@/contexts/clickOutContext";
 import { TimerContextProvider } from "@/features/timer/context";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
@@ -18,7 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div>
       <CalendarContextProvider>
-        <PopoverOverlayContextProvider>
+        <ClickOutContextProvider>
           <TimerContextProvider>
             <>
               <Header />
@@ -31,7 +31,7 @@ export default function App({ Component, pageProps }: AppProps) {
               </div>
             </>
           </TimerContextProvider>
-        </PopoverOverlayContextProvider>
+        </ClickOutContextProvider>
       </CalendarContextProvider>
     </div>
   );
