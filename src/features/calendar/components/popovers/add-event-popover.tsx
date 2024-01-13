@@ -17,13 +17,11 @@ import { useCalendarEvents } from "@/contexts/calendarEventContext";
 interface Props {
   close: () => void;
   time: dayjs.Dayjs;
-  showAddProjectModal: () => void;
-  projects: IProject[];
   containerRef: HTMLDivElement | null;
 }
 
 export const AddEventPopover = (props: Props) => {
-  const { close, time, showAddProjectModal, projects, containerRef } = props;
+  const { close, time, containerRef } = props;
   const { addEvent } = useCalendarEvents();
   const [project, setProject] = useState<IProject | null>(null);
   const [description, setDescription] = useState("");
@@ -107,8 +105,6 @@ export const AddEventPopover = (props: Props) => {
                 containerRef={containerRef}
                 setProject={setProject}
                 project={project}
-                projects={projects}
-                showAddProjectModal={showAddProjectModal}
               />
             </div>
 

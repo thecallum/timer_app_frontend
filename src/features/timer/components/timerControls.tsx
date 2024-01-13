@@ -1,6 +1,5 @@
 import { ProjectSelector } from "@/components/projectSelector";
 import { formatDuration } from "@/features/calendar/helpers/formatter";
-import { useCalendarProjects } from "@/features/calendar/hooks/useCalendarProjects";
 import { CalendarEvent } from "@/features/calendar/types/types";
 import { useRef } from "react";
 import { useTimer } from "../context/hooks/useTimer";
@@ -8,8 +7,6 @@ import { useCalendarEvents } from "@/contexts/calendarEventContext";
 import dayjs from "dayjs";
 
 export const TimerControls = () => {
-  const { projects } = useCalendarProjects();
-
   const { addEvent } = useCalendarEvents();
 
   const { state: timerState, actions: timerActions } = useTimer();
@@ -69,9 +66,7 @@ export const TimerControls = () => {
         <ProjectSelector
           containerRef={null}
           project={project}
-          projects={projects}
           setProject={setProject}
-          showAddProjectModal={() => {}}
         />
       </div>
 

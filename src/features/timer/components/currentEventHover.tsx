@@ -1,7 +1,6 @@
 import { useTimer } from "@/features/timer/context/hooks/useTimer";
 import dayjs from "dayjs";
 import { getColor } from "../../../helpers/colors";
-import { formatDuration } from "../../calendar/helpers/formatter";
 import { CalendarEventView } from "@/features/calendar/components/calendar-event-view";
 
 const HEIGHT_ONE_MINUTE = (64 / 60) * 2;

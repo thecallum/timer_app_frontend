@@ -4,6 +4,8 @@
 - Integrate 'Create a new project' modal logic into timer overlay
 - Dynamic row height
 - Add different week views (day, week, working week etc)
+- Cleanup naming convention, folder structure etc
+- Normalise context interface pattern
 
 ## Done
 

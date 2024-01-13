@@ -1,22 +1,24 @@
 import classNames from "classnames";
-import { IProject, defaultProject } from "../../features/calendar/types/types";
 import {
   PopoverContainer,
   PopoverControls,
   PopoverLayout,
 } from "@/components/popover";
 import { getColor } from "../../helpers/colors";
+import { useProjectModalContainerContext } from "@/modals/create-project-modal-container";
+import { useProjectsContext } from "@/contexts/projectsContext/hooks/useProjectsContext";
+import { IProject, defaultProject } from "@/contexts/projectsContext/types";
 
 interface Props {
   currentProject: IProject;
   selectProject: (project: IProject) => void;
-  showAddProjectModal: () => void;
-  projects: IProject[];
 }
 
 export const SelectProjectPopover = (props: Props) => {
-  const { selectProject, currentProject, showAddProjectModal, projects } =
-    props;
+  const { selectProject, currentProject } = props;
+
+  const { projects } = useProjectsContext();
+  const { openModal } = useProjectModalContainerContext();
 
   return (
     <PopoverContainer width="w-48">
@@ -61,7 +63,7 @@ export const SelectProjectPopover = (props: Props) => {
           <div className="flex items-center justify-center">
             <button
               type="button"
-              onClick={showAddProjectModal}
+              onClick={openModal}
               className="text-slate-600  underline underline-offset-1 text-sm"
             >
               Create a new project

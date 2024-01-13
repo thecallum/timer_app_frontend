@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { CalendarEvent } from "../../features/calendar/types/types";
-import { placeholderProjects } from "../../features/calendar/hooks/useCalendarProjects";
+import placeholderProjects from "../projectsContext/placeholderProjects";
 
 export const placeholderEvents: CalendarEvent[] = [
   new CalendarEvent(

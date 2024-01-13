@@ -1,6 +1,6 @@
+import { IProject, defaultProject } from "@/contexts/projectsContext/types";
 import { getColor } from "../../../helpers/colors";
 import { formatDuration } from "../helpers/formatter";
-import { IProject, defaultProject } from "../types/types";
 
 interface Props {
   description: string;

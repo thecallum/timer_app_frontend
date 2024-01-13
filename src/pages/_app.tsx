@@ -2,7 +2,12 @@ import { Header } from "@/components/layout/header";
 import { Nav } from "@/components/layout/nav";
 import { CalendarContextProvider } from "@/contexts/calendarEventContext";
 import { ClickOutContextProvider } from "@/contexts/clickOutContext";
+import { ProjectsContextProvider } from "@/contexts/projectsContext";
 import { TimerContextProvider } from "@/features/timer/context";
+import {
+  CreateProjectModalContainer,
+  CreateProjectModalContextProvider,
+} from "@/modals/create-project-modal-container";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
@@ -17,22 +22,28 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <div>
-      <CalendarContextProvider>
-        <ClickOutContextProvider>
-          <TimerContextProvider>
-            <>
-              <Header />
+      <ProjectsContextProvider>
+        <CalendarContextProvider>
+          <ClickOutContextProvider>
+            <TimerContextProvider>
+              <CreateProjectModalContextProvider>
+                <>
+                  <Header />
 
-              <div className="flex flex-row h-[calc(100vh-4rem)]">
-                {showSidebar && <Nav />}
-                <div className="flex-grow">
-                  <Component {...pageProps} />
-                </div>
-              </div>
-            </>
-          </TimerContextProvider>
-        </ClickOutContextProvider>
-      </CalendarContextProvider>
+                  <div className="flex flex-row h-[calc(100vh-4rem)]">
+                    {showSidebar && <Nav />}
+                    <div className="flex-grow">
+                      <Component {...pageProps} />
+                    </div>
+                  </div>
+
+                  <CreateProjectModalContainer />
+                </>
+              </CreateProjectModalContextProvider>
+            </TimerContextProvider>
+          </ClickOutContextProvider>
+        </CalendarContextProvider>
+      </ProjectsContextProvider>
     </div>
   );
 }

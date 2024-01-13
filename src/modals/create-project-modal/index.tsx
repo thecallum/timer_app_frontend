@@ -1,7 +1,7 @@
-import { IProject, ProjectColor } from "../../features/calendar/types/types";
 import { ModalContainer } from "@/modals/components";
 import { useEffect, useState } from "react";
 import { CreateModalForm } from "./create-modal-form";
+import { IProject, ProjectColor } from "@/contexts/projectsContext/types";
 
 interface Props {
   isOpen: boolean;
@@ -60,8 +60,6 @@ export const CreateProjectModal = (props: Props) => {
         onSubmit={onSubmit}
         close={close}
       />
-
-      
     </ModalContainer>
   );
 };

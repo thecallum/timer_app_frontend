@@ -2,18 +2,15 @@ import classNames from "classnames";
 import { PopoverWrapper } from "./popover-wrapper";
 import { AddEventPopover } from "./popovers/add-event-popover";
 import dayjs from "dayjs";
-import { IProject } from "../types/types";
 import { useClickOutContext } from "@/contexts/clickOutContext";
 
 interface Props {
   day: dayjs.Dayjs;
-  showAddProjectModal: () => void;
-  projects: IProject[];
   containerRef: HTMLDivElement | null;
 }
 
 export const CalendarCell = (props: Props) => {
-  const { day, showAddProjectModal, projects, containerRef } = props;
+  const { day, containerRef } = props;
   const { state } = useClickOutContext();
   const { clickoutSubscriberCount } = state;
 
@@ -28,8 +25,6 @@ export const CalendarCell = (props: Props) => {
           popoverComponent={({ close }) => (
             <AddEventPopover
               containerRef={containerRef}
-              projects={projects}
-              showAddProjectModal={showAddProjectModal}
               close={close}
               time={day.add(15 * index, "minute")}
             />
@@ -45,7 +40,6 @@ export const CalendarCell = (props: Props) => {
               ref={ref}
               onClick={() => {
                 if (disableClick) return;
-
                 onClick();
               }}
             ></button>

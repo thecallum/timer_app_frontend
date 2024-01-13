@@ -17,13 +17,11 @@ import { useCalendarEvents } from "@/contexts/calendarEventContext";
 interface Props {
   close: () => void;
   event: CalendarEvent;
-  showAddProjectModal: () => void;
-  projects: IProject[];
   containerRef: HTMLDivElement | null;
 }
 
 export const EditEventPopover = (props: Props) => {
-  const { close, event, showAddProjectModal, projects, containerRef } = props;
+  const { close, event, containerRef } = props;
   const {
     description: currentDescription,
     project: currentProject,
@@ -82,10 +80,10 @@ export const EditEventPopover = (props: Props) => {
       return;
     }
 
-    event.start = dayjs(startDate)
-    event.end = getEndTimeAsDate()
-    event.description = description
-    event.project = project ?? defaultProject
+    event.start = dayjs(startDate);
+    event.end = getEndTimeAsDate();
+    event.description = description;
+    event.project = project ?? defaultProject;
 
     updateEvent(event);
     close();
@@ -116,8 +114,6 @@ export const EditEventPopover = (props: Props) => {
             <div className="inline-block">
               <ProjectSelector
                 containerRef={containerRef}
-                projects={projects}
-                showAddProjectModal={showAddProjectModal}
                 project={project}
                 setProject={setProject}
               />

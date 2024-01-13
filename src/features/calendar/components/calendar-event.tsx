@@ -1,20 +1,18 @@
 import { getColor } from "@/helpers/colors";
-import { CalendarEvent as CalendarEventType, IProject } from "../types/types";
+import { CalendarEvent as CalendarEventType } from "../types/types";
 import { CalendarEventView } from "./calendar-event-view";
 import { PopoverWrapper } from "./popover-wrapper";
 import { EditEventPopover } from "./popovers/edit-event-popover";
 
 interface Props {
   event: CalendarEventType;
-  showAddProjectModal: () => void;
-  projects: IProject[];
   containerRef: HTMLDivElement | null;
 }
 
 const HEIGHT_ONE_MINUTE = (64 / 60) * 2;
 
 export const CalendarEvent = (props: Props) => {
-  const { event, showAddProjectModal, projects, containerRef } = props;
+  const { event, containerRef } = props;
   const {
     description,
     project,
@@ -40,8 +38,6 @@ export const CalendarEvent = (props: Props) => {
         popoverComponent={({ close }) => (
           <EditEventPopover
             containerRef={containerRef}
-            projects={projects}
-            showAddProjectModal={showAddProjectModal}
             event={event}
             close={close}
           />

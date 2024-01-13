@@ -1,24 +1,23 @@
 import { Page } from "@/components/layout/page";
 import { useCalendarEvents } from "@/contexts/calendarEventContext";
 import { getColor } from "@/helpers/colors";
-import { useCalendarProjects } from "@/features/calendar/hooks/useCalendarProjects";
-import { IProject } from "@/features/calendar/types/types";
-import { CreateProjectModal } from "@/modals/create-project-modal";
 import { EditProjectModal } from "@/modals/edit-project-modal";
 import { useState } from "react";
+import {
+  CreateProjectModalContainer,
+  useProjectModalContainerContext,
+} from "@/modals/create-project-modal-container";
+import { useProjectsContext } from "../../contexts/projectsContext/hooks/useProjectsContext";
+import { IProject } from "@/contexts/projectsContext/types";
 
 export const Projects = () => {
   const { getAllEvents } = useCalendarEvents();
-
-  const events = getAllEvents()
-
-  const { projects, updateProject, deleteProject, addProject } =
-    useCalendarProjects();
-
+  const events = getAllEvents();
+  const { projects, updateProject, deleteProject } = useProjectsContext();
   const [editProjectModal, setEditProjectModal] = useState<IProject | null>(
     null
   );
-  const [createModalIsOpen, setCreateModalIsOpen] = useState(false);
+  const { openModal } = useProjectModalContainerContext();
 
   const openEditModal = (project: IProject) => {
     setEditProjectModal(project);
@@ -38,18 +37,6 @@ export const Projects = () => {
     closeEditModal();
   };
 
-  const openCreateModal = () => {
-    setCreateModalIsOpen(true);
-  };
-
-  const closeCreateModal = () => {
-    setCreateModalIsOpen(false);
-  };
-
-  const onCreateProject = (project: IProject) => {
-    addProject(project);
-    closeCreateModal();
-  };
 
   const projectsWithTime = projects.map((x) => {
     const projectEvents = events.filter((e) => {
@@ -76,7 +63,7 @@ export const Projects = () => {
             <h1 className="text-2xl text-slate-700">Projects</h1>
 
             <button
-              onClick={openCreateModal}
+              onClick={openModal}
               className="bg-purple-600 shadow-md text-white rounded px-4 py-2 text-lg"
             >
               Create project
@@ -142,12 +129,7 @@ export const Projects = () => {
         deleteProject={onDeleteProject}
       />
 
-      <CreateProjectModal
-        isOpen={createModalIsOpen}
-        close={closeCreateModal}
-        onCreate={onCreateProject}
-        projects={projects}
-      />
+      <CreateProjectModalContainer />
     </>
   );
 };

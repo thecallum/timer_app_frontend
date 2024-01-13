@@ -1,4 +1,4 @@
-import { ProjectColor, ProjectColors, defaultProjectColor } from "../features/calendar/types/types";
+import { ProjectColor, ProjectColors, defaultProjectColor } from "@/contexts/projectsContext/types";
 
 export const getColor = (color?: ProjectColor) => {
     return color
