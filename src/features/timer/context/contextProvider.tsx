@@ -1,5 +1,5 @@
 import TimerContext from "./context";
-import { useTimerContext } from "./hooks/useTimerContext";
+import { useTimer } from "./hooks/useTimer";
 
 interface Props {
   children: JSX.Element;
@@ -8,7 +8,7 @@ interface Props {
 const TimerContextProvider = (props: Props) => {
   const { children } = props;
 
-  const { state, actions } = useTimerContext();
+  const { state, actions } = useTimer();
 
   const value = {
     state,

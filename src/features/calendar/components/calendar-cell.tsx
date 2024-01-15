@@ -11,8 +11,7 @@ interface Props {
 
 export const CalendarCell = (props: Props) => {
   const { day, containerRef } = props;
-  const { state } = useClickOutContext();
-  const { clickoutSubscriberCount } = state;
+  const { clickoutSubscriberCount } = useClickOutContext();
 
   // Dont open popover if other popovers still visible
   const disableClick = clickoutSubscriberCount > 0;

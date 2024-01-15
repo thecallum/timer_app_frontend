@@ -1,4 +1,4 @@
-import { useTimer } from "@/features/timer/context/hooks/useTimer";
+import { useTimerContext } from "@/features/timer/context/hooks/useTimerContext";
 import dayjs from "dayjs";
 import { getColor } from "../../../helpers/colors";
 import { CalendarEventView } from "@/features/calendar/components/calendar-event-view";
@@ -12,8 +12,8 @@ interface Props {
 export const CurrentEventHover = (props: Props) => {
   const { showingCurrentWeek } = props;
 
-  const { state: timerState } = useTimer();
-  const { time, isRunning, startedAt, description, project } = timerState;
+  const { time, isRunning, startedAt, description, project } =
+    useTimerContext();
 
   const startedAtInMinutes = dayjs(startedAt).diff(
     dayjs(startedAt).startOf("day"),

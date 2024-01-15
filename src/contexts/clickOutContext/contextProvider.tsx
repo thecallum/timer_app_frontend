@@ -8,15 +8,8 @@ interface Props {
 const ClickOutContextProvider = (props: Props) => {
   const { children } = props;
 
-  const { state, actions } = useClickout();
-
-  const value = {
-    state,
-    actions,
-  };
-
   return (
-    <ClickOutContext.Provider value={value}>
+    <ClickOutContext.Provider value={useClickout()}>
       {children}
     </ClickOutContext.Provider>
   );

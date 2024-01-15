@@ -2,16 +2,23 @@ import { ProjectSelector } from "@/components/projectSelector";
 import { formatDuration } from "@/features/calendar/helpers/formatter";
 import { CalendarEvent } from "@/features/calendar/types/types";
 import { useRef } from "react";
-import { useTimer } from "../context/hooks/useTimer";
+import { useTimerContext } from "../context/hooks/useTimerContext";
 import dayjs from "dayjs";
 import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
 
 export const TimerControls = () => {
   const { addEvent } = useCalendarEventsContext();
 
-  const { state: timerState, actions: timerActions } = useTimer();
-  const { startTimer, stopTimer, setProject, setDescription } = timerActions;
-  const { time, isRunning, project, description } = timerState;
+  const {
+    startTimer,
+    stopTimer,
+    setProject,
+    setDescription,
+    time,
+    isRunning,
+    project,
+    description,
+  } = useTimerContext();
 
   const input = useRef<HTMLInputElement>(null);
 

@@ -1,15 +1,8 @@
 import { createContext } from "react";
-import { IProject } from "../projectsContext/types";
+import { ICreateProjectModalContext } from "./types";
 
-interface ContextState {
-  modalIsOpen: boolean;
-  closeModal: () => void;
-  openModal: () => void;
-  onCreateProject: (newProject: IProject) => void;
-}
-
-const CreateProjectModalContext = createContext<ContextState | undefined>(
-  undefined
-);
+const CreateProjectModalContext = createContext<
+  ICreateProjectModalContext | undefined
+>(undefined);
 
 export default CreateProjectModalContext;

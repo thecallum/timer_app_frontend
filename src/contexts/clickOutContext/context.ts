@@ -1,12 +1,6 @@
 import { createContext } from "react";
-import { ClickOutActions, ClickOutState } from "./types";
+import { IClickOutContext } from "./types";
 
-const ClickOutContext = createContext<
-  | {
-      state: ClickOutState;
-      actions: ClickOutActions;
-    }
-  | undefined
->(undefined);
+const ClickOutContext = createContext<IClickOutContext | undefined>(undefined);
 
 export default ClickOutContext;

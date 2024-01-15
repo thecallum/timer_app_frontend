@@ -132,7 +132,9 @@ export const EditEventPopover = (props: Props) => {
                   type="datetime-local"
                   name=""
                   id="eventStartTime"
-                  onInput={(e) => setStartDate(e.target.value)}
+                  onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setStartDate(e.target.value)
+                  }
                   value={startDate}
                   className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
                 />
@@ -150,7 +152,9 @@ export const EditEventPopover = (props: Props) => {
                   type="time"
                   name="eventEndTime"
                   value={endTime}
-                  onInput={(e) => setEndTime(e.target.value)}
+                  onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setEndTime(e.target.value)
+                  }
                   className={classNames(
                     "block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm",
                     {

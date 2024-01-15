@@ -72,14 +72,10 @@ export const useClickout = () => {
   }, [state, modalIsOpen]);
 
   return {
-    state: {
-      clickoutSubscriberCount: state.subscriberOrder.length,
-      modalIsOpen,
-    },
-    actions: {
-      setModalAsOpen,
-      subscribe,
-      unsubscribe,
-    },
+    clickoutSubscriberCount: state.subscriberOrder.length,
+    modalIsOpen,
+    setModalAsOpen,
+    subscribe,
+    unsubscribe,
   };
 };

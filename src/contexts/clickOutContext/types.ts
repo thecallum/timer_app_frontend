@@ -3,13 +3,11 @@ export type ClickOutTarget = {
   callback: () => void;
 };
 
-export type ClickOutState = {
-  clickoutSubscriberCount: number;
-  modalIsOpen: boolean;
-};
-
-export interface ClickOutActions {
+export interface IClickOutContext {
   subscribe: (element: HTMLElement, callback: () => void) => string;
   unsubscribe: (subscriptionId: string) => void;
   setModalAsOpen: (isOpen: boolean) => void;
+  clickoutSubscriberCount: number;
+  modalIsOpen: boolean;
+
 }

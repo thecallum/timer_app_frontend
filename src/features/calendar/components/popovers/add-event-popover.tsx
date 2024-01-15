@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { ProjectSelector } from "../../../../components/projectSelector";
-import { CalendarEvent, IProject, defaultProject } from "../../types/types";
+import { CalendarEvent } from "../../types/types";
 import {
   PopoverContainer,
   PopoverControls,
@@ -13,6 +13,7 @@ import classNames from "classnames";
 import { TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
 import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
+import { IProject, defaultProject } from "@/contexts/projectsContext/types";
 
 interface Props {
   close: () => void;
@@ -120,7 +121,9 @@ export const AddEventPopover = (props: Props) => {
                   type="datetime-local"
                   name=""
                   id="eventStartTime"
-                  onInput={(e) => setStartDate(e.target.value)}
+                  onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setStartDate(e.target.value)
+                  }
                   value={startDate}
                   className="block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm"
                 />
@@ -138,7 +141,9 @@ export const AddEventPopover = (props: Props) => {
                   step={1}
                   name="eventEndTime"
                   value={endTime}
-                  onInput={(e) => setEndTime(e.target.value)}
+                  onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setEndTime(e.target.value)
+                  }
                   className={classNames(
                     "block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm",
                     {

@@ -18,8 +18,7 @@ export const usePopover = (containerRef: HTMLDivElement | null) => {
   const [showPopover, setShowPopover] = useState(false);
   const subscriberId = useRef<string | null>(null);
 
-  const { actions } = useClickOutContext();
-  const { subscribe, unsubscribe } = actions;
+  const { subscribe, unsubscribe } = useClickOutContext();
 
   const callback = () => {
     handleClose();

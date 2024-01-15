@@ -1,12 +1,6 @@
 import { createContext } from "react";
-import { TimerActions, TimerState } from "./types";
+import { ITimerContext } from "./types";
 
-const TimerContext = createContext<
-  | {
-      state: TimerState;
-      actions: TimerActions;
-    }
-  | undefined
->(undefined);
+const TimerContext = createContext<ITimerContext | undefined>(undefined);
 
-export default TimerContext
+export default TimerContext;
