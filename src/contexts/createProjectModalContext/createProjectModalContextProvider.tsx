@@ -1,11 +1,11 @@
-import { CreateProjectModalContext } from ".";
+import { CreateProjectModalContext } from "./createProjectModalContext";
 import { useProjectModal } from "./hooks/useProjectModal";
 
 interface Props {
   children: JSX.Element;
 }
 
-const CreateProjectModalContextProvider = (props: Props) => {
+export const CreateProjectModalContextProvider = (props: Props) => {
   const { children } = props;
 
   return (
@@ -14,5 +14,3 @@ const CreateProjectModalContextProvider = (props: Props) => {
     </CreateProjectModalContext.Provider>
   );
 };
-
-export default CreateProjectModalContextProvider;

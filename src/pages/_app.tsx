@@ -4,7 +4,7 @@ import { CalendarContextProvider } from "@/contexts/calendarEventContext";
 import { ClickOutContextProvider } from "@/contexts/clickOutContext";
 import { CreateProjectModalContextProvider } from "@/contexts/createProjectModalContext";
 import { ProjectsContextProvider } from "@/contexts/projectsContext";
-import { TimerContextProvider } from "@/features/timer/context";
+import { TimerContextProvider } from "@/features/timer/context/contextProvider";
 import { CreateProjectModalContainer } from "@/modals/create-project-modal-container";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";

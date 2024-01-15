@@ -1,11 +1,11 @@
 import { useReducer } from "react";
-import reducer from "../reducer";
-import { placeholderEvents } from "../placeholderEvents";
+import { placeholderEvents } from "./placeholderEvents";
 import { CalendarEvent } from "@/features/calendar/types/types";
 import dayjs from "dayjs";
-import { getEvents } from "../getEvents";
+import { getEvents } from "./getEvents";
 
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
+import { reducer } from "./reducer";
 
 dayjs.extend(isSameOrAfter);
 

@@ -1,2 +1,1 @@
-export * from "./components/timerControls"
-export * from "./components/currentEventHover"
+export * from "./views";

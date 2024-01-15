@@ -1,5 +1,5 @@
+import { formatDuration } from "@/helpers/formatter";
 import { calculateDuration } from "../helpers/duration";
-import { formatDuration } from "../helpers/formatter";
 import { CalendarEvent } from "../types/types";
 
 interface Props {

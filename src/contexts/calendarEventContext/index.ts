@@ -1,4 +1,2 @@
-
-export * from "./context"
-export * from "./provider"
+export * from "./calendarEventProvider"
 export * from "./hooks/useCalendarEventsContext"

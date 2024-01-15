@@ -7,13 +7,13 @@ import {
   PopoverLayout,
 } from "@/components/popover";
 import { useState } from "react";
-import { formatDuration } from "../../helpers/formatter";
 import { ErrorMessage } from "@/components/form/error-message";
 import classNames from "classnames";
 import { TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
 import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
 import { IProject, defaultProject } from "@/contexts/projectsContext/types";
+import { formatDuration } from "@/helpers/formatter";
 
 interface Props {
   close: () => void;

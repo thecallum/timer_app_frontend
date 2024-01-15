@@ -1,23 +1,14 @@
-import TimerContext from "./context";
 import { useTimer } from "./hooks/useTimer";
+import { TimerContext } from "./timerContext";
 
 interface Props {
   children: JSX.Element;
 }
 
-const TimerContextProvider = (props: Props) => {
+export const TimerContextProvider = (props: Props) => {
   const { children } = props;
 
-  const { state, actions } = useTimer();
-
-  const value = {
-    state,
-    actions,
-  };
-
   return (
-    <TimerContext.Provider value={value}>{children}</TimerContext.Provider>
+    <TimerContext.Provider value={useTimer()}>{children}</TimerContext.Provider>
   );
 };
-
-export default TimerContextProvider;

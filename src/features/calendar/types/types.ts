@@ -1,3 +1,4 @@
+import { IProject } from "@/contexts/projectsContext/types";
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 

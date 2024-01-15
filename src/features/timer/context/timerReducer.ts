@@ -1,4 +1,4 @@
-import { IProject } from "@/features/calendar/types/types";
+import { IProject } from "@/contexts/projectsContext/types";
 import { TimerState } from "./types";
 
 type TimerAction =

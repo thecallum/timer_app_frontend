@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { IProject } from "../types";
-import placeholderProjects from "../placeholderProjects";
+import { IProject } from "../../types";
+import { placeholderProjects } from "./placeholderProjects";
 
 export const useProjects = () => {
   const [projects, setProjects] = useState<IProject[]>(placeholderProjects);

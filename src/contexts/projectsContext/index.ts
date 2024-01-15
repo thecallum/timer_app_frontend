@@ -1,4 +1,2 @@
-export { default as ProjectsContext } from "./context";
-export { default as ProjectsContextProvider } from "./provider";
-
+export * from "./projectsContextProvider"
 export * from "./hooks/useProjectsContext";

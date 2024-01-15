@@ -14,14 +14,6 @@ export interface TimerState {
   description: string;
 }
 
-// export interface TimerActions {
-//   startTimer: () => void;
-//   stopTimer: () => void;
-//   setProject: (project: IProject | null) => void;
-//   setDescription: (description: string) => void;
-// }
-
-
 export interface ITimerContext {
   isRunning: boolean;
   time: number;
@@ -32,5 +24,4 @@ export interface ITimerContext {
   stopTimer: () => void;
   setProject: (project: IProject | null) => void;
   setDescription: (description: string) => void;
-
 }

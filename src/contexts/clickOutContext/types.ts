@@ -1,7 +1,3 @@
-export type ClickOutTarget = {
-  element: HTMLElement | null;
-  callback: () => void;
-};
 
 export interface IClickOutContext {
   subscribe: (element: HTMLElement, callback: () => void) => string;

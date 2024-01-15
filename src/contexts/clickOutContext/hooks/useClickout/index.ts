@@ -1,5 +1,5 @@
 import { useEffect, useReducer, useState } from "react";
-import { reducer } from "../reducer";
+import { reducer } from "./reducer";
 import { v4 as uuidv4 } from "uuid";
 
 export const useClickout = () => {

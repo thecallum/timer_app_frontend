@@ -5,10 +5,10 @@ import { useState } from "react";
 import {
   CreateProjectModalContainer,
 } from "@/modals/create-project-modal-container";
-import { useProjectsContext } from "../../contexts/projectsContext/hooks/useProjectsContext";
 import { IProject } from "@/contexts/projectsContext/types";
 import { useCreateProjectModalContext } from "@/contexts/createProjectModalContext";
 import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
+import { useProjectsContext } from "@/contexts/projectsContext";
 
 export const Projects = () => {
   const { getAllEvents } = useCalendarEventsContext();

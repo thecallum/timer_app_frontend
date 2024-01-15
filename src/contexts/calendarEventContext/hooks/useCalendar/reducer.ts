@@ -1,12 +1,12 @@
 import { CalendarEvent } from "@/features/calendar/types/types";
-import { IEventState } from "./types";
+import { IEventState } from "../../types";
 
 type Action =
   | { type: "update_event"; event: CalendarEvent }
   | { type: "add_event"; event: CalendarEvent }
   | { type: "delete_event"; event: CalendarEvent };
 
-const reducer = (state: IEventState, action: Action): IEventState => {
+export const reducer = (state: IEventState, action: Action): IEventState => {
   switch (action.type) {
     case "update_event":
       return {
@@ -17,7 +17,6 @@ const reducer = (state: IEventState, action: Action): IEventState => {
       };
 
     case "add_event":
-      console.log("add event", action.event);
       return {
         ...state,
         events: [...state.events, action.event],
@@ -33,5 +32,3 @@ const reducer = (state: IEventState, action: Action): IEventState => {
       return state;
   }
 };
-
-export default reducer

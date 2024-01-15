@@ -58,7 +58,7 @@ export const TextInput = (props: Props) => {
       placeholder={placeholder}
       autoFocus={autoFocus}
       value={value}
-      onInput={(e) => setValue(e.target.value)}
+      onInput={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
       className={classNames(
         "shadow-sm text-xs flex-grow text-slate-800 rounded block p-2 w-full border bg-white outline-none",
         {

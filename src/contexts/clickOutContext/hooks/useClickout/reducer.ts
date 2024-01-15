@@ -1,4 +1,8 @@
-import { ClickOutTarget } from "./types";
+
+type ClickOutTarget = {
+  element: HTMLElement | null;
+  callback: () => void;
+};
 
 type ClickOutReducerState = {
   subscriberStack: {

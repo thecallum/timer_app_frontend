@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { CalendarEvent } from "../../features/calendar/types/types";
-import placeholderProjects from "../projectsContext/placeholderProjects";
+import { CalendarEvent } from "../../../../features/calendar/types/types";
+import { placeholderProjects } from "@/contexts/projectsContext/hooks/useProjects/placeholderProjects";
 
 const weekOffset = dayjs()
   .startOf("week")

@@ -1,15 +1,15 @@
-import { CalendarDates } from "./components/calendar-dates";
-import { CalendarGrid } from "./components/calendar-grid";
-import { CalendarHours } from "./components/calendar-hours";
+import { CalendarDates } from "../components/calendar-dates";
+import { CalendarGrid } from "../components/calendar-grid";
+import { CalendarHours } from "../components/calendar-hours";
 import { FullPageSpaceFillerContailer } from "@/components/layout/full-page-space-fillter-container";
-import { CalendarEvents } from "./components/calendar-events";
-import { CalendarWeekSelect } from "./components/calendar-week-select";
-import { CalendarWeekSummary } from "./components/calendar-week-summary";
-import { useCalendar } from "./hooks/useCalendar";
+import { CalendarEvents } from "../components/calendar-events";
+import { CalendarWeekSelect } from "../components/calendar-week-select";
+import { CalendarWeekSummary } from "../components/calendar-week-summary";
+import { useCalendar } from "../hooks/useCalendar";
 import { useState } from "react";
 import { ContainerFullWidth } from "@/components/layout/container-full-width";
 import { Page } from "@/components/layout/page";
-import { CurrentEventHover } from "../timer/components/currentEventHover";
+import { CurrentEventHover } from "../../timer/views/currentEventHover";
 import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
 
 export const Calendar = () => {

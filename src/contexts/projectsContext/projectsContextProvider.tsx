@@ -1,11 +1,11 @@
-import { ProjectsContext } from ".";
 import { useProjects } from "./hooks/useProjects";
+import { ProjectsContext } from "./projectsContext";
 
 interface Props {
   children: JSX.Element;
 }
 
-const ProjectsContextProvider = (props: Props) => {
+export const ProjectsContextProvider = (props: Props) => {
   const { children } = props;
 
   const value = useProjects();
@@ -16,5 +16,3 @@ const ProjectsContextProvider = (props: Props) => {
     </ProjectsContext.Provider>
   );
 };
-
-export default ProjectsContextProvider;

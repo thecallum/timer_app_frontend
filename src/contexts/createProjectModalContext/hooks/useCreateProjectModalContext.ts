@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { CreateProjectModalContext } from "..";
+import { CreateProjectModalContext } from "../createProjectModalContext";
 
 export const useCreateProjectModalContext = () => {
   const context = useContext(CreateProjectModalContext);

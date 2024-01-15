@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import { IProject, ProjectColor } from "./types";
+import { IProject, ProjectColor } from "../../types";
 
-const placeholderProjects: IProject[] = [
+export const placeholderProjects: IProject[] = [
   {
     id: uuidv4(),
     name: "Work",
@@ -11,4 +11,3 @@ const placeholderProjects: IProject[] = [
   { id: uuidv4(), name: "Emails", color: ProjectColor.Lime },
 ];
 
-export default placeholderProjects;

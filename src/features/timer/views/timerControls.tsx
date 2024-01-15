@@ -1,10 +1,10 @@
 import { ProjectSelector } from "@/components/projectSelector";
-import { formatDuration } from "@/features/calendar/helpers/formatter";
+import { formatDuration } from "@/helpers/formatter";
 import { CalendarEvent } from "@/features/calendar/types/types";
 import { useRef } from "react";
-import { useTimerContext } from "../context/hooks/useTimerContext";
 import dayjs from "dayjs";
 import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
+import { useTimerContext } from "../context/hooks/useTimerContext";
 
 export const TimerControls = () => {
   const { addEvent } = useCalendarEventsContext();

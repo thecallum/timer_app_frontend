@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { ClickOutContext } from "..";
+import { ClickOutContext } from "../clickOutContext";
 
 export const useClickOutContext = () => {
   const context = useContext(ClickOutContext);
