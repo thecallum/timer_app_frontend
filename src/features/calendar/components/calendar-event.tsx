@@ -1,18 +1,18 @@
-import { getColor } from "@/helpers/colors";
-import { CalendarEvent as CalendarEventType } from "../types/types";
-import { CalendarEventView } from "./calendar-event-view";
-import { PopoverWrapper } from "./popover-wrapper";
-import { EditEventPopover } from "./popovers/edit-event-popover";
+import { getColor } from '@/helpers/colors'
+import { CalendarEvent as CalendarEventType } from '../types/types'
+import { CalendarEventView } from './calendar-event-view'
+import { PopoverWrapper } from './popover-wrapper'
+import { EditEventPopover } from './popovers/edit-event-popover'
 
 interface Props {
-  event: CalendarEventType;
-  containerRef: HTMLDivElement | null;
+  event: CalendarEventType
+  containerRef: HTMLDivElement | null
 }
 
-const HEIGHT_ONE_MINUTE = (64 / 60) * 2;
+const HEIGHT_ONE_MINUTE = (64 / 60) * 2
 
 export const CalendarEvent = (props: Props) => {
-  const { event, containerRef } = props;
+  const { event, containerRef } = props
   const {
     description,
     project,
@@ -22,14 +22,14 @@ export const CalendarEvent = (props: Props) => {
     startTimeInMinutes,
     left,
     width,
-  } = event;
+  } = event
 
   const eventStyles = {
     height: `${durationInMinutes * HEIGHT_ONE_MINUTE}px`,
     top: `${startTimeInMinutes * HEIGHT_ONE_MINUTE}px`,
     left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${left}))`,
     width: `calc((100%/7)*${width})`,
-  };
+  }
 
   return (
     <li className="relative">
@@ -44,7 +44,7 @@ export const CalendarEvent = (props: Props) => {
         )}
       >
         {({ ref, onClick }) => {
-          const projectColor = getColor(project?.color);
+          const projectColor = getColor(project?.color)
 
           return (
             <div style={eventStyles} className="absolute p-[1px]">
@@ -63,9 +63,9 @@ export const CalendarEvent = (props: Props) => {
                 />
               </button>
             </div>
-          );
+          )
         }}
       </PopoverWrapper>
     </li>
-  );
-};
+  )
+}

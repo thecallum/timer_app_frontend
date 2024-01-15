@@ -1,16 +1,17 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { LoginForm } from "../components/login-form";
-import { Page } from "@/components/layout/page";
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { LoginForm } from '../components/login-form'
+import { Page } from '@/components/layout/page'
 
 export const Login = () => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const onSubmit = (props: { email: string; password: string }) => {
-    if (confirm("Continue to calendar")) {
-      router.push("/calendar");
+  // props: { email: string; password: string }
+  const onSubmit = () => {
+    if (confirm('Continue to calendar')) {
+      router.push('/calendar')
     }
-  };
+  }
 
   return (
     <div className="flex flex-col items-center mt-8">
@@ -18,7 +19,7 @@ export const Login = () => {
         <div className="mb-4">
           <h1 className="text-2xl text-slate-700">Login</h1>
           <div className="text-base text-slate-500">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{' '}
             <Link className="text-blue-600 underline" href="/signup">
               Sign up
             </Link>
@@ -31,5 +32,5 @@ export const Login = () => {
         </Page>
       </div>
     </div>
-  );
-};
+  )
+}

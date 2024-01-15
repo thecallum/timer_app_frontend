@@ -1,17 +1,17 @@
-import dayjs from "dayjs";
+import dayjs from 'dayjs'
 
 interface Props {
-  next: () => void;
-  previous: () => void;
-  reset: () => void;
-  weeks: dayjs.Dayjs[];
+  next: () => void
+  previous: () => void
+  reset: () => void
+  weeks: dayjs.Dayjs[]
 }
 
 export const CalendarWeekSelect = (props: Props) => {
-  const { next, previous, reset, weeks } = props;
+  const { next, previous, reset, weeks } = props
 
-  const startOfWeek = weeks[0].format("DD MMM");
-  const endOfWeek = weeks[6].format("DD MMM");
+  const startOfWeek = weeks[0].format('DD MMM')
+  const endOfWeek = weeks[6].format('DD MMM')
 
   return (
     <div>
@@ -70,5 +70,5 @@ export const CalendarWeekSelect = (props: Props) => {
         </span>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,2 +1,2 @@
-export * from "./clickOutContextProvider"
-export * from "./hooks/useClickOutContext";
+export * from './clickOutContextProvider'
+export * from './hooks/useClickOutContext'

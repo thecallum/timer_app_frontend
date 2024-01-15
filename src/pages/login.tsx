@@ -1,5 +1,5 @@
-import { Login } from "@/features/auth/views/login";
-import Head from "next/head";
+import { Login } from '@/features/auth/views/login'
+import Head from 'next/head'
 
 export default function Index() {
   return (
@@ -9,5 +9,5 @@ export default function Index() {
       </Head>
       <Login />;
     </>
-  );
+  )
 }

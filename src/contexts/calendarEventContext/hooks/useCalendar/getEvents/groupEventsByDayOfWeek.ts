@@ -1,11 +1,11 @@
-import { CalendarEvent } from "@/features/calendar/types/types";
+import { CalendarEvent } from '@/features/calendar/types/types'
 
 export const groupEventsByDayOfWeek = (allEvents: CalendarEvent[]) => {
-  const eventsPerDayOfWeek: CalendarEvent[][] = [[], [], [], [], [], [], []];
+  const eventsPerDayOfWeek: CalendarEvent[][] = [[], [], [], [], [], [], []]
 
   allEvents.forEach((event) => {
-    eventsPerDayOfWeek[event.dayOfWeek - 1].push(event);
-  });
+    eventsPerDayOfWeek[event.dayOfWeek - 1].push(event)
+  })
 
-  return eventsPerDayOfWeek;
-};
+  return eventsPerDayOfWeek
+}

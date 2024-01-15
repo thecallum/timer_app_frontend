@@ -1,16 +1,16 @@
-import { ClickOutContext } from "./clickOutContext";
-import { useClickout } from "./hooks/useClickout";
+import { ClickOutContext } from './clickOutContext'
+import { useClickout } from './hooks/useClickout'
 
 interface Props {
-  children: JSX.Element;
+  children: JSX.Element
 }
 
 export const ClickOutContextProvider = (props: Props) => {
-  const { children } = props;
+  const { children } = props
 
   return (
     <ClickOutContext.Provider value={useClickout()}>
       {children}
     </ClickOutContext.Provider>
-  );
-};
+  )
+}

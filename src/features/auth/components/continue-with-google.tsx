@@ -1,4 +1,4 @@
-import { ContinueWithGoogleButton } from "./continue-with-google-button";
+import { ContinueWithGoogleButton } from './continue-with-google-button'
 
 export const ContinueWithGoogle = () => {
   return (
@@ -13,5 +13,5 @@ export const ContinueWithGoogle = () => {
 
       <ContinueWithGoogleButton />
     </>
-  );
-};
+  )
+}

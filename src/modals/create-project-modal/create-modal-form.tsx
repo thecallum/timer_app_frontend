@@ -1,53 +1,53 @@
-import { ErrorMessage, TextInput } from "@/components/form";
-import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
-import { ModalControls, ModalLayout } from "@/modals/components";
-import { getColor } from "@/helpers/colors";
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { IProject, ProjectColor } from "@/contexts/projectsContext/types";
+import { ErrorMessage, TextInput } from '@/components/form'
+import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
+import { ModalControls, ModalLayout } from '@/modals/components'
+import { getColor } from '@/helpers/colors'
+import { useState } from 'react'
+import { v4 as uuidv4 } from 'uuid'
+import { IProject, ProjectColor } from '@/contexts/projectsContext/types'
 
 interface Props {
-  modalColor: ProjectColor;
-  onSubmit: (project: IProject) => void;
-  close: () => void;
+  modalColor: ProjectColor
+  onSubmit: (project: IProject) => void
+  close: () => void
 }
 
 export const CreateModalForm = (props: Props) => {
-  const { modalColor, onSubmit, close } = props;
+  const { modalColor, onSubmit, close } = props
 
-  const [name, setName] = useState("");
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [name, setName] = useState('')
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const validate = () => {
-    const errors: { [key: string]: string } = {};
+    const errors: { [key: string]: string } = {}
 
-    if (name === null || name.trim() === "") {
-      errors["name"] = "Name cannot be empty";
+    if (name === null || name.trim() === '') {
+      errors['name'] = 'Name cannot be empty'
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const errors = validate();
-    setErrors(errors);
+    const errors = validate()
+    setErrors(errors)
 
     if (Object.keys(errors).length >= 1) {
-      return;
+      return
     }
 
     const newProject: IProject = {
       id: uuidv4(),
       name,
       color: modalColor,
-    };
+    }
 
-    onSubmit(newProject);
-  };
+    onSubmit(newProject)
+  }
 
-  const projectColor = getColor(modalColor);
+  const projectColor = getColor(modalColor)
 
   return (
     <form onSubmit={handleSubmit}>
@@ -83,5 +83,5 @@ export const CreateModalForm = (props: Props) => {
         </>
       </ModalControls>
     </form>
-  );
-};
+  )
+}

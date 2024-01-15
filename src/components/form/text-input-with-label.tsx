@@ -1,7 +1,7 @@
-import { TextInput, Props as TextInputProps } from "./text-input";
+import { TextInput, Props as TextInputProps } from './text-input'
 
 interface Props extends TextInputProps {
-  label: string;
+  label: string
 }
 
 export const TextInputWithLabel = (props: Props) => {
@@ -16,7 +16,7 @@ export const TextInputWithLabel = (props: Props) => {
     autoFocus = false,
     label,
     type,
-  } = props;
+  } = props
 
   return (
     <div>
@@ -37,5 +37,5 @@ export const TextInputWithLabel = (props: Props) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}

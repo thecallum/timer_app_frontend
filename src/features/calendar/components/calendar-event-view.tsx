@@ -1,17 +1,17 @@
-import { IProject, defaultProject } from "@/contexts/projectsContext/types";
-import { getColor } from "../../../helpers/colors";
-import { formatDuration } from "@/helpers/formatter";
+import { IProject, defaultProject } from '@/contexts/projectsContext/types'
+import { getColor } from '../../../helpers/colors'
+import { formatDuration } from '@/helpers/formatter'
 
 interface Props {
-  description: string;
-  project: IProject | null;
-  durationInSeconds: number;
+  description: string
+  project: IProject | null
+  durationInSeconds: number
 }
 
 export const CalendarEventView = (props: Props) => {
-  const { description, project, durationInSeconds } = props;
+  const { description, project, durationInSeconds } = props
 
-  const projectColor = getColor(project?.color);
+  const projectColor = getColor(project?.color)
 
   return (
     <div className="w-full h-full p-2 flex flex-col justify-between overflow-hidden">
@@ -22,7 +22,7 @@ export const CalendarEventView = (props: Props) => {
             color: projectColor.darkest,
           }}
         >
-          {description || "(no description)"}
+          {description || '(no description)'}
         </div>
         <div
           className="text-xs whitespace-nowrap"
@@ -42,5 +42,5 @@ export const CalendarEventView = (props: Props) => {
         {formatDuration(durationInSeconds)}
       </div>
     </div>
-  );
-};
+  )
+}

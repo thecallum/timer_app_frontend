@@ -1,20 +1,21 @@
-
 export const CalendarHours = () => {
-  const hours = [...Array(24)].map((_, index) => {
-    // Convert 24-hour format to 12-hour format
-    let hour = index === 0 ? 12 : index;
-    if (hour > 12) {
-      hour -= 12;
-    }
+  const hours = [...Array(24)]
+    .map((_, index) => {
+      // Convert 24-hour format to 12-hour format
+      let hour = index === 0 ? 12 : index
+      if (hour > 12) {
+        hour -= 12
+      }
 
-    // Format the hour
-    const formattedHour = hour < 10 ? `0${hour}` : hour.toString();
+      // Format the hour
+      const formattedHour = hour < 10 ? `0${hour}` : hour.toString()
 
-    // Determine AM or PM
-    const amPm = index < 12 ? "AM" : "PM";
+      // Determine AM or PM
+      const amPm = index < 12 ? 'AM' : 'PM'
 
-    return `${formattedHour}:00 ${amPm}`;
-  }).slice(1);
+      return `${formattedHour}:00 ${amPm}`
+    })
+    .slice(1)
 
   return (
     <ul className="flex flex-col w-14 mt-16 mr-2">
@@ -27,5 +28,5 @@ export const CalendarHours = () => {
         </li>
       ))}
     </ul>
-  );
-};
+  )
+}

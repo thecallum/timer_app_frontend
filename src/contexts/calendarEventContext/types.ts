@@ -1,13 +1,13 @@
-import { CalendarEvent } from "@/features/calendar/types/types";
+import { CalendarEvent } from '@/features/calendar/types/types'
 
 export interface IEventState {
-  events: CalendarEvent[];
+  events: CalendarEvent[]
 }
 
 export interface ICalendarEventContext {
-  getAllEvents: () => CalendarEvent[];
-  getEvents: (week: number) => CalendarEvent[];
-  updateEvent: (event: CalendarEvent) => void;
-  addEvent: (event: CalendarEvent) => void;
-  deleteEvent: (event: CalendarEvent) => void;
+  getAllEvents: () => CalendarEvent[]
+  getEvents: (week: number) => CalendarEvent[]
+  updateEvent: (event: CalendarEvent) => void
+  addEvent: (event: CalendarEvent) => void
+  deleteEvent: (event: CalendarEvent) => void
 }

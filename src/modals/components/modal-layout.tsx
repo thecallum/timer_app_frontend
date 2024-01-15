@@ -1,11 +1,11 @@
 interface Props {
-  children: JSX.Element;
-  title: string;
-  onDelete?: () => void;
+  children: JSX.Element
+  title: string
+  onDelete?: () => void
 }
 
 export const ModalLayout = (props: Props) => {
-  const { children, title, onDelete } = props;
+  const { children, title, onDelete } = props
 
   return (
     <div className="p-4">
@@ -31,5 +31,5 @@ export const ModalLayout = (props: Props) => {
 
       {children}
     </div>
-  );
-};
+  )
+}

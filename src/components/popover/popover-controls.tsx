@@ -1,9 +1,9 @@
 interface Props {
-  children: JSX.Element;
+  children: JSX.Element
 }
 
 export const PopoverControls = (props: Props) => {
-  const { children } = props;
+  const { children } = props
 
-  return <div className="p-4 border-t border-slate-200 ">{children}</div>;
-};
+  return <div className="p-4 border-t border-slate-200 ">{children}</div>
+}

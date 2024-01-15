@@ -1,16 +1,16 @@
-import { PopoverWrapper } from "../../features/calendar/components/popover-wrapper";
-import { SelectProjectPopover } from "./select-project-popover";
-import { getColor } from "../../helpers/colors";
-import { IProject, defaultProject } from "@/contexts/projectsContext/types";
+import { PopoverWrapper } from '../../features/calendar/components/popover-wrapper'
+import { SelectProjectPopover } from './select-project-popover'
+import { getColor } from '../../helpers/colors'
+import { IProject, defaultProject } from '@/contexts/projectsContext/types'
 
 interface Props {
-  project: IProject | null;
-  containerRef: HTMLDivElement | null;
-  setProject: (project: IProject | null) => void;
+  project: IProject | null
+  containerRef: HTMLDivElement | null
+  setProject: (project: IProject | null) => void
 }
 
 export const ProjectSelector = (props: Props) => {
-  const { project, setProject, containerRef } = props;
+  const { project, setProject, containerRef } = props
 
   return (
     <PopoverWrapper
@@ -19,15 +19,15 @@ export const ProjectSelector = (props: Props) => {
         <SelectProjectPopover
           currentProject={project ?? defaultProject}
           selectProject={(x) => {
-            setProject(x);
+            setProject(x)
 
-            setTimeout(close);
+            setTimeout(close)
           }}
         />
       )}
     >
       {({ ref, onClick }) => {
-        const projectColor = getColor(project?.color);
+        const projectColor = getColor(project?.color)
 
         return (
           <button
@@ -54,8 +54,8 @@ export const ProjectSelector = (props: Props) => {
               {project?.name ?? defaultProject.name}
             </div>
           </button>
-        );
+        )
       }}
     </PopoverWrapper>
-  );
-};
+  )
+}

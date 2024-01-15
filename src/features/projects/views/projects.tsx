@@ -1,58 +1,56 @@
-import { Page } from "@/components/layout/page";
-import { getColor } from "@/helpers/colors";
-import { EditProjectModal } from "@/modals/edit-project-modal";
-import { useState } from "react";
-import {
-  CreateProjectModalContainer,
-} from "@/modals/create-project-modal-container";
-import { IProject } from "@/contexts/projectsContext/types";
-import { useCreateProjectModalContext } from "@/contexts/createProjectModalContext";
-import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
-import { useProjectsContext } from "@/contexts/projectsContext";
+import { Page } from '@/components/layout/page'
+import { getColor } from '@/helpers/colors'
+import { EditProjectModal } from '@/modals/edit-project-modal'
+import { useState } from 'react'
+import { CreateProjectModalContainer } from '@/modals/create-project-modal-container'
+import { IProject } from '@/contexts/projectsContext/types'
+import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
+import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
+import { useProjectsContext } from '@/contexts/projectsContext'
 
 export const Projects = () => {
-  const { getAllEvents } = useCalendarEventsContext();
-  const events = getAllEvents();
-  const { projects, updateProject, deleteProject } = useProjectsContext();
+  const { getAllEvents } = useCalendarEventsContext()
+  const events = getAllEvents()
+  const { projects, updateProject, deleteProject } = useProjectsContext()
   const [editProjectModal, setEditProjectModal] = useState<IProject | null>(
-    null
-  );
-  const { openModal } = useCreateProjectModalContext();
+    null,
+  )
+  const { openModal } = useCreateProjectModalContext()
 
   const openEditModal = (project: IProject) => {
-    setEditProjectModal(project);
-  };
+    setEditProjectModal(project)
+  }
 
   const closeEditModal = () => {
-    setEditProjectModal(null);
-  };
+    setEditProjectModal(null)
+  }
 
   const onEditProject = (project: IProject) => {
-    updateProject(project);
-    closeEditModal();
-  };
+    updateProject(project)
+    closeEditModal()
+  }
 
   const onDeleteProject = (project: IProject) => {
-    deleteProject(project);
-    closeEditModal();
-  };
+    deleteProject(project)
+    closeEditModal()
+  }
 
   const projectsWithTime = projects.map((x) => {
     const projectEvents = events.filter((e) => {
-      return e.project?.id === x.id;
-    });
+      return e.project?.id === x.id
+    })
 
     const minutes = projectEvents.reduce(
       (accumulator, currentValue) =>
         accumulator + currentValue.durationInMinutes,
-      0
-    );
+      0,
+    )
 
     return {
       ...x,
       minutes,
-    };
-  });
+    }
+  })
 
   return (
     <>
@@ -130,5 +128,5 @@ export const Projects = () => {
 
       <CreateProjectModalContainer />
     </>
-  );
-};
+  )
+}

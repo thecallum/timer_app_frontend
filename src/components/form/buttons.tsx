@@ -1,11 +1,11 @@
 interface ButtonProps {
-  children: JSX.Element | string;
-  type?: "button" | "reset" | "submit";
-  onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  children: JSX.Element | string
+  type?: 'button' | 'reset' | 'submit'
+  onClick?: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 export const ButtonPrimary = (props: ButtonProps) => {
-  const { children, type = "button", onClick } = props;
+  const { children, type = 'button', onClick } = props
 
   return (
     <button
@@ -15,11 +15,11 @@ export const ButtonPrimary = (props: ButtonProps) => {
     >
       {children}
     </button>
-  );
-};
+  )
+}
 
 export const ButtonSecondary = (props: ButtonProps) => {
-  const { children, type = "button", onClick } = props;
+  const { children, type = 'button', onClick } = props
 
   return (
     <button
@@ -29,5 +29,5 @@ export const ButtonSecondary = (props: ButtonProps) => {
     >
       {children}
     </button>
-  );
-};
+  )
+}

@@ -1,24 +1,24 @@
-import classNames from "classnames";
+import classNames from 'classnames'
 import {
   PopoverContainer,
   PopoverControls,
   PopoverLayout,
-} from "@/components/popover";
-import { getColor } from "../../helpers/colors";
-import { useProjectsContext } from "@/contexts/projectsContext/hooks/useProjectsContext";
-import { IProject, defaultProject } from "@/contexts/projectsContext/types";
-import { useCreateProjectModalContext } from "@/contexts/createProjectModalContext";
+} from '@/components/popover'
+import { getColor } from '../../helpers/colors'
+import { useProjectsContext } from '@/contexts/projectsContext/hooks/useProjectsContext'
+import { IProject, defaultProject } from '@/contexts/projectsContext/types'
+import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
 
 interface Props {
-  currentProject: IProject;
-  selectProject: (project: IProject) => void;
+  currentProject: IProject
+  selectProject: (project: IProject) => void
 }
 
 export const SelectProjectPopover = (props: Props) => {
-  const { selectProject, currentProject } = props;
+  const { selectProject, currentProject } = props
 
-  const { projects } = useProjectsContext();
-  const { openModal } = useCreateProjectModalContext();
+  const { projects } = useProjectsContext()
+  const { openModal } = useCreateProjectModalContext()
 
   return (
     <PopoverContainer width="w-48">
@@ -26,19 +26,19 @@ export const SelectProjectPopover = (props: Props) => {
         <PopoverLayout title="Project">
           <ul className="">
             {[defaultProject, ...projects].map((x) => {
-              const { name, color, id } = x;
+              const { name, color, id } = x
 
-              const projectColor = getColor(color);
+              const projectColor = getColor(color)
 
               return (
                 <li key={id}>
                   <button
                     type="button"
                     className={classNames(
-                      "flex flex-row justify-start items-center p-2 my-1 rounded-md w-full hover:bg-slate-100",
+                      'flex flex-row justify-start items-center p-2 my-1 rounded-md w-full hover:bg-slate-100',
                       {
-                        "bg-slate-200": id === currentProject?.id,
-                      }
+                        'bg-slate-200': id === currentProject?.id,
+                      },
                     )}
                     onClick={() => selectProject(x)}
                   >
@@ -54,7 +54,7 @@ export const SelectProjectPopover = (props: Props) => {
                     </div>
                   </button>
                 </li>
-              );
+              )
             })}
           </ul>
         </PopoverLayout>
@@ -72,5 +72,5 @@ export const SelectProjectPopover = (props: Props) => {
         </PopoverControls>
       </>
     </PopoverContainer>
-  );
-};
+  )
+}

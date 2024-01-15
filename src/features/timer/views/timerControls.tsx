@@ -1,13 +1,13 @@
-import { ProjectSelector } from "@/components/projectSelector";
-import { formatDuration } from "@/helpers/formatter";
-import { CalendarEvent } from "@/features/calendar/types/types";
-import { useRef } from "react";
-import dayjs from "dayjs";
-import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
-import { useTimerContext } from "../context/hooks/useTimerContext";
+import { ProjectSelector } from '@/components/projectSelector'
+import { formatDuration } from '@/helpers/formatter'
+import { CalendarEvent } from '@/features/calendar/types/types'
+import { useRef } from 'react'
+import dayjs from 'dayjs'
+import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
+import { useTimerContext } from '../context/hooks/useTimerContext'
 
 export const TimerControls = () => {
-  const { addEvent } = useCalendarEventsContext();
+  const { addEvent } = useCalendarEventsContext()
 
   const {
     startTimer,
@@ -18,38 +18,38 @@ export const TimerControls = () => {
     isRunning,
     project,
     description,
-  } = useTimerContext();
+  } = useTimerContext()
 
-  const input = useRef<HTMLInputElement>(null);
+  const input = useRef<HTMLInputElement>(null)
 
   const handleStartTimer = () => {
-    if (description === null || description.trim() === "") {
-      input.current?.focus();
-      return;
+    if (description === null || description.trim() === '') {
+      input.current?.focus()
+      return
     }
 
-    startTimer();
-  };
+    startTimer()
+  }
 
   const handleStopTimer = () => {
-    stopTimer();
+    stopTimer()
 
     const newEvent = new CalendarEvent(
       description,
-      dayjs().add(time * -1, "second"),
+      dayjs().add(time * -1, 'second'),
       dayjs(),
-      project ?? undefined
-    );
+      project ?? undefined,
+    )
 
-    addEvent(newEvent);
+    addEvent(newEvent)
 
-    reset();
-  };
+    reset()
+  }
 
   const reset = () => {
-    setDescription("");
-    setProject(null);
-  };
+    setDescription('')
+    setProject(null)
+  }
 
   return (
     <div className="flex flex-row items-center justify-end w-full ml-2">
@@ -123,5 +123,5 @@ export const TimerControls = () => {
         </button>
       )}
     </div>
-  );
-};
+  )
+}

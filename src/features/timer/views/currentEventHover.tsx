@@ -1,33 +1,32 @@
-import { useTimerContext } from "@/features/timer/context/hooks/useTimerContext";
-import dayjs from "dayjs";
-import { getColor } from "../../../helpers/colors";
-import { CalendarEventView } from "@/features/calendar/components/calendar-event-view";
+import { useTimerContext } from '@/features/timer/context/hooks/useTimerContext'
+import dayjs from 'dayjs'
+import { getColor } from '../../../helpers/colors'
+import { CalendarEventView } from '@/features/calendar/components/calendar-event-view'
 
-const HEIGHT_ONE_MINUTE = (64 / 60) * 2;
+const HEIGHT_ONE_MINUTE = (64 / 60) * 2
 
 interface Props {
-  showingCurrentWeek: boolean;
+  showingCurrentWeek: boolean
 }
 
 export const CurrentEventHover = (props: Props) => {
-  const { showingCurrentWeek } = props;
+  const { showingCurrentWeek } = props
 
-  const { time, isRunning, startedAt, description, project } =
-    useTimerContext();
+  const { time, isRunning, startedAt, description, project } = useTimerContext()
 
   const startedAtInMinutes = dayjs(startedAt).diff(
-    dayjs(startedAt).startOf("day"),
-    "minute"
-  );
+    dayjs(startedAt).startOf('day'),
+    'minute',
+  )
 
-  const timeInMinutes = time / 60;
+  const timeInMinutes = time / 60
 
-  let dayOfWeek = dayjs(startedAt).day();
-  if (dayOfWeek === 0) dayOfWeek = 7;
+  let dayOfWeek = dayjs(startedAt).day()
+  if (dayOfWeek === 0) dayOfWeek = 7
 
-  const projectColor = getColor(project?.color);
+  const projectColor = getColor(project?.color)
 
-  if (!isRunning || !showingCurrentWeek) return null;
+  if (!isRunning || !showingCurrentWeek) return null
 
   return (
     <div
@@ -52,5 +51,5 @@ export const CurrentEventHover = (props: Props) => {
         />
       </div>
     </div>
-  );
-};
+  )
+}

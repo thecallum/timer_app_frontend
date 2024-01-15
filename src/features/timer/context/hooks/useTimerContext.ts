@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import { TimerContext } from "../timerContext";
+import { useContext } from 'react'
+import { TimerContext } from '../timerContext'
 
 export const useTimerContext = () => {
-  const context = useContext(TimerContext);
+  const context = useContext(TimerContext)
   if (context === undefined) {
-    throw new Error("useTimerContext must be used within a TimerProvider");
+    throw new Error('useTimerContext must be used within a TimerProvider')
   }
 
-  return context;
-};
+  return context
+}

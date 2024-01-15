@@ -1,32 +1,32 @@
-import { CalendarEvent } from "@/features/calendar/types/types";
-import { ICalendarFiveMinuteSlot } from "./types";
+import { CalendarEvent } from '@/features/calendar/types/types'
+import { ICalendarFiveMinuteSlot } from './types'
 
 export const findParallelEventsById = (
   events: CalendarEvent[],
-  timeSlots: ICalendarFiveMinuteSlot[]
+  timeSlots: ICalendarFiveMinuteSlot[],
 ) => {
   const parallelEvents: {
-    [key: string]: string[];
-  } = {};
+    [key: string]: string[]
+  } = {}
 
   events.forEach((event) => {
-    parallelEvents[event.id] = findParallelEvents(event, timeSlots);
-  });
+    parallelEvents[event.id] = findParallelEvents(event, timeSlots)
+  })
 
-  return parallelEvents;
-};
+  return parallelEvents
+}
 
 const findParallelEvents = (
   event: CalendarEvent,
-  timeSlots: ICalendarFiveMinuteSlot[]
+  timeSlots: ICalendarFiveMinuteSlot[],
 ) => {
   const timeSlotsContainingThisEvent = timeSlots.filter(
     (row) =>
       event.startTimeInSeconds < row.endTimeInSeconds &&
-      event.endTimeInSeconds > row.startTimeInSeconds
-  );
+      event.endTimeInSeconds > row.startTimeInSeconds,
+  )
 
   // extract the parallelIds for each of these timeslots
   // giving us a list of all events that conflict with this event
-  return timeSlotsContainingThisEvent.map((row) => row.eventIds).flat();
-};
+  return timeSlotsContainingThisEvent.map((row) => row.eventIds).flat()
+}

@@ -1,20 +1,20 @@
-import classNames from "classnames";
-import { PopoverWrapper } from "./popover-wrapper";
-import { AddEventPopover } from "./popovers/add-event-popover";
-import dayjs from "dayjs";
-import { useClickOutContext } from "@/contexts/clickOutContext";
+import classNames from 'classnames'
+import { PopoverWrapper } from './popover-wrapper'
+import { AddEventPopover } from './popovers/add-event-popover'
+import dayjs from 'dayjs'
+import { useClickOutContext } from '@/contexts/clickOutContext'
 
 interface Props {
-  day: dayjs.Dayjs;
-  containerRef: HTMLDivElement | null;
+  day: dayjs.Dayjs
+  containerRef: HTMLDivElement | null
 }
 
 export const CalendarCell = (props: Props) => {
-  const { day, containerRef } = props;
-  const { clickoutSubscriberCount } = useClickOutContext();
+  const { day, containerRef } = props
+  const { clickoutSubscriberCount } = useClickOutContext()
 
   // Dont open popover if other popovers still visible
-  const disableClick = clickoutSubscriberCount > 0;
+  const disableClick = clickoutSubscriberCount > 0
 
   return (
     <div className="border-slate-200 h-32 border-b flex flex-col">
@@ -25,7 +25,7 @@ export const CalendarCell = (props: Props) => {
             <AddEventPopover
               containerRef={containerRef}
               close={close}
-              time={day.add(15 * index, "minute")}
+              time={day.add(15 * index, 'minute')}
             />
           )}
           key={index}
@@ -33,18 +33,18 @@ export const CalendarCell = (props: Props) => {
           {({ ref, onClick, showPopover }) => (
             <button
               className={classNames(`flex-grow cursor-pointer rounded-sm`, {
-                "bg-slate-200": showPopover,
-                "hover:bg-slate-50": !disableClick,
+                'bg-slate-200': showPopover,
+                'hover:bg-slate-50': !disableClick,
               })}
               ref={ref}
               onClick={() => {
-                if (disableClick) return;
-                onClick();
+                if (disableClick) return
+                onClick()
               }}
             ></button>
           )}
         </PopoverWrapper>
       ))}
     </div>
-  );
-};
+  )
+}

@@ -1,5 +1,5 @@
-import { Projects } from "@/features/projects";
-import Head from "next/head";
+import { Projects } from '@/features/projects'
+import Head from 'next/head'
 
 export default function Index() {
   return (
@@ -9,5 +9,5 @@ export default function Index() {
       </Head>
       <Projects />
     </>
-  );
+  )
 }

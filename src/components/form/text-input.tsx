@@ -1,39 +1,39 @@
-import classNames from "classnames";
+import classNames from 'classnames'
 
 type InputType =
-  | "button"
-  | "checkbox"
-  | "color"
-  | "date"
-  | "datetime-local"
-  | "email"
-  | "file"
-  | "hidden"
-  | "image"
-  | "month"
-  | "number"
-  | "password"
-  | "radio"
-  | "range"
-  | "reset"
-  | "search"
-  | "submit"
-  | "tel"
-  | "text"
-  | "time"
-  | "url"
-  | "week";
+  | 'button'
+  | 'checkbox'
+  | 'color'
+  | 'date'
+  | 'datetime-local'
+  | 'email'
+  | 'file'
+  | 'hidden'
+  | 'image'
+  | 'month'
+  | 'number'
+  | 'password'
+  | 'radio'
+  | 'range'
+  | 'reset'
+  | 'search'
+  | 'submit'
+  | 'tel'
+  | 'text'
+  | 'time'
+  | 'url'
+  | 'week'
 
 export interface Props {
-  value: string;
-  setValue: (value: string) => void;
-  id: string;
-  name: string;
-  ariaLabel: string;
-  error?: string;
-  autoFocus?: boolean;
-  placeholder?: string;
-  type?: InputType;
+  value: string
+  setValue: (value: string) => void
+  id: string
+  name: string
+  ariaLabel: string
+  error?: string
+  autoFocus?: boolean
+  placeholder?: string
+  type?: InputType
 }
 
 export const TextInput = (props: Props) => {
@@ -46,8 +46,8 @@ export const TextInput = (props: Props) => {
     error,
     placeholder,
     autoFocus = false,
-    type: inputType = "text",
-  } = props;
+    type: inputType = 'text',
+  } = props
 
   return (
     <input
@@ -58,13 +58,15 @@ export const TextInput = (props: Props) => {
       placeholder={placeholder}
       autoFocus={autoFocus}
       value={value}
-      onInput={(e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value)}
+      onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+        setValue(e.target.value)
+      }
       className={classNames(
-        "shadow-sm text-xs flex-grow text-slate-800 rounded block p-2 w-full border bg-white outline-none",
+        'shadow-sm text-xs flex-grow text-slate-800 rounded block p-2 w-full border bg-white outline-none',
         {
-          "border-red-600": !!error,
-        }
+          'border-red-600': !!error,
+        },
       )}
     />
-  );
-};
+  )
+}

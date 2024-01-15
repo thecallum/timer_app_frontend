@@ -1,6 +1,9 @@
 export const ContinueWithGoogleButton = () => {
   return (
-    <button type="button" className="bg-white  border border-slate-200 text-xl text-slate-600 w-full px-2 py-4 rounded shadow-md flex items-center justify-center">
+    <button
+      type="button"
+      className="bg-white  border border-slate-200 text-xl text-slate-600 w-full px-2 py-4 rounded shadow-md flex items-center justify-center"
+    >
       <span className="mr-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -40,5 +43,5 @@ export const ContinueWithGoogleButton = () => {
       </span>
       <span>Continue with Google</span>
     </button>
-  );
-};
+  )
+}

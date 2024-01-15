@@ -1,13 +1,13 @@
-import { CalendarEvent as CalendarEventType } from "../types/types";
-import { CalendarEvent } from "./calendar-event";
+import { CalendarEvent as CalendarEventType } from '../types/types'
+import { CalendarEvent } from './calendar-event'
 
 interface Props {
-  events: CalendarEventType[];
-  containerRef: HTMLDivElement | null;
+  events: CalendarEventType[]
+  containerRef: HTMLDivElement | null
 }
 
 export const CalendarEvents = (props: Props) => {
-  const { events, containerRef } = props;
+  const { events, containerRef } = props
 
   return (
     <ul className="absolute top-0 left-0 w-full ">
@@ -15,5 +15,5 @@ export const CalendarEvents = (props: Props) => {
         <CalendarEvent containerRef={containerRef} key={index} event={event} />
       ))}
     </ul>
-  );
-};
+  )
+}

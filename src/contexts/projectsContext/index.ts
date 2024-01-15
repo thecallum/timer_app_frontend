@@ -1,2 +1,2 @@
-export * from "./projectsContextProvider"
-export * from "./hooks/useProjectsContext";
+export * from './projectsContextProvider'
+export * from './hooks/useProjectsContext'

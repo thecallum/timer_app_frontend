@@ -1,9 +1,9 @@
 interface Props {
-  children: JSX.Element;
+  children: JSX.Element
 }
 
 export const ModalControls = (props: Props) => {
-  const { children } = props;
+  const { children } = props
 
-  return <div className="border-t border-slate-200 p-4">{children}</div>;
-};
+  return <div className="border-t border-slate-200 p-4">{children}</div>
+}

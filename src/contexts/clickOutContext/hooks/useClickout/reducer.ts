@@ -1,63 +1,62 @@
-
 type ClickOutTarget = {
-  element: HTMLElement | null;
-  callback: () => void;
-};
+  element: HTMLElement | null
+  callback: () => void
+}
 
 type ClickOutReducerState = {
   subscriberStack: {
-    [key: string]: ClickOutTarget;
-  };
-  subscriberOrder: string[];
-};
+    [key: string]: ClickOutTarget
+  }
+  subscriberOrder: string[]
+}
 
 type Action =
   | {
-      type: "SUBSCRIBE";
-      subscriptionId: string;
-      subscription: ClickOutTarget;
+      type: 'SUBSCRIBE'
+      subscriptionId: string
+      subscription: ClickOutTarget
     }
-  | { type: "UNSUBSCRIBE"; subscriptionId: string };
+  | { type: 'UNSUBSCRIBE'; subscriptionId: string }
 
 export const reducer = (state: ClickOutReducerState, action: Action) => {
   switch (action.type) {
-    case "SUBSCRIBE": {
+    case 'SUBSCRIBE': {
       const newSubscriberOrder = [
         ...state.subscriberOrder,
         action.subscriptionId,
-      ];
+      ]
 
       const newSubscriberStack = {
         ...state.subscriberStack,
         [action.subscriptionId]: action.subscription,
-      };
+      }
 
       return {
         ...state,
         subscriberOrder: newSubscriberOrder,
         subscriberStack: newSubscriberStack,
-      };
+      }
     }
 
-    case "UNSUBSCRIBE": {
+    case 'UNSUBSCRIBE': {
       const newSubscriberOrder = state.subscriberOrder.filter(
-        (y) => y !== action.subscriptionId
-      );
+        (y) => y !== action.subscriptionId,
+      )
 
       const newSubscriberStack = {
         ...state.subscriberStack,
-      };
+      }
 
-      delete newSubscriberStack[action.subscriptionId];
+      delete newSubscriberStack[action.subscriptionId]
 
       return {
         ...state,
         subscriberOrder: newSubscriberOrder,
         subscriberStack: newSubscriberStack,
-      };
+      }
     }
 
     default:
-      return state;
+      return state
   }
-};
+}

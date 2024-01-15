@@ -1,20 +1,20 @@
-import { CalendarEvent } from "@/features/calendar/types/types";
-import { CalendarEventPosition } from "./types";
+import { CalendarEvent } from '@/features/calendar/types/types'
+import { CalendarEventPosition } from './types'
 
-const INITIAL_DISPLAY_POSITION = 0;
-const INITIAL_LEFT_POSITION = 0;
+const INITIAL_DISPLAY_POSITION = 0
+const INITIAL_LEFT_POSITION = 0
 
 export const calculateDisplayPositionsById = (
   events: CalendarEvent[],
   parallelEventsById: {
-    [key: string]: string[];
+    [key: string]: string[]
   },
-  largestColumnCount: number
+  largestColumnCount: number,
 ) => {
   const displayPositionsById = populateInitialDisplayPositions(
     parallelEventsById,
-    largestColumnCount
-  );
+    largestColumnCount,
+  )
 
   events
     // sort by oldest first
@@ -24,55 +24,55 @@ export const calculateDisplayPositionsById = (
       // 1. grab parallel event positions with ids
       const parallelEvents = getParallelEvents(
         eventPosition.parallelColumnIds,
-        displayPositionsById
-      );
+        displayPositionsById,
+      )
 
       // 2. identify which displayPositions are taken
       const takenPositions = new Set(
-        parallelEvents.map((x) => x.displayPosition)
-      );
+        parallelEvents.map((x) => x.displayPosition),
+      )
 
       // 3. find the next, smallest, display position
-      let nextDisplayPosition = 1;
+      let nextDisplayPosition = 1
       while (takenPositions.has(nextDisplayPosition)) {
-        nextDisplayPosition++;
+        nextDisplayPosition++
       }
 
       // 4. assign the position
-      eventPosition.displayPosition = nextDisplayPosition;
+      eventPosition.displayPosition = nextDisplayPosition
 
       // 5. calculate the left position based on its display position
       eventPosition.computedLeft = calculateLeftPosition(
         nextDisplayPosition,
-        eventPosition.computedWidth
-      );
-    });
+        eventPosition.computedWidth,
+      )
+    })
 
-  return displayPositionsById;
-};
+  return displayPositionsById
+}
 
 const getParallelEvents = (
   eventIds: string[],
   displayPositionsById: {
-    [key: string]: CalendarEventPosition;
-  }
-) => eventIds.map((x) => displayPositionsById[x]);
+    [key: string]: CalendarEventPosition
+  },
+) => eventIds.map((x) => displayPositionsById[x])
 
 const calculateLeftPosition = (displayPosition: number, width: number) => {
-  return (displayPosition - 1) * width;
-};
+  return (displayPosition - 1) * width
+}
 
 const populateInitialDisplayPositions = (
   parallelEventsById: {
-    [key: string]: string[];
+    [key: string]: string[]
   },
-  largestColumnCount: number
+  largestColumnCount: number,
 ) => {
   const initialDisplayPositionsById: {
-    [key: string]: CalendarEventPosition;
-  } = {};
+    [key: string]: CalendarEventPosition
+  } = {}
 
-  const widthForAllEventsInColumn = 1 / largestColumnCount;
+  const widthForAllEventsInColumn = 1 / largestColumnCount
 
   Object.keys(parallelEventsById).forEach((id) => {
     initialDisplayPositionsById[id] = {
@@ -80,8 +80,8 @@ const populateInitialDisplayPositions = (
       displayPosition: INITIAL_DISPLAY_POSITION,
       computedLeft: INITIAL_LEFT_POSITION,
       computedWidth: widthForAllEventsInColumn,
-    };
-  });
+    }
+  })
 
-  return initialDisplayPositionsById;
-};
+  return initialDisplayPositionsById
+}

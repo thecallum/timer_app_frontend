@@ -1,52 +1,52 @@
-import { ErrorMessage } from "@/components/form";
-import { TextInputWithLabel } from "@/components/form/text-input-with-label";
-import { ContinueWithGoogle } from "@/features/auth/components/continue-with-google";
-import { useState } from "react";
-import Validator from "validator";
+import { ErrorMessage } from '@/components/form'
+import { TextInputWithLabel } from '@/components/form/text-input-with-label'
+import { ContinueWithGoogle } from '@/features/auth/components/continue-with-google'
+import { useState } from 'react'
+import Validator from 'validator'
 
 interface Props {
-  onSubmit: (props: { email: string; password: string }) => void;
+  onSubmit: (props: { email: string; password: string }) => void
 }
 
 export const LoginForm = (props: Props) => {
-  const { onSubmit } = props;
+  const { onSubmit } = props
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const validate = () => {
-    const errors: { [key: string]: string } = {};
+    const errors: { [key: string]: string } = {}
 
-    if (email === null || email.trim() === "") {
-      errors["email"] = "Email cannot be empty";
+    if (email === null || email.trim() === '') {
+      errors['email'] = 'Email cannot be empty'
     } else if (!Validator.isEmail(email)) {
-      errors["email"] = "Email invalid";
+      errors['email'] = 'Email invalid'
     }
 
-    if (password === null || password.trim() === "") {
-      errors["password"] = "Password cannot be empty";
+    if (password === null || password.trim() === '') {
+      errors['password'] = 'Password cannot be empty'
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const errors = validate();
-    setErrors(errors);
+    const errors = validate()
+    setErrors(errors)
 
     if (Object.keys(errors).length >= 1) {
-      return;
+      return
     }
 
     onSubmit({
       email,
       password,
-    });
-  };
+    })
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -91,5 +91,5 @@ export const LoginForm = (props: Props) => {
 
       <ContinueWithGoogle />
     </form>
-  );
-};
+  )
+}

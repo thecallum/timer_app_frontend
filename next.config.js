@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  redirects: async () => ([
+  redirects: async () => [
     {
-      source: "/",
-      destination: "/calendar",
-      permanent: false
-    }
-  ])
+      source: '/',
+      destination: '/calendar',
+      permanent: false,
+    },
+  ],
 }
 
 module.exports = nextConfig

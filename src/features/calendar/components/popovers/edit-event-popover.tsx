@@ -2,93 +2,93 @@ import {
   PopoverContainer,
   PopoverControls,
   PopoverLayout,
-} from "@/components/popover";
-import { CalendarEvent } from "../../types/types";
-import { ProjectSelector } from "../../../../components/projectSelector";
-import { useState } from "react";
-import dayjs from "dayjs";
-import classNames from "classnames";
-import { ErrorMessage } from "@/components/form/error-message";
-import { TextInput } from "@/components/form";
-import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
-import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
-import { IProject, defaultProject } from "@/contexts/projectsContext/types";
-import { formatDuration } from "@/helpers/formatter";
+} from '@/components/popover'
+import { CalendarEvent } from '../../types/types'
+import { ProjectSelector } from '../../../../components/projectSelector'
+import { useState } from 'react'
+import dayjs from 'dayjs'
+import classNames from 'classnames'
+import { ErrorMessage } from '@/components/form/error-message'
+import { TextInput } from '@/components/form'
+import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
+import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
+import { IProject, defaultProject } from '@/contexts/projectsContext/types'
+import { formatDuration } from '@/helpers/formatter'
 
 interface Props {
-  close: () => void;
-  event: CalendarEvent;
-  containerRef: HTMLDivElement | null;
+  close: () => void
+  event: CalendarEvent
+  containerRef: HTMLDivElement | null
 }
 
 export const EditEventPopover = (props: Props) => {
-  const { close, event, containerRef } = props;
+  const { close, event, containerRef } = props
   const {
     description: currentDescription,
     project: currentProject,
     start,
     end,
-  } = event;
+  } = event
 
-  const { updateEvent, deleteEvent } = useCalendarEventsContext();
-  const [description, setDescription] = useState(currentDescription);
+  const { updateEvent, deleteEvent } = useCalendarEventsContext()
+  const [description, setDescription] = useState(currentDescription)
   const [project, setProject] = useState<IProject | null>(
-    currentProject ?? null
-  );
+    currentProject ?? null,
+  )
 
   const [startDate, setStartDate] = useState<string>(
-    start.format("YYYY-MM-DDTHH:mm:ss")
-  );
-  const [endTime, setEndTime] = useState<string>(end.format("HH:mm:ss"));
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    start.format('YYYY-MM-DDTHH:mm:ss'),
+  )
+  const [endTime, setEndTime] = useState<string>(end.format('HH:mm:ss'))
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const getEndTimeAsDate = () => {
-    const [hour, minute, second] = endTime.split(":").map(Number);
-    return dayjs(startDate).hour(hour).minute(minute).second(second);
-  };
+    const [hour, minute, second] = endTime.split(':').map(Number)
+    return dayjs(startDate).hour(hour).minute(minute).second(second)
+  }
 
   const timeDifferenceInSeconds = getEndTimeAsDate().diff(
     dayjs(startDate),
-    "second"
-  );
+    'second',
+  )
 
   const onDeleteEvent = () => {
-    deleteEvent(event);
-    close();
-  };
+    deleteEvent(event)
+    close()
+  }
 
   const validate = () => {
-    const errors: { [key: string]: string } = {};
+    const errors: { [key: string]: string } = {}
 
     if (!getEndTimeAsDate().isAfter(dayjs(startDate))) {
-      errors["end"] = "End time must be after start";
+      errors['end'] = 'End time must be after start'
     }
 
-    if (description === null || description.trim() === "") {
-      errors["description"] = "Description cannot be empty";
+    if (description === null || description.trim() === '') {
+      errors['description'] = 'Description cannot be empty'
     }
 
-    return errors;
-  };
+    return errors
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const errors = validate();
-    setErrors(errors);
+    const errors = validate()
+    setErrors(errors)
 
     if (Object.keys(errors).length >= 1) {
-      return;
+      return
     }
 
-    event.start = dayjs(startDate);
-    event.end = getEndTimeAsDate();
-    event.description = description;
-    event.project = project ?? defaultProject;
+    event.start = dayjs(startDate)
+    event.end = getEndTimeAsDate()
+    event.description = description
+    event.project = project ?? defaultProject
 
-    updateEvent(event);
-    close();
-  };
+    updateEvent(event)
+    close()
+  }
 
   return (
     <PopoverContainer>
@@ -156,10 +156,10 @@ export const EditEventPopover = (props: Props) => {
                     setEndTime(e.target.value)
                   }
                   className={classNames(
-                    "block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm",
+                    'block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm',
                     {
-                      "border-red-600": errors?.end,
-                    }
+                      'border-red-600': errors?.end,
+                    },
                   )}
                 />
               </div>
@@ -188,5 +188,5 @@ export const EditEventPopover = (props: Props) => {
         </PopoverControls>
       </form>
     </PopoverContainer>
-  );
-};
+  )
+}
