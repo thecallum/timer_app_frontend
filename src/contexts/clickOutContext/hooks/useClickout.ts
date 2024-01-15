@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { reducer } from "../reducer";
 import { v4 as uuidv4 } from "uuid";
 
@@ -7,6 +7,8 @@ export const useClickout = () => {
     subscriberStack: {},
     subscriberOrder: [],
   });
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const subscribe = (element: HTMLElement | null, callback: () => void) => {
     const subscriptionId = uuidv4();
@@ -44,6 +46,9 @@ export const useClickout = () => {
   };
 
   const handleClick = (event: MouseEvent) => {
+    // Ignore any click events if modal is open
+    if (modalIsOpen) return;
+
     const topSubscriber = getTopSubscriber();
     if (!topSubscriber?.element) return;
 
@@ -52,19 +57,27 @@ export const useClickout = () => {
     }
   };
 
+  const setModalAsOpen = (isOpen: boolean) => {
+    setModalIsOpen((x) => isOpen);
+  };
+
   useEffect(() => {
     document.addEventListener("click", handleClick);
 
     return () => {
       document.removeEventListener("click", handleClick);
     };
-  }, [state]);
+    // This may or may result in slow performance,
+    // running every time state updates
+  }, [state, modalIsOpen]);
 
   return {
     state: {
       clickoutSubscriberCount: state.subscriberOrder.length,
+      modalIsOpen,
     },
     actions: {
+      setModalAsOpen,
       subscribe,
       unsubscribe,
     },

@@ -5,9 +5,9 @@ import {
   PopoverLayout,
 } from "@/components/popover";
 import { getColor } from "../../helpers/colors";
-import { useProjectModalContainerContext } from "@/modals/create-project-modal-container";
 import { useProjectsContext } from "@/contexts/projectsContext/hooks/useProjectsContext";
 import { IProject, defaultProject } from "@/contexts/projectsContext/types";
+import { useCreateProjectModalContext } from "@/contexts/createProjectModalContext";
 
 interface Props {
   currentProject: IProject;
@@ -18,7 +18,7 @@ export const SelectProjectPopover = (props: Props) => {
   const { selectProject, currentProject } = props;
 
   const { projects } = useProjectsContext();
-  const { openModal } = useProjectModalContainerContext();
+  const { openModal } = useCreateProjectModalContext();
 
   return (
     <PopoverContainer width="w-48">

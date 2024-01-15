@@ -5,10 +5,10 @@ import { EditProjectModal } from "@/modals/edit-project-modal";
 import { useState } from "react";
 import {
   CreateProjectModalContainer,
-  useProjectModalContainerContext,
 } from "@/modals/create-project-modal-container";
 import { useProjectsContext } from "../../contexts/projectsContext/hooks/useProjectsContext";
 import { IProject } from "@/contexts/projectsContext/types";
+import { useCreateProjectModalContext } from "@/contexts/createProjectModalContext";
 
 export const Projects = () => {
   const { getAllEvents } = useCalendarEvents();
@@ -17,7 +17,7 @@ export const Projects = () => {
   const [editProjectModal, setEditProjectModal] = useState<IProject | null>(
     null
   );
-  const { openModal } = useProjectModalContainerContext();
+  const { openModal } = useCreateProjectModalContext();
 
   const openEditModal = (project: IProject) => {
     setEditProjectModal(project);
@@ -36,7 +36,6 @@ export const Projects = () => {
     deleteProject(project);
     closeEditModal();
   };
-
 
   const projectsWithTime = projects.map((x) => {
     const projectEvents = events.filter((e) => {
