@@ -1,5 +1,13 @@
 import { Login } from "@/features/auth/login";
+import Head from "next/head";
 
 export default function Index() {
-  return <Login />;
+  return (
+    <>
+      <Head>
+        <title>Login</title>
+      </Head>
+      <Login />;
+    </>
+  );
 }

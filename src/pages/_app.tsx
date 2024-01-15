@@ -35,25 +35,22 @@ const ContextProviderWrappers = ({ children }: Props) => {
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-
   const showSidebar = sidebarRoutes.has(router.pathname);
 
   return (
-    <div>
-      <ContextProviderWrappers>
-        <>
-          <Header />
+    <ContextProviderWrappers>
+      <>
+        <Header />
 
-          <div className="flex flex-row h-[calc(100vh-4rem)]">
-            {showSidebar && <Nav />}
-            <div className="flex-grow">
-              <Component {...pageProps} />
-            </div>
+        <div className="flex flex-row h-[calc(100vh-4rem)]">
+          {showSidebar && <Nav />}
+          <div className="flex-grow">
+            <Component {...pageProps} />
           </div>
+        </div>
 
-          <CreateProjectModalContainer />
-        </>
-      </ContextProviderWrappers>
-    </div>
+        <CreateProjectModalContainer />
+      </>
+    </ContextProviderWrappers>
   );
 }
