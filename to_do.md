@@ -2,12 +2,12 @@
 
 - Dynamic row height
 - Add different week views (day, week, working week etc)
-- Timer visible on all pages, such as login. Should only be visible on pages with sidebar
 - Add linter/code formatter
 - integrate getEbents into useCalendar hook
 
 ## Done
 
+- Timer visible on all pages, such as login. Should only be visible on pages with sidebar
 - Normalise context interface pattern
 - Cleanup naming convention, folder structure etc
 - Update title for each page

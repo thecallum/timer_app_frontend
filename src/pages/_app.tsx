@@ -10,8 +10,7 @@ import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 
-// routes to show sidebar
-const sidebarRoutes = new Set(["/calendar", "/projects"]);
+const authPages = new Set(["/calendar", "/projects"]);
 
 interface Props {
   children: JSX.Element;
@@ -35,15 +34,16 @@ const ContextProviderWrappers = ({ children }: Props) => {
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const showSidebar = sidebarRoutes.has(router.pathname);
+
+  const isAuthorizedPage = authPages.has(router.pathname);
 
   return (
     <ContextProviderWrappers>
       <>
-        <Header />
+        <Header showTimerControls={isAuthorizedPage} />
 
         <div className="flex flex-row h-[calc(100vh-4rem)]">
-          {showSidebar && <Nav />}
+          {isAuthorizedPage && <Nav />}
           <div className="flex-grow">
             <Component {...pageProps} />
           </div>
