@@ -35,7 +35,7 @@ const CreateProjectModalContextProvider = (props: Props) => {
   };
 
   const value = {
-    modalOpen: modalIsOpen,
+    modalIsOpen,
     closeModal,
     openModal,
     onCreateProject,

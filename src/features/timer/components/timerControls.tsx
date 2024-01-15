@@ -3,11 +3,11 @@ import { formatDuration } from "@/features/calendar/helpers/formatter";
 import { CalendarEvent } from "@/features/calendar/types/types";
 import { useRef } from "react";
 import { useTimer } from "../context/hooks/useTimer";
-import { useCalendarEvents } from "@/contexts/calendarEventContext";
 import dayjs from "dayjs";
+import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
 
 export const TimerControls = () => {
-  const { addEvent } = useCalendarEvents();
+  const { addEvent } = useCalendarEventsContext();
 
   const { state: timerState, actions: timerActions } = useTimer();
   const { startTimer, stopTimer, setProject, setDescription } = timerActions;

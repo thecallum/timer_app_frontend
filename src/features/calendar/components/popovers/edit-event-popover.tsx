@@ -3,7 +3,7 @@ import {
   PopoverControls,
   PopoverLayout,
 } from "@/components/popover";
-import { CalendarEvent, IProject, defaultProject } from "../../types/types";
+import { CalendarEvent } from "../../types/types";
 import { ProjectSelector } from "../../../../components/projectSelector";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -12,7 +12,8 @@ import classNames from "classnames";
 import { ErrorMessage } from "@/components/form/error-message";
 import { TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
-import { useCalendarEvents } from "@/contexts/calendarEventContext";
+import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
+import { IProject, defaultProject } from "@/contexts/projectsContext/types";
 
 interface Props {
   close: () => void;
@@ -29,7 +30,7 @@ export const EditEventPopover = (props: Props) => {
     end,
   } = event;
 
-  const { updateEvent, deleteEvent } = useCalendarEvents();
+  const { updateEvent, deleteEvent } = useCalendarEventsContext();
   const [description, setDescription] = useState(currentDescription);
   const [project, setProject] = useState<IProject | null>(
     currentProject ?? null

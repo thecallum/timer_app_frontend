@@ -3,7 +3,7 @@ import { useProjectsContext } from "@/contexts/projectsContext/hooks/useProjects
 import { useCreateProjectModalContext } from "@/contexts/createProjectModalContext";
 
 export const CreateProjectModalContainer = () => {
-  const { modalOpen, closeModal, onCreateProject } =
+  const { modalIsOpen, closeModal, onCreateProject } =
     useCreateProjectModalContext();
 
   const { projects } = useProjectsContext();
@@ -11,7 +11,7 @@ export const CreateProjectModalContainer = () => {
   return (
     <div className="z-20">
       <CreateProjectModal
-        isOpen={modalOpen}
+        isOpen={modalIsOpen}
         close={closeModal}
         onCreate={onCreateProject}
         projects={projects}

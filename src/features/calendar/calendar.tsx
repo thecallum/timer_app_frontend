@@ -9,13 +9,13 @@ import { useCalendar } from "./hooks/useCalendar";
 import { useState } from "react";
 import { ContainerFullWidth } from "@/components/layout/container-full-width";
 import { Page } from "@/components/layout/page";
-import { useCalendarEvents } from "@/contexts/calendarEventContext";
 import { CurrentEventHover } from "../timer/components/currentEventHover";
+import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
 
 export const Calendar = () => {
   const { weeks, next, previous, reset, currentWeek, showingCurrentWeek } =
     useCalendar();
-  const { getEvents } = useCalendarEvents();
+  const { getEvents } = useCalendarEventsContext();
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null);
 
   const eventsThisWeek = getEvents(currentWeek);

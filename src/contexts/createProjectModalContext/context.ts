@@ -2,7 +2,7 @@ import { createContext } from "react";
 import { IProject } from "../projectsContext/types";
 
 interface ContextState {
-  modalOpen: boolean;
+  modalIsOpen: boolean;
   closeModal: () => void;
   openModal: () => void;
   onCreateProject: (newProject: IProject) => void;

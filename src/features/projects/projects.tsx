@@ -1,5 +1,4 @@
 import { Page } from "@/components/layout/page";
-import { useCalendarEvents } from "@/contexts/calendarEventContext";
 import { getColor } from "@/helpers/colors";
 import { EditProjectModal } from "@/modals/edit-project-modal";
 import { useState } from "react";
@@ -9,9 +8,10 @@ import {
 import { useProjectsContext } from "../../contexts/projectsContext/hooks/useProjectsContext";
 import { IProject } from "@/contexts/projectsContext/types";
 import { useCreateProjectModalContext } from "@/contexts/createProjectModalContext";
+import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
 
 export const Projects = () => {
-  const { getAllEvents } = useCalendarEvents();
+  const { getAllEvents } = useCalendarEventsContext();
   const events = getAllEvents();
   const { projects, updateProject, deleteProject } = useProjectsContext();
   const [editProjectModal, setEditProjectModal] = useState<IProject | null>(

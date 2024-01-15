@@ -12,7 +12,7 @@ import { ErrorMessage } from "@/components/form/error-message";
 import classNames from "classnames";
 import { TextInput } from "@/components/form";
 import { ButtonPrimary, ButtonSecondary } from "@/components/form/buttons";
-import { useCalendarEvents } from "@/contexts/calendarEventContext";
+import { useCalendarEventsContext } from "@/contexts/calendarEventContext";
 
 interface Props {
   close: () => void;
@@ -22,7 +22,7 @@ interface Props {
 
 export const AddEventPopover = (props: Props) => {
   const { close, time, containerRef } = props;
-  const { addEvent } = useCalendarEvents();
+  const { addEvent } = useCalendarEventsContext();
   const [project, setProject] = useState<IProject | null>(null);
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
