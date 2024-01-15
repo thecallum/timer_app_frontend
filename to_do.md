@@ -5,6 +5,7 @@
 - Cleanup naming convention, folder structure etc
 - Normalise context interface pattern
 - Timer visible on all pages, such as login. Should only be visible on pages with sidebar
+- Add linter/code formatter
 
 ## Done
 

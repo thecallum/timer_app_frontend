@@ -1,4 +1,4 @@
-import { Login } from "@/features/auth/login";
+import { Login } from "@/features/auth/views/login";
 import Head from "next/head";
 
 export default function Index() {

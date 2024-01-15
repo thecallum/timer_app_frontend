@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { SignupForm } from "./components/signup-form";
+import { SignupForm } from "../components/signup-form";
 import { Page } from "@/components/layout/page";
 
 export const Signup = () => {

@@ -1,4 +1,4 @@
-import { Signup } from "@/features/auth/signup";
+import { Signup } from "@/features/auth/views/signup";
 import Head from "next/head";
 
 export default function Index() {
