@@ -69,15 +69,16 @@ export const AddEventPopover = (props: Props) => {
       return
     }
 
-    const newEvent = new CalendarEvent(
+    const request = {
       description,
-      dayjs(startDate),
-      getEndTimeAsDate(),
-      project ?? defaultProject,
-    )
+      startTime: dayjs(startDate),
+      endTime: getEndTimeAsDate(),
+      // project ?? defaultProject,
+    }
 
-    addEvent(newEvent)
-    close()
+    addEvent(request).then(() => {
+      close()
+    })
   }
 
   return (

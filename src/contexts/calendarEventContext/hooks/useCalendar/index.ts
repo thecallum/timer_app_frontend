@@ -1,12 +1,22 @@
 import { useEffect, useReducer } from 'react'
-import { fetchPlaceholderEvents } from './placeholderEvents'
-import { CalendarEvent } from '@/features/calendar/types/types'
+import {
+  CalendarEvent,
+  CalendarEventRequestObject,
+  CalendarEventRequestToDomain,
+  CalendarEventToRequestObject,
+} from '@/features/calendar/types/types'
 import dayjs from 'dayjs'
 import { calculateEventDisplayPositions } from './calculateEventDisplayPositions'
 
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { reducer } from './reducer'
 import { useCalendarControls } from '../useCalendarControls'
+import {
+  addEventRequest,
+  deleteEventRequest,
+  fetchEvents,
+  updateEventRequest,
+} from './requests'
 
 dayjs.extend(isSameOrAfter)
 
@@ -23,17 +33,18 @@ export const useCalendar = () => {
     dispatch({ type: 'set_loading', clearEvents })
   }
 
-  const fetchEventsForPage = () => {
+  const fetchEventsForPage = async () => {
     setIsLoading(true)
 
-    const events = fetchPlaceholderEvents(currentWeek)
+    const startTime = daysOfWeek[0]
+    const endTime = daysOfWeek[6]
 
-    setTimeout(() => {
+    fetchEvents(startTime, endTime).then((res) => {
       dispatch({
         type: 'add_loaded_events',
-        events,
+        events: res,
       })
-    }, 500)
+    })
   }
 
   useEffect(() => {
@@ -44,34 +55,37 @@ export const useCalendar = () => {
   const updateEvent = async (event: CalendarEvent) => {
     setIsLoading()
 
-    setTimeout(() => {
-      dispatch({
-        type: 'update_event',
-        event,
-      })
-    }, 500)
+    const request = CalendarEventToRequestObject(event)
+
+    await updateEventRequest(event.id, request)
+
+    dispatch({
+      type: 'update_event',
+      event,
+    })
   }
 
-  const addEvent = async (event: CalendarEvent) => {
+  const addEvent = async (request: CalendarEventRequestObject) => {
     setIsLoading()
 
-    setTimeout(() => {
-      dispatch({
-        type: 'add_event',
-        event,
-      })
-    }, 500)
+    const response = await addEventRequest(request)
+    const event = CalendarEventRequestToDomain(response)
+
+    dispatch({
+      type: 'add_event',
+      event,
+    })
   }
 
   const deleteEvent = async (event: CalendarEvent) => {
     setIsLoading()
 
-    setTimeout(() => {
-      dispatch({
-        type: 'delete_event',
-        event,
-      })
-    }, 500)
+    await deleteEventRequest(event.id)
+
+    dispatch({
+      type: 'delete_event',
+      event,
+    })
   }
 
   const events = calculateEventDisplayPositions(state.events)

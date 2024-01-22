@@ -9,7 +9,7 @@ export const CalendarDates = () => {
 
   const weekDaysArray = daysOfWeek.map((x) => {
     const eventsOnThisDay = events.filter((e) =>
-      e.start.startOf('day').isSame(x.startOf('day')),
+      e.startTime.startOf('day').isSame(x.startOf('day')),
     )
 
     return {

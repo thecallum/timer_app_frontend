@@ -34,16 +34,16 @@ export const TimerControls = () => {
   const handleStopTimer = () => {
     stopTimer()
 
-    const newEvent = new CalendarEvent(
+    const request = {
       description,
-      dayjs().add(time * -1, 'second'),
-      dayjs(),
-      project ?? undefined,
-    )
+      startTime: dayjs().add(time * -1, 'second'),
+      endTime: dayjs(),
+      // project ?? undefined,
+    }
 
-    addEvent(newEvent)
-
-    reset()
+    addEvent(request).then(() => {
+      reset()
+    })
   }
 
   const reset = () => {

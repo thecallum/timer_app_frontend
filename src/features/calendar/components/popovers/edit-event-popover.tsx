@@ -26,8 +26,8 @@ export const EditEventPopover = (props: Props) => {
   const {
     description: currentDescription,
     project: currentProject,
-    start,
-    end,
+    startTime: start,
+    endTime: end,
   } = event
 
   const { updateEvent, deleteEvent } = useCalendarEventsContext()
@@ -81,8 +81,8 @@ export const EditEventPopover = (props: Props) => {
       return
     }
 
-    event.start = dayjs(startDate)
-    event.end = getEndTimeAsDate()
+    event.startTime = dayjs(startDate)
+    event.endTime = getEndTimeAsDate()
     event.description = description
     event.project = project ?? defaultProject
 
