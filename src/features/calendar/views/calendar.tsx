@@ -9,9 +9,12 @@ import { useState } from 'react'
 import { ContainerFullWidth } from '@/components/layout/container-full-width'
 import { Page } from '@/components/layout/page'
 import { CurrentEventHover } from '../../timer/views/currentEventHover'
+import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 
 export const Calendar = () => {
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null)
+
+  const { isLoading } = useCalendarEventsContext()
 
   return (
     <FullPageSpaceFillerContailer
@@ -21,6 +24,8 @@ export const Calendar = () => {
             <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
             <div className="flex justify-between items-start">
               <CalendarWeekSummary />
+
+              {isLoading && <p>Loading..</p>}
               <CalendarWeekSelect />
             </div>
           </>
