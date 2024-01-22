@@ -5,12 +5,9 @@ import { useState } from 'react'
 import { CreateProjectModalContainer } from '@/modals/create-project-modal-container'
 import { IProject } from '@/contexts/projectsContext/types'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
-import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { useProjectsContext } from '@/contexts/projectsContext'
 
 export const Projects = () => {
-  const { getAllEvents } = useCalendarEventsContext()
-  const events = getAllEvents()
   const { projects, updateProject, deleteProject } = useProjectsContext()
   const [editProjectModal, setEditProjectModal] = useState<IProject | null>(
     null,
@@ -35,20 +32,24 @@ export const Projects = () => {
     closeEditModal()
   }
 
+  // this function will need to be implemented serverside -
+  // unless the api returns every calendarEvent
   const projectsWithTime = projects.map((x) => {
-    const projectEvents = events.filter((e) => {
-      return e.project?.id === x.id
-    })
+    // const projectEvents = events.filter((e) => {
+    //   return e.project?.id === x.id
+    // })
 
-    const minutes = projectEvents.reduce(
-      (accumulator, currentValue) =>
-        accumulator + currentValue.durationInMinutes,
-      0,
-    )
+    // const minutes = projectEvents.reduce(
+    //   (accumulator, currentValue) =>
+    //     accumulator + currentValue.durationInMinutes,
+    //   0,
+    // )
+
+    const placeholderValue = 12342
 
     return {
       ...x,
-      minutes,
+      minutes: placeholderValue,
     }
   })
 

@@ -20,7 +20,7 @@ const getDisplayPositions = (
   )
 }
 
-export const getEvents = (allEvents: CalendarEvent[]) => {
+export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
   // 1. Group events by day of week
   const eventsGroupedByDay = groupEventsByDayOfWeek(allEvents)
 

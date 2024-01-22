@@ -1,6 +1,6 @@
 import { createContext } from 'react'
-import { ICalendarEventContext } from './types'
+import { CalendarEventContext } from './types'
 
 export const CalendarEventContext = createContext<
-  ICalendarEventContext | undefined
+  CalendarEventContext | undefined
 >(undefined)

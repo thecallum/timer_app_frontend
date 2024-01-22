@@ -5,7 +5,6 @@ import { FullPageSpaceFillerContailer } from '@/components/layout/full-page-spac
 import { CalendarEvents } from '../components/calendar-events'
 import { CalendarWeekSelect } from '../components/calendar-week-select'
 import { CalendarWeekSummary } from '../components/calendar-week-summary'
-import { useCalendar } from '../hooks/useCalendar'
 import { useState } from 'react'
 import { ContainerFullWidth } from '@/components/layout/container-full-width'
 import { Page } from '@/components/layout/page'
@@ -13,12 +12,11 @@ import { CurrentEventHover } from '../../timer/views/currentEventHover'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 
 export const Calendar = () => {
-  const { weeks, next, previous, reset, currentWeek, showingCurrentWeek } =
-    useCalendar()
-  const { getEvents } = useCalendarEventsContext()
+  const { weeks, next, previous, reset, showingCurrentWeek, getEvents } =
+    useCalendarEventsContext()
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null)
 
-  const eventsThisWeek = getEvents(currentWeek)
+  const eventsThisWeek = getEvents()
 
   return (
     <FullPageSpaceFillerContailer

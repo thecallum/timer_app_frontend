@@ -2,10 +2,11 @@ import { useReducer } from 'react'
 import { placeholderEvents } from './placeholderEvents'
 import { CalendarEvent } from '@/features/calendar/types/types'
 import dayjs from 'dayjs'
-import { getEvents } from './getEvents'
+import { calculateEventDisplayPositions } from './calculateEventDisplayPositions'
 
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { reducer } from './reducer'
+import { useCalendarControls } from '../useCalendarControls'
 
 dayjs.extend(isSameOrAfter)
 
@@ -13,6 +14,9 @@ export const useCalendar = () => {
   const [state, dispatch] = useReducer(reducer, {
     events: placeholderEvents,
   })
+
+  const { weeks, next, previous, reset, currentWeek, showingCurrentWeek } =
+    useCalendarControls()
 
   const updateEvent = (event: CalendarEvent) => {
     dispatch({
@@ -51,11 +55,21 @@ export const useCalendar = () => {
     })
   }
 
+  const getEvents = () => {
+    const eventsThisWeek = filterEvents(currentWeek)
+
+    return calculateEventDisplayPositions(eventsThisWeek)
+  }
+
   return {
     updateEvent,
     addEvent,
     deleteEvent,
-    getAllEvents: () => getEvents(state.events),
-    getEvents: (week: number) => getEvents(filterEvents(week)),
+    getEvents,
+    weeks,
+    next,
+    previous,
+    reset,
+    showingCurrentWeek,
   }
 }
