@@ -1,18 +1,13 @@
 import classNames from 'classnames'
 import dayjs from 'dayjs'
-import { CalendarEvent } from '../types/types'
 import { calculateDuration } from '../helpers/duration'
 import { formatDuration } from '@/helpers/formatter'
+import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 
-interface Props {
-  weeks: dayjs.Dayjs[]
-  events: CalendarEvent[]
-}
+export const CalendarDates = () => {
+  const { daysOfWeek, events } = useCalendarEventsContext()
 
-export const CalendarDates = (props: Props) => {
-  const { weeks, events } = props
-
-  const weekDaysArray = weeks.map((x) => {
+  const weekDaysArray = daysOfWeek.map((x) => {
     const eventsOnThisDay = events.filter((e) =>
       e.start.startOf('day').isSame(x.startOf('day')),
     )

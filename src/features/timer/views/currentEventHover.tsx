@@ -2,16 +2,12 @@ import { useTimerContext } from '@/features/timer/context/hooks/useTimerContext'
 import dayjs from 'dayjs'
 import { getColor } from '../../../helpers/colors'
 import { CalendarEventView } from '@/features/calendar/components/calendar-event-view'
+import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 
 const HEIGHT_ONE_MINUTE = (64 / 60) * 2
 
-interface Props {
-  showingCurrentWeek: boolean
-}
-
-export const CurrentEventHover = (props: Props) => {
-  const { showingCurrentWeek } = props
-
+export const CurrentEventHover = () => {
+  const { showingCurrentWeek } = useCalendarEventsContext()
   const { time, isRunning, startedAt, description, project } = useTimerContext()
 
   const startedAtInMinutes = dayjs(startedAt).diff(

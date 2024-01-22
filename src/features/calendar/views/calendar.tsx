@@ -9,14 +9,9 @@ import { useState } from 'react'
 import { ContainerFullWidth } from '@/components/layout/container-full-width'
 import { Page } from '@/components/layout/page'
 import { CurrentEventHover } from '../../timer/views/currentEventHover'
-import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 
 export const Calendar = () => {
-  const { weeks, next, previous, reset, showingCurrentWeek, getEvents } =
-    useCalendarEventsContext()
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null)
-
-  const eventsThisWeek = getEvents()
 
   return (
     <FullPageSpaceFillerContailer
@@ -25,14 +20,8 @@ export const Calendar = () => {
           <>
             <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
             <div className="flex justify-between items-start">
-              <CalendarWeekSummary events={eventsThisWeek} />
-
-              <CalendarWeekSelect
-                weeks={weeks}
-                next={next}
-                previous={previous}
-                reset={reset}
-              />
+              <CalendarWeekSummary />
+              <CalendarWeekSelect />
             </div>
           </>
         </ContainerFullWidth>
@@ -42,16 +31,13 @@ export const Calendar = () => {
         <ContainerFullWidth>
           <Page>
             <div className="h-full flex flex-col" ref={setContainerRef}>
-              <CalendarDates weeks={weeks} events={eventsThisWeek} />
+              <CalendarDates />
               <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
                 <CalendarHours />
                 <div className="relative h-[calc(24*2*64px)] overflow-hidden flex-grow flex-shrink-0">
-                  <CalendarGrid containerRef={containerRef} weeks={weeks} />
-                  <CalendarEvents
-                    containerRef={containerRef}
-                    events={eventsThisWeek}
-                  />
-                  <CurrentEventHover showingCurrentWeek={showingCurrentWeek} />
+                  <CalendarGrid containerRef={containerRef} />
+                  <CalendarEvents containerRef={containerRef} />
+                  <CurrentEventHover />
                 </div>
               </div>
             </div>

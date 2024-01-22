@@ -15,24 +15,24 @@ export const useCalendar = () => {
     events: placeholderEvents,
   })
 
-  const { weeks, next, previous, reset, currentWeek, showingCurrentWeek } =
+  const { daysOfWeek, next, previous, reset, currentWeek, showingCurrentWeek } =
     useCalendarControls()
 
-  const updateEvent = (event: CalendarEvent) => {
+  const updateEvent = async (event: CalendarEvent) => {
     dispatch({
       type: 'update_event',
       event,
     })
   }
 
-  const addEvent = (event: CalendarEvent) => {
+  const addEvent = async (event: CalendarEvent) => {
     dispatch({
       type: 'add_event',
       event,
     })
   }
 
-  const deleteEvent = (event: CalendarEvent) => {
+  const deleteEvent = async (event: CalendarEvent) => {
     dispatch({
       type: 'delete_event',
       event,
@@ -61,12 +61,14 @@ export const useCalendar = () => {
     return calculateEventDisplayPositions(eventsThisWeek)
   }
 
+  const events = getEvents()
+
   return {
     updateEvent,
     addEvent,
     deleteEvent,
-    getEvents,
-    weeks,
+    events,
+    daysOfWeek,
     next,
     previous,
     reset,

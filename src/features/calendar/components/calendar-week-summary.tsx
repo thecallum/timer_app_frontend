@@ -1,13 +1,9 @@
 import { formatDuration } from '@/helpers/formatter'
 import { calculateDuration } from '../helpers/duration'
-import { CalendarEvent } from '../types/types'
+import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 
-interface Props {
-  events: CalendarEvent[]
-}
-
-export const CalendarWeekSummary = (props: Props) => {
-  const { events } = props
+export const CalendarWeekSummary = () => {
+  const { events } = useCalendarEventsContext()
 
   const duration = calculateDuration(events)
 

@@ -23,12 +23,15 @@ export const useCalendarControls = () => {
     return [...Array(7)].map((_, index) => startOfWeek.add(index, 'day'))
   }
 
+  const daysOfWeek = getWeekDates()
+  const showingCurrentWeek = currentWeek === 0
+
   return {
-    weeks: getWeekDates(),
+    daysOfWeek,
     next,
     previous,
     reset,
     currentWeek,
-    showingCurrentWeek: currentWeek === 0,
+    showingCurrentWeek,
   }
 }
