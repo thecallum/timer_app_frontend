@@ -1,13 +1,16 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { ModalControls, ModalLayout } from '@/modals/components'
-import { getColor } from '@/helpers/colors'
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { IProject, ProjectColor } from '@/contexts/projectsContext/types'
+import {
+  IProject,
+  IProjectColor,
+  defaultProjectColor,
+} from '@/contexts/projectsContext/types'
 
 interface Props {
-  modalColor: ProjectColor
+  modalColor: IProjectColor
   onSubmit: (project: IProject) => void
   close: () => void
 }
@@ -40,14 +43,14 @@ export const CreateModalForm = (props: Props) => {
 
     const newProject: IProject = {
       id: uuidv4(),
-      name,
-      color: modalColor,
+      description: name,
+      projectColor: modalColor,
     }
 
     onSubmit(newProject)
   }
 
-  const projectColor = getColor(modalColor)
+  const projectColor = modalColor ?? defaultProjectColor
 
   return (
     <form onSubmit={handleSubmit}>

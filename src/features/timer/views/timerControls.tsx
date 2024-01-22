@@ -1,6 +1,5 @@
 import { ProjectSelector } from '@/components/projectSelector'
 import { formatDuration } from '@/helpers/formatter'
-import { CalendarEvent } from '@/features/calendar/types/types'
 import { useRef } from 'react'
 import dayjs from 'dayjs'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'

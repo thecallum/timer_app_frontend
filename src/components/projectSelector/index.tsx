@@ -1,7 +1,10 @@
 import { PopoverWrapper } from '../../features/calendar/components/popover-wrapper'
 import { SelectProjectPopover } from './select-project-popover'
-import { getColor } from '../../helpers/colors'
-import { IProject, defaultProject } from '@/contexts/projectsContext/types'
+import {
+  IProject,
+  defaultProject,
+  defaultProjectColor,
+} from '@/contexts/projectsContext/types'
 
 interface Props {
   project: IProject | null
@@ -27,7 +30,7 @@ export const ProjectSelector = (props: Props) => {
       )}
     >
       {({ ref, onClick }) => {
-        const projectColor = getColor(project?.color)
+        const projectColor = project?.projectColor ?? defaultProjectColor
 
         return (
           <button
@@ -51,7 +54,7 @@ export const ProjectSelector = (props: Props) => {
                 color: projectColor.dark,
               }}
             >
-              {project?.name ?? defaultProject.name}
+              {project?.description ?? defaultProject.description}
             </div>
           </button>
         )

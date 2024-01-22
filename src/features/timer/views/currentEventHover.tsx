@@ -1,8 +1,8 @@
 import { useTimerContext } from '@/features/timer/context/hooks/useTimerContext'
 import dayjs from 'dayjs'
-import { getColor } from '../../../helpers/colors'
 import { CalendarEventView } from '@/features/calendar/components/calendar-event-view'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
+import { defaultProjectColor } from '@/contexts/projectsContext/types'
 
 const HEIGHT_ONE_MINUTE = (64 / 60) * 2
 
@@ -20,7 +20,7 @@ export const CurrentEventHover = () => {
   let dayOfWeek = dayjs(startedAt).day()
   if (dayOfWeek === 0) dayOfWeek = 7
 
-  const projectColor = getColor(project?.color)
+  const projectColor = project?.projectColor ?? defaultProjectColor
 
   if (!isRunning || !showingCurrentWeek) return null
 

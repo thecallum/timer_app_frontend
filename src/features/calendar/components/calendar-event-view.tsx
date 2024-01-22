@@ -1,5 +1,8 @@
-import { IProject, defaultProject } from '@/contexts/projectsContext/types'
-import { getColor } from '../../../helpers/colors'
+import {
+  IProject,
+  defaultProject,
+  defaultProjectColor,
+} from '@/contexts/projectsContext/types'
 import { formatDuration } from '@/helpers/formatter'
 
 interface Props {
@@ -11,7 +14,7 @@ interface Props {
 export const CalendarEventView = (props: Props) => {
   const { description, project, durationInSeconds } = props
 
-  const projectColor = getColor(project?.color)
+  const projectColor = project?.projectColor ?? defaultProjectColor
 
   return (
     <div className="w-full h-full p-2 flex flex-col justify-between overflow-hidden">
@@ -30,7 +33,7 @@ export const CalendarEventView = (props: Props) => {
             color: projectColor.dark,
           }}
         >
-          {project?.name ?? defaultProject.name}
+          {project?.description ?? defaultProject.description}
         </div>
       </span>
       <div

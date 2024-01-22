@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import { ProjectSelector } from '../../../../components/projectSelector'
-import { CalendarEvent } from '../../types/types'
 import {
   PopoverContainer,
   PopoverControls,
@@ -12,7 +11,7 @@ import classNames from 'classnames'
 import { TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
-import { IProject, defaultProject } from '@/contexts/projectsContext/types'
+import { IProject } from '@/contexts/projectsContext/types'
 import { formatDuration } from '@/helpers/formatter'
 
 interface Props {

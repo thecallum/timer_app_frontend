@@ -1,8 +1,8 @@
-import { getColor } from '@/helpers/colors'
 import { CalendarEvent as CalendarEventType } from '../types/types'
 import { CalendarEventView } from './calendar-event-view'
 import { PopoverWrapper } from './popover-wrapper'
 import { EditEventPopover } from './popovers/edit-event-popover'
+import { defaultProjectColor } from '@/contexts/projectsContext/types'
 
 interface Props {
   event: CalendarEventType
@@ -44,7 +44,7 @@ export const CalendarEvent = (props: Props) => {
         )}
       >
         {({ ref, onClick }) => {
-          const projectColor = getColor(project?.color)
+          const projectColor = project?.projectColor ?? defaultProjectColor
 
           return (
             <div style={eventStyles} className="absolute p-[1px]">

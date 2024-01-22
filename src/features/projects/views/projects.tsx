@@ -1,9 +1,8 @@
 import { Page } from '@/components/layout/page'
-import { getColor } from '@/helpers/colors'
 import { EditProjectModal } from '@/modals/edit-project-modal'
 import { useState } from 'react'
 import { CreateProjectModalContainer } from '@/modals/create-project-modal-container'
-import { IProject } from '@/contexts/projectsContext/types'
+import { IProject, defaultProjectColor } from '@/contexts/projectsContext/types'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
 import { useProjectsContext } from '@/contexts/projectsContext'
 
@@ -84,34 +83,39 @@ export const Projects = () => {
                 </tr>
               </thead>
               <tbody>
-                {projectsWithTime.map((project, index) => (
-                  <tr key={index} className="hover:bg-slate-100">
-                    <td className="px-5 py-5 border-b border-slate-200 text-sm">
-                      <div className="flex items-center">
-                        <div
-                          className="w-2 h-2 mr-2 rounded-full"
-                          style={{ background: getColor(project.color).dark }}
-                        ></div>
-                        <div className="text-slate-900 whitespace-nowrap">
-                          {project.name}
+                {projectsWithTime.map((project, index) => {
+                  const projectColor =
+                    project?.projectColor ?? defaultProjectColor
+
+                  return (
+                    <tr key={index} className="hover:bg-slate-100">
+                      <td className="px-5 py-5 border-b border-slate-200 text-sm">
+                        <div className="flex items-center">
+                          <div
+                            className="w-2 h-2 mr-2 rounded-full"
+                            style={{ background: projectColor.dark }}
+                          ></div>
+                          <div className="text-slate-900 whitespace-nowrap">
+                            {project.description}
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className="px-5 py-5 border-b border-slate-200 text-right text-sm">
-                      <p className="text-slate-700 whitespace-nowrap">
-                        {(project.minutes / 60).toFixed(1)} hours
-                      </p>
-                    </td>
-                    <td className="px-5 py-5 border-b border-slate-200 text-sm  ">
-                      <button
-                        onClick={() => openEditModal(project)}
-                        className="text-slate-700 underline whitespace-nowrap"
-                      >
-                        Edit project
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td className="px-5 py-5 border-b border-slate-200 text-right text-sm">
+                        <p className="text-slate-700 whitespace-nowrap">
+                          {(project.minutes / 60).toFixed(1)} hours
+                        </p>
+                      </td>
+                      <td className="px-5 py-5 border-b border-slate-200 text-sm  ">
+                        <button
+                          onClick={() => openEditModal(project)}
+                          className="text-slate-700 underline whitespace-nowrap"
+                        >
+                          Edit project
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </Page>
