@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { useState } from 'react'
 
-export const useCalendar = () => {
+export const useCalendarControls = () => {
   const [currentWeek, setCurrentWeek] = useState(0)
 
   const next = () => setCurrentWeek((x) => x + 1)
@@ -23,12 +23,15 @@ export const useCalendar = () => {
     return [...Array(7)].map((_, index) => startOfWeek.add(index, 'day'))
   }
 
+  const daysOfWeek = getWeekDates()
+  const showingCurrentWeek = currentWeek === 0
+
   return {
-    weeks: getWeekDates(),
+    daysOfWeek,
     next,
     previous,
     reset,
     currentWeek,
-    showingCurrentWeek: currentWeek === 0,
+    showingCurrentWeek,
   }
 }

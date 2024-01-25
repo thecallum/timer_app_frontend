@@ -1,14 +1,16 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { ModalControls, ModalLayout } from '@/modals/components'
-import { getColor } from '@/helpers/colors'
 import { useState } from 'react'
-import { v4 as uuidv4 } from 'uuid'
-import { IProject, ProjectColor } from '@/contexts/projectsContext/types'
+import {
+  ProjectColor,
+  ProjectApiRequestObject,
+  defaultProjectColor,
+} from '@/contexts/projectsContext/types'
 
 interface Props {
   modalColor: ProjectColor
-  onSubmit: (project: IProject) => void
+  onSubmit: (request: ProjectApiRequestObject) => Promise<void>
   close: () => void
 }
 
@@ -28,7 +30,7 @@ export const CreateModalForm = (props: Props) => {
     return errors
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const errors = validate()
@@ -38,16 +40,15 @@ export const CreateModalForm = (props: Props) => {
       return
     }
 
-    const newProject: IProject = {
-      id: uuidv4(),
-      name,
-      color: modalColor,
+    const request: ProjectApiRequestObject = {
+      description: name,
+      projectColor: modalColor,
     }
 
-    onSubmit(newProject)
+    await onSubmit(request)
   }
 
-  const projectColor = getColor(modalColor)
+  const projectColor = modalColor ?? defaultProjectColor
 
   return (
     <form onSubmit={handleSubmit}>

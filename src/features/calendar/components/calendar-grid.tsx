@@ -1,17 +1,18 @@
+import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { CalendarColumn } from './calendar-column'
-import dayjs from 'dayjs'
 
 interface Props {
-  weeks: dayjs.Dayjs[]
   containerRef: HTMLDivElement | null
 }
 
 export const CalendarGrid = (props: Props) => {
-  const { weeks, containerRef } = props
+  const { containerRef } = props
+
+  const { daysOfWeek } = useCalendarEventsContext()
 
   return (
     <div className="flex flex-row justify-between border-l border-slate-200  h-[192rem]">
-      {weeks.map((day, index) => (
+      {daysOfWeek.map((day, index) => (
         <CalendarColumn
           containerRef={containerRef}
           key={index}

@@ -12,8 +12,9 @@ import { ErrorMessage } from '@/components/form/error-message'
 import { TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
-import { IProject, defaultProject } from '@/contexts/projectsContext/types'
+import { Project } from '@/contexts/projectsContext/types'
 import { formatDuration } from '@/helpers/formatter'
+import { useProjectsContext } from '@/contexts/projectsContext'
 
 interface Props {
   close: () => void
@@ -25,15 +26,17 @@ export const EditEventPopover = (props: Props) => {
   const { close, event, containerRef } = props
   const {
     description: currentDescription,
-    project: currentProject,
-    start,
-    end,
+    projectId,
+    startTime: start,
+    endTime: end,
   } = event
+
+  const { projects } = useProjectsContext()
 
   const { updateEvent, deleteEvent } = useCalendarEventsContext()
   const [description, setDescription] = useState(currentDescription)
-  const [project, setProject] = useState<IProject | null>(
-    currentProject ?? null,
+  const [project, setProject] = useState<Project | null>(
+    projectId === null ? null : projects[projectId],
   )
 
   const [startDate, setStartDate] = useState<string>(
@@ -71,7 +74,7 @@ export const EditEventPopover = (props: Props) => {
     return errors
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const errors = validate()
@@ -81,12 +84,12 @@ export const EditEventPopover = (props: Props) => {
       return
     }
 
-    event.start = dayjs(startDate)
-    event.end = getEndTimeAsDate()
+    event.startTime = dayjs(startDate)
+    event.endTime = getEndTimeAsDate()
     event.description = description
-    event.project = project ?? defaultProject
+    event.projectId = project?.id ?? null
 
-    updateEvent(event)
+    await updateEvent(event)
     close()
   }
 

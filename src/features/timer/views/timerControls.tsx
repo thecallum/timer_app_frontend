@@ -1,10 +1,10 @@
 import { ProjectSelector } from '@/components/projectSelector'
 import { formatDuration } from '@/helpers/formatter'
-import { CalendarEvent } from '@/features/calendar/types/types'
 import { useRef } from 'react'
 import dayjs from 'dayjs'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { useTimerContext } from '../context/hooks/useTimerContext'
+import { CalendarEventApiRequestObject } from '@/features/calendar/types/types'
 
 export const TimerControls = () => {
   const { addEvent } = useCalendarEventsContext()
@@ -34,16 +34,17 @@ export const TimerControls = () => {
   const handleStopTimer = () => {
     stopTimer()
 
-    const newEvent = new CalendarEvent(
+    const request: CalendarEventApiRequestObject = {
       description,
-      dayjs().add(time * -1, 'second'),
-      dayjs(),
-      project ?? undefined,
-    )
+      startTime: dayjs().add(time * -1, 'second'),
+      endTime: dayjs(),
+      projectId: project?.id ?? null,
+      // project ?? undefined,
+    }
 
-    addEvent(newEvent)
-
-    reset()
+    addEvent(request).then(() => {
+      reset()
+    })
   }
 
   const reset = () => {

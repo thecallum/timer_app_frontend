@@ -1,17 +1,10 @@
-import dayjs from 'dayjs'
+import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 
-interface Props {
-  next: () => void
-  previous: () => void
-  reset: () => void
-  weeks: dayjs.Dayjs[]
-}
+export const CalendarWeekSelect = () => {
+  const { daysOfWeek, next, previous, reset } = useCalendarEventsContext()
 
-export const CalendarWeekSelect = (props: Props) => {
-  const { next, previous, reset, weeks } = props
-
-  const startOfWeek = weeks[0].format('DD MMM')
-  const endOfWeek = weeks[6].format('DD MMM')
+  const startOfWeek = daysOfWeek[0].format('DD MMM')
+  const endOfWeek = daysOfWeek[6].format('DD MMM')
 
   return (
     <div>

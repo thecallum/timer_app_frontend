@@ -2,7 +2,8 @@ import { useEffect, useReducer, useRef } from 'react'
 import useLocalStorage from '../../../../components/hooks/useLocalStorage'
 import { ITimerSnapshot, TimerState } from '../types'
 import { timerReducer } from '../timerReducer'
-import { IProject } from '@/contexts/projectsContext/types'
+import { Project } from '@/contexts/projectsContext/types'
+import { useProjectsContext } from '@/contexts/projectsContext'
 
 const LOCAL_STORAGE_KEY = 'TIMER_STATE'
 
@@ -18,6 +19,8 @@ export const useTimer = () => {
   const [state, dispatch] = useReducer(timerReducer, initialState)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
+  const { projects } = useProjectsContext()
+
   const {
     getLocalStorageValue,
     updateLocalStorageValue,
@@ -30,7 +33,11 @@ export const useTimer = () => {
     if (!snapshot) return
 
     dispatch({ type: 'SET_DESCRIPTION', description: snapshot.description })
-    dispatch({ type: 'SET_PROJECT', project: snapshot.project })
+    dispatch({
+      type: 'SET_PROJECT',
+      project:
+        snapshot.projectId === null ? null : projects[snapshot.projectId],
+    })
     dispatch({ type: 'START', startedAt: snapshot.startedAt })
   }, [])
 
@@ -55,7 +62,7 @@ export const useTimer = () => {
     updateLocalStorageValue({
       startedAt: state.startedAt?.toISOString() ?? '',
       description: state.description,
-      project: state.project,
+      projectId: state.project?.id ?? null,
     })
   }, [state])
 
@@ -71,7 +78,7 @@ export const useTimer = () => {
       initialState,
     })
 
-  const setProject = (project: IProject | null) =>
+  const setProject = (project: Project | null) =>
     dispatch({
       type: 'SET_PROJECT',
       project,

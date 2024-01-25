@@ -1,6 +1,6 @@
 import { createContext } from 'react'
-import { ICalendarEventContext } from './types'
+import { CalendarEventContext as ContextType } from './types'
 
-export const CalendarEventContext = createContext<
-  ICalendarEventContext | undefined
->(undefined)
+export const CalendarEventContext = createContext<ContextType | undefined>(
+  undefined,
+)

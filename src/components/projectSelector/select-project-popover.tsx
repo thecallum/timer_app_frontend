@@ -4,14 +4,17 @@ import {
   PopoverControls,
   PopoverLayout,
 } from '@/components/popover'
-import { getColor } from '../../helpers/colors'
 import { useProjectsContext } from '@/contexts/projectsContext/hooks/useProjectsContext'
-import { IProject, defaultProject } from '@/contexts/projectsContext/types'
+import {
+  Project,
+  defaultProject,
+  defaultProjectColor,
+} from '@/contexts/projectsContext/types'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
 
 interface Props {
-  currentProject: IProject
-  selectProject: (project: IProject) => void
+  currentProject: Project
+  selectProject: (project: Project) => void
 }
 
 export const SelectProjectPopover = (props: Props) => {
@@ -25,10 +28,13 @@ export const SelectProjectPopover = (props: Props) => {
       <>
         <PopoverLayout title="Project">
           <ul className="">
-            {[defaultProject, ...projects].map((x) => {
-              const { name, color, id } = x
+            {[
+              defaultProject,
+              ...Object.keys(projects).map((x) => projects[x]),
+            ].map((x) => {
+              const { description: name, id } = x
 
-              const projectColor = getColor(color)
+              const projectColor = x?.projectColor ?? defaultProjectColor
 
               return (
                 <li key={id}>

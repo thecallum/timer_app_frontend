@@ -1,8 +1,9 @@
-import { getColor } from '@/helpers/colors'
+import { useProjectsContext } from '@/contexts/projectsContext'
 import { CalendarEvent as CalendarEventType } from '../types/types'
 import { CalendarEventView } from './calendar-event-view'
 import { PopoverWrapper } from './popover-wrapper'
 import { EditEventPopover } from './popovers/edit-event-popover'
+import { getProjectColor } from '@/helpers/getProjectColor'
 
 interface Props {
   event: CalendarEventType
@@ -13,9 +14,11 @@ const HEIGHT_ONE_MINUTE = (64 / 60) * 2
 
 export const CalendarEvent = (props: Props) => {
   const { event, containerRef } = props
+  const { projects } = useProjectsContext()
+
   const {
     description,
-    project,
+    projectId,
     dayOfWeek,
     durationInSeconds,
     durationInMinutes,
@@ -44,7 +47,7 @@ export const CalendarEvent = (props: Props) => {
         )}
       >
         {({ ref, onClick }) => {
-          const projectColor = getColor(project?.color)
+          const projectColor = getProjectColor(projectId, projects)
 
           return (
             <div style={eventStyles} className="absolute p-[1px]">
@@ -59,7 +62,7 @@ export const CalendarEvent = (props: Props) => {
                 <CalendarEventView
                   description={description}
                   durationInSeconds={durationInSeconds}
-                  project={project ?? null}
+                  project={projectId === null ? null : projects[projectId]}
                 />
               </button>
             </div>

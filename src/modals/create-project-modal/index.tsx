@@ -1,42 +1,34 @@
 import { ModalContainer } from '@/modals/components'
 import { useEffect, useState } from 'react'
 import { CreateModalForm } from './create-modal-form'
-import { IProject, ProjectColor } from '@/contexts/projectsContext/types'
+import {
+  Project,
+  Color,
+  ProjectColor,
+  ProjectColors,
+  ProjectApiRequestObject,
+} from '@/contexts/projectsContext/types'
 
 interface Props {
   isOpen: boolean
   close: () => void
-  onCreate: (project: IProject) => void
-  projects: IProject[]
+  onCreate: (request: ProjectApiRequestObject) => Promise<void>
+  projects: Project[]
 }
 
 export const CreateProjectModal = (props: Props) => {
-  const { isOpen, close, onCreate, projects } = props
+  const { isOpen, close, onCreate } = props
 
   const getRandomProjectColor = (): ProjectColor => {
-    const usedColors: Set<ProjectColor> = new Set(
-      projects
-        .map((x) => x?.color ?? null)
-        .filter((x) => x !== null) as ProjectColor[],
-    )
-
-    const enumValues: ProjectColor[] = Object.values(ProjectColor).filter(
+    const enumValues: Color[] = Object.values(Color).filter(
       (value) => typeof value === 'number',
-    ) as ProjectColor[]
+    ) as Color[]
 
-    const unusedEnumValues = enumValues.filter((x) => !usedColors.has(x))
-
-    // if unused values, take from that list. else just use random values
-    const randomIndex = Math.floor(
-      Math.random() *
-        (unusedEnumValues.length === 0
-          ? enumValues.length
-          : unusedEnumValues.length),
-    ) // Generate a random index
+    const randomIndex = Math.floor(Math.random() * enumValues.length) // Generate a random index
 
     const randomEnumKey = enumValues[randomIndex] // Get the enum key
 
-    return randomEnumKey
+    return ProjectColors[randomEnumKey]
   }
 
   const [modalColor, setModalColor] = useState(getRandomProjectColor())
@@ -45,8 +37,8 @@ export const CreateProjectModal = (props: Props) => {
     setModalColor(getRandomProjectColor())
   }, [isOpen])
 
-  const onSubmit = (project: IProject) => {
-    onCreate(project)
+  const onSubmit = async (request: ProjectApiRequestObject) => {
+    await onCreate(request)
   }
 
   return (

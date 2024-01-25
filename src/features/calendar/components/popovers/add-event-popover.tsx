@@ -1,6 +1,5 @@
 import dayjs from 'dayjs'
 import { ProjectSelector } from '../../../../components/projectSelector'
-import { CalendarEvent } from '../../types/types'
 import {
   PopoverContainer,
   PopoverControls,
@@ -12,8 +11,9 @@ import classNames from 'classnames'
 import { TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
-import { IProject, defaultProject } from '@/contexts/projectsContext/types'
+import { Project } from '@/contexts/projectsContext/types'
 import { formatDuration } from '@/helpers/formatter'
+import { CalendarEventApiRequestObject } from '../../types/types'
 
 interface Props {
   close: () => void
@@ -24,7 +24,7 @@ interface Props {
 export const AddEventPopover = (props: Props) => {
   const { close, time, containerRef } = props
   const { addEvent } = useCalendarEventsContext()
-  const [project, setProject] = useState<IProject | null>(null)
+  const [project, setProject] = useState<Project | null>(null)
   const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
@@ -69,15 +69,16 @@ export const AddEventPopover = (props: Props) => {
       return
     }
 
-    const newEvent = new CalendarEvent(
+    const request: CalendarEventApiRequestObject = {
       description,
-      dayjs(startDate),
-      getEndTimeAsDate(),
-      project ?? defaultProject,
-    )
+      startTime: dayjs(startDate),
+      endTime: getEndTimeAsDate(),
+      projectId: project?.id ?? null,
+    }
 
-    addEvent(newEvent)
-    close()
+    addEvent(request).then(() => {
+      close()
+    })
   }
 
   return (

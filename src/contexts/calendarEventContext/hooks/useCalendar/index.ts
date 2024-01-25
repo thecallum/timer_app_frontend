@@ -1,61 +1,105 @@
-import { useReducer } from 'react'
-import { placeholderEvents } from './placeholderEvents'
-import { CalendarEvent } from '@/features/calendar/types/types'
+import { useEffect, useReducer } from 'react'
+import {
+  CalendarEvent,
+  CalendarEventApiRequestObject,
+  CalendarEventRequestToDomain,
+  CalendarEventToRequestObject,
+} from '@/features/calendar/types/types'
 import dayjs from 'dayjs'
-import { getEvents } from './getEvents'
+import { calculateEventDisplayPositions } from './calculateEventDisplayPositions'
 
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { reducer } from './reducer'
+import { useCalendarControls } from '../useCalendarControls'
+import {
+  addEventRequest,
+  deleteEventRequest,
+  fetchEvents,
+  updateEventRequest,
+} from './requests'
 
 dayjs.extend(isSameOrAfter)
 
 export const useCalendar = () => {
   const [state, dispatch] = useReducer(reducer, {
-    events: placeholderEvents,
+    events: [],
+    isLoading: true,
   })
 
-  const updateEvent = (event: CalendarEvent) => {
+  const { daysOfWeek, next, previous, reset, currentWeek, showingCurrentWeek } =
+    useCalendarControls()
+
+  const setIsLoading = (clearEvents = false) => {
+    dispatch({ type: 'set_loading', clearEvents })
+  }
+
+  const fetchEventsForPage = async () => {
+    setIsLoading(true)
+
+    const startTime = daysOfWeek[0]
+    const endTime = daysOfWeek[6]
+
+    fetchEvents(startTime, endTime).then((res) => {
+      dispatch({
+        type: 'add_loaded_events',
+        events: res,
+      })
+    })
+  }
+
+  useEffect(() => {
+    // fetch each time page changes
+    fetchEventsForPage()
+  }, [currentWeek])
+
+  const updateEvent = async (event: CalendarEvent) => {
+    setIsLoading()
+
+    const request = CalendarEventToRequestObject(event)
+
+    await updateEventRequest(event.id, request)
+
     dispatch({
       type: 'update_event',
       event,
     })
   }
 
-  const addEvent = (event: CalendarEvent) => {
+  const addEvent = async (request: CalendarEventApiRequestObject) => {
+    setIsLoading()
+
+    const response = await addEventRequest(request)
+    const event = CalendarEventRequestToDomain(response)
+
     dispatch({
       type: 'add_event',
       event,
     })
   }
 
-  const deleteEvent = (event: CalendarEvent) => {
+  const deleteEvent = async (event: CalendarEvent) => {
+    setIsLoading()
+
+    await deleteEventRequest(event.id)
+
     dispatch({
       type: 'delete_event',
       event,
     })
   }
 
-  const filterEvents = (week: number) => {
-    const today = dayjs()
-
-    const weeksMultiplier = 7 * week
-
-    const startOfWeek = today.startOf('week').add(1 + weeksMultiplier, 'days')
-    const endOfWeek = startOfWeek.add(7, 'days')
-
-    return state.events.filter((x) => {
-      return (
-        x.start.startOf('day').isSameOrAfter(startOfWeek) &&
-        x.start.startOf('day').isBefore(endOfWeek)
-      )
-    })
-  }
+  const events = calculateEventDisplayPositions(state.events)
 
   return {
+    isLoading: state.isLoading,
     updateEvent,
     addEvent,
     deleteEvent,
-    getAllEvents: () => getEvents(state.events),
-    getEvents: (week: number) => getEvents(filterEvents(week)),
+    events,
+    daysOfWeek,
+    next,
+    previous,
+    reset,
+    showingCurrentWeek,
   }
 }

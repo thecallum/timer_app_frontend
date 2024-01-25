@@ -1,6 +1,4 @@
 import { createContext } from 'react'
-import { IProjectsContext } from './types'
+import { ProjectsContext as ContextType } from './types'
 
-export const ProjectsContext = createContext<IProjectsContext | undefined>(
-  undefined,
-)
+export const ProjectsContext = createContext<ContextType | undefined>(undefined)
