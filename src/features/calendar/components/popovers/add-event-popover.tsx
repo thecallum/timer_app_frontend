@@ -11,9 +11,9 @@ import classNames from 'classnames'
 import { TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
-import { Project } from '@/contexts/projectsContext/types'
 import { formatDuration } from '@/helpers/formatter'
 import { CalendarEventApiRequestObject } from '../../types/types'
+import { Project } from '@/types/projects'
 
 interface Props {
   close: () => void

@@ -1,4 +1,4 @@
-import { Project } from '@/contexts/projectsContext/types'
+import { Project } from '@/types/projects'
 import { TimerState } from './types'
 
 type TimerAction =

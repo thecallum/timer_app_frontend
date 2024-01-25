@@ -1,4 +1,4 @@
-import { Project } from '@/contexts/projectsContext/types'
+import { Project } from '@/types/projects'
 
 export interface ITimerSnapshot {
   startedAt: string

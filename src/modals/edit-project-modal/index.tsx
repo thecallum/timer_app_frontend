@@ -1,7 +1,7 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
-import { Project } from '@/contexts/projectsContext/types'
 import { ModalContainer, ModalControls, ModalLayout } from '@/modals/components'
+import { Project } from '@/types/projects'
 import { useState } from 'react'
 
 interface Props {
@@ -15,14 +15,14 @@ interface Props {
 export const EditProjectModal = (props: Props) => {
   const { isOpen, project, onSubmit, close, deleteProject } = props
 
-  const [name, setName] = useState(project?.name ?? '')
+  const [description, setDescription] = useState(project?.description ?? '')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const validate = () => {
     const errors: { [key: string]: string } = {}
 
-    if (name === null || name.trim() === '') {
-      errors['name'] = 'Name cannot be empty'
+    if (description === null || description.trim() === '') {
+      errors['description'] = 'Name cannot be empty'
     }
 
     return errors
@@ -40,7 +40,7 @@ export const EditProjectModal = (props: Props) => {
 
     onSubmit({
       ...(project as Project),
-      description: name,
+      description,
     })
   }
 
@@ -56,15 +56,17 @@ export const EditProjectModal = (props: Props) => {
               <>
                 <TextInput
                   autoFocus
-                  value={name}
-                  setValue={setName}
-                  id="name"
-                  name="name"
-                  ariaLabel="Project name"
+                  value={description}
+                  setValue={setDescription}
+                  id="description"
+                  name="description"
+                  ariaLabel="Project description"
                   placeholder="Planning"
-                  error={errors?.name}
+                  error={errors?.description}
                 />
-                {errors?.name && <ErrorMessage message={errors?.name} />}
+                {errors?.description && (
+                  <ErrorMessage message={errors?.description} />
+                )}
               </>
             </ModalLayout>
 

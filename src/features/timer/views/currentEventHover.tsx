@@ -2,7 +2,7 @@ import { useTimerContext } from '@/features/timer/context/hooks/useTimerContext'
 import dayjs from 'dayjs'
 import { CalendarEventView } from '@/features/calendar/components/calendar-event-view'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
-import { defaultProjectColor } from '@/contexts/projectsContext/types'
+import { defaultProjectColor } from '@/types/projects'
 
 const HEIGHT_ONE_MINUTE = (64 / 60) * 2
 

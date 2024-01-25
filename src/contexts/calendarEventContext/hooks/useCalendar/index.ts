@@ -1,6 +1,5 @@
 import { useEffect, useReducer } from 'react'
 import {
-  CalendarEvent,
   CalendarEventApiRequestObject,
   CalendarEventRequestToDomain,
   CalendarEventToRequestObject,
@@ -17,6 +16,7 @@ import {
   fetchEvents,
   updateEventRequest,
 } from './requests'
+import { CalendarEvent } from '@/types/calendarEvents'
 
 dayjs.extend(isSameOrAfter)
 

@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
-  Project,
-  ProjectApiRequestObject,
-  ProjectToRequestObject,
-} from '../../types'
+import { ProjectApiRequestObject, ProjectToRequestObject } from '../../types'
 import {
   createProjectRequest,
   deleteProjectRequest,
@@ -11,6 +7,7 @@ import {
   updateProjectRequest,
 } from './requests'
 import { useRouter } from 'next/router'
+import { Project } from '@/types/projects'
 
 export const useProjects = () => {
   const router = useRouter()

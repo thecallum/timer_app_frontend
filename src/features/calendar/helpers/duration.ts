@@ -1,4 +1,4 @@
-import { CalendarEvent } from '../types/types'
+import { CalendarEvent } from '@/types/calendarEvents'
 
 export const calculateDuration = (events: CalendarEvent[]) => {
   const totalDurationInSeconds = events.reduce(

@@ -1,6 +1,6 @@
-import { CalendarEvent } from '@/features/calendar/types/types'
 import { ICalendarFiveMinuteSlot, ParallelEventSlot } from './types'
 import { generateFiveMinuteSlots } from './generateFiveMinuteSlots'
+import { CalendarEvent } from '@/types/calendarEvents'
 
 const fiveMinuteSlots = generateFiveMinuteSlots()
 
