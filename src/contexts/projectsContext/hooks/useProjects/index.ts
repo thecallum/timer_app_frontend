@@ -10,8 +10,11 @@ import {
   fetchProjectsRequest,
   updateProjectRequest,
 } from './requests'
+import { useRouter } from 'next/router'
 
 export const useProjects = () => {
+  const router = useRouter()
+
   const [projects, setProjects] = useState<{
     [key: number]: Project
   }>({})
@@ -62,19 +65,24 @@ export const useProjects = () => {
   }
 
   useEffect(() => {
+    fetchProjects()
+  }, [router.pathname])
+
+  const fetchProjects = async () => {
     setIsLoading(true)
 
-    fetchProjectsRequest().then((apiResponse) => {
-      const projectsById: { [key: number]: Project } = {}
+    const apiResponse = await fetchProjectsRequest()
 
-      apiResponse.forEach((project) => {
-        projectsById[project.id] = project
-      })
+    const projectsById = apiResponse.reduce(
+      (obj: { [key: number]: Project }, project) => (
+        (obj[project.id] = project), obj
+      ),
+      {},
+    )
 
-      setProjects(projectsById)
-      setIsLoading(false)
-    })
-  }, [])
+    setProjects(projectsById)
+    setIsLoading(false)
+  }
 
   return {
     projects,

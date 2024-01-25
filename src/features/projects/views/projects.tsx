@@ -29,7 +29,7 @@ export const Projects = () => {
     closeEditModal()
   }
 
-  const projectsWithTime = Object.keys(projects)
+  const projectList = Object.keys(projects)
     .map(Number)
     .map((x) => projects[x])
 
@@ -64,7 +64,7 @@ export const Projects = () => {
                 </tr>
               </thead>
               <tbody>
-                {projectsWithTime.map((project, index) => {
+                {projectList.map((project, index) => {
                   const projectColor =
                     project?.projectColor ?? defaultProjectColor
 
