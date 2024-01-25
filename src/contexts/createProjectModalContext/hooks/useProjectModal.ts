@@ -1,6 +1,6 @@
 import { useClickOutContext } from '@/contexts/clickOutContext'
 import { useProjectsContext } from '@/contexts/projectsContext'
-import { ProjectApiRequestObject } from '@/contexts/projectsContext/types'
+import { ProjectApiRequestObject } from '@/requests/types'
 import { useEffect, useState } from 'react'
 
 export const useProjectModal = () => {

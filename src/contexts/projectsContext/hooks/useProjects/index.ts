@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import { ProjectApiRequestObject, ProjectToRequestObject } from '../../types'
 import {
   createProjectRequest,
   deleteProjectRequest,
   fetchProjectsRequest,
   updateProjectRequest,
-} from './requests'
+} from '../../../../requests/projectRequests'
 import { useRouter } from 'next/router'
 import { Project } from '@/types/projects'
+import { ProjectApiRequestObject } from '@/requests/types'
+import { ProjectToRequestObject } from '@/factories/factories'
 
 export const useProjects = () => {
   const router = useRouter()

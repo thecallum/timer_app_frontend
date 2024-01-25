@@ -12,8 +12,8 @@ import { TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { formatDuration } from '@/helpers/formatter'
-import { CalendarEventApiRequestObject } from '../../types/types'
 import { Project } from '@/types/projects'
+import { CalendarEventApiRequestObject } from '@/requests/types'
 
 interface Props {
   close: () => void

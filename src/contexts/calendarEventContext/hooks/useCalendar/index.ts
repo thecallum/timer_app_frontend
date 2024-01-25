@@ -1,9 +1,5 @@
 import { useEffect, useReducer } from 'react'
-import {
-  CalendarEventApiRequestObject,
-  CalendarEventRequestToDomain,
-  CalendarEventToRequestObject,
-} from '@/features/calendar/types/types'
+
 import dayjs from 'dayjs'
 import { calculateEventDisplayPositions } from './calculateEventDisplayPositions'
 
@@ -15,8 +11,13 @@ import {
   deleteEventRequest,
   fetchEvents,
   updateEventRequest,
-} from './requests'
+} from '../../../../requests/calendarEventRequests'
 import { CalendarEvent } from '@/types/calendarEvents'
+import {
+  CalendarEventRequestToDomain,
+  CalendarEventToRequestObject,
+} from '@/factories/factories'
+import { CalendarEventApiRequestObject } from '@/requests/types'
 
 dayjs.extend(isSameOrAfter)
 
