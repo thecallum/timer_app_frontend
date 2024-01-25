@@ -1,15 +1,20 @@
 import { Project, defaultProject, defaultProjectColor } from '@/types/projects'
 import { PopoverWrapper } from '../../features/calendar/components/popover-wrapper'
 import { SelectProjectPopover } from './select-project-popover'
+import { useProjectsContext } from '@/contexts/projectsContext'
 
 interface Props {
-  project: Project | null
+  projectId: number | null
   containerRef: HTMLDivElement | null
-  setProject: (projectId: number | null) => void
+  setProjectId: (projectId: number | null) => void
 }
 
 export const ProjectSelector = (props: Props) => {
-  const { project, setProject, containerRef } = props
+  const { projectId, setProjectId, containerRef } = props
+
+  const { getProjectById } = useProjectsContext()
+
+  const project = getProjectById(projectId)
 
   return (
     <PopoverWrapper
@@ -17,8 +22,8 @@ export const ProjectSelector = (props: Props) => {
       popoverComponent={({ close }) => (
         <SelectProjectPopover
           currentProject={project ?? defaultProject}
-          selectProject={(x) => {
-            setProject(x)
+          selectProjectId={(x) => {
+            setProjectId(x)
 
             setTimeout(close)
           }}

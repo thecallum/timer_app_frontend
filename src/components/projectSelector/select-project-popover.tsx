@@ -10,11 +10,11 @@ import { Project, defaultProject, defaultProjectColor } from '@/types/projects'
 
 interface Props {
   currentProject: Project
-  selectProject: (projectId: number | null) => void
+  selectProjectId: (projectId: number | null) => void
 }
 
 export const SelectProjectPopover = (props: Props) => {
-  const { selectProject, currentProject } = props
+  const { selectProjectId, currentProject } = props
 
   const { projects } = useProjectsContext()
   const { openModal } = useCreateProjectModalContext()
@@ -39,7 +39,7 @@ export const SelectProjectPopover = (props: Props) => {
                         'bg-slate-200': id === currentProject?.id,
                       },
                     )}
-                    onClick={() => selectProject(id)}
+                    onClick={() => selectProjectId(id)}
                   >
                     <div
                       className="w-2 h-2 rounded-full block "

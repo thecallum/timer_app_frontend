@@ -12,7 +12,6 @@ import { TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { formatDuration } from '@/helpers/formatter'
-import { Project } from '@/types/projects'
 import { CalendarEventApiRequestObject } from '@/requests/types'
 
 interface Props {
@@ -24,7 +23,7 @@ interface Props {
 export const AddEventPopover = (props: Props) => {
   const { close, time, containerRef } = props
   const { addEvent } = useCalendarEventsContext()
-  const [project, setProject] = useState<Project | null>(null)
+  const [projectId, setProjectId] = useState<number | null>(null)
   const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
@@ -73,7 +72,7 @@ export const AddEventPopover = (props: Props) => {
       description,
       startTime: dayjs(startDate),
       endTime: getEndTimeAsDate(),
-      projectId: project?.id ?? null,
+      projectId: projectId,
     }
 
     addEvent(request).then(() => {
@@ -105,8 +104,8 @@ export const AddEventPopover = (props: Props) => {
             <div className="inline-block">
               <ProjectSelector
                 containerRef={containerRef}
-                setProject={setProject}
-                project={project}
+                setProjectId={setProjectId}
+                projectId={projectId}
               />
             </div>
 
