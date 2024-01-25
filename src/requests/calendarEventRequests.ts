@@ -4,8 +4,7 @@ import {
   CalendarEventApiResponseObject,
 } from './types'
 import { CalendarEventRequestToDomain } from '@/factories/factories'
-
-const BASE_URL = 'http://localhost:3001/api'
+import { BASE_URL } from './config'
 
 export const fetchEvents = async (startTime: Dayjs, endTime: Dayjs) => {
   const result = await fetch(
