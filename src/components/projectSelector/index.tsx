@@ -1,4 +1,4 @@
-import { Project, defaultProject, defaultProjectColor } from '@/types/projects'
+import { defaultProject, defaultProjectColor } from '@/types/projects'
 import { PopoverWrapper } from '../../features/calendar/components/popover-wrapper'
 import { SelectProjectPopover } from './select-project-popover'
 import { useProjectsContext } from '@/contexts/projectsContext'
