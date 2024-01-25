@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react'
 import {
   CalendarEvent,
-  CalendarEventRequestObject,
+  CalendarEventApiRequestObject,
   CalendarEventRequestToDomain,
   CalendarEventToRequestObject,
 } from '@/features/calendar/types/types'
@@ -65,7 +65,7 @@ export const useCalendar = () => {
     })
   }
 
-  const addEvent = async (request: CalendarEventRequestObject) => {
+  const addEvent = async (request: CalendarEventApiRequestObject) => {
     setIsLoading()
 
     const response = await addEventRequest(request)

@@ -2,18 +2,16 @@ import { Page } from '@/components/layout/page'
 import { EditProjectModal } from '@/modals/edit-project-modal'
 import { useState } from 'react'
 import { CreateProjectModalContainer } from '@/modals/create-project-modal-container'
-import { IProject, defaultProjectColor } from '@/contexts/projectsContext/types'
+import { Project, defaultProjectColor } from '@/contexts/projectsContext/types'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
 import { useProjectsContext } from '@/contexts/projectsContext'
 
 export const Projects = () => {
   const { projects, updateProject, deleteProject } = useProjectsContext()
-  const [editProjectModal, setEditProjectModal] = useState<IProject | null>(
-    null,
-  )
+  const [editProjectModal, setEditProjectModal] = useState<Project | null>(null)
   const { openModal } = useCreateProjectModalContext()
 
-  const openEditModal = (project: IProject) => {
+  const openEditModal = (project: Project) => {
     setEditProjectModal(project)
   }
 
@@ -21,36 +19,19 @@ export const Projects = () => {
     setEditProjectModal(null)
   }
 
-  const onEditProject = (project: IProject) => {
-    updateProject(project)
+  const onEditProject = async (project: Project) => {
+    await updateProject(project)
     closeEditModal()
   }
 
-  const onDeleteProject = (project: IProject) => {
-    deleteProject(project)
+  const onDeleteProject = async (project: Project) => {
+    await deleteProject(project)
     closeEditModal()
   }
 
-  // this function will need to be implemented serverside -
-  // unless the api returns every calendarEvent
-  const projectsWithTime = projects.map((x) => {
-    // const projectEvents = events.filter((e) => {
-    //   return e.project?.id === x.id
-    // })
-
-    // const minutes = projectEvents.reduce(
-    //   (accumulator, currentValue) =>
-    //     accumulator + currentValue.durationInMinutes,
-    //   0,
-    // )
-
-    const placeholderValue = 12342
-
-    return {
-      ...x,
-      minutes: placeholderValue,
-    }
-  })
+  const projectsWithTime = Object.keys(projects)
+    .map(Number)
+    .map((x) => projects[x])
 
   return (
     <>
@@ -102,7 +83,10 @@ export const Projects = () => {
                       </td>
                       <td className="px-5 py-5 border-b border-slate-200 text-right text-sm">
                         <p className="text-slate-700 whitespace-nowrap">
-                          {(project.minutes / 60).toFixed(1)} hours
+                          {(project.totalEventDurationInMinutes / 60).toFixed(
+                            1,
+                          )}{' '}
+                          hours
                         </p>
                       </td>
                       <td className="px-5 py-5 border-b border-slate-200 text-sm  ">

@@ -2,23 +2,24 @@ import { ModalContainer } from '@/modals/components'
 import { useEffect, useState } from 'react'
 import { CreateModalForm } from './create-modal-form'
 import {
-  IProject,
+  Project,
   Color,
-  IProjectColor,
+  ProjectColor,
   ProjectColors,
+  ProjectApiRequestObject,
 } from '@/contexts/projectsContext/types'
 
 interface Props {
   isOpen: boolean
   close: () => void
-  onCreate: (project: IProject) => void
-  projects: IProject[]
+  onCreate: (request: ProjectApiRequestObject) => Promise<void>
+  projects: Project[]
 }
 
 export const CreateProjectModal = (props: Props) => {
   const { isOpen, close, onCreate } = props
 
-  const getRandomProjectColor = (): IProjectColor => {
+  const getRandomProjectColor = (): ProjectColor => {
     const enumValues: Color[] = Object.values(Color).filter(
       (value) => typeof value === 'number',
     ) as Color[]
@@ -36,8 +37,8 @@ export const CreateProjectModal = (props: Props) => {
     setModalColor(getRandomProjectColor())
   }, [isOpen])
 
-  const onSubmit = (project: IProject) => {
-    onCreate(project)
+  const onSubmit = async (request: ProjectApiRequestObject) => {
+    await onCreate(request)
   }
 
   return (

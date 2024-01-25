@@ -1,8 +1,3 @@
-import { IProject } from '../projectsContext/types'
+import { useProjectModal } from './hooks/useProjectModal'
 
-export interface ICreateProjectModalContext {
-  modalIsOpen: boolean
-  closeModal: () => void
-  openModal: () => void
-  onCreateProject: (newProject: IProject) => void
-}
+export type CreateProjectModalContext = ReturnType<typeof useProjectModal>

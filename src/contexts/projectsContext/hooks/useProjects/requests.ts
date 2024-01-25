@@ -1,4 +1,8 @@
-import { IProject, IProjectColor, ProjectRequestObject } from '../../types'
+import {
+  ProjectApiRequestObject,
+  ProjectApiResponseObject,
+  ProjectRequestObjectToDomain,
+} from '../../types'
 
 const BASE_URL = 'http://localhost:3001/api'
 
@@ -8,20 +12,14 @@ export const fetchProjectsRequest = async () => {
     redirect: 'follow',
   })
 
-  const response: ProjectRequestObject[] = await result.json()
+  const response: ProjectApiResponseObject[] = await result.json()
 
-  return response.map((x) => {
-    const project: IProject = {
-      id: x.id as string,
-      description: x.description,
-      projectColor: x.projectColor as IProjectColor,
-    }
-
-    return project
-  })
+  return response.map((x) => ProjectRequestObjectToDomain(x))
 }
 
-export const createProjectRequest = async (request: ProjectRequestObject) => {
+export const createProjectRequest = async (
+  request: ProjectApiRequestObject,
+) => {
   const headers = new Headers()
   headers.append('Content-Type', 'application/json')
 
@@ -32,7 +30,33 @@ export const createProjectRequest = async (request: ProjectRequestObject) => {
     body: JSON.stringify(request),
   })
 
-  const response: ProjectRequestObject = await result.json()
+  const response: ProjectApiResponseObject = await result.json()
 
-  return response
+  return ProjectRequestObjectToDomain(response)
+}
+
+export const updateProjectRequest = async (
+  id: number,
+  request: ProjectApiRequestObject,
+) => {
+  const headers = new Headers()
+  headers.append('Content-Type', 'application/json')
+
+  const result = await fetch(`${BASE_URL}/projects/${id}`, {
+    method: 'PUT',
+    redirect: 'follow',
+    headers,
+    body: JSON.stringify(request),
+  })
+
+  const response: ProjectApiResponseObject = await result.json()
+
+  return ProjectRequestObjectToDomain(response)
+}
+
+export const deleteProjectRequest = async (id: number) => {
+  await fetch(`${BASE_URL}/projects/${id}`, {
+    method: 'DELETE',
+    redirect: 'follow',
+  })
 }

@@ -1,25 +1,51 @@
-import { v4 as uuidv4 } from 'uuid'
 import { useProjects } from './hooks/useProjects'
 
 export type ProjectsContext = ReturnType<typeof useProjects>
 
-export type ProjectRequestObject = {
-  id?: string
-  description: string
-  projectColor: IProjectColor
+export const ProjectRequestObjectToDomain = (
+  response: ProjectApiResponseObject,
+): Project => {
+  return {
+    id: response.id,
+    description: response.description,
+    projectColor: response.projectColor as ProjectColor,
+    totalEventDurationInMinutes: response.totalEventDurationInMinutes
+  }
 }
 
-export interface IProjectColor {
+export const ProjectToRequestObject = (
+  project: Project,
+): ProjectApiRequestObject => {
+  return {
+    description: project.description,
+    projectColor: project.projectColor,
+  }
+}
+
+export type ProjectApiRequestObject = {
+  description: string
+  projectColor: ProjectColor
+}
+
+export type ProjectApiResponseObject = {
+  id: number
+  description: string
+  projectColor: ProjectColor
+  totalEventDurationInMinutes: number
+}
+
+export type ProjectColor = {
   light: string
   lightest: string
   dark: string
   darkest: string
 }
 
-export interface IProject {
-  id: string
+export type Project = {
+  id: number
   description: string
-  projectColor: IProjectColor
+  projectColor: ProjectColor
+  totalEventDurationInMinutes: number
 }
 
 export enum Color {
@@ -41,15 +67,8 @@ export enum Color {
   Rose,
 }
 
-export const defaultProjectColor: IProjectColor = {
-  light: '#e2e8f0',
-  lightest: '#f1f5f9',
-  dark: '#475569',
-  darkest: '#020617',
-}
-
 // https://tailwindcss.com/docs/customizing-colors
-export const ProjectColors: Readonly<{ [key in Color]: IProjectColor }> = {
+export const ProjectColors: Readonly<{ [key in Color]: ProjectColor }> = {
   [Color.Red]: {
     light: '#fecaca', // Red 200
     lightest: '#fee2e2', // Red 100
@@ -148,8 +167,15 @@ export const ProjectColors: Readonly<{ [key in Color]: IProjectColor }> = {
   },
 }
 
-export const defaultProject: IProject = {
-  id: uuidv4(),
+export const defaultProjectColor: ProjectColor = {
+  light: '#e2e8f0',
+  lightest: '#f1f5f9',
+  dark: '#475569',
+  darkest: '#020617',
+}
+
+export const defaultProject: Project = {
+  id: -1,
   description: 'No project',
   projectColor: defaultProjectColor,
 }

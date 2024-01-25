@@ -1,15 +1,15 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
+import { Project } from '@/contexts/projectsContext/types'
 import { ModalContainer, ModalControls, ModalLayout } from '@/modals/components'
-import { IProject } from '@/features/calendar/types/types'
 import { useState } from 'react'
 
 interface Props {
   isOpen: boolean
-  project: IProject | null
-  onSubmit: (project: IProject) => void
+  project: Project | null
+  onSubmit: (project: Project) => void
   close: () => void
-  deleteProject: (project: IProject) => void
+  deleteProject: (project: Project) => void
 }
 
 export const EditProjectModal = (props: Props) => {
@@ -39,8 +39,8 @@ export const EditProjectModal = (props: Props) => {
     }
 
     onSubmit({
-      ...(project as IProject),
-      name,
+      ...(project as Project),
+      description: name,
     })
   }
 

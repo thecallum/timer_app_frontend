@@ -1,10 +1,10 @@
-import { IProject } from '@/contexts/projectsContext/types'
+import { Project } from '@/contexts/projectsContext/types'
 import { TimerState } from './types'
 
 type TimerAction =
   | { type: 'START'; startedAt?: string }
   | { type: 'STOP'; initialState: TimerState }
-  | { type: 'SET_PROJECT'; project: IProject | null }
+  | { type: 'SET_PROJECT'; project: Project | null }
   | { type: 'SET_DESCRIPTION'; description: string }
   | { type: 'TICK' }
 

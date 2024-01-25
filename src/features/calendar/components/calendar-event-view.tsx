@@ -1,5 +1,5 @@
 import {
-  IProject,
+  Project,
   defaultProject,
   defaultProjectColor,
 } from '@/contexts/projectsContext/types'
@@ -7,7 +7,7 @@ import { formatDuration } from '@/helpers/formatter'
 
 interface Props {
   description: string
-  project: IProject | null
+  project: Project | null
   durationInSeconds: number
 }
 

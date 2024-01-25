@@ -1,5 +1,6 @@
 import {
-  CalendarEventRequestObject,
+  CalendarEventApiRequestObject,
+  CalendarEventApiResponseObject,
   CalendarEventRequestToDomain,
 } from '@/features/calendar/types/types'
 import { Dayjs } from 'dayjs'
@@ -15,14 +16,16 @@ export const fetchEvents = async (startTime: Dayjs, endTime: Dayjs) => {
     },
   )
 
-  const response: CalendarEventRequestObject[] = await result.json()
+  const response: CalendarEventApiResponseObject[] = await result.json()
 
   return response.map((x) => {
     return CalendarEventRequestToDomain(x)
   })
 }
 
-export const addEventRequest = async (request: CalendarEventRequestObject) => {
+export const addEventRequest = async (
+  request: CalendarEventApiRequestObject,
+) => {
   const headers = new Headers()
   headers.append('Content-Type', 'application/json')
 
@@ -33,14 +36,14 @@ export const addEventRequest = async (request: CalendarEventRequestObject) => {
     redirect: 'follow',
   })
 
-  const response: CalendarEventRequestObject = await result.json()
+  const response: CalendarEventApiResponseObject = await result.json()
 
   return response
 }
 
 export const updateEventRequest = async (
   id: string,
-  request: CalendarEventRequestObject,
+  request: CalendarEventApiRequestObject,
 ) => {
   const headers = new Headers()
   headers.append('Content-Type', 'application/json')
@@ -52,7 +55,7 @@ export const updateEventRequest = async (
     redirect: 'follow',
   })
 
-  const response: CalendarEventRequestObject = await result.json()
+  const response: CalendarEventApiResponseObject = await result.json()
 
   return response
 }

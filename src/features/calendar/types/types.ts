@@ -1,36 +1,42 @@
-import { IProject } from '@/contexts/projectsContext/types'
 import dayjs from 'dayjs'
-import { v4 as uuidv4 } from 'uuid'
 
 export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
-export type CalendarEventRequestObject = {
-  id?: string
+export type CalendarEventApiRequestObject = {
   description: string
   startTime: dayjs.Dayjs
   endTime: dayjs.Dayjs
-  // public project?: IProject
+  projectId: number | null
+}
+
+export type CalendarEventApiResponseObject = {
+  id: string
+  description: string
+  startTime: dayjs.Dayjs
+  endTime: dayjs.Dayjs
+  projectId: number | null
 }
 
 export const CalendarEventRequestToDomain = (
-  request: CalendarEventRequestObject,
+  request: CalendarEventApiResponseObject,
 ) => {
   return new CalendarEvent(
-    request?.id ?? null,
+    request.id,
     request.description,
     dayjs(request.startTime),
     dayjs(request.endTime),
+    request.projectId,
   )
 }
 
 export const CalendarEventToRequestObject = (
   event: CalendarEvent,
-): CalendarEventRequestObject => {
+): CalendarEventApiRequestObject => {
   return {
-    id: event.id,
     description: event.description,
     startTime: event.startTime,
     endTime: event.endTime,
+    projectId: event.projectId,
   }
 }
 
@@ -39,29 +45,28 @@ export class CalendarEvent {
   public description: string
   public startTime: dayjs.Dayjs
   public endTime: dayjs.Dayjs
-  public project?: IProject
+  public projectId: number | null
 
   public left: number = 0
   public width: number = 0
 
   constructor(
-    id: string | null,
+    id: string,
     description: string,
     startTime: dayjs.Dayjs,
     endTime: dayjs.Dayjs,
-    project?: IProject,
+    projectId: number | null,
   ) {
-    this.id = id ?? uuidv4()
+    this.id = id
     this.description = description
     this.startTime = startTime
     this.endTime = endTime
-    this.project = project
+    this.projectId = projectId
   }
 
   public get dayOfWeek(): DayOfWeek {
     // Sunday is zero, replace with 7
     const dayOfWeek = this.startTime.day()
-
     if (dayOfWeek === 0) return 7
 
     return dayOfWeek as DayOfWeek

@@ -1,8 +1,8 @@
-import { IProject } from '@/contexts/projectsContext/types'
+import { Project } from '@/contexts/projectsContext/types'
 
 export interface ITimerSnapshot {
   startedAt: string
-  project: IProject | null
+  projectId: number | null
   description: string
 }
 
@@ -10,7 +10,7 @@ export interface TimerState {
   isRunning: boolean
   time: number
   startedAt: Date | null
-  project: IProject | null
+  project: Project | null
   description: string
 }
 
@@ -18,10 +18,10 @@ export interface ITimerContext {
   isRunning: boolean
   time: number
   startedAt: Date | null
-  project: IProject | null
+  project: Project | null
   description: string
   startTimer: () => void
   stopTimer: () => void
-  setProject: (project: IProject | null) => void
+  setProject: (project: Project | null) => void
   setDescription: (description: string) => void
 }

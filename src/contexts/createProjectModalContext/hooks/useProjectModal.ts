@@ -1,6 +1,6 @@
 import { useClickOutContext } from '@/contexts/clickOutContext'
 import { useProjectsContext } from '@/contexts/projectsContext'
-import { IProject } from '@/contexts/projectsContext/types'
+import { ProjectApiRequestObject } from '@/contexts/projectsContext/types'
 import { useEffect, useState } from 'react'
 
 export const useProjectModal = () => {
@@ -21,8 +21,9 @@ export const useProjectModal = () => {
     setModalIsOpen(true)
   }
 
-  const onCreateProject = (newProject: IProject) => {
-    addProject(newProject)
+  const onCreateProject = async (request: ProjectApiRequestObject) => {
+    await addProject(request)
+
     closeModal()
   }
 

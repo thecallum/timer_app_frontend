@@ -1,50 +1,77 @@
 import { useEffect, useState } from 'react'
-import { IProject, ProjectRequestObject } from '../../types'
-import { createProjectRequest, fetchProjectsRequest } from './requests'
+import {
+  Project,
+  ProjectApiRequestObject,
+  ProjectToRequestObject,
+} from '../../types'
+import {
+  createProjectRequest,
+  deleteProjectRequest,
+  fetchProjectsRequest,
+  updateProjectRequest,
+} from './requests'
 
 export const useProjects = () => {
-  const [projects, setProjects] = useState<IProject[]>([])
+  const [projects, setProjects] = useState<{
+    [key: number]: Project
+  }>({})
+
   const [isLoading, setIsLoading] = useState(true)
 
-  const addProject = async (newProject: IProject) => {
+  const addProject = async (request: ProjectApiRequestObject) => {
     setIsLoading(true)
 
-    const request: ProjectRequestObject = {
-      description: newProject.description,
-      projectColor: newProject.projectColor,
-    }
-
-    createProjectRequest(request).then((res) => {
-      const project: IProject = {
-        id: res.id as string,
-        description: res.description,
-        projectColor: res.projectColor,
-      }
-
-      setProjects((x) => [...x, project])
+    createProjectRequest(request).then((project) => {
+      setProjects((x) => {
+        return {
+          ...x,
+          [project.id]: project,
+        }
+      })
       setIsLoading(false)
     })
   }
 
-  const updateProject = async (project: IProject) => {
-    setProjects((state) =>
-      state.map((x) => {
-        if (x.id === project.id) return project
-        return x
-      }),
-    )
+  const updateProject = async (project: Project) => {
+    setIsLoading(true)
+
+    const request = ProjectToRequestObject(project)
+
+    updateProjectRequest(project.id, request).then((project) => {
+      setProjects((state) => {
+        return {
+          ...state,
+          [project.id]: project,
+        }
+      })
+      setIsLoading(false)
+    })
   }
 
-  const deleteProject = async (project: IProject) => {
-    setProjects((state) => [...state].filter((x) => x.id !== project.id))
+  const deleteProject = async (project: Project) => {
+    setIsLoading(true)
+
+    // await deleteProjectRequest(project.id)
+
+    setProjects((state) => {
+      const newState = { ...state }
+      delete newState[project.id]
+      return newState
+    })
+    setIsLoading(false)
   }
 
   useEffect(() => {
     setIsLoading(true)
 
-    fetchProjectsRequest().then((projects) => {
-      setProjects(projects)
-      console.log({ projects })
+    fetchProjectsRequest().then((apiResponse) => {
+      const projectsById: { [key: number]: Project } = {}
+
+      apiResponse.forEach((project) => {
+        projectsById[project.id] = project
+      })
+
+      setProjects(projectsById)
       setIsLoading(false)
     })
   }, [])
