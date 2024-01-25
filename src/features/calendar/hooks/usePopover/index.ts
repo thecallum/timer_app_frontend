@@ -4,7 +4,8 @@ import { getPopoverOptions } from './popoverOptions'
 import { useClickOutContext } from '@/contexts/clickOutContext'
 
 export const usePopover = (containerRef: HTMLDivElement | null) => {
-  const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null)
+  const [referenceElement, setReferenceElement] =
+    useState<HTMLDivElement | null>(null)
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null)
 
   const { styles, attributes } = usePopper(

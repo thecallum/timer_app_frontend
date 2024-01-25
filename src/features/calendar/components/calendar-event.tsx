@@ -54,7 +54,7 @@ export const CalendarEvent = (props: Props) => {
             <div style={eventStyles} className="absolute p-[1px]">
               <button
                 className={`w-full h-full cursor-pointer rounded-sm`}
-                // @ts-ignore
+                // @ts-expect-error work around for react-popper library issue
                 ref={ref}
                 onClick={onClick}
                 style={{

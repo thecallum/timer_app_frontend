@@ -36,7 +36,7 @@ export const CalendarCell = (props: Props) => {
                 'bg-slate-200': showPopover,
                 'hover:bg-slate-50': !disableClick,
               })}
-              // @ts-ignore
+              // @ts-expect-error work around for react-popper library issue
               ref={ref}
               onClick={() => {
                 if (disableClick) return

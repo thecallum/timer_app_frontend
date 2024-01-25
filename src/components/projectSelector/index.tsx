@@ -37,7 +37,7 @@ export const ProjectSelector = (props: Props) => {
           <button
             type="button"
             onClick={onClick}
-            // @ts-ignore
+            // @ts-expect-error work around for react-popper library issue
             ref={ref}
             className="flex flex-row justify-start items-center  p-1 px-2 rounded-md shadow-sm"
             style={{
