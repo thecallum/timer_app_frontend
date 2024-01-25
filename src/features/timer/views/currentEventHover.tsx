@@ -3,12 +3,18 @@ import dayjs from 'dayjs'
 import { CalendarEventView } from '@/features/calendar/components/calendar-event-view'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { defaultProjectColor } from '@/types/projects'
+import { useProjectsContext } from '@/contexts/projectsContext'
 
 const HEIGHT_ONE_MINUTE = (64 / 60) * 2
 
 export const CurrentEventHover = () => {
   const { showingCurrentWeek } = useCalendarEventsContext()
-  const { time, isRunning, startedAt, description, project } = useTimerContext()
+  const { time, isRunning, startedAt, description, projectId } =
+    useTimerContext()
+
+  const { getProjectById } = useProjectsContext()
+
+  const project = getProjectById(projectId)
 
   const startedAtInMinutes = dayjs(startedAt).diff(
     dayjs(startedAt).startOf('day'),

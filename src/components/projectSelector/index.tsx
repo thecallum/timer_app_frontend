@@ -1,11 +1,11 @@
-import { Project, defaultProject } from '@/types/projects'
+import { Project, defaultProject, defaultProjectColor } from '@/types/projects'
 import { PopoverWrapper } from '../../features/calendar/components/popover-wrapper'
 import { SelectProjectPopover } from './select-project-popover'
 
 interface Props {
   project: Project | null
   containerRef: HTMLDivElement | null
-  setProject: (project: Project | null) => void
+  setProject: (projectId: number | null) => void
 }
 
 export const ProjectSelector = (props: Props) => {

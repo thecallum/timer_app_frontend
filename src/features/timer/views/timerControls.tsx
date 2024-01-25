@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { useTimerContext } from '../context/hooks/useTimerContext'
 import { CalendarEventApiRequestObject } from '@/requests/types'
+import { useProjectsContext } from '@/contexts/projectsContext'
 
 export const TimerControls = () => {
   const { addEvent } = useCalendarEventsContext()
@@ -16,9 +17,13 @@ export const TimerControls = () => {
     setDescription,
     time,
     isRunning,
-    project,
+    projectId,
     description,
   } = useTimerContext()
+
+  const { getProjectById } = useProjectsContext()
+
+  const project = getProjectById(projectId)
 
   const input = useRef<HTMLInputElement>(null)
 
@@ -39,7 +44,6 @@ export const TimerControls = () => {
       startTime: dayjs().add(time * -1, 'second'),
       endTime: dayjs(),
       projectId: project?.id ?? null,
-      // project ?? undefined,
     }
 
     addEvent(request).then(() => {

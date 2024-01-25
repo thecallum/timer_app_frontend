@@ -31,12 +31,12 @@ export const EditEventPopover = (props: Props) => {
     endTime: end,
   } = event
 
-  const { projects } = useProjectsContext()
+  const { getProjectById } = useProjectsContext()
 
   const { updateEvent, deleteEvent } = useCalendarEventsContext()
   const [description, setDescription] = useState(currentDescription)
   const [project, setProject] = useState<Project | null>(
-    projectId === null ? null : projects[projectId],
+    getProjectById(projectId),
   )
 
   const [startDate, setStartDate] = useState<string>(
@@ -119,7 +119,9 @@ export const EditEventPopover = (props: Props) => {
               <ProjectSelector
                 containerRef={containerRef}
                 project={project}
-                setProject={setProject}
+                setProject={(projectId) =>
+                  setProject(getProjectById(projectId))
+                }
               />
             </div>
 

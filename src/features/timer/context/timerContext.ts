@@ -1,4 +1,6 @@
 import { createContext } from 'react'
-import { ITimerContext } from './types'
+import { TimerContext as TimerContextType } from './types'
 
-export const TimerContext = createContext<ITimerContext | undefined>(undefined)
+export const TimerContext = createContext<TimerContextType | undefined>(
+  undefined,
+)
