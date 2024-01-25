@@ -37,6 +37,7 @@ export const ProjectSelector = (props: Props) => {
           <button
             type="button"
             onClick={onClick}
+            // @ts-ignore
             ref={ref}
             className="flex flex-row justify-start items-center  p-1 px-2 rounded-md shadow-sm"
             style={{
