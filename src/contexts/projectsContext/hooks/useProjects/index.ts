@@ -51,7 +51,7 @@ export const useProjects = () => {
   const deleteProject = async (project: Project) => {
     setIsLoading(true)
 
-    // await deleteProjectRequest(project.id)
+    await deleteProjectRequest(project.id)
 
     setProjects((state) => {
       const newState = { ...state }

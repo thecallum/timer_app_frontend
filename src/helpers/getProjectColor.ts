@@ -8,7 +8,8 @@ export const getProjectColor = (
 ) => {
   if (projectId === null) return defaultProjectColor
 
-  if (!projects.hasOwnProperty(projectId)) return defaultProjectColor
+  if (!Object.prototype.hasOwnProperty.call(projects, projectId))
+    return defaultProjectColor
 
   return projects[projectId].projectColor
 }

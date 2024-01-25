@@ -9,7 +9,7 @@ export const ProjectRequestObjectToDomain = (
     id: response.id,
     description: response.description,
     projectColor: response.projectColor as ProjectColor,
-    totalEventDurationInMinutes: response.totalEventDurationInMinutes
+    totalEventDurationInMinutes: response.totalEventDurationInMinutes,
   }
 }
 

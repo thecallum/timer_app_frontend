@@ -19,7 +19,7 @@ export const useTimer = () => {
   const [state, dispatch] = useReducer(timerReducer, initialState)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
-  const {projects} = useProjectsContext()
+  const { projects } = useProjectsContext()
 
   const {
     getLocalStorageValue,
@@ -33,7 +33,11 @@ export const useTimer = () => {
     if (!snapshot) return
 
     dispatch({ type: 'SET_DESCRIPTION', description: snapshot.description })
-    dispatch({ type: 'SET_PROJECT', project: snapshot.projectId === null ? null : projects[snapshot.projectId] })
+    dispatch({
+      type: 'SET_PROJECT',
+      project:
+        snapshot.projectId === null ? null : projects[snapshot.projectId],
+    })
     dispatch({ type: 'START', startedAt: snapshot.startedAt })
   }, [])
 
