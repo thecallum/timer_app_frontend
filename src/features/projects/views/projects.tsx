@@ -105,7 +105,7 @@ export const Projects = () => {
       <EditProjectModal
         isOpen={!!editProjectModal}
         close={closeEditModal}
-        key={editProjectModal}
+        // key={editProjectModal}
         onSubmit={onEditProject}
         project={editProjectModal}
         deleteProject={onDeleteProject}
