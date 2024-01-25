@@ -2,8 +2,8 @@ import { useEffect, useReducer, useRef } from 'react'
 import useLocalStorage from '../../../../components/hooks/useLocalStorage'
 import { ITimerSnapshot, TimerState } from '../types'
 import { timerReducer } from '../timerReducer'
-import { Project } from '@/contexts/projectsContext/types'
 import { useProjectsContext } from '@/contexts/projectsContext'
+import { Project } from '@/types/projects'
 
 const LOCAL_STORAGE_KEY = 'TIMER_STATE'
 

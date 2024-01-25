@@ -1,13 +1,9 @@
 import { ModalContainer } from '@/modals/components'
 import { useEffect, useState } from 'react'
 import { CreateModalForm } from './create-modal-form'
-import {
-  Project,
-  Color,
-  ProjectColor,
-  ProjectColors,
-  ProjectApiRequestObject,
-} from '@/contexts/projectsContext/types'
+import { Project, ProjectColor } from '@/types/projects'
+import { Color, ProjectColors } from '@/types/colors'
+import { ProjectApiRequestObject } from '@/requests/types'
 
 interface Props {
   isOpen: boolean

@@ -3,7 +3,6 @@ import {
   PopoverControls,
   PopoverLayout,
 } from '@/components/popover'
-import { CalendarEvent } from '../../types/types'
 import { ProjectSelector } from '../../../../components/projectSelector'
 import { useState } from 'react'
 import dayjs from 'dayjs'
@@ -12,9 +11,10 @@ import { ErrorMessage } from '@/components/form/error-message'
 import { TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
-import { Project } from '@/contexts/projectsContext/types'
 import { formatDuration } from '@/helpers/formatter'
 import { useProjectsContext } from '@/contexts/projectsContext'
+import { CalendarEvent } from '@/types/calendarEvents'
+import { Project } from '@/types/projects'
 
 interface Props {
   close: () => void

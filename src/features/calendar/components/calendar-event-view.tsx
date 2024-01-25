@@ -1,9 +1,5 @@
-import {
-  Project,
-  defaultProject,
-  defaultProjectColor,
-} from '@/contexts/projectsContext/types'
 import { formatDuration } from '@/helpers/formatter'
+import { Project, defaultProject, defaultProjectColor } from '@/types/projects'
 
 interface Props {
   description: string

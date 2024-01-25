@@ -2,9 +2,9 @@ import { Page } from '@/components/layout/page'
 import { EditProjectModal } from '@/modals/edit-project-modal'
 import { useState } from 'react'
 import { CreateProjectModalContainer } from '@/modals/create-project-modal-container'
-import { Project, defaultProjectColor } from '@/contexts/projectsContext/types'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
 import { useProjectsContext } from '@/contexts/projectsContext'
+import { Project, defaultProjectColor } from '@/types/projects'
 
 export const Projects = () => {
   const { projects, updateProject, deleteProject } = useProjectsContext()

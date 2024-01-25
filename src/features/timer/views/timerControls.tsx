@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import dayjs from 'dayjs'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { useTimerContext } from '../context/hooks/useTimerContext'
-import { CalendarEventApiRequestObject } from '@/features/calendar/types/types'
+import { CalendarEventApiRequestObject } from '@/requests/types'
 
 export const TimerControls = () => {
   const { addEvent } = useCalendarEventsContext()

@@ -1,4 +1,4 @@
-import { CalendarEvent } from '@/features/calendar/types/types'
+import { CalendarEvent } from '@/types/calendarEvents'
 import { ICalendarFiveMinuteSlot } from './types'
 
 export const findParallelEventsById = (

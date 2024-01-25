@@ -1,11 +1,10 @@
+import { Dayjs } from 'dayjs'
 import {
   CalendarEventApiRequestObject,
   CalendarEventApiResponseObject,
-  CalendarEventRequestToDomain,
-} from '@/features/calendar/types/types'
-import { Dayjs } from 'dayjs'
-
-const BASE_URL = 'http://localhost:3001/api'
+} from './types'
+import { CalendarEventRequestToDomain } from '@/factories/factories'
+import { BASE_URL } from './config'
 
 export const fetchEvents = async (startTime: Dayjs, endTime: Dayjs) => {
   const result = await fetch(

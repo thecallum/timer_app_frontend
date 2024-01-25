@@ -5,12 +5,8 @@ import {
   PopoverLayout,
 } from '@/components/popover'
 import { useProjectsContext } from '@/contexts/projectsContext/hooks/useProjectsContext'
-import {
-  Project,
-  defaultProject,
-  defaultProjectColor,
-} from '@/contexts/projectsContext/types'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
+import { Project, defaultProject, defaultProjectColor } from '@/types/projects'
 
 interface Props {
   currentProject: Project

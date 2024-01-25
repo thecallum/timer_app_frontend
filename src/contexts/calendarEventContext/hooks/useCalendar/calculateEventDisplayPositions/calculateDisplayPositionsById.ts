@@ -1,4 +1,4 @@
-import { CalendarEvent } from '@/features/calendar/types/types'
+import { CalendarEvent } from '@/types/calendarEvents'
 import { CalendarEventPosition } from './types'
 
 const INITIAL_DISPLAY_POSITION = 0

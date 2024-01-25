@@ -1,10 +1,6 @@
-import {
-  ProjectApiRequestObject,
-  ProjectApiResponseObject,
-  ProjectRequestObjectToDomain,
-} from '../../types'
-
-const BASE_URL = 'http://localhost:3001/api'
+import { ProjectRequestObjectToDomain } from '@/factories/factories'
+import { ProjectApiRequestObject, ProjectApiResponseObject } from './types'
+import { BASE_URL } from './config'
 
 export const fetchProjectsRequest = async () => {
   const result = await fetch(`${BASE_URL}/projects`, {

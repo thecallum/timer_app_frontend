@@ -1,10 +1,10 @@
-import { CalendarEvent } from '@/features/calendar/types/types'
 import { groupEventsByDayOfWeek } from './groupEventsByDayOfWeek'
 import { matchEventsToTimeSlots } from './matchEventsToTimeSlots'
 import { findParallelEventsById } from './findParallelEvents'
 import { calculateDisplayPositionsById } from './calculateDisplayPositionsById'
 import { findLargestColumnCount } from './findLargestColumnCount'
 import { ICalendarFiveMinuteSlot } from './types'
+import { CalendarEvent } from '@/types/calendarEvents'
 
 const getDisplayPositions = (
   events: CalendarEvent[],

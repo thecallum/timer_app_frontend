@@ -1,12 +1,9 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { ModalControls, ModalLayout } from '@/modals/components'
+import { ProjectApiRequestObject } from '@/requests/types'
+import { ProjectColor } from '@/types/projects'
 import { useState } from 'react'
-import {
-  ProjectColor,
-  ProjectApiRequestObject,
-  defaultProjectColor,
-} from '@/contexts/projectsContext/types'
 
 interface Props {
   modalColor: ProjectColor

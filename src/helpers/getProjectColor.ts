@@ -1,4 +1,4 @@
-import { Project, defaultProjectColor } from '@/contexts/projectsContext/types'
+import { Project, defaultProjectColor } from '@/types/projects'
 
 export const getProjectColor = (
   projectId: number | null,

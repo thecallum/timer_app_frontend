@@ -1,4 +1,4 @@
-import { CalendarEvent } from '@/features/calendar/types/types'
+import { CalendarEvent } from '@/types/calendarEvents'
 
 export const groupEventsByDayOfWeek = (allEvents: CalendarEvent[]) => {
   const eventsPerDayOfWeek: CalendarEvent[][] = [[], [], [], [], [], [], []]

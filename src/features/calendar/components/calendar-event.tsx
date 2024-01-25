@@ -1,9 +1,9 @@
 import { useProjectsContext } from '@/contexts/projectsContext'
-import { CalendarEvent as CalendarEventType } from '../types/types'
 import { CalendarEventView } from './calendar-event-view'
 import { PopoverWrapper } from './popover-wrapper'
 import { EditEventPopover } from './popovers/edit-event-popover'
 import { getProjectColor } from '@/helpers/getProjectColor'
+import { CalendarEvent as CalendarEventType } from '@/types/calendarEvents'
 
 interface Props {
   event: CalendarEventType
