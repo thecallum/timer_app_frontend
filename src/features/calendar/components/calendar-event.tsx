@@ -2,8 +2,8 @@ import { useProjectsContext } from '@/contexts/projectsContext'
 import { CalendarEventView } from './calendar-event-view'
 import { PopoverWrapper } from './popover-wrapper'
 import { EditEventPopover } from './popovers/edit-event-popover'
-import { getProjectColor } from '@/helpers/getProjectColor'
 import { CalendarEvent as CalendarEventType } from '@/types/calendarEvents'
+import { defaultProjectColor } from '@/types/projects'
 
 interface Props {
   event: CalendarEventType
@@ -14,7 +14,7 @@ const HEIGHT_ONE_MINUTE = (64 / 60) * 2
 
 export const CalendarEvent = (props: Props) => {
   const { event, containerRef } = props
-  const { projects } = useProjectsContext()
+  const { projects, getProjectById } = useProjectsContext()
 
   const {
     description,
@@ -47,12 +47,14 @@ export const CalendarEvent = (props: Props) => {
         )}
       >
         {({ ref, onClick }) => {
-          const projectColor = getProjectColor(projectId, projects)
+          const projectColor =
+            getProjectById(projectId)?.projectColor ?? defaultProjectColor
 
           return (
             <div style={eventStyles} className="absolute p-[1px]">
               <button
                 className={`w-full h-full cursor-pointer rounded-sm`}
+                // @ts-expect-error work around for react-popper library issue
                 ref={ref}
                 onClick={onClick}
                 style={{

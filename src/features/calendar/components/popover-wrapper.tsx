@@ -6,7 +6,7 @@ interface Props {
   containerRef: HTMLDivElement | null
   offset?: Offsets | undefined
   children: (props: {
-    ref: React.Dispatch<React.SetStateAction<Element>>
+    ref: React.Dispatch<React.SetStateAction<HTMLDivElement | null>>
     onClick: () => void
     showPopover: boolean
   }) => JSX.Element

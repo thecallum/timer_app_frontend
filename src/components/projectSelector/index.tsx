@@ -1,15 +1,20 @@
-import { Project, defaultProject } from '@/types/projects'
+import { defaultProject, defaultProjectColor } from '@/types/projects'
 import { PopoverWrapper } from '../../features/calendar/components/popover-wrapper'
 import { SelectProjectPopover } from './select-project-popover'
+import { useProjectsContext } from '@/contexts/projectsContext'
 
 interface Props {
-  project: Project | null
+  projectId: number | null
   containerRef: HTMLDivElement | null
-  setProject: (project: Project | null) => void
+  setProjectId: (projectId: number | null) => void
 }
 
 export const ProjectSelector = (props: Props) => {
-  const { project, setProject, containerRef } = props
+  const { projectId, setProjectId, containerRef } = props
+
+  const { getProjectById } = useProjectsContext()
+
+  const project = getProjectById(projectId)
 
   return (
     <PopoverWrapper
@@ -17,8 +22,8 @@ export const ProjectSelector = (props: Props) => {
       popoverComponent={({ close }) => (
         <SelectProjectPopover
           currentProject={project ?? defaultProject}
-          selectProject={(x) => {
-            setProject(x)
+          selectProjectId={(x) => {
+            setProjectId(x)
 
             setTimeout(close)
           }}
@@ -32,6 +37,7 @@ export const ProjectSelector = (props: Props) => {
           <button
             type="button"
             onClick={onClick}
+            // @ts-expect-error work around for react-popper library issue
             ref={ref}
             className="flex flex-row justify-start items-center  p-1 px-2 rounded-md shadow-sm"
             style={{

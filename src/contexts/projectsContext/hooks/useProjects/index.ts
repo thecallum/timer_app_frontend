@@ -82,11 +82,26 @@ export const useProjects = () => {
     setIsLoading(false)
   }
 
+  const getProjectById = (projectId: number | null) => {
+    if (projectId === null) return null
+    if (!Object.prototype.hasOwnProperty.call(projects, projectId)) return null
+
+    return projects[projectId]
+  }
+
+  const projectList = Object.keys(projects)
+    .map(Number)
+    .map((x) => projects[x])
+
+  const activeProjects = projectList.filter((x) => x.isActive)
+
   return {
-    projects,
+    // projects,
+    projects: activeProjects,
     addProject,
     updateProject,
     deleteProject,
     isLoading,
+    getProjectById,
   }
 }

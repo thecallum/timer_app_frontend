@@ -11,6 +11,7 @@ export type ProjectApiResponseObject = {
   description: string
   projectColor: ProjectColor
   totalEventDurationInMinutes: number
+  isActive: boolean
 }
 
 export type CalendarEventApiRequestObject = {

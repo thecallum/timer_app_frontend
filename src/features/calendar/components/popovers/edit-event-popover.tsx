@@ -12,9 +12,7 @@ import { TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { formatDuration } from '@/helpers/formatter'
-import { useProjectsContext } from '@/contexts/projectsContext'
 import { CalendarEvent } from '@/types/calendarEvents'
-import { Project } from '@/types/projects'
 
 interface Props {
   close: () => void
@@ -31,12 +29,11 @@ export const EditEventPopover = (props: Props) => {
     endTime: end,
   } = event
 
-  const { projects } = useProjectsContext()
-
   const { updateEvent, deleteEvent } = useCalendarEventsContext()
   const [description, setDescription] = useState(currentDescription)
-  const [project, setProject] = useState<Project | null>(
-    projectId === null ? null : projects[projectId],
+
+  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
+    projectId,
   )
 
   const [startDate, setStartDate] = useState<string>(
@@ -87,7 +84,7 @@ export const EditEventPopover = (props: Props) => {
     event.startTime = dayjs(startDate)
     event.endTime = getEndTimeAsDate()
     event.description = description
-    event.projectId = project?.id ?? null
+    event.projectId = selectedProjectId
 
     await updateEvent(event)
     close()
@@ -118,8 +115,8 @@ export const EditEventPopover = (props: Props) => {
             <div className="inline-block">
               <ProjectSelector
                 containerRef={containerRef}
-                project={project}
-                setProject={setProject}
+                projectId={selectedProjectId}
+                setProjectId={setSelectedProjectId}
               />
             </div>
 

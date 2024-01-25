@@ -16,7 +16,7 @@ export const TimerControls = () => {
     setDescription,
     time,
     isRunning,
-    project,
+    projectId,
     description,
   } = useTimerContext()
 
@@ -38,8 +38,7 @@ export const TimerControls = () => {
       description,
       startTime: dayjs().add(time * -1, 'second'),
       endTime: dayjs(),
-      projectId: project?.id ?? null,
-      // project ?? undefined,
+      projectId: projectId,
     }
 
     addEvent(request).then(() => {
@@ -73,8 +72,8 @@ export const TimerControls = () => {
       <div className="mr-2">
         <ProjectSelector
           containerRef={null}
-          project={project}
-          setProject={setProject}
+          projectId={projectId}
+          setProjectId={setProject}
         />
       </div>
 

@@ -39,6 +39,7 @@ export const ProjectRequestObjectToDomain = (
     description: response.description,
     projectColor: response.projectColor as ProjectColor,
     totalEventDurationInMinutes: response.totalEventDurationInMinutes,
+    isActive: response.isActive,
   }
 }
 

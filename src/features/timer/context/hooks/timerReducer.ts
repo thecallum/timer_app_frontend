@@ -1,10 +1,9 @@
-import { Project } from '@/types/projects'
-import { TimerState } from './types'
+import { TimerState } from '../types'
 
 type TimerAction =
   | { type: 'START'; startedAt?: string }
   | { type: 'STOP'; initialState: TimerState }
-  | { type: 'SET_PROJECT'; project: Project | null }
+  | { type: 'SET_PROJECT'; projectId: number | null }
   | { type: 'SET_DESCRIPTION'; description: string }
   | { type: 'TICK' }
 
@@ -41,7 +40,7 @@ export const timerReducer = (
       return { ...action.initialState }
     }
     case 'SET_PROJECT': {
-      return { ...state, project: action.project }
+      return { ...state, projectId: action.projectId }
     }
     case 'SET_DESCRIPTION': {
       return { ...state, description: action.description }

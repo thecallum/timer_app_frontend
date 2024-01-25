@@ -3,6 +3,7 @@ export type Project = {
   description: string
   projectColor: ProjectColor
   totalEventDurationInMinutes: number
+  isActive: boolean
 }
 
 export type ProjectColor = {
@@ -24,4 +25,5 @@ export const defaultProject: Project = {
   description: 'No project',
   projectColor: defaultProjectColor,
   totalEventDurationInMinutes: 0,
+  isActive: true,
 }

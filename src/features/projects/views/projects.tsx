@@ -29,10 +29,6 @@ export const Projects = () => {
     closeEditModal()
   }
 
-  const projectList = Object.keys(projects)
-    .map(Number)
-    .map((x) => projects[x])
-
   return (
     <>
       <div className="flex flex-col items-center mt-8">
@@ -64,7 +60,7 @@ export const Projects = () => {
                 </tr>
               </thead>
               <tbody>
-                {projectList.map((project, index) => {
+                {projects.map((project, index) => {
                   const projectColor =
                     project?.projectColor ?? defaultProjectColor
 
@@ -109,7 +105,7 @@ export const Projects = () => {
       <EditProjectModal
         isOpen={!!editProjectModal}
         close={closeEditModal}
-        key={editProjectModal}
+        // key={editProjectModal}
         onSubmit={onEditProject}
         project={editProjectModal}
         deleteProject={onDeleteProject}
