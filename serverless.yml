@@ -1,51 +1,41 @@
 service: timer-app-frontend
 
 
+provider:
+  name: aws
+  runtime: nodejs21.x
+  timeout: 300
+  region: eu-west-2
+  stage: ${opt:stage}
 
+package:
+  individually: true
+  exclude:
+    - ./**
 
-myNextApplication:
-  component: "@sls-next/serverless-component@3.7.0" # it is recommended you pin the latest stable version of serverless-next.js
-
-
-# provider:
-#   name: aws
-#   runtime: nodejs21.x
-#   timeout: 300
-#   region: eu-west-2
-#   stage: ${opt:stage}
-#   # lambdaHashingVersion: 20201221
-#   # apiGateway:
-#   #   shouldStartNameWithService: true
-
-# package:
-#   individually: true
-#   exclude:
-#     - ./**
-
-# functions:
-#   timer-app-frontend:
-#     name: timer-app-frontend:-${self:provider.stage}
-#     handler: nextjs.handler
-#     # package:
-#     #   include:
-#     #     - src/lambda.js
-#     #     - next.config.js
-#     #     - public/**
-#     #     - 'build/_next/BUILD_ID'
-#     #     - 'build/_next/*.json'
-#     #     - 'build/_next/server/**'
-#     #     - 'build/_next/static/**'
-#     #     - node_modules/**
-#     #     - '!node_modules/@next/swc-darwin-arm64'
-#     #     - '!node_modules/@next/swc-darwin-x64'
-#     #     - '!node_modules/@next/swc-linux-x64-gnu'
-#     #     - '!node_modules/@next/swc-win32-x64-msvc'
-#     #     - '!node_modules/@sentry/cli/sentry-cli'
-#     #     - '!node_modules/leaflet'
-#     environment:
-#       TEST: CALLUM
-#       events:
-#         - http:
-#             path: /{proxy+}
-#             method: ANY
-#             private: true
+functions:
+  timer-app-frontend:
+    name: timer-app-frontend:-${self:provider.stage}
+    handler: src/lambda.handler
+    package:
+      include:
+        - src/lambda.js
+        - next.config.js
+        - public/**
+        - 'build/_next/BUILD_ID'
+        - 'build/_next/*.json'
+        - 'build/_next/server/**'
+        - 'build/_next/static/**'
+        - node_modules/**
+        - '!node_modules/@next/swc-darwin-arm64'
+        - '!node_modules/@next/swc-darwin-x64'
+        - '!node_modules/@next/swc-linux-x64-gnu'
+        - '!node_modules/@next/swc-win32-x64-msvc'
+        - '!node_modules/@sentry/cli/sentry-cli'
+        - '!node_modules/leaflet'
+    environment:
+      TEST: CALLUM
+      events:
+        - http:
+            path: /{proxy+}
+            method: ANY
