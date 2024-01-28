@@ -11,8 +11,14 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          command: yarn build
-          name: "Build app"
+          name: "Install serverless"
+          command: npm i -g serverless@"<3
+      - run:
+          name: "Build and deploy"
+          command: |
+            yarn build 
+            sls deploy --stage development
+
 
 workflows:
   version: 2
