@@ -76,7 +76,7 @@ package:
 functions:
   TimerAppFrontend:
     name: timer-app-frontend-${self:provider.stage}
-    handler: handler.handler
+    handler: src/handler.handler
     package:
       include:
         - src/handler.js
