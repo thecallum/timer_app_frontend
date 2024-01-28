@@ -5,7 +5,7 @@ orbs:
 
 jobs:
   build-deploy-development:
-    executor: node/defaulty
+    executor: node/default
     steps:
       - checkout
       - node/install-packages:
