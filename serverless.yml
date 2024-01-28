@@ -4,7 +4,7 @@ service: timer-app-frontend
 
 
 myNextApplication:
-  component: "@sls-next/serverless-component@{3.7.0" # it is recommended you pin the latest stable version of serverless-next.js
+  component: "@sls-next/serverless-component@3.7.0" # it is recommended you pin the latest stable version of serverless-next.js
 
 
 # provider:
