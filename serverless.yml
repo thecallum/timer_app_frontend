@@ -54,7 +54,9 @@ provider:
 #    variable1: value1
 
 # you can add packaging information here
-#package:
+package:
+  exclude:
+    - node_modules/**
 #  patterns:
 #    - '!exclude-me.js'
 #    - '!exclude-me-dir/**'
