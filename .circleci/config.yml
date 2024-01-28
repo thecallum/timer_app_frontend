@@ -80,7 +80,7 @@ jobs:
   build-deploy-development:
     executor: aws-cli/default
     steps:
-      - *attach_workspace
+      # - *attach_workspace
       - run:
           name: Swap node versions
           command: |
