@@ -78,10 +78,9 @@ functions:
         - 'build/_next/*.json'
         - 'build/_next/server/**'
         - 'build/_next/static/**'
-        # - 'node_modules/serverless-http'
+        - 'node_modules/serverless-http'
         # - 'node_modules/next/**'
-      includeDependencies:
-        npm: 'serverless-http'
+
     events:
       - http:
           path: /
