@@ -22,7 +22,7 @@ service: tempprojref
 
 provider:
   name: aws
-  runtime: nodejs21.x
+  runtime: nodejs20.x
   timeout: 300
   region: eu-west-2
   stage: ${opt:stage}
