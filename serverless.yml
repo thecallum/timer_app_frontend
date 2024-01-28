@@ -20,11 +20,8 @@ service: tempprojref
 # Check out our docs for more details
 frameworkVersion: "3"
 
-provider:
-  name: aws
-  runtime: nodejs18.x
 
-  provider:
+provider:
   name: aws
   runtime: nodejs21.x
   timeout: 300
