@@ -56,7 +56,7 @@ provider:
 # you can add packaging information here
 package:
   exclude:
-    - node_modules/**
+    - ./**
 #  patterns:
 #    - '!exclude-me.js'
 #    - '!exclude-me-dir/**'
@@ -67,6 +67,12 @@ functions:
   TimerAppFrontend:
     name: timer-app-frontend-${self:provider.stage}
     handler: handler.handler
+    package:
+      include:
+        - src/handler.js
+        - next.config.js
+        - public/**
+        - node_modules/**
     events:
       - http:
           path: /{proxy+}
