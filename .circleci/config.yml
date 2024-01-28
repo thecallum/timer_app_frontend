@@ -64,12 +64,12 @@ jobs:
   build-deploy-development:
     executor: aws-cli/default
     steps:
-    - checkout
-    - node/install-packages:
-      pkg-manger: yarn
-    - run:
-      command: yarn build
-      name: "Build app"
+      - checkout
+      - node/install-packages:
+        pkg-manger: yarn
+      - run:
+        command: yarn build
+        name: "Build app"
       # - *attach_workspace
       # - run:
       #     name: Swap node versions
