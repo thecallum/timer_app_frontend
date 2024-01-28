@@ -80,6 +80,8 @@ functions:
         - 'build/_next/static/**'
         # - 'node_modules/serverless-http'
         # - 'node_modules/next/**'
+      includeDependencies:
+        npm: 'serverless-http'
     events:
       - http:
           path: /
@@ -88,9 +90,8 @@ functions:
           path: /{proxy+}
           method: ANY
 
-plugins:
-  - serverless-http
-            
+
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
