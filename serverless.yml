@@ -55,9 +55,23 @@ provider:
 
 # you can add packaging information here
 package:
-  individually: true
   exclude:
-    - ./**
+    - node_modules/**
+    - next.config.js
+    - public/**
+    - 'build/_next/BUILD_ID'
+    - 'build/_next/*.json'
+    - 'build/_next/server/**'
+    - 'build/_next/static/**'
+
+    - 'node_modules/serverless-http/**'
+    - 'node_modules/next/**'
+
+#  patterns:
+#    - '!exclude-me.js'
+#    - '!exclude-me-dir/**'
+#    - include-me.js
+#    - include-me-dir/**
 
 functions:
   TimerAppFrontend:
@@ -66,13 +80,6 @@ functions:
     package:
       include:
         - src/handler.js
-        - next.config.js
-        - public/**
-        - 'build/_next/BUILD_ID'
-        - 'build/_next/*.json'
-        - 'build/_next/server/**'
-        - 'build/_next/static/**'
-        - node_modules/**
     events:
       - http:
           path: /{proxy+}
