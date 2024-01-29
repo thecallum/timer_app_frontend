@@ -1,22 +1,18 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  // reactStrictMode: true,
-  // redirects: async () => [
-  //   {
-  //     source: '/',
-  //     destination: '/calendar',
-  //     permanent: false,
-  //   },
-  // ],
-  // distDir: "build/_next",
-  // target: "server",
+  redirects: async () => [
+    {
+      source: '/',
+      destination: '/calendar',
+      permanent: false,
+    },
+  ],
   swcMinify: true,
   images: {
-    // Nowhere to cache the images in Lambda (read only)
-    unoptimized: true, // Next 12.3+, other "experimental -> images -> unoptimized"
+    unoptimized: true, 
   },
-  output: "standalone", // THIS IS IMPORTANT
+  output: "standalone", 
 }
 
 module.exports = nextConfig
