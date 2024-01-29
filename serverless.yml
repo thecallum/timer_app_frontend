@@ -55,8 +55,9 @@ provider:
 
 # you can add packaging information here
 package:
+  individually: true
   exclude:
-    - node_modules/**
+    - ./**
 
 
 #  patterns:
