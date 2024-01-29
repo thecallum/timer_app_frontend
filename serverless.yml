@@ -12,6 +12,8 @@
 # Happy Coding!
 
 service: timer-app-frontend
+
+frameworkVersion: '2'
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
