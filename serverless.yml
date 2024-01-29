@@ -1,6 +1,6 @@
 service: timer-app-frontend
 
-frameworkVersion: '2'
+# frameworkVersion: '2'
 
 provider:
   name: aws
@@ -26,21 +26,19 @@ functions:
   TimerAppFrontend:
     name: timer-app-frontend-${self:provider.stage}
     handler: server.handler
-
-    package:
-      patterns:
-        - ".next"
-        - "node_modules"
-        - "public"
-        - "_next"
-        - "next.config.js"
-        - "next-i18next.config.js"
-        - "package.json"
-
     events:
       - http: ANY /
       - http: ANY /{proxy+}
 
+package:
+  patterns:
+    - ".next"
+    - "node_modules"
+    - "public"
+    - "_next"
+    - "next.config.js"
+    - "next-i18next.config.js"
+    - "package.json"
 
 custom:
   esbuild:
