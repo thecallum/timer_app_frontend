@@ -7,7 +7,7 @@ provider:
   runtime: nodejs20.x
   timeout: 300
   region: eu-west-2
-  stage: ${opt:stage}
+  # stage: ${opt:stage}
   lambdaHashingVersion: 20201221
   apiGateway:
     shouldStartNameWithService: true

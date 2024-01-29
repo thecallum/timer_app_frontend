@@ -27,7 +27,7 @@ jobs:
             cp server.ts $BUILD_FOLDER/
             cp -r public $BUILD_FOLDER/
             cd $BUILD_FOLDER
-            sls deploy
+            sls deploy --stage development
 
 
 # yarn build && yarn --production=true && sudo npm i -g serverless@"<3" && sls deploy --stage development
