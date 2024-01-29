@@ -54,7 +54,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-testing-library": "^6.2.0",
     "postcss": "^8.4.31",
-    "serverless": "^3.38.0",
     "serverless-esbuild": "^1.50.2",
     "serverless-next.js": "^1.15.0-alpha.2",
     "tailwindcss": "^3.3.5",
