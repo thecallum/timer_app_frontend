@@ -8,6 +8,8 @@ const nextConfig = {
       permanent: false,
     },
   ],
+  distDir: "build/_next",
+  target: "server"
 }
 
 module.exports = nextConfig
