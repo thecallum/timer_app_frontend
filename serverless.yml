@@ -9,17 +9,15 @@ provider:
   region: eu-west-2
   stage: ${opt:stage}
   lambdaHashingVersion: 20201221
+  apiGateway:
+    shouldStartNameWithService: true
+    binaryMediaTypes:
+      - "*/*"
 
 package:
   individually: true
   exclude:
     - ./**
-
-#  patterns:
-#    - '!exclude-me.js'
-#    - '!exclude-me-dir/**'
-#    - include-me.js
-#    - include-me-dir/**
 
 plugins:
   - serverless-esbuild
@@ -38,22 +36,6 @@ functions:
         - "next.config.js"
         - "next-i18next.config.js"
         - "package.json"
-    # package:
-    #   include:
-    #     - src/handler.js
-    #     - next.config.js
-    #     - public/**
-    #     - 'build/_next/BUILD_ID'
-    #     - 'build/_next/*.json'
-    #     - 'build/_next/server/**'
-    #     - 'build/_next/static/**'
-    #     - node_modules/**
-    #     - '!node_modules/@next/swc-darwin-arm64'
-    #     - '!node_modules/@next/swc-darwin-x64'
-    #     - '!node_modules/@next/swc-linux-x64-gnu'
-    #     - '!node_modules/@next/swc-win32-x64-msvc'
-    #     - '!node_modules/@sentry/cli/sentry-cli'
-    #     - '!node_modules/leaflet'
 
     events:
       - http:
@@ -62,7 +44,6 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
-
 
 custom:
   esbuild:
