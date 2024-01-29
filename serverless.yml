@@ -38,12 +38,9 @@ functions:
         - "package.json"
 
     events:
-      - http:
-          path: /
-          method: ANY
-      - http:
-          path: /{proxy+}
-          method: ANY
+      - http: ANY /
+      - http: ANY /{proxy+}
+
 
 custom:
   esbuild:
