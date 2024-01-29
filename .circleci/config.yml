@@ -13,7 +13,7 @@ jobs:
       - run:
           name: "Build and deploy"
           command: |
-            yarn build && yarn --production=true && sudo npm i -g serverless@"<3" && sls deploy --stage development
+            yarn build && yarn --production=true && sudo npm i -g serverless@"<3" && yarn deploy
 
 
 

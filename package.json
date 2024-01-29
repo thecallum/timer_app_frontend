@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "deploy": "serverless",
     "start": "next start",
     "lint": "eslint . --max-warnings 0 --ext .js,.jsx",
     "lintfix": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx --fix"
