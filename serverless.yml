@@ -1,58 +1,51 @@
-service: nextjs-with-aws-serverless
-frameworkVersion: '>=1.71.1'
+service: timer-app-frontend
 
-myNextApp:
-  component: serverless-next.js
+frameworkVersion: '2'
 
+provider:
+  name: aws
+  runtime: nodejs20.x
+  timeout: 300
+  region: eu-west-2
+  stage: ${opt:stage}
+  lambdaHashingVersion: 20201221
 
-# service: timer-app-frontend
+package:
+  individually: true
+  exclude:
+    - ./**
 
-# frameworkVersion: '2'
+#  patterns:
+#    - '!exclude-me.js'
+#    - '!exclude-me-dir/**'
+#    - include-me.js
+#    - include-me-dir/**
 
-# provider:
-#   name: aws
-#   runtime: nodejs20.x
-#   timeout: 300
-#   region: eu-west-2
-#   stage: ${opt:stage}
-#   lambdaHashingVersion: 20201221
+functions:
+  TimerAppFrontend:
+    name: timer-app-frontend-${self:provider.stage}
+    handler: src/handler.handler
+    package:
+      include:
+        - src/handler.js
+        - next.config.js
+        - public/**
+        - 'build/_next/BUILD_ID'
+        - 'build/_next/*.json'
+        - 'build/_next/server/**'
+        - 'build/_next/static/**'
+        - node_modules/**
+        - '!node_modules/@next/swc-darwin-arm64'
+        - '!node_modules/@next/swc-darwin-x64'
+        - '!node_modules/@next/swc-linux-x64-gnu'
+        - '!node_modules/@next/swc-win32-x64-msvc'
+        - '!node_modules/@sentry/cli/sentry-cli'
+        - '!node_modules/leaflet'
 
-# package:
-#   individually: true
-#   exclude:
-#     - ./**
-
-# #  patterns:
-# #    - '!exclude-me.js'
-# #    - '!exclude-me-dir/**'
-# #    - include-me.js
-# #    - include-me-dir/**
-
-# functions:
-#   TimerAppFrontend:
-#     name: timer-app-frontend-${self:provider.stage}
-#     handler: src/handler.handler
-#     package:
-#       include:
-#         - src/handler.js
-#         - next.config.js
-#         - public/**
-#         - 'build/_next/BUILD_ID'
-#         - 'build/_next/*.json'
-#         - 'build/_next/server/**'
-#         - 'build/_next/static/**'
-#         - node_modules/**
-#         - '!node_modules/@next/swc-darwin-arm64'
-#         - '!node_modules/@next/swc-darwin-x64'
-#         - '!node_modules/@next/swc-linux-x64-gnu'
-#         - '!node_modules/@next/swc-win32-x64-msvc'
-#         - '!node_modules/@sentry/cli/sentry-cli'
-#         - '!node_modules/leaflet'
-
-#     events:
-#       - http:
-#           path: /
-#           method: ANY
-#       - http:
-#           path: /{proxy+}
-#           method: ANY
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{proxy+}
+          method: ANY
