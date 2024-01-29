@@ -1,15 +1,16 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
   // reactStrictMode: true,
-  redirects: async () => [
-    {
-      source: '/',
-      destination: '/calendar',
-      permanent: false,
-    },
-  ],
-  distDir: "build/_next",
-  target: "server",
+  // redirects: async () => [
+  //   {
+  //     source: '/',
+  //     destination: '/calendar',
+  //     permanent: false,
+  //   },
+  // ],
+  // distDir: "build/_next",
+  // target: "server",
   swcMinify: true,
   images: {
     // Nowhere to cache the images in Lambda (read only)
