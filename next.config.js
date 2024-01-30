@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  // redirects: async () => [
-  //   {
-  //     source: '/',
-  //     destination: '/calendar',
-  //     permanent: false,
-  //   },
-  // ],
+  redirects: async () => [
+    {
+      source: '/',
+      destination: '/calendar',
+      permanent: false,
+    },
+  ],
   swcMinify: true,
   images: {
     unoptimized: true, 
