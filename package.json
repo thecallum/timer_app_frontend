@@ -5,9 +5,10 @@
   "scripts": {
     "dev_env": "sst bind next dev",
     "dev": "next dev",
-    "build": "next build",
+    "build": "sst bind next build",
     "__deploy": "serverless",
     "deploy": "npx sst deploy",
+    "sst": "npx sst",
     "start": "next start",
     "lint": "eslint . --max-warnings 0 --ext .js,.jsx",
     "lintfix": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx --fix"
@@ -28,6 +29,7 @@
     "react-dom": "^18",
     "react-modal": "^3.16.1",
     "react-popper": "^2.3.0",
+    "sst": "^2.40.0",
     "uuid": "^9.0.1",
     "validator": "^13.11.0"
   },
@@ -54,7 +56,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-testing-library": "^6.2.0",
     "postcss": "^8.4.31",
-    "sst": "^2.40.0",
     "tailwindcss": "^3.3.5",
     "typescript": "^5"
   }
