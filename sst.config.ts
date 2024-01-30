@@ -10,7 +10,12 @@ export default {
   },
   stacks(app) {
     app.stack(function Site({ stack }) {
-      const site = new NextjsSite(stack, 'site')
+      const site = new NextjsSite(stack, 'site', {
+        customDomain:
+          stack.stage === 'production'
+            ? 'timer-app.thecallum.com'
+            : 'timer-app-development.thecallum.com',
+      })
 
       stack.addOutputs({
         SiteUrl: site.url,
