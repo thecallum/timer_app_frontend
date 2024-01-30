@@ -32,7 +32,6 @@ jobs:
             yarn deploy --stage production
 
 workflows:
-  version: 2
   test-and-deploy-development:
     jobs:
       - test-and-deploy-development:
