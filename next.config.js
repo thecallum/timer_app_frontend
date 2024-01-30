@@ -16,5 +16,3 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
-
-// https://remaster.com/blog/nextjs-lambda-serverless-framework
