@@ -15,7 +15,7 @@ jobs:
           command: |
             export NEXT_PUBLIC_SERVICE_API_KEY=$NEXT_PUBLIC_SERVICE_API_KEY_DEVELOPMENT
             export NEXT_PUBLIC_SERVICE_API_URL=$NEXT_PUBLIC_SERVICE_API_URL_DEVELOPMENT
-            yarn --production=true
+            yarn
             yarn deploy --stage development
 
 # yarn build && yarn --production=true && sudo npm i -g serverless@"<3" && sls deploy --stage development
