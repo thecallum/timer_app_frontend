@@ -32,13 +32,13 @@ jobs:
             yarn deploy --stage production
 
 workflows:
-  test-and-deploy-development:
+  development-pipeline:
     jobs:
       - test-and-deploy-development:
         filters:
           branches:
             only: main
-  test-and-deploy-production:
+  production-pipeline:
     jobs:
       - test-and-deploy-production:
         filters:
