@@ -11,10 +11,13 @@ export default {
   stacks(app) {
     app.stack(function Site({ stack }) {
       const site = new NextjsSite(stack, 'site', {
-        customDomain:
-          stack.stage === 'production'
-            ? 'timer-app.thecallum.com'
-            : 'timer-app-development.thecallum.com',
+        customDomain: {
+          domainName:
+            stack.stage === 'production'
+              ? 'timer-app.thecallum.com'
+              : 'timer-app-development.thecallum.com',
+          hostedZone: 'thecallum.com',
+        },
       })
 
       stack.addOutputs({
