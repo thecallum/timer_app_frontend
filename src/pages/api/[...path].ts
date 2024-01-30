@@ -5,8 +5,8 @@ type Data = {
   name: string
 }
 
-const API_KEY = process.env.SERVICE_API_KEY ?? ''
-const API_URL = process.env.SERVICE_API_URL
+const API_KEY = process.env.SST_Secret_value_SERVICE_API_KEY ?? ''
+const API_URL = process.env.SST_Secret_value_SERVICE_API_URL
 
 export default async function handler(
   req: NextApiRequest,

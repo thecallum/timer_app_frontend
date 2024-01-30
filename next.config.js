@@ -13,10 +13,6 @@ const nextConfig = {
     unoptimized: true,
   },
   output: 'standalone',
-  env: {
-    API_KEY: process.env.SERVICE_API_KEY ?? '',
-    API_URL: process.env.SERVICE_API_URL ?? '',
-  },
 }
 
 module.exports = nextConfig
