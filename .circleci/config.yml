@@ -35,12 +35,12 @@ workflows:
   development-pipeline:
     jobs:
       - test-and-deploy-development:
-        filters:
-          branches:
-            only: main
+          filters:
+            branches:
+              only: main
   production-pipeline:
     jobs:
       - test-and-deploy-production:
-        filters:
-          branches:
-            only: release
+          filters:
+            branches:
+              only: release
