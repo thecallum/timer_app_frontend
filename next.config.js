@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
-  // reactStrictMode: true,
   redirects: async () => [
     {
       source: '/',
@@ -8,6 +8,11 @@ const nextConfig = {
       permanent: false,
     },
   ],
+  swcMinify: true,
+  images: {
+    unoptimized: true,
+  },
+  output: 'standalone',
 }
 
 module.exports = nextConfig
