@@ -11,6 +11,10 @@ export default {
   stacks(app) {
     app.stack(function Site({ stack }) {
       const site = new NextjsSite(stack, 'site', {
+        environment: {
+          API_KEY: process.env.SERVICE_API_KEY ?? '',
+          API_URL: process.env.SERVICE_API_URL ?? '',
+        },
         customDomain: {
           domainName:
             stack.stage === 'production'
