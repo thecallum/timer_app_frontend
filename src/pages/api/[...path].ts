@@ -1,12 +1,17 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+// import { Config } from 'sst/constructs';
+import { Config } from 'sst/node/config'
 
 type Data = {
   name: string
 }
 
-const API_KEY = process.env.SST_Secret_value_SERVICE_API_KEY ?? ''
-const API_URL = process.env.SST_Secret_value_SERVICE_API_URL
+// Config.
+
+const API_KEY = Config.SERVICE_API_URL
+// const API_KEY = process.env.SST_Secret_value_SERVICE_API_KEY ?? ''
+const API_URL = Config.SERVICE_API_KEY
 
 export default async function handler(
   req: NextApiRequest,

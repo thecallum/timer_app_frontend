@@ -1,11 +1,12 @@
 import { SSTConfig } from 'sst'
-import { Config, NextjsSite } from 'sst/constructs'
+import { Bucket, Config, NextjsSite } from 'sst/constructs'
 
 export default {
   config(_input) {
     return {
       name: 'timer-app-frontend',
       region: 'eu-west-2',
+      yeet: "123"
     }
   },
   stacks(app) {
@@ -14,6 +15,7 @@ export default {
       const SERVICE_API_URL = new Config.Secret(stack, 'SERVICE_API_URL')
 
       const site = new NextjsSite(stack, 'site', {
+        bind: [SERVICE_API_KEY, SERVICE_API_URL],
         customDomain: {
           domainName:
             stack.stage === 'production'
@@ -21,7 +23,6 @@ export default {
               : 'timer-app-development.thecallum.com',
           hostedZone: 'thecallum.com',
         },
-        bind: [SERVICE_API_KEY, SERVICE_API_URL],
       })
 
       stack.addOutputs({
