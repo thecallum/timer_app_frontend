@@ -12,7 +12,15 @@ const nextConfig = {
   images: {
     unoptimized: true, 
   },
-  output: "standalone", 
+  output: "standalone",
+  experimental: {
+    outputFileTracingExcludes: {
+      '/api/hello': ['./un-necessary-folder/**/*'],
+    },
+    outputFileTracingIncludes: {
+      '/api/another': ['./necessary-folder/**/*'],
+    },
+  }, 
 }
 
 module.exports = nextConfig
