@@ -13,10 +13,9 @@ jobs:
       - run:
           name: 'Build and deploy'
           command: |
-            sudo npm install --global sst@^2.40.0
-            npx sst secrets set --stage development SERVICE_API_KEY $SERVICE_API_KEY_DEVELOPMENT
-            npx sst secrets set --stage development SERVICE_API_URL $SERVICE_API_URL_DEVELOPMENT      
-            npx sst deploy --stage development
+            yarn sst secrets set --stage development SERVICE_API_KEY $SERVICE_API_KEY_DEVELOPMENT
+            yarn sst secrets set --stage development SERVICE_API_URL $SERVICE_API_URL_DEVELOPMENT      
+            yarn deploy --stage development
   test-and-deploy-production:
     executor: node/default
     steps:
@@ -26,10 +25,9 @@ jobs:
       - run:
           name: 'Build and deploy'
           command: |
-            sudo npm install --global sst@^2.40.0
-            npx sst secrets set --stage production SERVICE_API_KEY $SERVICE_API_KEY_PRODUCTION
-            npx sst secrets set --stage production SERVICE_API_URL $SERVICE_API_URL_PRODUCTION      
-            npx sst deploy --stage production
+            yarn sst secrets set --stage production SERVICE_API_KEY $SERVICE_API_KEY_PRODUCTION
+            yarn sst secrets set --stage production SERVICE_API_URL $SERVICE_API_URL_PRODUCTION      
+            yarn deploy --stage production
 workflows:
   development-pipeline:
     jobs:
