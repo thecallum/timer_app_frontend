@@ -6,7 +6,6 @@ export default {
     return {
       name: 'timer-app-frontend',
       region: 'eu-west-2',
-      yeet: "123"
     }
   },
   stacks(app) {

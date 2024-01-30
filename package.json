@@ -5,7 +5,7 @@
   "scripts": {
     "dev_env": "sst bind next dev",
     "dev": "next dev",
-    "build": "next build",
+    "build": "sst bind next build",
     "__deploy": "serverless",
     "deploy": "npx sst deploy",
     "sst": "npx sst",
