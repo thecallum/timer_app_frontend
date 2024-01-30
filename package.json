@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "sst bind next dev",
     "build": "next build",
-    "deploy": "serverless",
+    "__deploy": "serverless",
+    "deploy": "npx sst deploy",
     "start": "next start",
     "lint": "eslint . --max-warnings 0 --ext .js,.jsx",
     "lintfix": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx --fix"
@@ -56,6 +57,9 @@
     "postcss": "^8.4.31",
     "serverless-esbuild": "^1.50.2",
     "tailwindcss": "^3.3.5",
-    "typescript": "^5"
+    "typescript": "^5",
+    "sst": "^2.40.0",
+    "aws-cdk-lib": "2.124.0",
+    "constructs": "10.3.0"
   }
 }
