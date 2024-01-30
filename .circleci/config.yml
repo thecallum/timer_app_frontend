@@ -31,10 +31,10 @@ jobs:
 workflows:
   development-pipeline:
     jobs:
-      - test-and-deploy-development
-          # filters:
-          #   branches:
-          #     only: main
+      - test-and-deploy-development:
+          filters:
+            branches:
+              only: main
   production-pipeline:
     jobs:
       - test-and-deploy-production:
