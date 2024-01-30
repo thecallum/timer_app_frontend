@@ -9,9 +9,9 @@ type Data = {
 
 // Config.
 
-const API_KEY = Config.SERVICE_API_URL
+const API_KEY = Config.SERVICE_API_KEY
 // const API_KEY = process.env.SST_Secret_value_SERVICE_API_KEY ?? ''
-const API_URL = Config.SERVICE_API_KEY
+const API_URL = Config.SERVICE_API_URL
 
 export default async function handler(
   req: NextApiRequest,
