@@ -1,5 +1,5 @@
 import { SSTConfig } from 'sst'
-import { NextjsSite } from 'sst/constructs'
+import { Bucket, Config, NextjsSite } from 'sst/constructs'
 
 export default {
   config(_input) {
@@ -10,7 +10,11 @@ export default {
   },
   stacks(app) {
     app.stack(function Site({ stack }) {
+      const SERVICE_API_KEY = new Config.Secret(stack, 'SERVICE_API_KEY')
+      const SERVICE_API_URL = new Config.Secret(stack, 'SERVICE_API_URL')
+
       const site = new NextjsSite(stack, 'site', {
+        bind: [SERVICE_API_KEY, SERVICE_API_URL],
         customDomain: {
           domainName:
             stack.stage === 'production'

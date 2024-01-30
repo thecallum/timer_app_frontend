@@ -4,18 +4,13 @@ import {
   CalendarEventApiResponseObject,
 } from './types'
 import { CalendarEventRequestToDomain } from '@/factories/factories'
-import { API_KEY, BASE_URL } from './config'
 
 export const fetchEvents = async (startTime: Dayjs, endTime: Dayjs) => {
-  const headers = new Headers()
-  headers.append('x-api-key', API_KEY ?? 'test')
-
   const result = await fetch(
-    `${BASE_URL}/events?startTime=${startTime.format('MM/DD/YYYY')}&endTime=${endTime.format('MM/DD/YYYY')}`,
+    `/api/events?startTime=${startTime.format('MM/DD/YYYY')}&endTime=${endTime.format('MM/DD/YYYY')}`,
     {
       method: 'GET',
       redirect: 'follow',
-      headers,
     },
   )
 
@@ -31,9 +26,8 @@ export const addEventRequest = async (
 ) => {
   const headers = new Headers()
   headers.append('Content-Type', 'application/json')
-  headers.append('x-api-key', API_KEY ?? '')
 
-  const result = await fetch(`${BASE_URL}/events`, {
+  const result = await fetch(`/api/events`, {
     method: 'POST',
     headers,
     body: JSON.stringify(request),
@@ -51,9 +45,8 @@ export const updateEventRequest = async (
 ) => {
   const headers = new Headers()
   headers.append('Content-Type', 'application/json')
-  headers.append('x-api-key', API_KEY ?? '')
 
-  const result = await fetch(`${BASE_URL}/events/${id}`, {
+  const result = await fetch(`/api/events/${id}`, {
     method: 'PUT',
     headers,
     body: JSON.stringify(request),
@@ -66,12 +59,8 @@ export const updateEventRequest = async (
 }
 
 export const deleteEventRequest = async (id: string) => {
-  const headers = new Headers()
-  headers.append('x-api-key', API_KEY ?? '')
-
-  await fetch(`${BASE_URL}/events/${id}`, {
+  await fetch(`/api/events/${id}`, {
     method: 'DELETE',
     redirect: 'follow',
-    headers,
   })
 }
