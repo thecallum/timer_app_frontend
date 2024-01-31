@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import Link from 'next/link'
+import { Logo } from './logo'
 
 interface Props {
   showNavbar: boolean
@@ -24,20 +25,13 @@ export const Nav = (props: Props) => {
 
       <nav
         className={classNames(
-          'bg-slate-600 w-40 p-2 flex-shrink-0 text-white shadow-md absolute top-0 h-full z-[100] lg:static lg:h-auto lg:block',
+          'bg-slate-700  w-40 p-2 flex-shrink-0 text-white shadow-2xl absolute top-0 h-full z-[100] lg:static lg:h-auto lg:block',
           {
             hidden: !showNavbar,
           },
         )}
       >
-        <div
-          className="w-32 bg-slate-600 rounded-md p-1 px-2 text-slate-300 justify-start items-center mb-8 hidden lg:flex"
-          style={{ fontFamily: 'Nova Square' }}
-        >
-          <span>Time</span>
-          <span className="w-2 h-2 mx-2 rounded-full bg-purple-300 block"></span>
-          <span>Tracker</span>
-        </div>
+        <Logo />
 
         <div>
           <button onClick={toggleNavbar}>close</button>

@@ -48,10 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ContextProviderWrappers>
       <>
-        <Header
-          showTimerControls={isAuthorizedPage}
-          toggleNavbar={toggleNavbar}
-        />
+        <Header toggleNavbar={toggleNavbar} />
 
         <div className="flex flex-row h-[calc(100vh-4rem)]">
           {isAuthorizedPage && (
