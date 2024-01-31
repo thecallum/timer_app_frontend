@@ -18,13 +18,15 @@ export const CalendarHours = () => {
     .slice(1)
 
   return (
-    <ul className="flex flex-col w-14 mt-16 mr-2">
+    <ul className="flex flex-col w-4 mt-16 mr-2 lg:w-14 ">
       {hours.map((hour) => (
         <li
           key={hour}
-          className="flex-grow flex-shrink-0 text-xs flex justify-end items-center h-32 bg-red"
+          className="flex-grow flex-shrink-0 text-xs flex justify-end items-center h-32   "
         >
-          {hour}
+          <div className="text-gray-950  whitespace-nowrap  -rotate-90 translate-x-[19px] lg:translate-x-0 lg:rotate-0 text-center origin-center">
+            {hour}
+          </div>
         </li>
       ))}
     </ul>
