@@ -44,7 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
         <div className="flex flex-row h-[calc(100vh-4rem)]">
           {isAuthorizedPage && <Nav />}
-          <div className="flex-grow">
+          <div className="flex-grow w-[calc(100%-10rem)]">
             <Component {...pageProps} />
           </div>
         </div>
