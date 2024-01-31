@@ -21,15 +21,19 @@ export const CalendarDates = () => {
   })
 
   return (
-    <div className="ml-16 mb-2 h-12">
+    <div className="ml-6 mb-2 h-12 lg:ml-16">
       <ul className="flex justify-between">
         {weekDaysArray.map(({ day, name, time, current }) => (
           <li className="flex-grow" key={name}>
             <div className="flex flex-col items-center lg:flex-row justify-center">
               <div
                 className={classNames(
-                  'text-slate-600 text-2xl font-light w-9 h-9 rounded-full flex items-center justify-center lg:mr-3',
-                  { 'bg-purple-100': current },
+                  ' text-2xl font-light w-9 h-9 rounded-full flex items-center justify-center lg:mr-3',
+                  {
+                    'bg-purple-100': current,
+                    'text-slate-600': !current,
+                    'text-purple-500': current,
+                  },
                 )}
               >
                 <span className="text-center text-lg lg:text-2xl">{day}</span>
