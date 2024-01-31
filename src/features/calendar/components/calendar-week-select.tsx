@@ -7,8 +7,8 @@ export const CalendarWeekSelect = () => {
   const endOfWeek = daysOfWeek[6].format('DD MMM')
 
   return (
-    <div>
-      <div className="bg-white rounded border-slate-300 border h-14 px-6 shadow-sm text-slate-800 flex justify-center items-center">
+    <div className='w-full sm:w-auto shrink-0'>
+      <div className="bg-white rounded  border-slate-300 border h-14 px-6 shadow-sm text-slate-800 flex justify-center items-center">
         <button onClick={previous}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
