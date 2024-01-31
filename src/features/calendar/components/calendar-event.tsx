@@ -27,8 +27,16 @@ export const CalendarEvent = (props: Props) => {
     width,
   } = event
 
+  const MIN_HEIGHT = HEIGHT_ONE_MINUTE * 15
+
+  // temp fix
+  const computedHeight = Math.max(
+    MIN_HEIGHT,
+    durationInMinutes * HEIGHT_ONE_MINUTE,
+  )
+
   const eventStyles = {
-    height: `${durationInMinutes * HEIGHT_ONE_MINUTE}px`,
+    height: `${computedHeight}px`,
     top: `${startTimeInMinutes * HEIGHT_ONE_MINUTE}px`,
     left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${left}))`,
     width: `calc((100%/7)*${width})`,
