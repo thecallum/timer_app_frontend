@@ -55,8 +55,11 @@ export const CalendarEvent = (props: Props) => {
         )}
       >
         {({ ref, onClick }) => {
-          const projectColor =
-            getProjectById(projectId)?.projectColor ?? defaultProjectColor
+
+          const project = getProjectById(projectId)
+          const projectColor = project?.projectColor ?? defaultProjectColor
+
+            console.log({ projectId, project: getProjectById(projectId)})
 
           return (
             <div style={eventStyles} className="absolute p-[1px]">
@@ -72,7 +75,7 @@ export const CalendarEvent = (props: Props) => {
                 <CalendarEventView
                   description={description}
                   durationInSeconds={durationInSeconds}
-                  project={projectId === null ? null : projects[projectId]}
+                  project={project}
                 />
               </button>
             </div>
