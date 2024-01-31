@@ -32,7 +32,7 @@ export const Projects = () => {
   return (
     <>
       <div className="flex flex-col items-center mt-8">
-        <div className="w-[calc(100%-60px)] max-w-[1200px]">
+        <div className="w-[calc(100%-30px)] sm:w-[calc(100%-60px)] max-w-[1200px]">
           <div className="mb-4 flex  items-center justify-between">
             <h1 className="text-2xl text-slate-700">Projects</h1>
 
