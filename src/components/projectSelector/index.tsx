@@ -39,21 +39,18 @@ export const ProjectSelector = (props: Props) => {
             onClick={onClick}
             // @ts-expect-error work around for react-popper library issue
             ref={ref}
-            className="flex flex-row justify-start items-center  p-1 px-2 rounded-md shadow-sm"
-            style={{
-              background: projectColor.light,
-            }}
+            className="flex flex-row justify-start items-center py-2 px-4 rounded-md shadow-sm bg-purple-950"
           >
             <div
-              className="w-2 h-2 rounded-full block "
+              className="w-3 h-3 rounded-full block "
               style={{
                 background: projectColor.dark,
               }}
             ></div>
             <div
-              className="ml-2 text-xs leading-tight"
+              className="ml-1 text-sm leading-tight"
               style={{
-                color: projectColor.dark,
+                color: projectColor.light,
               }}
             >
               {project?.description ?? defaultProject.description}
