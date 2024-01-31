@@ -38,7 +38,7 @@ export const Projects = () => {
 
             <button
               onClick={openModal}
-              className="bg-purple-600 shadow-md text-white rounded px-4 py-2 text-lg"
+              className="bg-purple-500 shadow-md text-white rounded px-4 py-2 text-lg"
             >
               Create project
             </button>
