@@ -5,12 +5,9 @@ type Data = {
   name: string
 }
 
-if (process.env.TEST === "true") {
-
-}
-
-const API_KEY = process.env.TEST === "true"? "": Config?.SERVICE_API_KEY
-const API_URL = process.env.TEST === "true"? "": Config?.SERVICE_API_URL
+// enable running next build in pipeline without bind
+const API_KEY = process.env.TEST === 'true' ? '' : Config?.SERVICE_API_KEY
+const API_URL = process.env.TEST === 'true' ? '' : Config?.SERVICE_API_URL
 
 export default async function handler(
   req: NextApiRequest,
