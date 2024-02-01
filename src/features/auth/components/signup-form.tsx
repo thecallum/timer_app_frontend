@@ -107,7 +107,7 @@ export const SignupForm = (props: Props) => {
       </div>
 
       <div>
-        <button className="bg-purple-600 text-xl mb-8 text-white w-full px-2 py-3 rounded shadow-md">
+        <button className="bg-purple-500 text-xl mb-8 text-white w-full px-2 py-3 rounded shadow-md">
           Sign up
         </button>
       </div>

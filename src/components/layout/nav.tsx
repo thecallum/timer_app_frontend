@@ -1,35 +1,57 @@
+import classNames from 'classnames'
 import Link from 'next/link'
+import { Logo } from './logo'
 
-export const Nav = () => {
+interface Props {
+  showNavbar: boolean
+  toggleNavbar: () => void
+}
+
+export const Nav = (props: Props) => {
+  const { showNavbar, toggleNavbar } = props
+
   return (
-    <nav className="bg-slate-700 w-40 p-2 flex-shrink-0 text-white flex flex-col justify-between items-start">
-      <div className="w-full">
-        <h2 className="text-slate-400 text-xs mb-1">Track</h2>
-        <hr className="w-full border-slate-400 mb-2" />
+    <nav
+      className={classNames(
+        `bg-slate-700 w-full lg:w-40  flex-shrink-0 flex flex-col text-slate-200 shadow-2xl absolute top-0 h-full z-[100] 
+        lg:static lg:h-full lg:block overflow-hidden`,
+        {
+          hidden: !showNavbar,
+        },
+      )}
+    >
+      <div className="hidden lg:block">
+        <Logo />
+      </div>
 
-        <ul>
-          <li>
+      <div className="flex justify-end h-16 px-2 items-center lg:hidden">
+        <button
+          className={`
+      w-9 h-9 rounded-full  flex items-center  justify-center shrink-0 cursor-pointer
+       focus:bg-slate-600 hover:bg-slate-600 
+      `}
+          onClick={toggleNavbar}
+        >
+          <div className="flex flex-col items-center justify-center w-[24px] relative">
+            <div className="w-full h-[2px] bg-slate-200 rounded-sm absolute rotate-45" />
+            <div className="w-full h-[2px] bg-slate-200 rounded-sm absolute -rotate-45" />
+          </div>
+        </button>
+      </div>
+
+      <div className="flex-col h-full justify-center items-start flex   box-boder  px-10 text-center shrink-1 lg:text-left lg:justify-between lg:items-center lg:h-[calc(100%-4rem)] lg:pb-2 lg:mt-0 lg:px-4">
+        <ul className="text-4xl  font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
+          <li className="hover:underline">
             <Link href="/calendar">Calendar</Link>
           </li>
-          <li className="line-through">Analytics</li>
-        </ul>
-
-        <h2 className="text-slate-400 text-xs mt-4 mb-1">Manage</h2>
-        <hr className="w-full border-slate-400 mb-2" />
-        <ul>
-          <li>
+          <li className="hover:underline">
             <Link href="/projects">Projects</Link>
           </li>
         </ul>
-      </div>
 
-      <div>
-        <h2 className="text-slate-400 text-xs mb-1">Profile</h2>
-        <hr className="w-full border-slate-400 mb-2" />
-
-        <ul>
-          <li className="line-through">Account</li>
-          <li className="line-through">Sign out</li>
+        <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
+          <li className="line-through text-slate-400">Account</li>
+          <li className="line-through text-slate-400">Sign out</li>
         </ul>
       </div>
     </nav>

@@ -15,7 +15,7 @@ export const Login = () => {
 
   return (
     <div className="flex flex-col items-center mt-8">
-      <div className="w-[calc(100%-60px)] max-w-[600px] ">
+      <div className="w-[calc(100%-30px)] sm:w-[calc(100%-60px)] max-w-[600px] ">
         <div className="mb-4">
           <h1 className="text-2xl text-slate-700">Login</h1>
           <div className="text-base text-slate-500">

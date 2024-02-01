@@ -9,7 +9,7 @@ export const ButtonPrimary = (props: ButtonProps) => {
 
   return (
     <button
-      className="bg-purple-600 text-white rounded px-4 py-2 text-xs shadow-md mr-2"
+      className="bg-purple-500 text-white rounded px-4 py-2 text-xs shadow-md mr-2"
       type={type}
       onClick={onClick}
     >
@@ -23,7 +23,7 @@ export const ButtonSecondary = (props: ButtonProps) => {
 
   return (
     <button
-      className="bg-purple-200 text-purple-600 rounded px-4 py-2 text-xs shadow-md"
+      className="bg-purple-200 text-purple-500 rounded px-4 py-2 text-xs shadow-md"
       type={type}
       onClick={onClick}
     >
