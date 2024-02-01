@@ -11,7 +11,9 @@ export const Header = (props: Props) => {
   return (
     <header className="flex flex-col shrink-0 grow-0">
       <div className=" bg-slate-700 px-2 h-16 shadow-lg flex justify-between items-center lg:hidden">
-        <Logo />
+        <div>
+          <Logo />
+        </div>
 
         <MenuButton toggleNavbar={toggleNavbar} />
       </div>

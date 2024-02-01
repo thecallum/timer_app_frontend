@@ -1,12 +1,9 @@
 export const Logo = () => {
   return (
-    <div
-      className="w-32 bg-slate-600 rounded-md p-1 px-2 text-slate-300 justify-start items-center flex"
-      style={{ fontFamily: 'Nova Square' }}
-    >
-      <span>Time</span>
-      <span className="w-2 h-2 mx-2 rounded-full bg-purple-300 block"></span>
-      <span>Tracker</span>
+    <div className="justify-center items-center flex w-full h-14">
+      <div className="[font-family:Orbitron] bg-slate-300 rounded-md py-1 px-2 h-8 text-slate-500 shadow-xl">
+        Time Tracker
+      </div>
     </div>
   )
 }

@@ -11,64 +11,49 @@ export const Nav = (props: Props) => {
   const { showNavbar, toggleNavbar } = props
 
   return (
-    <>
-      {/* overlay */}
-      {/* <button
-        onClick={toggleNavbar}
-        className={classNames(
-          'bg-slate-900 opacity-50 z-[90] absolute top-0 left-0 w-full h-full lg:hidden',
-          {
-            hidden: !showNavbar,
-          },
-        )}
-      /> */}
-
-      <nav
-        className={classNames(
-          'bg-slate-700 w-full md:w-40 p-2 flex-shrink-0 text-white shadow-2xl absolute top-0 h-full z-[100] lg:static lg:h-auto lg:block',
-          {
-            hidden: !showNavbar,
-          },
-        )}
-      >
+    <nav
+      className={classNames(
+        `bg-slate-700 w-full lg:w-40  flex-shrink-0 flex flex-col text-slate-200 shadow-2xl absolute top-0 h-full z-[100] 
+        lg:static lg:h-full lg:block overflow-hidden`,
+        {
+          hidden: !showNavbar,
+        },
+      )}
+    >
+      <div className="hidden lg:block">
         <Logo />
+      </div>
 
-        <div>
-          <button onClick={toggleNavbar}>close</button>
-        </div>
-
-        <div className="flex-col justify-between items-start  flex">
-          <div className="w-full">
-            <h2 className="text-slate-400 text-xs mb-1">Track</h2>
-            <hr className="w-full border-slate-400 mb-2" />
-
-            <ul>
-              <li>
-                <Link href="/calendar">Calendar</Link>
-              </li>
-              <li className="line-through">Analytics</li>
-            </ul>
-
-            <h2 className="text-slate-400 text-xs mt-4 mb-1">Manage</h2>
-            <hr className="w-full border-slate-400 mb-2" />
-            <ul>
-              <li>
-                <Link href="/projects">Projects</Link>
-              </li>
-            </ul>
+      <div className="flex justify-end h-16 px-2 items-center lg:hidden">
+        <button
+          className={`
+      w-9 h-9 rounded-full  flex items-center  justify-center shrink-0 cursor-pointer
+       focus:bg-slate-600 hover:bg-slate-600 
+      `}
+          onClick={toggleNavbar}
+        >
+          <div className="flex flex-col items-center justify-center w-[24px] relative">
+            <div className="w-full h-[2px] bg-slate-200 rounded-sm absolute rotate-45" />
+            <div className="w-full h-[2px] bg-slate-200 rounded-sm absolute -rotate-45" />
           </div>
+        </button>
+      </div>
 
-          <div>
-            <h2 className="text-slate-400 text-xs mb-1">Profile</h2>
-            <hr className="w-full border-slate-400 mb-2" />
+      <div className="flex-col h-full justify-center items-start flex   box-boder  px-10 text-center shrink-1 lg:text-left lg:justify-between lg:items-center lg:h-[calc(100%-4rem)] lg:pb-2 lg:mt-0 lg:px-4">
+        <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
+          <li>
+            <Link href="/calendar">Calendar</Link>
+          </li>
+          <li>
+            <Link href="/projects">Projects</Link>
+          </li>
+        </ul>
 
-            <ul>
-              <li className="line-through">Account</li>
-              <li className="line-through">Sign out</li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </>
+        <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
+          <li className="line-through text-slate-400">Account</li>
+          <li className="line-through text-slate-400">Sign out</li>
+        </ul>
+      </div>
+    </nav>
   )
 }
