@@ -13,7 +13,7 @@ export const Nav = (props: Props) => {
   return (
     <>
       {/* overlay */}
-      <button
+      {/* <button
         onClick={toggleNavbar}
         className={classNames(
           'bg-slate-900 opacity-50 z-[90] absolute top-0 left-0 w-full h-full lg:hidden',
@@ -21,11 +21,11 @@ export const Nav = (props: Props) => {
             hidden: !showNavbar,
           },
         )}
-      />
+      /> */}
 
       <nav
         className={classNames(
-          'bg-slate-700  w-40 p-2 flex-shrink-0 text-white shadow-2xl absolute top-0 h-full z-[100] lg:static lg:h-auto lg:block',
+          'bg-slate-700 w-full md:w-40 p-2 flex-shrink-0 text-white shadow-2xl absolute top-0 h-full z-[100] lg:static lg:h-auto lg:block',
           {
             hidden: !showNavbar,
           },
