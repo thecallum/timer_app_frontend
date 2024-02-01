@@ -21,14 +21,7 @@ export const TimerControls = () => {
     description,
   } = useTimerContext()
 
-  const input = useRef<HTMLInputElement>(null)
-
   const handleStartTimer = () => {
-    if (description === null || description.trim() === '') {
-      input.current?.focus()
-      return
-    }
-
     startTimer()
   }
 
@@ -36,7 +29,7 @@ export const TimerControls = () => {
     stopTimer()
 
     const request: CalendarEventApiRequestObject = {
-      description,
+      description: description !== '' ? description : '(no description)', // to implement serverside
       startTime: dayjs().add(time * -1, 'second'),
       endTime: dayjs(),
       projectId: projectId,
@@ -57,7 +50,6 @@ export const TimerControls = () => {
       <div className="max-w-[1540px] items-center flex-row justify-end flex w-full ">
         <div className="flex-grow  mr-2 ">
           <input
-            ref={input}
             type="text"
             name="description"
             id="description"
@@ -74,20 +66,18 @@ export const TimerControls = () => {
         <div className="mr-2 shrink-0">
           <button
             onClick={isRunning ? handleStopTimer : handleStartTimer}
-            className={classNames(
-              'w-10 h-10 rounded-full  flex items-center justify-center shadow-md bg-purple-700 ',
-            )}
+            className={
+              'w-10 h-10 rounded-full flex items-center justify-center shadow-md bg-purple-700 '
+            }
           >
-            {isRunning ? (
-              <span className="w-4 h-4 bg-purple-200 shadow-sm rounded-[2px]"></span>
-            ) : (
-              <span
-                className="bg-purple-200 w-6 h-6 shadow-sm "
-                style={{
-                  clipPath: 'polygon(20% 10%, 100% 50%, 20% 90%)',
-                }}
-              ></span>
-            )}
+            <span
+              className={classNames(
+                ' shadow-sm rounded-[2px]',
+                isRunning
+                  ? `w-4 h-4 bg-purple-200 [clip-path:polygon(0%_0%,100%_0%,100%_100%,0%_100%)]`
+                  : `w-5 h-5 bg-purple-300 [clip-path:polygon(20%_10%,100%_50%,20%_90%)]`,
+              )}
+            />
           </button>
         </div>
 
