@@ -6,8 +6,10 @@ type Data = {
 }
 
 // enable running next build in pipeline without bind
-const API_KEY = process.env.TEST === 'true' ? '' : Config?.SERVICE_API_KEY
-const API_URL = process.env.TEST === 'true' ? '' : Config?.SERVICE_API_URL
+// @ts-ignore
+const API_KEY = process.env.TEST === 'true' ? '' : Config.SERVICE_API_KEY
+// @ts-ignore
+const API_URL = process.env.TEST === 'true' ? '' : Config.SERVICE_API_URL
 
 export default async function handler(
   req: NextApiRequest,
