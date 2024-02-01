@@ -1,6 +1,5 @@
 import { ProjectSelector } from '@/components/projectSelector'
 import { formatDuration } from '@/helpers/formatter'
-import { useRef } from 'react'
 import dayjs from 'dayjs'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { useTimerContext } from '../context/hooks/useTimerContext'
@@ -46,7 +45,7 @@ export const TimerControls = () => {
   }
 
   return (
-    <div className="bg-purple-500 flex h-14  w-full px-2 shadow-md  flex-col items-center justify-center">
+    <div className="bg-purple-500 flex h-14 w-full px-2 shadow-md flex-col items-center justify-center">
       <div className="max-w-[1540px] items-center flex-row justify-end flex w-full ">
         <div className="flex-grow  mr-2 ">
           <input

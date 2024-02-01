@@ -50,14 +50,16 @@ export default function App({ Component, pageProps }: AppProps) {
       <>
         <Header toggleNavbar={toggleNavbar} />
 
-        <div className="flex flex-row h-[calc(100vh-4rem)]">
+        <div className="flex flex-row h-[calc(100vh-4rem)] grow-0 lg:h-[100vh]">
           {isAuthorizedPage && (
             <Nav toggleNavbar={toggleNavbar} showNavbar={showNavbar} />
           )}
           <div className="flex-grow w-[calc(100%-10rem)]">
             {isAuthorizedPage && <TimerControls />}
 
+            <div className='h-[calc(100%-3.5rem)]'>
             <Component {...pageProps} />
+            </div>
           </div>
         </div>
 
