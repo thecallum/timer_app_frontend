@@ -4,26 +4,36 @@ orbs:
   node: circleci/node@5.0.2
 
 jobs:
-  test-and-deploy-development:
+  build-and-test:
     executor: node/default
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          name: 'Build and deploy'
+          name: 'Build and test'
+          command: |
+            yarn build
+  deploy-development:
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run:
+          name: 'Deploy to development'
           command: |
             yarn sst secrets set --stage development SERVICE_API_KEY $SERVICE_API_KEY_DEVELOPMENT
             yarn sst secrets set --stage development SERVICE_API_URL $SERVICE_API_URL_DEVELOPMENT      
             yarn deploy --stage development
-  test-and-deploy-production:
+  deploy-production:
     executor: node/default
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          name: 'Build and deploy'
+          name: 'Deploy to production'
           command: |
             yarn sst secrets set --stage production SERVICE_API_KEY $SERVICE_API_KEY_PRODUCTION
             yarn sst secrets set --stage production SERVICE_API_URL $SERVICE_API_URL_PRODUCTION      
@@ -31,13 +41,22 @@ jobs:
 workflows:
   development-pipeline:
     jobs:
-      - test-and-deploy-development:
+      - build-and-test
+      - deploy-development:
+          requires: 
+            - build-and-test
           filters:
             branches:
               only: main
   production-pipeline:
     jobs:
-      - test-and-deploy-production:
+      - build-and-test:
+          filters:
+            branches:
+              only: release
+      - deploy-production:
+          requires: 
+            - build-and-test
           filters:
             branches:
               only: release
