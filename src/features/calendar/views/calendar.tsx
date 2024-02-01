@@ -22,7 +22,7 @@ export const Calendar = () => {
         <ContainerFullWidth>
           <>
             <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
-            <div className="flex justify-between items-start">
+            <div className="flex flex-col justify-between items-start sm:flex-row">
               <CalendarWeekSummary />
 
               {isLoading && <p>Loading..</p>}

@@ -1,10 +1,10 @@
 import { ProjectSelector } from '@/components/projectSelector'
 import { formatDuration } from '@/helpers/formatter'
-import { useRef } from 'react'
 import dayjs from 'dayjs'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { useTimerContext } from '../context/hooks/useTimerContext'
 import { CalendarEventApiRequestObject } from '@/requests/types'
+import classNames from 'classnames'
 
 export const TimerControls = () => {
   const { addEvent } = useCalendarEventsContext()
@@ -20,14 +20,7 @@ export const TimerControls = () => {
     description,
   } = useTimerContext()
 
-  const input = useRef<HTMLInputElement>(null)
-
   const handleStartTimer = () => {
-    if (description === null || description.trim() === '') {
-      input.current?.focus()
-      return
-    }
-
     startTimer()
   }
 
@@ -35,7 +28,7 @@ export const TimerControls = () => {
     stopTimer()
 
     const request: CalendarEventApiRequestObject = {
-      description,
+      description: description !== '' ? description : '(no description)', // to implement serverside
       startTime: dayjs().add(time * -1, 'second'),
       endTime: dayjs(),
       projectId: projectId,
@@ -52,76 +45,58 @@ export const TimerControls = () => {
   }
 
   return (
-    <div className="flex flex-row items-center justify-end w-full ml-2">
-      <div className="flex-grow max-w-sm mr-2">
-        <input
-          ref={input}
-          type="text"
-          name="description"
-          id="description"
-          aria-label="Event description"
-          value={description}
-          onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setDescription(e.target.value)
-          }
-          className="text-white w-full outline-none border border-transparent focus:border-slate-400   bg-slate-600 rounded-md mr-2 px-2 h-9"
-          placeholder="(no description)"
-        />
-      </div>
+    <div className="bg-purple-500 flex h-14 w-full px-2 shadow-md flex-col items-center justify-center">
+      <div className="max-w-[1540px] items-center flex-row justify-end flex w-full ">
+        <div className="flex-grow  mr-2 ">
+          <input
+            type="text"
+            name="description"
+            id="description"
+            aria-label="Event description"
+            value={description}
+            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setDescription(e.target.value)
+            }
+            className="text-purple-100 placeholder-purple-200  w-full outline-none bg-transparent  focus:border-slate-400 mr-2 px-2 h-9"
+            placeholder="What are you working on?"
+          />
+        </div>
 
-      <div className="mr-2">
-        <ProjectSelector
-          containerRef={null}
-          projectId={projectId}
-          setProjectId={setProject}
-        />
-      </div>
+        <div className="mr-2 shrink-0">
+          <button
+            onClick={isRunning ? handleStopTimer : handleStartTimer}
+            className={
+              'w-10 h-10 rounded-full flex items-center justify-center shadow-md bg-purple-700 '
+            }
+          >
+            <span
+              className={classNames(
+                ' shadow-sm rounded-[2px]',
+                isRunning
+                  ? `w-4 h-4 bg-purple-200 [clip-path:polygon(0%_0%,100%_0%,100%_100%,0%_100%)]`
+                  : `w-5 h-5 bg-purple-300 [clip-path:polygon(20%_10%,100%_50%,20%_90%)]`,
+              )}
+            />
+          </button>
+        </div>
 
-      <div className="mr-4 text-slate-200 text-xl">
-        <span className="font-mono">{formatDuration(time)}</span>
-      </div>
-
-      {isRunning ? (
-        <button
-          onClick={handleStopTimer}
-          className="w-8 h-8 rounded-full bg-rose-200 flex items-center justify-center shadow-sm"
+        <div
+          className={classNames('mr-4  text-xl shrink-0 ', {
+            'text-purple-300': !isRunning,
+            'text-purple-100': isRunning,
+          })}
         >
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              className="text-rose-900"
-            >
-              <path
-                fill="currentColor"
-                d="M6 16V8q0-.825.588-1.413T8 6h8q.825 0 1.413.588T18 8v8q0 .825-.588 1.413T16 18H8q-.825 0-1.413-.588T6 16Z"
-              />
-            </svg>
-          </span>
-        </button>
-      ) : (
-        <button
-          onClick={handleStartTimer}
-          className="w-8 h-8 rounded-full bg-emerald-200 flex items-center justify-center shadow-sm "
-        >
-          <span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              className="text-emerald-900"
-            >
-              <path
-                fill="currentColor"
-                d="M8 17.175V6.825q0-.425.3-.713t.7-.287q.125 0 .263.037t.262.113l8.15 5.175q.225.15.338.375t.112.475q0 .25-.113.475t-.337.375l-8.15 5.175q-.125.075-.263.113T9 18.175q-.4 0-.7-.288t-.3-.712Z"
-              />
-            </svg>
-          </span>
-        </button>
-      )}
+          <span className="font-mono">{formatDuration(time)}</span>
+        </div>
+
+        <div className="shrink-0">
+          <ProjectSelector
+            containerRef={null}
+            projectId={projectId}
+            setProjectId={setProject}
+          />
+        </div>
+      </div>
     </div>
   )
 }

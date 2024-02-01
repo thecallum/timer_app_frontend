@@ -27,8 +27,16 @@ export const CalendarEvent = (props: Props) => {
     width,
   } = event
 
+  const MIN_HEIGHT = HEIGHT_ONE_MINUTE * 15
+
+  // temp fix
+  const computedHeight = Math.max(
+    MIN_HEIGHT,
+    durationInMinutes * HEIGHT_ONE_MINUTE,
+  )
+
   const eventStyles = {
-    height: `${durationInMinutes * HEIGHT_ONE_MINUTE}px`,
+    height: `${computedHeight}px`,
     top: `${startTimeInMinutes * HEIGHT_ONE_MINUTE}px`,
     left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${left}))`,
     width: `calc((100%/7)*${width})`,
@@ -47,8 +55,10 @@ export const CalendarEvent = (props: Props) => {
         )}
       >
         {({ ref, onClick }) => {
-          const projectColor =
-            getProjectById(projectId)?.projectColor ?? defaultProjectColor
+          const project = getProjectById(projectId)
+          const projectColor = project?.projectColor ?? defaultProjectColor
+
+          console.log({ projectId, project: getProjectById(projectId) })
 
           return (
             <div style={eventStyles} className="absolute p-[1px]">
@@ -64,7 +74,7 @@ export const CalendarEvent = (props: Props) => {
                 <CalendarEventView
                   description={description}
                   durationInSeconds={durationInSeconds}
-                  project={projectId === null ? null : projects[projectId]}
+                  project={project}
                 />
               </button>
             </div>
