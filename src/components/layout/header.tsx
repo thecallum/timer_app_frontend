@@ -10,7 +10,7 @@ export const Header = (props: Props) => {
 
   return (
     <header className="flex flex-col shrink-0 grow-0">
-      <div className=" bg-slate-700 px-2 h-16 shadow-lg flex justify-between items-center lg:hidden">
+      <div className=" bg-slate-700 px-2 h-14 shadow-lg flex justify-between items-center lg:hidden">
         <div>
           <Logo />
         </div>
