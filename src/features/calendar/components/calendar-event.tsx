@@ -14,7 +14,7 @@ const HEIGHT_ONE_MINUTE = (64 / 60) * 2
 
 export const CalendarEvent = (props: Props) => {
   const { event, containerRef } = props
-  const { projects, getProjectById } = useProjectsContext()
+  const { getProjectById } = useProjectsContext()
 
   const {
     description,
