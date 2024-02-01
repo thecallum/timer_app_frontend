@@ -40,11 +40,11 @@ export const Nav = (props: Props) => {
       </div>
 
       <div className="flex-col h-full justify-center items-start flex   box-boder  px-10 text-center shrink-1 lg:text-left lg:justify-between lg:items-center lg:h-[calc(100%-4rem)] lg:pb-2 lg:mt-0 lg:px-4">
-        <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
-          <li>
+        <ul className="text-4xl  font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
+          <li className='hover:underline'>
             <Link href="/calendar">Calendar</Link>
           </li>
-          <li>
+          <li className='hover:underline'>
             <Link href="/projects">Projects</Link>
           </li>
         </ul>
