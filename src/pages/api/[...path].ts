@@ -5,8 +5,13 @@ type Data = {
   name: string
 }
 
-const API_KEY = Config.SERVICE_API_KEY
-const API_URL = Config.SERVICE_API_URL
+// enable running next build in pipeline without bind
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const API_KEY = process.env.TEST === 'true' ? '' : Config.SERVICE_API_KEY
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+const API_URL = process.env.TEST === 'true' ? '' : Config.SERVICE_API_URL
 
 export default async function handler(
   req: NextApiRequest,
