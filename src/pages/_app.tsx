@@ -57,8 +57,8 @@ export default function App({ Component, pageProps }: AppProps) {
           <div className="flex-grow w-[calc(100%-10rem)]">
             {isAuthorizedPage && <TimerControls />}
 
-            <div className='h-[calc(100%-3.5rem)]'>
-            <Component {...pageProps} />
+            <div className="h-[calc(100%-3.5rem)]">
+              <Component {...pageProps} />
             </div>
           </div>
         </div>
