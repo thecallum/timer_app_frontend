@@ -13,6 +13,7 @@ jobs:
       - run:
           name: 'Build and test'
           command: |
+            export TEST=true
             yarn build
   deploy-development:
     executor: node/default

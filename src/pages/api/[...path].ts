@@ -5,8 +5,12 @@ type Data = {
   name: string
 }
 
-const API_KEY = Config.SERVICE_API_KEY
-const API_URL = Config.SERVICE_API_URL
+if (process.env.TEST === "true") {
+
+}
+
+const API_KEY = process.env.TEST === "true"? "": Config?.SERVICE_API_KEY
+const API_URL = process.env.TEST === "true"? "": Config?.SERVICE_API_URL
 
 export default async function handler(
   req: NextApiRequest,
