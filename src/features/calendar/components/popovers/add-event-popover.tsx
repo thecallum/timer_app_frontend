@@ -26,6 +26,7 @@ export const AddEventPopover = (props: Props) => {
   const [projectId, setProjectId] = useState<number | null>(null)
   const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const [startDate, setStartDate] = useState<string>(
     time.format('YYYY-MM-DDTHH:mm:ss'),
@@ -58,7 +59,7 @@ export const AddEventPopover = (props: Props) => {
     return errors
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const errors = validate()
@@ -75,9 +76,11 @@ export const AddEventPopover = (props: Props) => {
       projectId: projectId,
     }
 
-    addEvent(request).then(() => {
-      close()
-    })
+    setIsLoading(true)
+    await addEvent(request)
+    setIsLoading(false)
+
+    close()
   }
 
   return (
@@ -171,8 +174,16 @@ export const AddEventPopover = (props: Props) => {
 
         <PopoverControls>
           <>
-            <ButtonPrimary type="submit">Save</ButtonPrimary>
-            <ButtonSecondary onClick={close}>Close</ButtonSecondary>
+            <ButtonPrimary
+              type="submit"
+              isLoading={isLoading}
+              disabled={isLoading}
+            >
+              Save
+            </ButtonPrimary>
+            <ButtonSecondary onClick={close} disabled={isLoading}>
+              Close
+            </ButtonSecondary>
           </>
         </PopoverControls>
       </form>

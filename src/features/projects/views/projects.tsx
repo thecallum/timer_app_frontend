@@ -7,7 +7,7 @@ import { useProjectsContext } from '@/contexts/projectsContext'
 import { Project, defaultProjectColor } from '@/types/projects'
 
 export const Projects = () => {
-  const { projects, updateProject, deleteProject } = useProjectsContext()
+  const { projects } = useProjectsContext()
   const [editProjectModal, setEditProjectModal] = useState<Project | null>(null)
   const { openModal } = useCreateProjectModalContext()
 
@@ -17,16 +17,6 @@ export const Projects = () => {
 
   const closeEditModal = () => {
     setEditProjectModal(null)
-  }
-
-  const onEditProject = async (project: Project) => {
-    await updateProject(project)
-    closeEditModal()
-  }
-
-  const onDeleteProject = async (project: Project) => {
-    await deleteProject(project)
-    closeEditModal()
   }
 
   return (
@@ -108,9 +98,7 @@ export const Projects = () => {
         isOpen={!!editProjectModal}
         close={closeEditModal}
         key={editProjectModal?.id}
-        onSubmit={onEditProject}
         project={editProjectModal}
-        deleteProject={onDeleteProject}
       />
 
       <CreateProjectModalContainer />

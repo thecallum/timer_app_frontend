@@ -31,6 +31,7 @@ export const EditEventPopover = (props: Props) => {
 
   const { updateEvent, deleteEvent } = useCalendarEventsContext()
   const [description, setDescription] = useState(currentDescription)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
     projectId,
@@ -86,8 +87,9 @@ export const EditEventPopover = (props: Props) => {
     event.description = description
     event.projectId = selectedProjectId
 
+    setIsLoading(true)
     await updateEvent(event)
-    close()
+    setIsLoading(false)
   }
 
   return (
@@ -177,13 +179,22 @@ export const EditEventPopover = (props: Props) => {
                 </div>
               </div>
             </div>
+
           </>
         </PopoverLayout>
 
         <PopoverControls>
           <>
-            <ButtonPrimary type="submit">Save</ButtonPrimary>
-            <ButtonSecondary onClick={close}>Close</ButtonSecondary>
+            <ButtonPrimary
+              type="submit"
+              isLoading={isLoading}
+              disabled={isLoading}
+            >
+              Save
+            </ButtonPrimary>
+            <ButtonSecondary onClick={close} disabled={isLoading}>
+              Close
+            </ButtonSecondary>
           </>
         </PopoverControls>
       </form>

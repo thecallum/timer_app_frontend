@@ -5,5 +5,5 @@ interface Props {
 export const ModalControls = (props: Props) => {
   const { children } = props
 
-  return <div className="border-t border-slate-200 p-4">{children}</div>
+  return <div className="border-t border-slate-200 p-4 flex">{children}</div>
 }

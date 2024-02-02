@@ -17,14 +17,14 @@ export const CreateModalForm = (props: Props) => {
   const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const validate = () => {
     const errors: { [key: string]: string } = {}
 
     if (description === null || description.trim() === '') {
       errors['description'] = 'Description cannot be empty'
-    }
-
-    if (description.length > 30) {
+    } else if (description.length > 30) {
       errors['description'] = 'Description cannot exceed 30 characters'
     }
 
@@ -46,13 +46,15 @@ export const CreateModalForm = (props: Props) => {
       projectColor: modalColor,
     }
 
+    setIsLoading(true)
     await onSubmit(request)
+    setIsLoading(false)
   }
 
   const projectColor = modalColor ?? defaultProjectColor
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="">
       <ModalLayout title="Create project">
         <>
           <div className="flex justify-start items-center mt-4 mb-2">
@@ -77,13 +79,22 @@ export const CreateModalForm = (props: Props) => {
           {errors?.description && (
             <ErrorMessage message={errors?.description} />
           )}
+
         </>
       </ModalLayout>
 
       <ModalControls>
         <>
-          <ButtonPrimary type="submit">Create project</ButtonPrimary>
-          <ButtonSecondary onClick={close}>Close</ButtonSecondary>
+          <ButtonPrimary
+            type="submit"
+            disabled={isLoading}
+            isLoading={isLoading}
+          >
+            Create project
+          </ButtonPrimary>
+          <ButtonSecondary onClick={close} disabled={isLoading}>
+            Close
+          </ButtonSecondary>
         </>
       </ModalControls>
     </form>
