@@ -20,6 +20,9 @@ const getDisplayPositions = (
   )
 }
 
+const HEIGHT_ONE_MINUTE = (64 / 60) * 2
+const HEIGHT_FIVE_MINUTES = HEIGHT_ONE_MINUTE * 5
+
 export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
   // 1. Group events by day of week
   const eventsGroupedByDay = groupEventsByDayOfWeek(allEvents)
@@ -42,6 +45,12 @@ export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
 
     event.width = displayPosition.computedWidth
     event.left = displayPosition.computedLeft
+
+    event.top = event.startTimeInMinutes * HEIGHT_ONE_MINUTE
+    event.height = Math.max(
+      event.durationInMinutes * HEIGHT_ONE_MINUTE,
+      HEIGHT_FIVE_MINUTES,
+    )
 
     return event
   })
