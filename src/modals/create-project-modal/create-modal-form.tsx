@@ -74,7 +74,9 @@ export const CreateModalForm = (props: Props) => {
               error={errors?.description}
             />
           </div>
-          {errors?.description && <ErrorMessage message={errors?.description} />}
+          {errors?.description && (
+            <ErrorMessage message={errors?.description} />
+          )}
         </>
       </ModalLayout>
 

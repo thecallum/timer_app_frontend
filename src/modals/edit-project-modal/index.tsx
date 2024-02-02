@@ -29,7 +29,6 @@ export const EditProjectModal = (props: Props) => {
       errors['description'] = 'Description cannot exceed 30 characters'
     }
 
-
     return errors
   }
 

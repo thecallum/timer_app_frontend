@@ -48,10 +48,11 @@ export const CalendarEvent = (props: Props) => {
           const project = getProjectById(projectId)
           const projectColor = project?.projectColor ?? defaultProjectColor
 
-          console.log({ projectId, project: getProjectById(projectId) })
-
           return (
-            <div style={eventStyles} className="absolute p-[1px] overflow-hidden">
+            <div
+              style={eventStyles}
+              className="absolute p-[1px] overflow-hidden"
+            >
               <button
                 className={`w-full h-full cursor-pointer rounded-sm`}
                 // @ts-expect-error work around for react-popper library issue
