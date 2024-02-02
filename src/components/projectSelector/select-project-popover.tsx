@@ -20,7 +20,7 @@ export const SelectProjectPopover = (props: Props) => {
   const { openModal } = useCreateProjectModalContext()
 
   return (
-    <PopoverContainer width="w-48">
+    <PopoverContainer width="w-64">
       <>
         <PopoverLayout title="Project">
           <ul className="">
@@ -46,7 +46,7 @@ export const SelectProjectPopover = (props: Props) => {
                       style={{ background: projectColor.dark }}
                     ></div>
                     <div
-                      className="ml-2 text-sm leading-tight"
+                      className="ml-2 text-sm leading-tight w-full overflow-hidden text-ellipsis text-left"
                       style={{ color: projectColor.dark }}
                     >
                       {name}

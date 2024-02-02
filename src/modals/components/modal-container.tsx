@@ -15,7 +15,7 @@ export const ModalContainer = (props: Props) => {
       isOpen={isOpen}
       onRequestClose={close}
       contentLabel={contentLabel}
-      className="absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] w-[500px] max-w-[calc(100%-120px)] outline-none z-30 bg-white shadow-xl rounded-md   border border-slate-50"
+      className="absolute top-1/2 left-1/2 translate-y-[-50%] translate-x-[-50%] w-[calc(100%-10px)] sm:w-[calc(100%-60px)] max-w-[500px] outline-none z-30 bg-white shadow-xl rounded-md border border-slate-50"
     >
       {children}
     </Modal>

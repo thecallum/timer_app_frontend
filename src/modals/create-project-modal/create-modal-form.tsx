@@ -14,14 +14,18 @@ interface Props {
 export const CreateModalForm = (props: Props) => {
   const { modalColor, onSubmit, close } = props
 
-  const [name, setName] = useState('')
+  const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const validate = () => {
     const errors: { [key: string]: string } = {}
 
-    if (name === null || name.trim() === '') {
-      errors['name'] = 'Name cannot be empty'
+    if (description === null || description.trim() === '') {
+      errors['description'] = 'Description cannot be empty'
+    }
+
+    if (description.length > 30) {
+      errors['description'] = 'Description cannot exceed 30 characters'
     }
 
     return errors
@@ -38,7 +42,7 @@ export const CreateModalForm = (props: Props) => {
     }
 
     const request: ProjectApiRequestObject = {
-      description: name,
+      description: description,
       projectColor: modalColor,
     }
 
@@ -61,16 +65,16 @@ export const CreateModalForm = (props: Props) => {
 
             <TextInput
               autoFocus
-              value={name}
-              setValue={setName}
-              id="name"
-              name="name"
-              ariaLabel="Project name"
+              value={description}
+              setValue={setDescription}
+              id="description"
+              name="description"
+              ariaLabel="Project description"
               placeholder="Planning"
-              error={errors?.name}
+              error={errors?.description}
             />
           </div>
-          {errors?.name && <ErrorMessage message={errors?.name} />}
+          {errors?.description && <ErrorMessage message={errors?.description} />}
         </>
       </ModalLayout>
 

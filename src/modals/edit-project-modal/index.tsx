@@ -22,8 +22,13 @@ export const EditProjectModal = (props: Props) => {
     const errors: { [key: string]: string } = {}
 
     if (description === null || description.trim() === '') {
-      errors['description'] = 'Name cannot be empty'
+      errors['description'] = 'Description cannot be empty'
     }
+
+    if (description.length > 30) {
+      errors['description'] = 'Description cannot exceed 30 characters'
+    }
+
 
     return errors
   }

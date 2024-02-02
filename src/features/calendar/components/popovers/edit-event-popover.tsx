@@ -64,8 +64,8 @@ export const EditEventPopover = (props: Props) => {
       errors['end'] = 'End time must be after start'
     }
 
-    if (description === null || description.trim() === '') {
-      errors['description'] = 'Description cannot be empty'
+    if (description.length > 60) {
+      errors['description'] = 'Description must be less than 100 characters'
     }
 
     return errors
