@@ -5,6 +5,10 @@ import { calculateDisplayPositionsById } from './calculateDisplayPositionsById'
 import { findLargestColumnCount } from './findLargestColumnCount'
 import { ICalendarFiveMinuteSlot } from './types'
 import { CalendarEvent } from '@/types/calendarEvents'
+import {
+  HEIGHT_FIVE_MINUTES,
+  HEIGHT_ONE_MINUTE,
+} from '@/constants/calendarConstants'
 
 const getDisplayPositions = (
   events: CalendarEvent[],
@@ -19,9 +23,6 @@ const getDisplayPositions = (
     largestColumnCount,
   )
 }
-
-const HEIGHT_ONE_MINUTE = (64 / 60) * 2
-const HEIGHT_FIVE_MINUTES = HEIGHT_ONE_MINUTE * 5
 
 export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
   // 1. Group events by day of week
