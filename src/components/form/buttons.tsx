@@ -6,7 +6,7 @@ interface ButtonProps {
 }
 
 interface PrimaryButtonProps extends ButtonProps {
-  isLoading: boolean;
+  isLoading: boolean
 }
 
 export const ButtonPrimary = (props: PrimaryButtonProps) => {

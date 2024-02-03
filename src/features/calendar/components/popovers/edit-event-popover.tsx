@@ -179,7 +179,6 @@ export const EditEventPopover = (props: Props) => {
                 </div>
               </div>
             </div>
-
           </>
         </PopoverLayout>
 

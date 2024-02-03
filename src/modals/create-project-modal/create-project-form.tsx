@@ -1,5 +1,7 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
+import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
+import { useProjectsContext } from '@/contexts/projectsContext'
 import { ModalControls, ModalLayout } from '@/modals/components'
 import { ProjectApiRequestObject } from '@/requests/types'
 import { ProjectColor, defaultProjectColor } from '@/types/projects'
@@ -7,12 +9,16 @@ import { useState } from 'react'
 
 interface Props {
   modalColor: ProjectColor
-  onSubmit: (request: ProjectApiRequestObject) => Promise<void>
   close: () => void
 }
 
-export const CreateModalForm = (props: Props) => {
-  const { modalColor, onSubmit, close } = props
+export const CreateProjectForm = (props: Props) => {
+  const { modalColor, close } = props
+
+  const { onCreateProject,  } =
+  useCreateProjectModalContext()
+
+  const { requestError } = useProjectsContext()
 
   const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
@@ -47,8 +53,17 @@ export const CreateModalForm = (props: Props) => {
     }
 
     setIsLoading(true)
-    await onSubmit(request)
+    // await onSubmit(request)
+
+    await onCreateProject(request)
+
+    if (requestError === null) {
+      // setSuccessMessage("Project created successfully")
+    }
+  
     setIsLoading(false)
+
+
   }
 
   const projectColor = modalColor ?? defaultProjectColor
@@ -79,7 +94,6 @@ export const CreateModalForm = (props: Props) => {
           {errors?.description && (
             <ErrorMessage message={errors?.description} />
           )}
-
         </>
       </ModalLayout>
 
