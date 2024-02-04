@@ -42,10 +42,14 @@ export const Nav = (props: Props) => {
       <div className="flex-col h-full justify-center items-start flex   box-boder  px-10 text-center shrink-1 lg:text-left lg:justify-between lg:items-center lg:h-[calc(100%-4rem)] lg:pb-2 lg:mt-0 lg:px-4">
         <ul className="text-4xl  font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
           <li className="hover:underline">
-            <Link href="/calendar" onClick={closeNavbar}>Calendar</Link>
+            <Link href="/calendar" onClick={closeNavbar}>
+              Calendar
+            </Link>
           </li>
           <li className="hover:underline">
-            <Link href="/projects" onClick={closeNavbar}>Projects</Link>
+            <Link href="/projects" onClick={closeNavbar}>
+              Projects
+            </Link>
           </li>
         </ul>
 
