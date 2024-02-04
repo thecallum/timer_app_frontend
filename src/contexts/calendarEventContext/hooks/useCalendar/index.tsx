@@ -70,10 +70,6 @@ export const useCalendar = () => {
     fetchEventsForPage()
   }, [currentWeek])
 
-  useEffect(() => {
-    console.log('component update`')
-  }, [])
-
   const updateEvent = async (event: CalendarEvent) =>
     new Promise<boolean>((resolve) => {
       setIsLoading(true)
