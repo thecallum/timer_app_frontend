@@ -89,8 +89,10 @@ export const EditEventPopover = (props: Props) => {
     event.projectId = selectedProjectId
 
     setIsLoading(true)
-    updateEvent(event).then(() => {
+    updateEvent(event).then((success) => {
       setIsLoading(false)
+
+      if (success) close()
     })
   }
 
