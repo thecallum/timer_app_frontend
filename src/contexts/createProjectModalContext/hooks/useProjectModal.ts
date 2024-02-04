@@ -22,9 +22,13 @@ export const useProjectModal = () => {
   }
 
   const onCreateProject = async (request: ProjectApiRequestObject) => {
-    await addProject(request)
+    addProject(request)
+    .then(success => {
+      if (success) {
+        closeModal()
+      }
+    })
 
-    closeModal()
   }
 
   return {

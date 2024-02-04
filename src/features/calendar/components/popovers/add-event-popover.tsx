@@ -77,10 +77,16 @@ export const AddEventPopover = (props: Props) => {
     }
 
     setIsLoading(true)
-    await addEvent(request)
+    
+    addEvent(request)
+      .then(success => {
+          if (success) close()
+      })
+  .finally(() => {
     setIsLoading(false)
 
-    close()
+  })
+
   }
 
   return (

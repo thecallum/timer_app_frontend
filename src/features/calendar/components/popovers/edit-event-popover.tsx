@@ -54,8 +54,9 @@ export const EditEventPopover = (props: Props) => {
   )
 
   const onDeleteEvent = () => {
-    deleteEvent(event)
-    close()
+    deleteEvent(event).then((success) => {
+      if (success) close()
+    })
   }
 
   const validate = () => {
@@ -88,8 +89,10 @@ export const EditEventPopover = (props: Props) => {
     event.projectId = selectedProjectId
 
     setIsLoading(true)
-    await updateEvent(event)
-    setIsLoading(false)
+    updateEvent(event)
+    .then(() => {
+      setIsLoading(false)
+    })
   }
 
   return (
