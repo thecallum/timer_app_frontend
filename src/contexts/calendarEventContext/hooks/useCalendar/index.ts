@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 
 import dayjs from 'dayjs'
 import { calculateEventDisplayPositions } from './calculateEventDisplayPositions'
@@ -27,15 +27,12 @@ dayjs.extend(isSameOrAfter)
 export const useCalendar = () => {
   const [state, dispatch] = useReducer(reducer, {
     events: [],
-    isLoading: true,
   })
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const { daysOfWeek, next, previous, reset, currentWeek, showingCurrentWeek } =
     useCalendarControls()
-
-  const setIsLoading = (clearEvents = false) => {
-    dispatch({ type: 'set_loading', clearEvents })
-  }
 
   const fetchEventsForPage = async () => {
     setIsLoading(true)
@@ -56,7 +53,10 @@ export const useCalendar = () => {
         })
       })
       .catch((err) => {
-        console.error(err.message)
+        console.error(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -65,22 +65,28 @@ export const useCalendar = () => {
     fetchEventsForPage()
   }, [currentWeek])
 
+  useEffect(() => {
+    console.log('component update`')
+  }, [])
+
   const updateEvent = async (event: CalendarEvent) => {
     setIsLoading(true)
 
     const request = CalendarEventToRequestObject(event)
 
     updateEventRequest(event.id, request)
-      .then((apiResponse) => {
-        const event = CalendarEventRequestToDomain(apiResponse.data)
-
+      .then(() => {
         dispatch({
           type: 'update_event',
           event,
         })
       })
-      .catch((err) => console.error(err.message))
-      .finally(() => setIsLoading(false))
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const addEvent = async (request: CalendarEventApiRequestObject) => {
@@ -95,8 +101,12 @@ export const useCalendar = () => {
           event,
         })
       })
-      .catch((err) => console.error(err.message))
-      .finally(() => setIsLoading(false))
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const deleteEvent = async (event: CalendarEvent) => {
@@ -109,7 +119,9 @@ export const useCalendar = () => {
           event,
         })
       })
-      .catch((err) => console.error(err.message))
+      .catch((err) => {
+        console.error(err)
+      })
       .finally(() => {
         setIsLoading(false)
       })
@@ -118,7 +130,7 @@ export const useCalendar = () => {
   const events = calculateEventDisplayPositions(state.events)
 
   return {
-    isLoading: state.isLoading,
+    isLoading,
     updateEvent,
     addEvent,
     deleteEvent,

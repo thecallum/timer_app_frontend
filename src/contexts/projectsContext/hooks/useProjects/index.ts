@@ -37,12 +37,9 @@ export const useProjects = () => {
           ...x,
           [project.id]: project,
         }))
-
-        setRequestError(null)
       })
       .catch((err) => {
         console.error(err)
-        setRequestError(err.message)
       })
       .finally(() => {
         setIsLoading(false)
@@ -55,25 +52,20 @@ export const useProjects = () => {
     const request = ProjectToRequestObject(project)
 
     updateProjectRequest(project.id, request)
-      .then((apiResonse) => {
-        const project = ProjectRequestObjectToDomain(apiResonse.data)
+      .then((apiResponse) => {
+        const project = ProjectRequestObjectToDomain(apiResponse.data)
 
         setProjects((state) => ({
           ...state,
           [project.id]: project,
         }))
-
-        setRequestError(null)
       })
       .catch((err) => {
         console.error(err)
-        setRequestError(err.message)
       })
       .finally(() => {
         setIsLoading(false)
       })
-
-    setIsLoading(false)
   }
 
   const deleteProject = async (project: Project) => {
@@ -88,7 +80,7 @@ export const useProjects = () => {
         })
       })
       .catch((err) => {
-        console.error(err.message)
+        console.error(err)
       })
       .finally(() => {
         setIsLoading(false)
@@ -103,8 +95,8 @@ export const useProjects = () => {
     setIsLoading(true)
 
     fetchProjectsRequest()
-      .then((apiResonse) => {
-        const projects: Project[] = apiResonse.data.map(
+      .then((apiResponse) => {
+        const projects: Project[] = apiResponse.data.map(
           (x: ProjectApiResponseObject) => ProjectRequestObjectToDomain(x),
         )
 
@@ -118,7 +110,7 @@ export const useProjects = () => {
         setProjects(projectsById)
       })
       .catch((err) => {
-        console.error(err.message)
+        console.error(err)
       })
       .finally(() => {
         setIsLoading(false)
