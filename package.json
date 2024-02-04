@@ -31,6 +31,7 @@
     "react-dom": "^18",
     "react-modal": "^3.16.1",
     "react-popper": "^2.3.0",
+    "react-toastify": "^10.0.4",
     "sst": "^2.40.0",
     "uuid": "^9.0.1",
     "validator": "^13.11.0"

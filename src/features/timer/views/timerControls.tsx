@@ -34,14 +34,11 @@ export const TimerControls = () => {
       projectId: projectId,
     }
 
-    addEvent(request).then(() => {
-      reset()
+    addEvent(request).then((success) => {
+      if (success) {
+        close()
+      }
     })
-  }
-
-  const reset = () => {
-    setDescription('')
-    setProject(null)
   }
 
   return (

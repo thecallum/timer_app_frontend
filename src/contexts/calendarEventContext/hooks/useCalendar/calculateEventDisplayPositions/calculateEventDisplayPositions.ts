@@ -8,7 +8,7 @@ import { CalendarEvent } from '@/types/calendarEvents'
 import {
   HEIGHT_FIVE_MINUTES,
   HEIGHT_ONE_MINUTE,
-} from '@/constants/calendarConstants'
+} from '@/constants/calendar-constants'
 
 const getDisplayPositions = (
   events: CalendarEvent[],

@@ -13,8 +13,12 @@ export const fetchEvents = (startTime: Dayjs, endTime: Dayjs) => {
   })
 }
 
-export const addEventRequest = (request: CalendarEventApiRequestObject) => {
-  return axios.post(`/api/events`, request)
+export const addEventRequest = async (
+  request: CalendarEventApiRequestObject,
+) => {
+  // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
+  // await resolveAfter3Sec
+  return axios.post(`/api/events/`, request)
 }
 
 export const updateEventRequest = (

@@ -9,6 +9,9 @@ import { TimerContextProvider } from '@/features/timer/context/contextProvider'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import { ToastContainer } from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.css'
 import '@/styles/globals.css'
 
 const authPages = new Set(['/calendar', '/projects'])
@@ -65,6 +68,8 @@ export default function App({ Component, pageProps }: AppProps) {
             </div>
           </div>
         </div>
+
+        <ToastContainer />
       </>
     </ContextProviderWrappers>
   )
