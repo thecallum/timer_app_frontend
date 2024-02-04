@@ -9,7 +9,7 @@ import { TimerContextProvider } from '@/features/timer/context/contextProvider'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { Bounce, ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import '@/styles/globals.css'
