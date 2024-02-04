@@ -6,11 +6,10 @@ import { CreateProjectModalContextProvider } from '@/contexts/createProjectModal
 import { ProjectsContextProvider } from '@/contexts/projectsContext'
 import { TimerControls } from '@/features/timer'
 import { TimerContextProvider } from '@/features/timer/context/contextProvider'
-import { CreateProjectModalContainer } from '@/modals/create-project-modal-container'
-import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+import '@/styles/globals.css'
 
 const authPages = new Set(['/calendar', '/projects'])
 
@@ -62,7 +61,6 @@ export default function App({ Component, pageProps }: AppProps) {
             </div>
           </div>
         </div>
-
       </>
     </ContextProviderWrappers>
   )

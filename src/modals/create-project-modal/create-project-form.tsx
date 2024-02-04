@@ -1,7 +1,6 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
-import { useProjectsContext } from '@/contexts/projectsContext'
 import { ModalControls, ModalLayout } from '@/modals/components'
 import { ProjectApiRequestObject } from '@/requests/types'
 import { ProjectColor, defaultProjectColor } from '@/types/projects'
@@ -15,10 +14,7 @@ interface Props {
 export const CreateProjectForm = (props: Props) => {
   const { modalColor, close } = props
 
-  const { onCreateProject,  } =
-  useCreateProjectModalContext()
-
-  const { requestError } = useProjectsContext()
+  const { onCreateProject } = useCreateProjectModalContext()
 
   const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
@@ -53,17 +49,10 @@ export const CreateProjectForm = (props: Props) => {
     }
 
     setIsLoading(true)
-    // await onSubmit(request)
 
     await onCreateProject(request)
 
-    if (requestError === null) {
-      // setSuccessMessage("Project created successfully")
-    }
-  
     setIsLoading(false)
-
-
   }
 
   const projectColor = modalColor ?? defaultProjectColor

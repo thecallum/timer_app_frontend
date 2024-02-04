@@ -6,9 +6,7 @@ import { Color, ProjectColors } from '@/types/colors'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
 
 export const CreateProjectModal = () => {
-  const { modalIsOpen, closeModal } =
-    useCreateProjectModalContext()
-
+  const { modalIsOpen, closeModal } = useCreateProjectModalContext()
 
   const getRandomProjectColor = (): ProjectColor => {
     const enumValues: Color[] = Object.values(Color).filter(
@@ -29,14 +27,13 @@ export const CreateProjectModal = () => {
 
   return (
     <div className="z-20">
-
-    <ModalContainer
-      isOpen={modalIsOpen}
-      close={closeModal}
-      contentLabel="Create a project"
+      <ModalContainer
+        isOpen={modalIsOpen}
+        close={closeModal}
+        contentLabel="Create a project"
       >
-      <CreateProjectForm modalColor={modalColor} close={closeModal} />
-    </ModalContainer>
-      </div>
+        <CreateProjectForm modalColor={modalColor} close={closeModal} />
+      </ModalContainer>
+    </div>
   )
 }

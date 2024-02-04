@@ -23,7 +23,6 @@ export const useProjects = () => {
     [key: number]: Project
   }>({})
 
-  const [requestError, setRequestError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const addProject = async (request: ProjectApiRequestObject) => {
@@ -137,6 +136,5 @@ export const useProjects = () => {
     deleteProject,
     isLoading,
     getProjectById,
-    requestError,
   }
 }

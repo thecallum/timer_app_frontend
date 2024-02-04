@@ -1,6 +1,5 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
-import { SuccessMessage } from '@/components/form/success-message'
 import { useProjectsContext } from '@/contexts/projectsContext'
 import { ModalContainer, ModalControls, ModalLayout } from '@/modals/components'
 import { Project } from '@/types/projects'
@@ -15,29 +14,17 @@ interface Props {
 export const EditProjectModal = (props: Props) => {
   const { isOpen, project, close } = props
 
-  const { updateProject, deleteProject, requestError } = useProjectsContext()
+  const { updateProject, deleteProject } = useProjectsContext()
 
   const [description, setDescription] = useState(project?.description ?? '')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [isLoading, setIsLoading] = useState(false)
-  const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const onEditProject = async (project: Project) => {
-    setSuccessMessage(null)
+    setIsLoading(true)
+    await updateProject(project)
 
-    // add slight wait, otherwise you cant tell an additional
-    // request was made
-
-    setTimeout(async () => {
-      setIsLoading(true)
-      await updateProject(project)
-
-      if (requestError === null) {
-        setSuccessMessage('Project updated successfully')
-      }
-
-      setIsLoading(false)
-    }, 200)
+    setIsLoading(false)
   }
 
   const onDeleteProject = async () => {
@@ -94,14 +81,6 @@ export const EditProjectModal = (props: Props) => {
                 />
                 {errors?.description && (
                   <ErrorMessage message={errors?.description} />
-                )}
-
-                {requestError && <ErrorMessage message={requestError} />}
-
-                {successMessage && (
-                  <SuccessMessage>
-                    <>{successMessage}</>
-                  </SuccessMessage>
                 )}
               </>
             </ModalLayout>
