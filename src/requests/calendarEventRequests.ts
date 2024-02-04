@@ -17,11 +17,11 @@ export const addEventRequest = (request: CalendarEventApiRequestObject) => {
   return axios.post(`/api/events`, request)
 }
 
-export const updateEventRequest = async (
+export const updateEventRequest = (
   id: string,
   request: CalendarEventApiRequestObject,
 ) => {
-  return await axios.put(`/api/events/${id}`, request)
+  return axios.put(`/api/events/${id}`, request)
 }
 
 export const deleteEventRequest = (id: string) => {

@@ -28,7 +28,7 @@ export const TimerControls = () => {
     stopTimer()
 
     const request: CalendarEventApiRequestObject = {
-      description: description !== '' ? description : '(no description)', // to implement serverside
+      description: description,
       startTime: dayjs().add(time * -1, 'second'),
       endTime: dayjs(),
       projectId: projectId,

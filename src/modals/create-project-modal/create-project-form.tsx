@@ -1,5 +1,6 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
+import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
 import { ModalControls, ModalLayout } from '@/modals/components'
 import { ProjectApiRequestObject } from '@/requests/types'
 import { ProjectColor, defaultProjectColor } from '@/types/projects'
@@ -7,21 +8,26 @@ import { useState } from 'react'
 
 interface Props {
   modalColor: ProjectColor
-  onSubmit: (request: ProjectApiRequestObject) => Promise<void>
   close: () => void
 }
 
-export const CreateModalForm = (props: Props) => {
-  const { modalColor, onSubmit, close } = props
+export const CreateProjectForm = (props: Props) => {
+  const { modalColor, close } = props
 
-  const [name, setName] = useState('')
+  const { onCreateProject } = useCreateProjectModalContext()
+
+  const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const validate = () => {
     const errors: { [key: string]: string } = {}
 
-    if (name === null || name.trim() === '') {
-      errors['name'] = 'Name cannot be empty'
+    if (description === null || description.trim() === '') {
+      errors['description'] = 'Description cannot be empty'
+    } else if (description.length > 30) {
+      errors['description'] = 'Description cannot exceed 30 characters'
     }
 
     return errors
@@ -38,17 +44,21 @@ export const CreateModalForm = (props: Props) => {
     }
 
     const request: ProjectApiRequestObject = {
-      description: name,
+      description: description,
       projectColor: modalColor,
     }
 
-    await onSubmit(request)
+    setIsLoading(true)
+
+    await onCreateProject(request)
+
+    setIsLoading(false)
   }
 
   const projectColor = modalColor ?? defaultProjectColor
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="">
       <ModalLayout title="Create project">
         <>
           <div className="flex justify-start items-center mt-4 mb-2">
@@ -61,23 +71,33 @@ export const CreateModalForm = (props: Props) => {
 
             <TextInput
               autoFocus
-              value={name}
-              setValue={setName}
-              id="name"
-              name="name"
-              ariaLabel="Project name"
+              value={description}
+              setValue={setDescription}
+              id="description"
+              name="description"
+              ariaLabel="Project description"
               placeholder="Planning"
-              error={errors?.name}
+              error={errors?.description}
             />
           </div>
-          {errors?.name && <ErrorMessage message={errors?.name} />}
+          {errors?.description && (
+            <ErrorMessage message={errors?.description} />
+          )}
         </>
       </ModalLayout>
 
       <ModalControls>
         <>
-          <ButtonPrimary type="submit">Create project</ButtonPrimary>
-          <ButtonSecondary onClick={close}>Close</ButtonSecondary>
+          <ButtonPrimary
+            type="submit"
+            disabled={isLoading}
+            isLoading={isLoading}
+          >
+            Create project
+          </ButtonPrimary>
+          <ButtonSecondary onClick={close} disabled={isLoading}>
+            Close
+          </ButtonSecondary>
         </>
       </ModalControls>
     </form>

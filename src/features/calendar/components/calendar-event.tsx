@@ -10,8 +10,6 @@ interface Props {
   containerRef: HTMLDivElement | null
 }
 
-const HEIGHT_ONE_MINUTE = (64 / 60) * 2
-
 export const CalendarEvent = (props: Props) => {
   const { event, containerRef } = props
   const { getProjectById } = useProjectsContext()
@@ -21,23 +19,15 @@ export const CalendarEvent = (props: Props) => {
     projectId,
     dayOfWeek,
     durationInSeconds,
-    durationInMinutes,
-    startTimeInMinutes,
+    height,
+    top,
     left,
     width,
   } = event
 
-  const MIN_HEIGHT = HEIGHT_ONE_MINUTE * 15
-
-  // temp fix
-  const computedHeight = Math.max(
-    MIN_HEIGHT,
-    durationInMinutes * HEIGHT_ONE_MINUTE,
-  )
-
   const eventStyles = {
-    height: `${computedHeight}px`,
-    top: `${startTimeInMinutes * HEIGHT_ONE_MINUTE}px`,
+    height: `${height}px`,
+    top: `${top}px`,
     left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${left}))`,
     width: `calc((100%/7)*${width})`,
   }
@@ -59,7 +49,10 @@ export const CalendarEvent = (props: Props) => {
           const projectColor = project?.projectColor ?? defaultProjectColor
 
           return (
-            <div style={eventStyles} className="absolute p-[1px]">
+            <div
+              style={eventStyles}
+              className="absolute p-[1px] overflow-hidden"
+            >
               <button
                 className={`w-full h-full cursor-pointer rounded-sm`}
                 // @ts-expect-error work around for react-popper library issue

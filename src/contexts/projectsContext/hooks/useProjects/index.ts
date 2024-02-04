@@ -130,7 +130,6 @@ export const useProjects = () => {
   const activeProjects = projectList.filter((x) => x.isActive)
 
   return {
-    // projects,
     projects: activeProjects,
     addProject,
     updateProject,
