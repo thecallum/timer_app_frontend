@@ -1,3 +1,4 @@
+import axios, { AxiosError } from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Config } from 'sst/node/config'
 
@@ -19,41 +20,34 @@ export default async function handler(
 ) {
   const { url, method, body } = req
 
-  const headers = new Headers()
-  headers.append('Content-Type', 'application/json')
-  headers.append('x-api-key', API_KEY)
-
   const fullURL = `${API_URL}${url}`
 
   console.info(`Forwarding request to ${fullURL}`)
 
-  const options: RequestInit = {
-    method,
-    redirect: 'follow',
-    headers,
-  }
-
-  if (method === 'POST' || method === 'PUT') {
-    console.info(`${method} request, sending body`, body)
-    options.body = JSON.stringify(body)
-  }
-
   try {
-    const apiResponse = await fetch(fullURL, options)
+    const apiResponse = await axios.request({
+      url,
+      baseURL: API_URL,
+      method,
+      headers: {
+        'x-api-key': API_KEY,
+      },
+      data: body,
+    })
 
-    const { status } = apiResponse
-
-    if (status === 200) {
-      const content = await apiResponse.json()
-      res.status(200).json(content)
+    if (apiResponse.status === 200) {
+      res.status(200).json(apiResponse.data)
     } else {
-      const content = await apiResponse.json()
-
-      res.status(apiResponse.status).json(content)
+      res.status(apiResponse.status).end()
     }
-  } catch (err) {
-    console.error(err)
+  } catch (e) {
+    const error = e as AxiosError
 
-    res.status(500).end()
+    if (error.response === null || error.response === undefined) {
+      throw new Error(error.message)
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    res.status(error.response.status).json(error.response.data as any)
   }
 }
