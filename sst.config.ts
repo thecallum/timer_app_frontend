@@ -1,8 +1,8 @@
 import { SSTConfig } from 'sst'
-import { Bucket, Config, NextjsSite } from 'sst/constructs'
+import { Config, NextjsSite } from 'sst/constructs'
 
 export default {
-  config(_input) {
+  config() {
     return {
       name: 'timer-app-frontend',
       region: 'eu-west-2',
