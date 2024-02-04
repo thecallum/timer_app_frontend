@@ -35,11 +35,6 @@ export const Projects = () => {
 
           <Page>
             <>
-              <div className="mb-2">
-                <div className="bg-lime-200 text-lime-700 p-2 text-xl mb-4 border-l-8 border-lime-500 rounded-sm">
-                  Project updated successfully
-                </div>
-              </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full leading-normal table-auto">
                   <thead>
