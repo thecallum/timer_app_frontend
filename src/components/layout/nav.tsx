@@ -4,11 +4,11 @@ import { Logo } from './logo'
 
 interface Props {
   showNavbar: boolean
-  toggleNavbar: () => void
+  closeNavbar: () => void
 }
 
 export const Nav = (props: Props) => {
-  const { showNavbar, toggleNavbar } = props
+  const { showNavbar, closeNavbar } = props
 
   return (
     <nav
@@ -30,7 +30,7 @@ export const Nav = (props: Props) => {
       w-9 h-9 rounded-full  flex items-center  justify-center shrink-0 cursor-pointer
        focus:bg-slate-600 hover:bg-slate-600 
       `}
-          onClick={toggleNavbar}
+          onClick={closeNavbar}
         >
           <div className="flex flex-col items-center justify-center w-[24px] relative">
             <div className="w-full h-[2px] bg-slate-200 rounded-sm absolute rotate-45" />
@@ -42,10 +42,10 @@ export const Nav = (props: Props) => {
       <div className="flex-col h-full justify-center items-start flex   box-boder  px-10 text-center shrink-1 lg:text-left lg:justify-between lg:items-center lg:h-[calc(100%-4rem)] lg:pb-2 lg:mt-0 lg:px-4">
         <ul className="text-4xl  font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
           <li className="hover:underline">
-            <Link href="/calendar" onClick={toggleNavbar}>Calendar</Link>
+            <Link href="/calendar" onClick={closeNavbar}>Calendar</Link>
           </li>
           <li className="hover:underline">
-            <Link href="/projects" onClick={toggleNavbar}>Projects</Link>
+            <Link href="/projects" onClick={closeNavbar}>Projects</Link>
           </li>
         </ul>
 

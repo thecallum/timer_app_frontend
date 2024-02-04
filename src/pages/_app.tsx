@@ -44,6 +44,10 @@ export default function App({ Component, pageProps }: AppProps) {
     setShowNavbar((x) => !x)
   }
 
+  const closeNavbar = () => {
+    setShowNavbar(false)
+  }
+
   return (
     <ContextProviderWrappers>
       <>
@@ -51,7 +55,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
         <div className="flex flex-row h-[calc(100vh-4rem)] grow-0 lg:h-[100vh]">
           {isAuthorizedPage && (
-            <Nav toggleNavbar={toggleNavbar} showNavbar={showNavbar} />
+            <Nav closeNavbar={closeNavbar} showNavbar={showNavbar} />
           )}
           <div className="flex-grow w-[calc(100%-10rem)]">
             {isAuthorizedPage && <TimerControls />}
