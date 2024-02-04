@@ -58,8 +58,6 @@ export const CalendarEvent = (props: Props) => {
           const project = getProjectById(projectId)
           const projectColor = project?.projectColor ?? defaultProjectColor
 
-          console.log({ projectId, project: getProjectById(projectId) })
-
           return (
             <div style={eventStyles} className="absolute p-[1px]">
               <button

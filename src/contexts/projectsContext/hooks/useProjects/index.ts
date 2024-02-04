@@ -7,8 +7,14 @@ import {
 } from '../../../../requests/projectRequests'
 import { useRouter } from 'next/router'
 import { Project } from '@/types/projects'
-import { ProjectApiRequestObject } from '@/requests/types'
-import { ProjectToRequestObject } from '@/factories/factories'
+import {
+  ProjectApiRequestObject,
+  ProjectApiResponseObject,
+} from '@/requests/types'
+import {
+  ProjectRequestObjectToDomain,
+  ProjectToRequestObject,
+} from '@/factories/factories'
 
 export const useProjects = () => {
   const router = useRouter()
@@ -22,15 +28,21 @@ export const useProjects = () => {
   const addProject = async (request: ProjectApiRequestObject) => {
     setIsLoading(true)
 
-    createProjectRequest(request).then((project) => {
-      setProjects((x) => {
-        return {
+    createProjectRequest(request)
+      .then((apiResponse) => {
+        const project = ProjectRequestObjectToDomain(apiResponse.data)
+
+        setProjects((x) => ({
           ...x,
           [project.id]: project,
-        }
+        }))
       })
-      setIsLoading(false)
-    })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const updateProject = async (project: Project) => {
@@ -38,28 +50,40 @@ export const useProjects = () => {
 
     const request = ProjectToRequestObject(project)
 
-    updateProjectRequest(project.id, request).then((project) => {
-      setProjects((state) => {
-        return {
+    updateProjectRequest(project.id, request)
+      .then((apiResponse) => {
+        const project = ProjectRequestObjectToDomain(apiResponse.data)
+
+        setProjects((state) => ({
           ...state,
           [project.id]: project,
-        }
+        }))
       })
-      setIsLoading(false)
-    })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const deleteProject = async (project: Project) => {
     setIsLoading(true)
 
-    await deleteProjectRequest(project.id)
-
-    setProjects((state) => {
-      const newState = { ...state }
-      delete newState[project.id]
-      return newState
-    })
-    setIsLoading(false)
+    deleteProjectRequest(project.id)
+      .then(() => {
+        setProjects((state) => {
+          const newState = { ...state }
+          delete newState[project.id]
+          return newState
+        })
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   useEffect(() => {
@@ -69,17 +93,27 @@ export const useProjects = () => {
   const fetchProjects = async () => {
     setIsLoading(true)
 
-    const apiResponse = await fetchProjectsRequest()
+    fetchProjectsRequest()
+      .then((apiResponse) => {
+        const projects = apiResponse.data.map((x: ProjectApiResponseObject) =>
+          ProjectRequestObjectToDomain(x),
+        )
 
-    const projectsById = apiResponse.reduce(
-      (obj: { [key: number]: Project }, project) => (
-        (obj[project.id] = project), obj
-      ),
-      {},
-    )
+        const projectsById = projects.reduce(
+          (obj: { [key: number]: Project }, project) => (
+            (obj[project.id] = project), obj
+          ),
+          {},
+        )
 
-    setProjects(projectsById)
-    setIsLoading(false)
+        setProjects(projectsById)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const getProjectById = (projectId: number | null) => {

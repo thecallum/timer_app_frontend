@@ -1,57 +1,23 @@
-import { ProjectRequestObjectToDomain } from '@/factories/factories'
-import { ProjectApiRequestObject, ProjectApiResponseObject } from './types'
+import axios from 'axios'
+import { ProjectApiRequestObject } from './types'
 
-export const fetchProjectsRequest = async () => {
-  const result = await fetch(`/api/projects`, {
-    method: 'GET',
-    redirect: 'follow',
-  })
-
-  const response: ProjectApiResponseObject[] = await result.json()
-
-  return response.map((x) => ProjectRequestObjectToDomain(x))
+export const fetchProjectsRequest = () => {
+  return axios.get(`/api/projects`)
 }
 
 export const createProjectRequest = async (
   request: ProjectApiRequestObject,
 ) => {
-  const headers = new Headers()
-  headers.append('Content-Type', 'application/json')
-
-  const result = await fetch(`/api/projects`, {
-    method: 'POST',
-    redirect: 'follow',
-    headers,
-    body: JSON.stringify(request),
-  })
-
-  const response: ProjectApiResponseObject = await result.json()
-
-  return ProjectRequestObjectToDomain(response)
+  return await axios.post(`/api/projects`, request)
 }
 
-export const updateProjectRequest = async (
+export const updateProjectRequest = (
   id: number,
   request: ProjectApiRequestObject,
 ) => {
-  const headers = new Headers()
-  headers.append('Content-Type', 'application/json')
-
-  const result = await fetch(`/api/projects/${id}`, {
-    method: 'PUT',
-    redirect: 'follow',
-    headers,
-    body: JSON.stringify(request),
-  })
-
-  const response: ProjectApiResponseObject = await result.json()
-
-  return ProjectRequestObjectToDomain(response)
+  return axios.put(`/api/projects/${id}`, request)
 }
 
-export const deleteProjectRequest = async (id: number) => {
-  await fetch(`/api/projects/${id}`, {
-    method: 'DELETE',
-    redirect: 'follow',
-  })
+export const deleteProjectRequest = (id: number) => {
+  return axios.delete(`/api/projects/${id}`)
 }
