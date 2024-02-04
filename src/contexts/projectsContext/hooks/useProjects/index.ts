@@ -95,8 +95,8 @@ export const useProjects = () => {
 
     fetchProjectsRequest()
       .then((apiResponse) => {
-        const projects = apiResponse.data.map((x: ProjectApiResponseObject) =>
-          ProjectRequestObjectToDomain(x),
+        const projects: Project[] = apiResponse.data.map(
+          (x: ProjectApiResponseObject) => ProjectRequestObjectToDomain(x),
         )
 
         const projectsById = projects.reduce(
