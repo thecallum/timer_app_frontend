@@ -1,6 +1,7 @@
 import { CalendarEvent } from '@/types/calendarEvents'
 
 type Action =
+  | { type: 'clear_events' }
   | { type: 'add_loaded_events'; events: CalendarEvent[] }
   | { type: 'update_event'; event: CalendarEvent }
   | { type: 'add_event'; event: CalendarEvent }
@@ -12,6 +13,12 @@ type EventState = {
 
 export const reducer = (state: EventState, action: Action): EventState => {
   switch (action.type) {
+    case 'clear_events':
+      return {
+        ...state,
+        events: [],
+      }
+
     case 'add_loaded_events':
       return {
         ...state,
