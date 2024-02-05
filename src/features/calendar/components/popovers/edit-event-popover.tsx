@@ -32,6 +32,7 @@ export const EditEventPopover = (props: Props) => {
   const { updateEvent, deleteEvent } = useCalendarEventsContext()
   const [description, setDescription] = useState(currentDescription)
   const [isLoading, setIsLoading] = useState(false)
+  const [requestError, setRequestError] = useState<string | null>(null)
 
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
     projectId,
@@ -54,9 +55,11 @@ export const EditEventPopover = (props: Props) => {
   )
 
   const onDeleteEvent = () => {
+    setRequestError(null)
+
     deleteEvent(event).then((status) => {
       if (!status.success) {
-        // handle network error
+        setRequestError(status.errorMessage)
         return
       }
 
@@ -94,11 +97,13 @@ export const EditEventPopover = (props: Props) => {
     event.projectId = selectedProjectId
 
     setIsLoading(true)
+    setRequestError(null)
+
     updateEvent(event).then((status) => {
       setIsLoading(false)
 
       if (!status.success) {
-        // handle network error
+        setRequestError(status.errorMessage)
         return
       }
 
@@ -193,6 +198,8 @@ export const EditEventPopover = (props: Props) => {
                 </div>
               </div>
             </div>
+
+            {requestError !== null && <ErrorMessage message={requestError} />}
           </>
         </PopoverLayout>
 

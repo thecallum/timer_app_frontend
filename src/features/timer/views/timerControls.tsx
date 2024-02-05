@@ -35,10 +35,7 @@ export const TimerControls = () => {
     }
 
     addEvent(request).then((status) => {
-      if (!status.success) {
-        // handle network error
-        return
-      }
+      if (!status.success) return
 
       close()
     })
