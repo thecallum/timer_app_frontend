@@ -1,66 +1,33 @@
+import axios from 'axios'
 import { Dayjs } from 'dayjs'
-import {
-  CalendarEventApiRequestObject,
-  CalendarEventApiResponseObject,
-} from './types'
-import { CalendarEventRequestToDomain } from '@/factories/factories'
+import { CalendarEventApiRequestObject } from './types'
 
-export const fetchEvents = async (startTime: Dayjs, endTime: Dayjs) => {
-  const result = await fetch(
-    `/api/events?startTime=${startTime.format('MM/DD/YYYY')}&endTime=${endTime.format('MM/DD/YYYY')}`,
-    {
-      method: 'GET',
-      redirect: 'follow',
-    },
-  )
+export const fetchEvents = (startTime: Dayjs, endTime: Dayjs) => {
+  const params = {
+    startTime: startTime.format('MM/DD/YYYY'),
+    endTime: endTime.format('MM/DD/YYYY'),
+  }
 
-  const response: CalendarEventApiResponseObject[] = await result.json()
-
-  return response.map((x) => {
-    return CalendarEventRequestToDomain(x)
+  return axios.get(`/api/events`, {
+    params,
   })
 }
 
 export const addEventRequest = async (
   request: CalendarEventApiRequestObject,
 ) => {
-  const headers = new Headers()
-  headers.append('Content-Type', 'application/json')
-
-  const result = await fetch(`/api/events`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(request),
-    redirect: 'follow',
-  })
-
-  const response: CalendarEventApiResponseObject = await result.json()
-
-  return response
+  // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
+  // await resolveAfter3Sec
+  return axios.post(`/api/events/`, request)
 }
 
-export const updateEventRequest = async (
+export const updateEventRequest = (
   id: string,
   request: CalendarEventApiRequestObject,
 ) => {
-  const headers = new Headers()
-  headers.append('Content-Type', 'application/json')
-
-  const result = await fetch(`/api/events/${id}`, {
-    method: 'PUT',
-    headers,
-    body: JSON.stringify(request),
-    redirect: 'follow',
-  })
-
-  const response: CalendarEventApiResponseObject = await result.json()
-
-  return response
+  return axios.put(`/api/events/${id}`, request)
 }
 
-export const deleteEventRequest = async (id: string) => {
-  await fetch(`/api/events/${id}`, {
-    method: 'DELETE',
-    redirect: 'follow',
-  })
+export const deleteEventRequest = (id: string) => {
+  return axios.delete(`/api/events/${id}`)
 }

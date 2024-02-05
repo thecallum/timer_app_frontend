@@ -4,8 +4,7 @@ import { CalendarEventView } from '@/features/calendar/components/calendar-event
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { defaultProjectColor } from '@/types/projects'
 import { useProjectsContext } from '@/contexts/projectsContext'
-
-const HEIGHT_ONE_MINUTE = (64 / 60) * 2
+import { HEIGHT_ONE_MINUTE } from '@/constants/calendar-constants'
 
 export const CurrentEventHover = () => {
   const { showingCurrentWeek } = useCalendarEventsContext()

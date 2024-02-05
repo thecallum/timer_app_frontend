@@ -42,13 +42,13 @@ export const ProjectSelector = (props: Props) => {
             className="flex flex-row justify-start items-center py-2 px-4 rounded-md shadow-sm bg-purple-950"
           >
             <div
-              className="w-3 h-3 rounded-full block "
+              className="w-3 h-3 rounded-full block"
               style={{
                 background: projectColor.dark,
               }}
             ></div>
             <div
-              className="ml-1 text-sm leading-tight"
+              className="ml-1 text-sm leading-tight overflow-hidden text-ellipsis whitespace-nowrap max-w-24 md:max-w-64 lg:max-w-80"
               style={{
                 color: projectColor.light,
               }}

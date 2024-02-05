@@ -8,6 +8,8 @@ export const useProjectModal = () => {
   const { setModalAsOpen } = useClickOutContext()
 
   const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [requestError, setRequestError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     setModalAsOpen(modalIsOpen)
@@ -22,13 +24,27 @@ export const useProjectModal = () => {
   }
 
   const onCreateProject = async (request: ProjectApiRequestObject) => {
-    await addProject(request)
+    setIsLoading(true)
+    setRequestError(null)
 
-    closeModal()
+    addProject(request)
+      .then((status) => {
+        if (!status.success) {
+          setRequestError(status.errorMessage)
+          return
+        }
+
+        closeModal()
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return {
     modalIsOpen,
+    isLoading,
+    requestError,
     closeModal,
     openModal,
     onCreateProject,

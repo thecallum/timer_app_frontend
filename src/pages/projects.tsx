@@ -1,4 +1,5 @@
 import { Projects } from '@/features/projects'
+import { CreateProjectModal } from '@/modals/create-project-modal'
 import Head from 'next/head'
 
 export default function Index() {
@@ -8,6 +9,7 @@ export default function Index() {
         <title>Projects</title>
       </Head>
       <Projects />
+      <CreateProjectModal />
     </>
   )
 }

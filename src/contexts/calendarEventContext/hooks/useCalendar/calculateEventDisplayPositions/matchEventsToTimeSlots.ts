@@ -18,11 +18,18 @@ const findParallelEvents = (
   slot: ParallelEventSlot,
   events: CalendarEvent[],
 ) => {
-  return events.filter(
-    (x) =>
-      (slot.endTimeInSeconds >= x.startTimeInSeconds &&
-        slot.endTimeInSeconds < x.endTimeInSeconds) ||
-      (slot.startTimeInSeconds >= x.startTimeInSeconds &&
-        slot.startTimeInSeconds < x.endTimeInSeconds),
-  )
+  return events.filter((x) => {
+    const eventStartTime = x.startTimeInSeconds
+
+    const fiveMinutesAfterStartTime = eventStartTime + 300
+    // minimum height = 5 minutes
+    const eventEndTime = Math.max(x.endTimeInSeconds, fiveMinutesAfterStartTime)
+
+    return (
+      (slot.endTimeInSeconds >= eventStartTime &&
+        slot.endTimeInSeconds < eventEndTime) ||
+      (slot.startTimeInSeconds >= eventStartTime &&
+        slot.startTimeInSeconds < eventEndTime)
+    )
+  })
 }

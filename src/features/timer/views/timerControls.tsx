@@ -28,20 +28,17 @@ export const TimerControls = () => {
     stopTimer()
 
     const request: CalendarEventApiRequestObject = {
-      description: description !== '' ? description : '(no description)', // to implement serverside
+      description: description,
       startTime: dayjs().add(time * -1, 'second'),
       endTime: dayjs(),
       projectId: projectId,
     }
 
-    addEvent(request).then(() => {
-      reset()
-    })
-  }
+    addEvent(request).then((status) => {
+      if (!status.success) return
 
-  const reset = () => {
-    setDescription('')
-    setProject(null)
+      close()
+    })
   }
 
   return (

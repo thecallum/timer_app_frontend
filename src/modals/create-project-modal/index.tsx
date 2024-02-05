@@ -1,19 +1,12 @@
 import { ModalContainer } from '@/modals/components'
 import { useEffect, useState } from 'react'
-import { CreateModalForm } from './create-modal-form'
-import { Project, ProjectColor } from '@/types/projects'
+import { CreateProjectForm } from './create-project-form'
+import { ProjectColor } from '@/types/projects'
 import { Color, ProjectColors } from '@/types/colors'
-import { ProjectApiRequestObject } from '@/requests/types'
+import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
 
-interface Props {
-  isOpen: boolean
-  close: () => void
-  onCreate: (request: ProjectApiRequestObject) => Promise<void>
-  projects: Project[]
-}
-
-export const CreateProjectModal = (props: Props) => {
-  const { isOpen, close, onCreate } = props
+export const CreateProjectModal = () => {
+  const { modalIsOpen, closeModal } = useCreateProjectModalContext()
 
   const getRandomProjectColor = (): ProjectColor => {
     const enumValues: Color[] = Object.values(Color).filter(
@@ -21,7 +14,6 @@ export const CreateProjectModal = (props: Props) => {
     ) as Color[]
 
     const randomIndex = Math.floor(Math.random() * enumValues.length) // Generate a random index
-
     const randomEnumKey = enumValues[randomIndex] // Get the enum key
 
     return ProjectColors[randomEnumKey]
@@ -31,23 +23,17 @@ export const CreateProjectModal = (props: Props) => {
 
   useEffect(() => {
     setModalColor(getRandomProjectColor())
-  }, [isOpen])
-
-  const onSubmit = async (request: ProjectApiRequestObject) => {
-    await onCreate(request)
-  }
+  }, [modalIsOpen])
 
   return (
-    <ModalContainer
-      isOpen={isOpen}
-      close={close}
-      contentLabel="Create a project"
-    >
-      <CreateModalForm
-        modalColor={modalColor}
-        onSubmit={onSubmit}
-        close={close}
-      />
-    </ModalContainer>
+    <div className="z-20">
+      <ModalContainer
+        isOpen={modalIsOpen}
+        close={closeModal}
+        contentLabel="Create a project"
+      >
+        <CreateProjectForm modalColor={modalColor} close={closeModal} />
+      </ModalContainer>
+    </div>
   )
 }

@@ -31,6 +31,8 @@ export const EditEventPopover = (props: Props) => {
 
   const { updateEvent, deleteEvent } = useCalendarEventsContext()
   const [description, setDescription] = useState(currentDescription)
+  const [isLoading, setIsLoading] = useState(false)
+  const [requestError, setRequestError] = useState<string | null>(null)
 
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
     projectId,
@@ -53,8 +55,16 @@ export const EditEventPopover = (props: Props) => {
   )
 
   const onDeleteEvent = () => {
-    deleteEvent(event)
-    close()
+    setRequestError(null)
+
+    deleteEvent(event).then((status) => {
+      if (!status.success) {
+        setRequestError(status.errorMessage)
+        return
+      }
+
+      close()
+    })
   }
 
   const validate = () => {
@@ -64,8 +74,8 @@ export const EditEventPopover = (props: Props) => {
       errors['end'] = 'End time must be after start'
     }
 
-    if (description === null || description.trim() === '') {
-      errors['description'] = 'Description cannot be empty'
+    if (description.length > 60) {
+      errors['description'] = 'Description must be less than 100 characters'
     }
 
     return errors
@@ -86,8 +96,19 @@ export const EditEventPopover = (props: Props) => {
     event.description = description
     event.projectId = selectedProjectId
 
-    await updateEvent(event)
-    close()
+    setIsLoading(true)
+    setRequestError(null)
+
+    updateEvent(event).then((status) => {
+      setIsLoading(false)
+
+      if (!status.success) {
+        setRequestError(status.errorMessage)
+        return
+      }
+
+      close()
+    })
   }
 
   return (
@@ -177,13 +198,23 @@ export const EditEventPopover = (props: Props) => {
                 </div>
               </div>
             </div>
+
+            {requestError !== null && <ErrorMessage message={requestError} />}
           </>
         </PopoverLayout>
 
         <PopoverControls>
           <>
-            <ButtonPrimary type="submit">Save</ButtonPrimary>
-            <ButtonSecondary onClick={close}>Close</ButtonSecondary>
+            <ButtonPrimary
+              type="submit"
+              isLoading={isLoading}
+              disabled={isLoading}
+            >
+              Save
+            </ButtonPrimary>
+            <ButtonSecondary onClick={close} disabled={isLoading}>
+              Close
+            </ButtonSecondary>
           </>
         </PopoverControls>
       </form>
