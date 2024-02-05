@@ -14,12 +14,11 @@ interface Props {
 export const CreateProjectForm = (props: Props) => {
   const { modalColor, close } = props
 
-  const { onCreateProject } = useCreateProjectModalContext()
+  const { onCreateProject, isLoading, requestError } =
+    useCreateProjectModalContext()
 
   const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
-
-  const [isLoading, setIsLoading] = useState(false)
 
   const validate = () => {
     const errors: { [key: string]: string } = {}
@@ -48,11 +47,7 @@ export const CreateProjectForm = (props: Props) => {
       projectColor: modalColor,
     }
 
-    setIsLoading(true)
-
     await onCreateProject(request)
-
-    setIsLoading(false)
   }
 
   const projectColor = modalColor ?? defaultProjectColor
@@ -83,6 +78,8 @@ export const CreateProjectForm = (props: Props) => {
           {errors?.description && (
             <ErrorMessage message={errors?.description} />
           )}
+
+          {requestError !== null && <ErrorMessage message={requestError} />}
         </>
       </ModalLayout>
 
