@@ -17,6 +17,7 @@ import {
 } from '@/factories/factories'
 import { Bounce, toast } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
+import { UpdateStatus } from '@/types/updateStatus'
 
 export const useProjects = () => {
   const router = useRouter()
@@ -28,7 +29,7 @@ export const useProjects = () => {
   const [isLoading, setIsLoading] = useState(true)
 
   const addProject = async (request: ProjectApiRequestObject) =>
-    new Promise<boolean>((resolve) => {
+    new Promise<UpdateStatus>((resolve) => {
       setIsLoading(true)
 
       const notification = toast.loading('Adding project...')
@@ -50,7 +51,10 @@ export const useProjects = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(true)
+          resolve({
+            success: true,
+            errorMessage: null,
+          })
         })
         .catch((err) => {
           console.error(err)
@@ -70,7 +74,10 @@ export const useProjects = () => {
             transition: Bounce,
           })
 
-          resolve(false)
+          resolve({
+            success: false,
+            errorMessage: err.message,
+          })
         })
         .finally(() => {
           setIsLoading(false)
@@ -78,7 +85,7 @@ export const useProjects = () => {
     })
 
   const updateProject = async (project: Project) =>
-    new Promise<boolean>((resolve) => {
+    new Promise<UpdateStatus>((resolve) => {
       setIsLoading(true)
       const notification = toast.loading('Updating project...')
 
@@ -101,7 +108,10 @@ export const useProjects = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(true)
+          resolve({
+            success: true,
+            errorMessage: null,
+          })
         })
         .catch((err) => {
           console.error(err)
@@ -119,7 +129,10 @@ export const useProjects = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(false)
+          resolve({
+            success: false,
+            errorMessage: err.message,
+          })
         })
         .finally(() => {
           setIsLoading(false)
@@ -127,7 +140,7 @@ export const useProjects = () => {
     })
 
   const deleteProject = async (project: Project) =>
-    new Promise<boolean>((resolve) => {
+    new Promise<UpdateStatus>((resolve) => {
       setIsLoading(true)
       const notification = toast.loading('Deleting project...')
 
@@ -148,7 +161,10 @@ export const useProjects = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(true)
+          resolve({
+            success: true,
+            errorMessage: null,
+          })
         })
         .catch((err) => {
           console.error(err)
@@ -166,7 +182,10 @@ export const useProjects = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(false)
+          resolve({
+            success: false,
+            errorMessage: err.message,
+          })
         })
         .finally(() => {
           setIsLoading(false)
@@ -178,7 +197,7 @@ export const useProjects = () => {
   }, [router.pathname])
 
   const fetchProjects = async () =>
-    new Promise<boolean>((resolve) => {
+    new Promise<UpdateStatus>((resolve) => {
       setIsLoading(true)
 
       fetchProjectsRequest()
@@ -195,11 +214,17 @@ export const useProjects = () => {
           )
 
           setProjects(projectsById)
-          resolve(true)
+          resolve({
+            success: true,
+            errorMessage: null,
+          })
         })
         .catch((err) => {
           console.error(err)
-          resolve(false)
+          resolve({
+            success: false,
+            errorMessage: err.message,
+          })
         })
         .finally(() => {
           setIsLoading(false)

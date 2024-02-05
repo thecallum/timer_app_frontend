@@ -19,25 +19,40 @@ export const EditProjectModal = (props: Props) => {
   const [description, setDescription] = useState(project?.description ?? '')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [isLoading, setIsLoading] = useState(false)
+  const [requestError, setRequestError] = useState<string | null>(null)
 
   const onEditProject = async (project: Project) => {
     setIsLoading(true)
+    setRequestError(null)
 
-    updateProject(project).then(() => {
-      setIsLoading(false)
-    })
+    updateProject(project)
+      .then((status) => {
+        if (!status.success) {
+          setRequestError(status.errorMessage)
+          return
+        }
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const onDeleteProject = async () => {
     setIsLoading(true)
+    setRequestError(null)
 
-    deleteProject(project as Project).then((success) => {
-      setIsLoading(false)
+    deleteProject(project as Project)
+      .then((status) => {
+        if (!status.success) {
+          setRequestError(status.errorMessage)
+          return
+        }
 
-      if (success) {
         close()
-      }
-    })
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const validate = () => {
@@ -87,6 +102,10 @@ export const EditProjectModal = (props: Props) => {
                 />
                 {errors?.description && (
                   <ErrorMessage message={errors?.description} />
+                )}
+
+                {requestError !== null && (
+                  <ErrorMessage message={requestError} />
                 )}
               </>
             </ModalLayout>

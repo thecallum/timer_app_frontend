@@ -34,10 +34,10 @@ export const TimerControls = () => {
       projectId: projectId,
     }
 
-    addEvent(request).then((success) => {
-      if (success) {
-        close()
-      }
+    addEvent(request).then((status) => {
+      if (!status.success) return
+
+      close()
     })
   }
 

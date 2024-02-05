@@ -23,6 +23,7 @@ import {
 } from '@/requests/types'
 import { Bounce, toast } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
+import { UpdateStatus } from '../../../../types/updateStatus'
 
 dayjs.extend(isSameOrAfter)
 
@@ -37,7 +38,7 @@ export const useCalendar = () => {
     useCalendarControls()
 
   const fetchEventsForPage = async () =>
-    new Promise<boolean>((resolve) => {
+    new Promise<UpdateStatus>((resolve) => {
       setIsLoading(true)
 
       const startTime = daysOfWeek[0]
@@ -54,11 +55,17 @@ export const useCalendar = () => {
             type: 'add_loaded_events',
             events: calendarEvents,
           })
-          resolve(true)
+          resolve({
+            success: true,
+            errorMessage: null,
+          })
         })
         .catch((err) => {
           console.error(err)
-          resolve(false)
+          resolve({
+            success: false,
+            errorMessage: err.message,
+          })
         })
         .finally(() => {
           setIsLoading(false)
@@ -71,7 +78,7 @@ export const useCalendar = () => {
   }, [currentWeek])
 
   const updateEvent = async (event: CalendarEvent) =>
-    new Promise<boolean>((resolve) => {
+    new Promise<UpdateStatus>((resolve) => {
       setIsLoading(true)
 
       const request = CalendarEventToRequestObject(event)
@@ -93,7 +100,10 @@ export const useCalendar = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(true)
+          resolve({
+            success: true,
+            errorMessage: null,
+          })
         })
         .catch((err) => {
           console.error(err)
@@ -112,7 +122,10 @@ export const useCalendar = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(false)
+          resolve({
+            success: false,
+            errorMessage: err.message,
+          })
         })
         .finally(() => {
           setIsLoading(false)
@@ -120,7 +133,7 @@ export const useCalendar = () => {
     })
 
   const addEvent = async (request: CalendarEventApiRequestObject) =>
-    new Promise<boolean>((resolve) => {
+    new Promise<UpdateStatus>((resolve) => {
       setIsLoading(true)
 
       const notification = toast.loading('Adding event...')
@@ -143,7 +156,10 @@ export const useCalendar = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(true)
+          resolve({
+            success: true,
+            errorMessage: null,
+          })
         })
         .catch((err) => {
           console.error(err)
@@ -158,7 +174,10 @@ export const useCalendar = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(false)
+          resolve({
+            success: false,
+            errorMessage: err.message,
+          })
         })
         .finally(() => {
           setIsLoading(false)
@@ -166,7 +185,7 @@ export const useCalendar = () => {
     })
 
   const deleteEvent = async (event: CalendarEvent) =>
-    new Promise<boolean>((resolve) => {
+    new Promise<UpdateStatus>((resolve) => {
       setIsLoading(true)
 
       const notification = toast.loading('Deleting event...')
@@ -186,7 +205,10 @@ export const useCalendar = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(true)
+          resolve({
+            success: true,
+            errorMessage: null,
+          })
         })
         .catch((err) => {
           console.error(err)
@@ -204,7 +226,10 @@ export const useCalendar = () => {
             draggable: true,
             transition: Bounce,
           })
-          resolve(false)
+          resolve({
+            success: false,
+            errorMessage: err.message,
+          })
         })
         .finally(() => {
           setIsLoading(false)

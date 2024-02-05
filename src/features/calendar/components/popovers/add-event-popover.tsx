@@ -27,6 +27,7 @@ export const AddEventPopover = (props: Props) => {
   const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [isLoading, setIsLoading] = useState(false)
+  const [requestError, setRequestError] = useState<string | null>(null)
 
   const [startDate, setStartDate] = useState<string>(
     time.format('YYYY-MM-DDTHH:mm:ss'),
@@ -77,10 +78,16 @@ export const AddEventPopover = (props: Props) => {
     }
 
     setIsLoading(true)
+    setRequestError(null)
 
     addEvent(request)
-      .then((success) => {
-        if (success) close()
+      .then((status) => {
+        if (!status.success) {
+          setRequestError(status.errorMessage)
+          return
+        }
+
+        close()
       })
       .finally(() => {
         setIsLoading(false)
@@ -173,6 +180,8 @@ export const AddEventPopover = (props: Props) => {
                 </div>
               </div>
             </div>
+
+            {requestError !== null && <ErrorMessage message={requestError} />}
           </>
         </PopoverLayout>
 
