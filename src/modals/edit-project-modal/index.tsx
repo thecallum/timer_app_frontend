@@ -23,21 +23,33 @@ export const EditProjectModal = (props: Props) => {
   const onEditProject = async (project: Project) => {
     setIsLoading(true)
 
-    updateProject(project).then(() => {
-      setIsLoading(false)
-    })
+    updateProject(project)
+      .then((status) => {
+        if (!status.success) {
+          // handle network error
+          return
+        }
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const onDeleteProject = async () => {
     setIsLoading(true)
 
-    deleteProject(project as Project).then((success) => {
-      setIsLoading(false)
+    deleteProject(project as Project)
+      .then((status) => {
+        if (!status.success) {
+          // handle network error
+          return
+        }
 
-      if (success) {
         close()
-      }
-    })
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   const validate = () => {

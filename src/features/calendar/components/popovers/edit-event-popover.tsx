@@ -54,8 +54,13 @@ export const EditEventPopover = (props: Props) => {
   )
 
   const onDeleteEvent = () => {
-    deleteEvent(event).then((success) => {
-      if (success) close()
+    deleteEvent(event).then((status) => {
+      if (!status.success) {
+        // handle network error
+        return
+      }
+
+      close()
     })
   }
 
@@ -89,10 +94,15 @@ export const EditEventPopover = (props: Props) => {
     event.projectId = selectedProjectId
 
     setIsLoading(true)
-    updateEvent(event).then((success) => {
+    updateEvent(event).then((status) => {
       setIsLoading(false)
 
-      if (success) close()
+      if (!status.success) {
+        // handle network error
+        return
+      }
+
+      close()
     })
   }
 

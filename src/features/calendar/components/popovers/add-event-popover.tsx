@@ -79,8 +79,13 @@ export const AddEventPopover = (props: Props) => {
     setIsLoading(true)
 
     addEvent(request)
-      .then((success) => {
-        if (success) close()
+      .then((status) => {
+        if (!status.success) {
+          // handle network error
+          return
+        }
+
+        close()
       })
       .finally(() => {
         setIsLoading(false)
