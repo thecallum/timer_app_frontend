@@ -1,5 +1,4 @@
-
 export type UpdateStatus = {
-    success: boolean;
-    errorMessage: string | null;
-};
+  success: boolean
+  errorMessage: string | null
+}
