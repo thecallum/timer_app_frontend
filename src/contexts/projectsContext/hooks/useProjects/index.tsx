@@ -18,7 +18,7 @@ import {
 import { Bounce, toast } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
 import { UpdateStatus } from '@/types/updateStatus'
-import { useIsAuthorized } from '@/auth/useIsOpenRoute'
+import { useIsAuthorized } from '@/auth/useIsAuthorized'
 
 export const useProjects = () => {
   const router = useRouter()
