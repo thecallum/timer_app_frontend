@@ -7,9 +7,6 @@ import { COOKIE_NAME } from '@/constants'
 // enable running next build in pipeline without bind
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const API_KEY = process.env.TEST === 'true' ? '' : Config.SERVICE_API_KEY
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 const API_URL = process.env.TEST === 'true' ? '' : Config.SERVICE_API_URL
 
 export default async function handler(
@@ -29,7 +26,6 @@ export default async function handler(
       baseURL: API_URL,
       method,
       headers: {
-        // 'x-api-key': API_KEY,
         Authorization: `Bearer ${accessToken}`,
       },
       data: body,
