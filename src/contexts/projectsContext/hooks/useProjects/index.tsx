@@ -23,8 +23,7 @@ import { useIsAuthorized } from '@/auth/useIsOpenRoute'
 export const useProjects = () => {
   const router = useRouter()
 
-
-  const isAuthorized = useIsAuthorized();
+  const isAuthorized = useIsAuthorized()
 
   const [projects, setProjects] = useState<{
     [key: number]: Project
@@ -197,7 +196,6 @@ export const useProjects = () => {
     })
 
   useEffect(() => {
-
     if (!isAuthorized) return
 
     fetchProjects()

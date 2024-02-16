@@ -10,7 +10,6 @@ export const useIsOpenRoute = () => {
   return OPEN_ROUTES.has(router.pathname)
 }
 
-
 export const useIsAuthorized = () => {
   // is actually just checking for cookie
   // if the cookie is invalid, middleware should redirect user to login page
