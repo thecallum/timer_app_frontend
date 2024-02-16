@@ -22,6 +22,11 @@ export default {
               : 'timer-app-development.thecallum.com',
           hostedZone: 'thecallum.com',
         },
+        environment: {
+          NEXT_PUBLIC_AUTH_DOMAIN: process.env.AUTH_DOMAIN ?? '',
+          NEXT_PUBLIC_CLIENT_ID: process.env.CLIENT_ID ?? '',
+          NEXT_PUBLIC_BASE_URL: process.env.BASE_URL ?? '',
+        },
       })
 
       stack.addOutputs({

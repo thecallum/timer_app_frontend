@@ -26,7 +26,7 @@ jobs:
           command: |
             yarn sst secrets set --stage development SERVICE_API_URL $SERVICE_API_URL_DEVELOPMENT      
             yarn sst secrets set --stage development CLIENT_SECRET $CLIENT_SECRET_DEVELOPMENT      
-            yarn deploy --stage development
+            AUTH_DOMAIN=https://thecallum.com yarn deploy --stage development
   deploy-production:
     executor: node/default
     steps:
