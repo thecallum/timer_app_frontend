@@ -26,6 +26,7 @@ jobs:
           command: |
             yarn sst secrets set --stage development SERVICE_API_KEY $SERVICE_API_KEY_DEVELOPMENT
             yarn sst secrets set --stage development SERVICE_API_URL $SERVICE_API_URL_DEVELOPMENT      
+            yarn sst secrets set --stage development CLIENT_SECRET $CLIENT_SECRET_DEVELOPMENT      
             yarn deploy --stage development
   deploy-production:
     executor: node/default
@@ -37,7 +38,8 @@ jobs:
           name: 'Deploy to production'
           command: |
             yarn sst secrets set --stage production SERVICE_API_KEY $SERVICE_API_KEY_PRODUCTION
-            yarn sst secrets set --stage production SERVICE_API_URL $SERVICE_API_URL_PRODUCTION      
+            yarn sst secrets set --stage production SERVICE_API_URL $SERVICE_API_URL_PRODUCTION 
+            yarn sst secrets set --stage development CLIENT_SECRET $CLIENT_SECRET_PRODUCTION         
             yarn deploy --stage production
 workflows:
   development-pipeline:

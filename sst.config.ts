@@ -12,9 +12,10 @@ export default {
     app.stack(function Site({ stack }) {
       const SERVICE_API_KEY = new Config.Secret(stack, 'SERVICE_API_KEY')
       const SERVICE_API_URL = new Config.Secret(stack, 'SERVICE_API_URL')
+      const CLIENT_SECRET = new Config.Secret(stack, 'CLIENT_SECRET')
 
       const site = new NextjsSite(stack, 'site', {
-        bind: [SERVICE_API_KEY, SERVICE_API_URL],
+        bind: [SERVICE_API_KEY, SERVICE_API_URL, CLIENT_SECRET],
         customDomain: {
           domainName:
             stack.stage === 'production'

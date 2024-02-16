@@ -1,10 +1,9 @@
 import axios, { AxiosError } from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Config } from 'sst/node/config'
+import * as cookie from 'cookie'
+import { COOKIE_NAME } from '@/constants'
 
-type Data = {
-  name: string
-}
 
 // enable running next build in pipeline without bind
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -16,13 +15,14 @@ const API_URL = process.env.TEST === 'true' ? '' : Config.SERVICE_API_URL
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>,
+  res: NextApiResponse,
 ) {
-  const { url, method, body } = req
+  const { url, method, body, headers } = req
 
-  const fullURL = `${API_URL}${url}`
+  console.info(`Forwarding request to ${url}`)
 
-  console.info(`Forwarding request to ${fullURL}`)
+  const parsedCookies = cookie.parse(headers.cookie as string)
+  const accessToken = parsedCookies[COOKIE_NAME]
 
   try {
     const apiResponse = await axios.request({
@@ -30,7 +30,8 @@ export default async function handler(
       baseURL: API_URL,
       method,
       headers: {
-        'x-api-key': API_KEY,
+        // 'x-api-key': API_KEY,
+        Authorization: `Bearer ${accessToken}`,
       },
       data: body,
     })
