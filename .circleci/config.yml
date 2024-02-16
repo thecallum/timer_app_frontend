@@ -24,9 +24,9 @@ jobs:
       - run:
           name: 'Deploy to development'
           command: |
-            yarn sst secrets set --stage development SERVICE_API_KEY $SERVICE_API_KEY_DEVELOPMENT
             yarn sst secrets set --stage development SERVICE_API_URL $SERVICE_API_URL_DEVELOPMENT      
-            yarn deploy --stage development
+            yarn sst secrets set --stage development CLIENT_SECRET $CLIENT_SECRET_DEVELOPMENT      
+            AUTH_DOMAIN=$AUTH_DOMAIN_DEVELOPMENT CLIENT_ID=$CLIENT_ID_DEVELOPMENT BASE_URL=$BASE_URL_DEVELOPMENT AUDIENCE=$AUDIENCE_DEVELOPMENT REDIRECT_URI=$REDIRECT_URI_DEVELOPMENT yarn deploy --stage development
   deploy-production:
     executor: node/default
     steps:
@@ -36,9 +36,9 @@ jobs:
       - run:
           name: 'Deploy to production'
           command: |
-            yarn sst secrets set --stage production SERVICE_API_KEY $SERVICE_API_KEY_PRODUCTION
-            yarn sst secrets set --stage production SERVICE_API_URL $SERVICE_API_URL_PRODUCTION      
-            yarn deploy --stage production
+            yarn sst secrets set --stage production SERVICE_API_URL $SERVICE_API_URL_PRODUCTION 
+            yarn sst secrets set --stage production CLIENT_SECRET $CLIENT_SECRET_PRODUCTION         
+            AUTH_DOMAIN=$AUTH_DOMAIN_PRODUCTION CLIENT_ID=$CLIENT_ID_PRODUCTION BASE_URL=$BASE_URL_PRODUCTION AUDIENCE=$AUDIENCE_PRODUCTION REDIRECT_URI=$REDIRECT_URI_PRODUCTION yarn deploy --stage production
 workflows:
   development-pipeline:
     jobs:
