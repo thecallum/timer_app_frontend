@@ -1,1 +1,1 @@
-export const COOKIE_NAME = "AccessToken"
+export const COOKIE_NAME = 'AccessToken'

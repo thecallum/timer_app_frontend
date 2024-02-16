@@ -4,7 +4,6 @@ import { Config } from 'sst/node/config'
 import * as cookie from 'cookie'
 import { COOKIE_NAME } from '@/constants'
 
-
 // enable running next build in pipeline without bind
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore

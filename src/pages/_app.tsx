@@ -11,18 +11,18 @@ import '@/styles/globals.css'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-      <ProjectsContextProvider>
-        <CalendarContextProvider>
-          <ClickOutContextProvider>
-            <TimerContextProvider>
-              <CreateProjectModalContextProvider>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
-              </CreateProjectModalContextProvider>
-            </TimerContextProvider>
-          </ClickOutContextProvider>
-        </CalendarContextProvider>
-      </ProjectsContextProvider>
+    <ProjectsContextProvider>
+      <CalendarContextProvider>
+        <ClickOutContextProvider>
+          <TimerContextProvider>
+            <CreateProjectModalContextProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </CreateProjectModalContextProvider>
+          </TimerContextProvider>
+        </ClickOutContextProvider>
+      </CalendarContextProvider>
+    </ProjectsContextProvider>
   )
 }
