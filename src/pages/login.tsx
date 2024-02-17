@@ -1,4 +1,4 @@
-import { LoginLink } from '@/components/layout/auth/login-link'
+import { LoginButton } from "@/components/layout/auth/LoginButton"
 import { Page } from '@/components/layout/page'
 import Head from 'next/head'
 
@@ -20,9 +20,7 @@ export default function Index() {
                 </div>
               </div>
 
-              <button className="bg-purple-500 text-white px-6 py-2">
-                <LoginLink />
-              </button>
+              <LoginButton />
             </div>
           </Page>
         </div>
