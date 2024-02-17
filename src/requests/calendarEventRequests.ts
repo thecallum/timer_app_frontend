@@ -1,6 +1,7 @@
-import axios from 'axios'
+import { AxiosRequestConfig } from 'axios'
 import { Dayjs } from 'dayjs'
 import { CalendarEventApiRequestObject } from './types'
+import { frontendRequest } from './frontendRequest'
 
 export const fetchEvents = (startTime: Dayjs, endTime: Dayjs) => {
   const params = {
@@ -8,26 +9,45 @@ export const fetchEvents = (startTime: Dayjs, endTime: Dayjs) => {
     endTime: endTime.format('MM/DD/YYYY'),
   }
 
-  return axios.get(`/api/events`, {
+  const config: AxiosRequestConfig = {
+    method: 'get',
+    url: `/api/events`,
     params,
-  })
+  }
+
+  return frontendRequest(config)
 }
 
 export const addEventRequest = async (
   request: CalendarEventApiRequestObject,
 ) => {
-  // const resolveAfter3Sec = new Promise(resolve => setTimeout(resolve, 3000));
-  // await resolveAfter3Sec
-  return axios.post(`/api/events/`, request)
+  const config: AxiosRequestConfig = {
+    method: 'post',
+    url: `/api/events/`,
+    data: request,
+  }
+
+  return frontendRequest(config)
 }
 
 export const updateEventRequest = (
   id: string,
   request: CalendarEventApiRequestObject,
 ) => {
-  return axios.put(`/api/events/${id}`, request)
+  const config: AxiosRequestConfig = {
+    method: 'put',
+    url: `/api/events/${id}`,
+    data: request,
+  }
+
+  return frontendRequest(config)
 }
 
 export const deleteEventRequest = (id: string) => {
-  return axios.delete(`/api/events/${id}`)
+  const config: AxiosRequestConfig = {
+    method: 'delete',
+    url: `/api/events/${id}`,
+  }
+
+  return frontendRequest(config)
 }

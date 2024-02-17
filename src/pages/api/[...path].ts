@@ -17,8 +17,22 @@ export default async function handler(
 
   console.info(`Forwarding request to ${url}`)
 
-  const parsedCookies = cookie.parse(headers.cookie as string)
-  const accessToken = parsedCookies[COOKIE_NAME]
+  let accessToken: string
+
+  try {
+    const parsedCookies = cookie.parse(headers.cookie as string)
+    accessToken = parsedCookies[COOKIE_NAME]
+  } catch (error) {
+    res.setHeader('Set-Cookie', [
+      cookie.serialize(COOKIE_NAME, '', {
+        maxAge: -1,
+        path: '/',
+      }),
+    ])
+
+    res.status(401).end()
+    return
+  }
 
   try {
     const apiResponse = await axios.request({
@@ -38,6 +52,17 @@ export default async function handler(
     }
   } catch (e) {
     const error = e as AxiosError
+
+    console.info('invalid request', { status: error?.response?.status })
+
+    if (error.response?.status === 401) {
+      res.setHeader('Set-Cookie', [
+        cookie.serialize(COOKIE_NAME, '', {
+          maxAge: -1,
+          path: '/',
+        }),
+      ])
+    }
 
     if (error.response === null || error.response === undefined) {
       throw new Error(error.message)

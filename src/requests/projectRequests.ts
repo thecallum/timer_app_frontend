@@ -1,23 +1,46 @@
-import axios from 'axios'
+import { AxiosRequestConfig } from 'axios'
 import { ProjectApiRequestObject } from './types'
+import { frontendRequest } from './frontendRequest'
 
 export const fetchProjectsRequest = () => {
-  return axios.get(`/api/projects`)
+  const config: AxiosRequestConfig = {
+    method: 'get',
+    url: `/api/projects`,
+  }
+
+  return frontendRequest(config)
 }
 
 export const createProjectRequest = async (
   request: ProjectApiRequestObject,
 ) => {
-  return await axios.post(`/api/projects`, request)
+  const config: AxiosRequestConfig = {
+    method: 'post',
+    url: `/api/projects`,
+    data: request,
+  }
+
+  return frontendRequest(config)
 }
 
 export const updateProjectRequest = (
   id: number,
   request: ProjectApiRequestObject,
 ) => {
-  return axios.put(`/api/projects/${id}`, request)
+  const config: AxiosRequestConfig = {
+    method: 'put',
+    url: `/api/projects/${id}`,
+    data: request,
+  }
+
+  return frontendRequest(config)
 }
 
 export const deleteProjectRequest = (id: number) => {
-  return axios.delete(`/api/projects/${id}`)
+  const config: AxiosRequestConfig = {
+    method: 'delete',
+    url: `/api/projects/${id}`,
+  }
+
+  return frontendRequest(config)
 }
