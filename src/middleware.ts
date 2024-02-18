@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import * as jose from 'jose'
-import { COOKIE_NAME } from './constants'
+import { ACCESS_TOKEN_COOKIE_NAME } from './constants'
 
 const AUTH_DOMAIN = process.env.NEXT_PUBLIC_AUTH_DOMAIN
 const AUDIENCE = process.env.NEXT_PUBLIC_AUDIENCE
 
 export async function middleware(req: NextRequest) {
   const cookieStore = cookies()
-  const accessToken = cookieStore.get(COOKIE_NAME)?.value ?? null
+  const accessToken = cookieStore.get(ACCESS_TOKEN_COOKIE_NAME)?.value ?? null
 
   const tokenValid = await validateToken(accessToken)
 

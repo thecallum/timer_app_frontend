@@ -1,4 +1,7 @@
-import { COOKIE_NAME } from '@/constants'
+import {
+  ACCESS_TOKEN_COOKIE_NAME,
+  REFRESH_TOKEN_COOKIE_NAME,
+} from '@/constants'
 import axios, { AxiosRequestConfig } from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Config } from 'sst/node/config'
@@ -36,9 +39,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const response = await axios.request(config)
 
   const accessToken = response.data['access_token']
-  const cookieValue = `${COOKIE_NAME}=${accessToken}; Path=/;`
+  const refreshToken = response.data['refresh_token']
 
-  res.setHeader('Set-Cookie', cookieValue)
+  res.setHeader('Set-Cookie', [
+    `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;`,
+    `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/;`,
+  ])
 
   return res.redirect('/')
 }

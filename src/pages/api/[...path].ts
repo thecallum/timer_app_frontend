@@ -2,7 +2,11 @@ import axios, { AxiosError } from 'axios'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Config } from 'sst/node/config'
 import * as cookie from 'cookie'
-import { COOKIE_NAME } from '@/constants'
+import {
+  ACCESS_TOKEN_COOKIE_NAME,
+  REFRESH_TOKEN_COOKIE_NAME,
+} from '@/constants'
+import { IncomingHttpHeaders } from 'http'
 
 // enable running next build in pipeline without bind
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -17,19 +21,10 @@ export default async function handler(
 
   console.info(`Forwarding request to ${url}`)
 
-  let accessToken: string
+  const accessToken = extractAccessToken(headers)
 
-  try {
-    const parsedCookies = cookie.parse(headers.cookie as string)
-    accessToken = parsedCookies[COOKIE_NAME]
-  } catch (error) {
-    res.setHeader('Set-Cookie', [
-      cookie.serialize(COOKIE_NAME, '', {
-        maxAge: -1,
-        path: '/',
-      }),
-    ])
-
+  if (accessToken === null) {
+    deleteAllCookies(res)
     res.status(401).end()
     return
   }
@@ -56,12 +51,7 @@ export default async function handler(
     console.info('invalid request', { status: error?.response?.status })
 
     if (error.response?.status === 401) {
-      res.setHeader('Set-Cookie', [
-        cookie.serialize(COOKIE_NAME, '', {
-          maxAge: -1,
-          path: '/',
-        }),
-      ])
+      deleteAllCookies(res)
     }
 
     if (error.response === null || error.response === undefined) {
@@ -70,5 +60,28 @@ export default async function handler(
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     res.status(error.response.status).json(error.response.data as any)
+  }
+}
+function deleteAllCookies(res: NextApiResponse) {
+  res.setHeader('Set-Cookie', [
+    cookie.serialize(ACCESS_TOKEN_COOKIE_NAME, '', {
+      maxAge: -1,
+      path: '/',
+    }),
+    cookie.serialize(REFRESH_TOKEN_COOKIE_NAME, '', {
+      maxAge: -1,
+      path: '/',
+    }),
+  ])
+}
+
+function extractAccessToken(headers: IncomingHttpHeaders) {
+  const parsedCookies = cookie.parse(headers.cookie as string)
+
+  try {
+    const accessToken = parsedCookies[ACCESS_TOKEN_COOKIE_NAME]
+    return accessToken
+  } catch (error) {
+    return null
   }
 }
