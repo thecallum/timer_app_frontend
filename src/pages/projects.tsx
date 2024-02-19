@@ -1,3 +1,4 @@
+import { withAuthServerSideProps } from '@/auth/withAuthServerSideProps'
 import { Projects } from '@/features/projects'
 import { CreateProjectModal } from '@/modals/create-project-modal'
 import Head from 'next/head'
@@ -13,3 +14,5 @@ export default function Index() {
     </>
   )
 }
+
+export const getServerSideProps = withAuthServerSideProps()

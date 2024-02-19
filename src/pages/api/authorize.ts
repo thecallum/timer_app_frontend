@@ -1,44 +1,27 @@
-import { COOKIE_NAME } from '@/constants'
-import axios, { AxiosRequestConfig } from 'axios'
+import {
+  ACCESS_TOKEN_COOKIE_NAME,
+  ID_TOKEN_COOKIE_NAME,
+  REFRESH_TOKEN_COOKIE_NAME,
+} from '@/auth/constants'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Config } from 'sst/node/config'
-
-const AUTH_DOMAIN = process.env.NEXT_PUBLIC_AUTH_DOMAIN
-const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID
-const REDIRECT_URI =
-  process.env.NEXT_PUBLIC_LOCAL_ENV === 'true'
-    ? 'http://localhost:3000/api/authorize'
-    : process.env.NEXT_PUBLIC_REDIRECT_URI
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const CLIENT_SECRET = process.env.TEST === 'true' ? '' : Config.CLIENT_SECRET
+import { authorizeAccessToken } from '../../auth/authorizeAccessToken'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const code = req.query.code as string
 
-  const config: AxiosRequestConfig = {
-    method: 'post',
-    maxBodyLength: Infinity,
-    url: `${AUTH_DOMAIN}/oauth/token`,
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    data: {
-      grant_type: 'authorization_code',
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
-      redirect_uri: REDIRECT_URI,
-      code,
-    },
+  const response = await authorizeAccessToken(code)
+
+  if (response === null) {
+    return res.redirect('/login')
   }
 
-  const response = await axios.request(config)
+  const { accessToken, refreshToken, idToken } = response
 
-  const accessToken = response.data['access_token']
-  const cookieValue = `${COOKIE_NAME}=${accessToken}; Path=/;`
-
-  res.setHeader('Set-Cookie', cookieValue)
+  res.setHeader('Set-Cookie', [
+    `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;`, // for frontend access
+    `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/; httpOnly=true;`,
+    `${ID_TOKEN_COOKIE_NAME}=${idToken}; Path=/; httpOnly=true;`,
+  ])
 
   return res.redirect('/')
 }
