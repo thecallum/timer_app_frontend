@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN_COOKIE_NAME } from '@/constants'
+import { ACCESS_TOKEN_COOKIE_NAME } from '@/auth/constants'
 import Cookies from 'js-cookie'
 
 export const useIsAuthorized = () => {
