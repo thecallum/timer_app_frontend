@@ -43,12 +43,12 @@ workflows:
   development-pipeline:
     jobs:
       - build-and-test
-      - deploy-development
-          # requires: 
-          #   - build-and-test
-          # filters:
-          #   branches:
-          #     only: main
+      - deploy-development:
+          requires: 
+            - build-and-test
+          filters:
+            branches:
+              only: main
   production-pipeline:
     jobs:
       - build-and-test:
