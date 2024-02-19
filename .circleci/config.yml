@@ -43,7 +43,7 @@ workflows:
   development-pipeline:
     jobs:
       - build-and-test
-      - deploy-development:
+      - deploy-development
           # requires: 
           #   - build-and-test
           # filters:
