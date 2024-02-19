@@ -15,5 +15,4 @@ export default function Index() {
   )
 }
 
-
 export const getServerSideProps = withAuthServerSideProps()

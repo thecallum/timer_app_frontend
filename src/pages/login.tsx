@@ -1,4 +1,4 @@
-import { LoginButton } from "@/components/layout/auth/LoginButton"
+import { LoginButton } from '@/components/layout/auth/LoginButton'
 import { Page } from '@/components/layout/page'
 import Head from 'next/head'
 

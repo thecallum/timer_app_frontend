@@ -22,7 +22,6 @@ export default async function handler(
 ) {
   const { url, method, body, headers } = req
 
-
   let accessToken = extractCookie(headers, ACCESS_TOKEN_COOKIE_NAME)
   let refreshToken = extractCookie(headers, REFRESH_TOKEN_COOKIE_NAME)
 
@@ -36,7 +35,6 @@ export default async function handler(
       res.status(401).end()
       return
     }
-    
 
     accessToken = result.accessToken
     refreshToken = result.refreshToken
@@ -49,7 +47,6 @@ export default async function handler(
   }
 
   console.info(`Forwarding request to ${url}`)
-
 
   try {
     const apiResponse = await axios.request({
@@ -70,7 +67,11 @@ export default async function handler(
   } catch (e) {
     const error = e as AxiosError
 
-    console.info('invalid request', { status: error?.response?.status }, error.message)
+    console.info(
+      'invalid request',
+      { status: error?.response?.status },
+      error.message,
+    )
 
     if (error.response?.status === 401) {
       deleteAllCookies(res)
@@ -86,20 +87,20 @@ export default async function handler(
 }
 
 function deleteAllCookies(res: NextApiResponse) {
-    res.setHeader('Set-Cookie', [
-      cookie.serialize(ACCESS_TOKEN_COOKIE_NAME, '', {
-        maxAge: -1,
-        path: '/',
-      }),
-      cookie.serialize(REFRESH_TOKEN_COOKIE_NAME, '', {
-        maxAge: -1,
-        path: '/',
-      }),
-          cookie.serialize(ID_TOKEN_COOKIE_NAME, '', {
-        maxAge: -1,
-        path: '/',
-      }),
-    ])
+  res.setHeader('Set-Cookie', [
+    cookie.serialize(ACCESS_TOKEN_COOKIE_NAME, '', {
+      maxAge: -1,
+      path: '/',
+    }),
+    cookie.serialize(REFRESH_TOKEN_COOKIE_NAME, '', {
+      maxAge: -1,
+      path: '/',
+    }),
+    cookie.serialize(ID_TOKEN_COOKIE_NAME, '', {
+      maxAge: -1,
+      path: '/',
+    }),
+  ])
 }
 
 const extractCookie = (headers: IncomingHttpHeaders, cookieName: string) => {

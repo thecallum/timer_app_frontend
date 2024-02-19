@@ -7,4 +7,4 @@ const audience = process.env.NEXT_PUBLIC_AUDIENCE
 const clientId = process.env.NEXT_PUBLIC_CLIENT_ID
 const scope = 'openid profile email offline_access'
 
-export const LOGIN_URL = `${domain}/authorize?response_type=code&scope=${scope}&client_id=${clientId}&audience=${audience}&redirect_uri=${redirectUri}`;
+export const LOGIN_URL = `${domain}/authorize?response_type=code&scope=${scope}&client_id=${clientId}&audience=${audience}&redirect_uri=${redirectUri}`
