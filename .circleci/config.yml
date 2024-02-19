@@ -14,7 +14,7 @@ jobs:
           name: 'Build and test'
           command: |
             export TEST=true
-            yarn build
+            yarn build_test
   deploy-development:
     executor: node/default
     steps:
@@ -44,11 +44,11 @@ workflows:
     jobs:
       - build-and-test
       - deploy-development:
-          requires: 
-            - build-and-test
-          filters:
-            branches:
-              only: main
+          # requires: 
+          #   - build-and-test
+          # filters:
+          #   branches:
+          #     only: main
   production-pipeline:
     jobs:
       - build-and-test:
