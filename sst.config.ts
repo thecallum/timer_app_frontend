@@ -28,6 +28,10 @@ export default {
           NEXT_PUBLIC_BASE_URL: process.env.BASE_URL ?? '',
           NEXT_PUBLIC_AUDIENCE: process.env.AUDIENCE ?? '',
           NEXT_PUBLIC_REDIRECT_URI: process.env.REDIRECT_URI ?? '',
+          COOKIE_DOMAIN:
+            stack.stage === 'production'
+              ? 'timer-app.thecallum.com'
+              : 'timer-app-development.thecallum.com',
         },
       })
 

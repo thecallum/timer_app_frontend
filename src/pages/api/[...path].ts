@@ -10,6 +10,8 @@ import {
 import { IncomingHttpHeaders } from 'http'
 import { validateToken } from '@/auth/validateToken'
 import { refreshAccessToken } from '../../auth/refreshAccessToken'
+import { setCookies } from '@/auth/setCookies'
+import { deleteAllCookies } from '@/auth/deleteAllCookies'
 
 // enable running next build in pipeline without bind
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -24,6 +26,7 @@ export default async function handler(
 
   let accessToken = extractCookie(headers, ACCESS_TOKEN_COOKIE_NAME)
   let refreshToken = extractCookie(headers, REFRESH_TOKEN_COOKIE_NAME)
+  let idToken = extractCookie(headers, ID_TOKEN_COOKIE_NAME)
 
   if (!(await isAuthorized(accessToken))) {
     console.info('access token invalid, gonna try refresh the token')
@@ -38,12 +41,9 @@ export default async function handler(
 
     accessToken = result.accessToken
     refreshToken = result.refreshToken
+    idToken = result.idToken
 
-    res.setHeader('Set-Cookie', [
-      `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;`,
-      `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/; httpOnly=true;`,
-      `${ID_TOKEN_COOKIE_NAME}=${result.idToken}; Path=/; httpOnly=true;`,
-    ])
+    setCookies(res, accessToken, refreshToken, idToken)
   }
 
   console.info(`Forwarding request to ${url}`)
@@ -55,6 +55,7 @@ export default async function handler(
       method,
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        IdToken: idToken,
       },
       data: body,
     })
@@ -84,23 +85,6 @@ export default async function handler(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     res.status(error.response.status).json(error.response.data as any)
   }
-}
-
-function deleteAllCookies(res: NextApiResponse) {
-  res.setHeader('Set-Cookie', [
-    cookie.serialize(ACCESS_TOKEN_COOKIE_NAME, '', {
-      maxAge: -1,
-      path: '/',
-    }),
-    cookie.serialize(REFRESH_TOKEN_COOKIE_NAME, '', {
-      maxAge: -1,
-      path: '/',
-    }),
-    cookie.serialize(ID_TOKEN_COOKIE_NAME, '', {
-      maxAge: -1,
-      path: '/',
-    }),
-  ])
 }
 
 const extractCookie = (headers: IncomingHttpHeaders, cookieName: string) => {

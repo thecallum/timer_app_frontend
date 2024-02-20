@@ -1,7 +1,7 @@
 import * as jose from 'jose'
 
-export const AUTH_DOMAIN = process.env.NEXT_PUBLIC_AUTH_DOMAIN
-export const AUDIENCE = process.env.NEXT_PUBLIC_AUDIENCE
+const AUTH_DOMAIN = process.env.NEXT_PUBLIC_AUTH_DOMAIN
+const AUDIENCE = process.env.NEXT_PUBLIC_AUDIENCE
 
 export const validateToken = async (
   accessToken: string | null,
