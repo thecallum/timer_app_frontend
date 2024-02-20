@@ -57,7 +57,7 @@ export default async function handler(
       method,
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        IdToken: idToken
+        IdToken: idToken,
       },
       data: body,
     })

@@ -1,5 +1,3 @@
-
-
 export const LogoutLink = () => {
   const logoutUrl = `/api/logout`
 
