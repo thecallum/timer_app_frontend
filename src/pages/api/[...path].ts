@@ -43,7 +43,7 @@ export default async function handler(
     idToken = result.idToken
 
     res.setHeader('Set-Cookie', [
-      `${IS_AUTHORIZED_COOKIE_NAME}=${"true"}; Path=/;`, // for frontend access
+      `${IS_AUTHORIZED_COOKIE_NAME}=${'true'}; Path=/;`, // for frontend access
       `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/; httpOnly=true;`,
       `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/; httpOnly=true;`,
       `${ID_TOKEN_COOKIE_NAME}=${idToken}; Path=/; httpOnly=true;`,

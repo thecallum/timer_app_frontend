@@ -39,7 +39,7 @@ export const withAuthServerSideProps = (
       refreshToken = refreshTokenResult.refreshToken
 
       res.setHeader('Set-Cookie', [
-        `${IS_AUTHORIZED_COOKIE_NAME}=${"true"}; Path=/;`, // for frontend access
+        `${IS_AUTHORIZED_COOKIE_NAME}=${'true'}; Path=/;`, // for frontend access
         `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;httpOnly=true'`,
         `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/;httpOnly=true;`,
         `${ID_TOKEN_COOKIE_NAME}=${refreshTokenResult.idToken}; Path=/;httpOnly=true;`,
@@ -55,17 +55,18 @@ export const withAuthServerSideProps = (
 }
 
 function deleteAllCookies(res: ServerResponse<IncomingMessage>) {
-  res.setHeader('Set-Cookie', 
-  [
-    ACCESS_TOKEN_COOKIE_NAME,
-    REFRESH_TOKEN_COOKIE_NAME,
-    ID_TOKEN_COOKIE_NAME,
-    IS_AUTHORIZED_COOKIE_NAME,
-  ].map((x) =>
-    cookie.serialize(x, '', {
-      maxAge: -1,
-      path: '/',
-    }),
-  ),
-)
+  res.setHeader(
+    'Set-Cookie',
+    [
+      ACCESS_TOKEN_COOKIE_NAME,
+      REFRESH_TOKEN_COOKIE_NAME,
+      ID_TOKEN_COOKIE_NAME,
+      IS_AUTHORIZED_COOKIE_NAME,
+    ].map((x) =>
+      cookie.serialize(x, '', {
+        maxAge: -1,
+        path: '/',
+      }),
+    ),
+  )
 }
