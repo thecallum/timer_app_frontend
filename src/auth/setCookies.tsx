@@ -31,5 +31,5 @@ const buildCookieString = (
   domain: string,
   httpOnly: boolean,
 ) => {
-  return `${name}=${value}; Path=/; ${httpOnly ? 'httpOnly=true;' : ''} Domain=${domain}`
+  return `${name}=${value}; Path=/; Secure; ${httpOnly ? 'httpOnly=true;' : ''} Domain=${domain}`
 }
