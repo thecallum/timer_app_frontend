@@ -1,6 +1,7 @@
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   ID_TOKEN_COOKIE_NAME,
+  IS_AUTHORIZED_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/auth/constants'
 import axios, { AxiosRequestConfig } from 'axios'
@@ -37,20 +38,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await axios.request(config)
 
-    res.setHeader('Set-Cookie', [
-      serialize(ACCESS_TOKEN_COOKIE_NAME, '', {
-        maxAge: -1,
-        path: '/',
-      }),
-      serialize(REFRESH_TOKEN_COOKIE_NAME, '', {
-        maxAge: -1,
-        path: '/',
-      }),
-      serialize(ID_TOKEN_COOKIE_NAME, '', {
-        maxAge: -1,
-        path: '/',
-      }),
-    ])
+    res.setHeader(
+      'Set-Cookie',
+      [
+        ACCESS_TOKEN_COOKIE_NAME,
+        REFRESH_TOKEN_COOKIE_NAME,
+        ID_TOKEN_COOKIE_NAME,
+        IS_AUTHORIZED_COOKIE_NAME,
+      ].map((x) =>
+        serialize(x, '', {
+          maxAge: -1,
+          path: '/',
+        }),
+      ),
+    )
 
     return res.redirect('/')
   } catch (error) {

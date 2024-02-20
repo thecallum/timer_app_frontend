@@ -5,6 +5,7 @@ import * as cookie from 'cookie'
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   ID_TOKEN_COOKIE_NAME,
+  IS_AUTHORIZED_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/auth/constants'
 import { IncomingHttpHeaders } from 'http'
@@ -42,7 +43,8 @@ export default async function handler(
     idToken = result.idToken
 
     res.setHeader('Set-Cookie', [
-      `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;`,
+      `${IS_AUTHORIZED_COOKIE_NAME}=${"true"}; Path=/;`, // for frontend access
+      `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/; httpOnly=true;`,
       `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/; httpOnly=true;`,
       `${ID_TOKEN_COOKIE_NAME}=${idToken}; Path=/; httpOnly=true;`,
     ])
@@ -90,20 +92,20 @@ export default async function handler(
 }
 
 function deleteAllCookies(res: NextApiResponse) {
-  res.setHeader('Set-Cookie', [
-    cookie.serialize(ACCESS_TOKEN_COOKIE_NAME, '', {
-      maxAge: -1,
-      path: '/',
-    }),
-    cookie.serialize(REFRESH_TOKEN_COOKIE_NAME, '', {
-      maxAge: -1,
-      path: '/',
-    }),
-    cookie.serialize(ID_TOKEN_COOKIE_NAME, '', {
-      maxAge: -1,
-      path: '/',
-    }),
-  ])
+  res.setHeader(
+    'Set-Cookie',
+    [
+      ACCESS_TOKEN_COOKIE_NAME,
+      REFRESH_TOKEN_COOKIE_NAME,
+      ID_TOKEN_COOKIE_NAME,
+      IS_AUTHORIZED_COOKIE_NAME,
+    ].map((x) =>
+      cookie.serialize(x, '', {
+        maxAge: -1,
+        path: '/',
+      }),
+    ),
+  )
 }
 
 const extractCookie = (headers: IncomingHttpHeaders, cookieName: string) => {

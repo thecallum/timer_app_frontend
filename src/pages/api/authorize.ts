@@ -1,6 +1,7 @@
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   ID_TOKEN_COOKIE_NAME,
+  IS_AUTHORIZED_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/auth/constants'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -18,7 +19,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { accessToken, refreshToken, idToken } = response
 
   res.setHeader('Set-Cookie', [
-    `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;`, // for frontend access
+    `${IS_AUTHORIZED_COOKIE_NAME}=${'true'}; Path=/;`, // for frontend access
+    `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/; httpOnly=true;`,
     `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/; httpOnly=true;`,
     `${ID_TOKEN_COOKIE_NAME}=${idToken}; Path=/; httpOnly=true;`,
   ])
