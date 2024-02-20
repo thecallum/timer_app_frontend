@@ -1,11 +1,6 @@
-import {
-  ACCESS_TOKEN_COOKIE_NAME,
-  ID_TOKEN_COOKIE_NAME,
-  IS_AUTHORIZED_COOKIE_NAME,
-  REFRESH_TOKEN_COOKIE_NAME,
-} from '@/auth/constants'
+import { deleteAllCookies } from '@/auth/deleteAllCookies'
+import { REFRESH_TOKEN_COOKIE_NAME } from '@/auth/constants'
 import axios, { AxiosRequestConfig } from 'axios'
-import { serialize } from 'cookie'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Config } from 'sst/node/config'
 
@@ -38,20 +33,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await axios.request(config)
 
-    res.setHeader(
-      'Set-Cookie',
-      [
-        ACCESS_TOKEN_COOKIE_NAME,
-        REFRESH_TOKEN_COOKIE_NAME,
-        ID_TOKEN_COOKIE_NAME,
-        IS_AUTHORIZED_COOKIE_NAME,
-      ].map((x) =>
-        serialize(x, '', {
-          maxAge: -1,
-          path: '/',
-        }),
-      ),
-    )
+    deleteAllCookies(res)
 
     return res.redirect('/')
   } catch (error) {

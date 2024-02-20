@@ -2,13 +2,11 @@ import { refreshAccessToken } from './refreshAccessToken'
 import { validateToken } from '@/auth/validateToken'
 import {
   ACCESS_TOKEN_COOKIE_NAME,
-  ID_TOKEN_COOKIE_NAME,
-  IS_AUTHORIZED_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/auth/constants'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import * as cookie from 'cookie'
-import { ServerResponse, IncomingMessage } from 'http'
+import { setCookies } from './setCookies'
+import { deleteAllCookies } from './deleteAllCookies'
 
 export const withAuthServerSideProps = (
   getServerSidePropsFunc?: GetServerSideProps,
@@ -38,12 +36,12 @@ export const withAuthServerSideProps = (
       accessToken = refreshTokenResult.accessToken
       refreshToken = refreshTokenResult.refreshToken
 
-      res.setHeader('Set-Cookie', [
-        `${IS_AUTHORIZED_COOKIE_NAME}=${'true'}; Path=/;`, // for frontend access
-        `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;httpOnly=true'`,
-        `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/;httpOnly=true;`,
-        `${ID_TOKEN_COOKIE_NAME}=${refreshTokenResult.idToken}; Path=/;httpOnly=true;`,
-      ])
+      setCookies(
+        res,
+        accessToken,
+        refreshToken,
+        refreshTokenResult.idToken,
+      )
     }
 
     if (getServerSidePropsFunc) return getServerSidePropsFunc(context)
@@ -52,21 +50,4 @@ export const withAuthServerSideProps = (
       props: {},
     }
   }
-}
-
-function deleteAllCookies(res: ServerResponse<IncomingMessage>) {
-  res.setHeader(
-    'Set-Cookie',
-    [
-      ACCESS_TOKEN_COOKIE_NAME,
-      REFRESH_TOKEN_COOKIE_NAME,
-      ID_TOKEN_COOKIE_NAME,
-      IS_AUTHORIZED_COOKIE_NAME,
-    ].map((x) =>
-      cookie.serialize(x, '', {
-        maxAge: -1,
-        path: '/',
-      }),
-    ),
-  )
 }

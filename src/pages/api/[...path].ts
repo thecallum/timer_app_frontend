@@ -11,6 +11,8 @@ import {
 import { IncomingHttpHeaders } from 'http'
 import { validateToken } from '@/auth/validateToken'
 import { refreshAccessToken } from '../../auth/refreshAccessToken'
+import { setCookies } from '@/auth/setCookies'
+import { deleteAllCookies } from '@/auth/deleteAllCookies'
 
 // enable running next build in pipeline without bind
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -42,12 +44,7 @@ export default async function handler(
     refreshToken = result.refreshToken
     idToken = result.idToken
 
-    res.setHeader('Set-Cookie', [
-      `${IS_AUTHORIZED_COOKIE_NAME}=${'true'}; Path=/;`, // for frontend access
-      `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/; httpOnly=true;`,
-      `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/; httpOnly=true;`,
-      `${ID_TOKEN_COOKIE_NAME}=${idToken}; Path=/; httpOnly=true;`,
-    ])
+    setCookies(res, accessToken, refreshToken, idToken)
   }
 
   console.info(`Forwarding request to ${url}`)
@@ -89,23 +86,6 @@ export default async function handler(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     res.status(error.response.status).json(error.response.data as any)
   }
-}
-
-function deleteAllCookies(res: NextApiResponse) {
-  res.setHeader(
-    'Set-Cookie',
-    [
-      ACCESS_TOKEN_COOKIE_NAME,
-      REFRESH_TOKEN_COOKIE_NAME,
-      ID_TOKEN_COOKIE_NAME,
-      IS_AUTHORIZED_COOKIE_NAME,
-    ].map((x) =>
-      cookie.serialize(x, '', {
-        maxAge: -1,
-        path: '/',
-      }),
-    ),
-  )
 }
 
 const extractCookie = (headers: IncomingHttpHeaders, cookieName: string) => {
