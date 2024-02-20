@@ -5,7 +5,6 @@ import * as cookie from 'cookie'
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   ID_TOKEN_COOKIE_NAME,
-  IS_AUTHORIZED_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/auth/constants'
 import { IncomingHttpHeaders } from 'http'

@@ -12,10 +12,15 @@ export function setCookies(
   refreshToken: string,
   idToken: string,
 ) {
+  const domain =
+    process.env.NEXT_PUBLIC_LOCAL_ENV === 'true'
+      ? 'localhost'
+      : process.env.COOKIE_DOMAIN
+
   res.setHeader('Set-Cookie', [
-    `${IS_AUTHORIZED_COOKIE_NAME}=${'true'}; Path=/;`, // for frontend access
-    `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;httpOnly=true'`,
-    `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/;httpOnly=true;`,
-    `${ID_TOKEN_COOKIE_NAME}=${idToken}; Path=/;httpOnly=true;`,
+    `${IS_AUTHORIZED_COOKIE_NAME}=${'true'}; Path=/; Domain=${domain}k`, // for frontend access
+    `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;httpOnly=true; Domain=${domain};`,
+    `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/;httpOnly=true; Domain=${domain}`,
+    `${ID_TOKEN_COOKIE_NAME}=${idToken}; Path=/;httpOnly=true; Domain=${domain}`,
   ])
 }

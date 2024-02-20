@@ -36,12 +36,7 @@ export const withAuthServerSideProps = (
       accessToken = refreshTokenResult.accessToken
       refreshToken = refreshTokenResult.refreshToken
 
-      setCookies(
-        res,
-        accessToken,
-        refreshToken,
-        refreshTokenResult.idToken,
-      )
+      setCookies(res, accessToken, refreshToken, refreshTokenResult.idToken)
     }
 
     if (getServerSidePropsFunc) return getServerSidePropsFunc(context)
