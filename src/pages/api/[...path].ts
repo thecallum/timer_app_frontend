@@ -24,6 +24,7 @@ export default async function handler(
 
   let accessToken = extractCookie(headers, ACCESS_TOKEN_COOKIE_NAME)
   let refreshToken = extractCookie(headers, REFRESH_TOKEN_COOKIE_NAME)
+  let idToken = extractCookie(headers, ID_TOKEN_COOKIE_NAME)
 
   if (!(await isAuthorized(accessToken))) {
     console.info('access token invalid, gonna try refresh the token')
@@ -38,11 +39,12 @@ export default async function handler(
 
     accessToken = result.accessToken
     refreshToken = result.refreshToken
+    idToken = result.idToken
 
     res.setHeader('Set-Cookie', [
       `${ACCESS_TOKEN_COOKIE_NAME}=${accessToken}; Path=/;`,
       `${REFRESH_TOKEN_COOKIE_NAME}=${refreshToken}; Path=/; httpOnly=true;`,
-      `${ID_TOKEN_COOKIE_NAME}=${result.idToken}; Path=/; httpOnly=true;`,
+      `${ID_TOKEN_COOKIE_NAME}=${idToken}; Path=/; httpOnly=true;`,
     ])
   }
 
@@ -55,6 +57,7 @@ export default async function handler(
       method,
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        IdToken: idToken
       },
       data: body,
     })
