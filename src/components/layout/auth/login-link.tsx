@@ -1,9 +1,9 @@
-import { LOGIN_URL } from './loginUrl'
+import Link from 'next/link'
 
 export const LoginLink = () => {
   return (
     <>
-      <a href={LOGIN_URL}>Login</a>
+      <Link href="/api/login">Login</Link>
     </>
   )
 }

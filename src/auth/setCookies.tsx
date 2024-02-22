@@ -6,22 +6,42 @@ import {
 } from '@/auth/constants'
 import { ServerResponse, IncomingMessage } from 'http'
 
+const COOKIE_DOMAIN =
+  process.env.NEXT_PUBLIC_LOCAL_ENV === 'true'
+    ? 'localhost'
+    : process.env.COOKIE_DOMAIN ?? ''
+
 export function setCookies(
   res: ServerResponse<IncomingMessage>,
   accessToken: string,
   refreshToken: string,
   idToken: string,
 ) {
-  const domain =
-    process.env.NEXT_PUBLIC_LOCAL_ENV === 'true'
-      ? 'localhost'
-      : process.env.COOKIE_DOMAIN ?? ''
-
   res.setHeader('Set-Cookie', [
-    buildCookieString(ACCESS_TOKEN_COOKIE_NAME, accessToken, domain, true),
-    buildCookieString(REFRESH_TOKEN_COOKIE_NAME, refreshToken, domain, true),
-    buildCookieString(ID_TOKEN_COOKIE_NAME, idToken, domain, true),
-    buildCookieString(IS_AUTHORIZED_COOKIE_NAME, 'true', domain, false),
+    buildCookieString(
+      ACCESS_TOKEN_COOKIE_NAME,
+      accessToken,
+      COOKIE_DOMAIN,
+      true,
+    ),
+    buildCookieString(
+      REFRESH_TOKEN_COOKIE_NAME,
+      refreshToken,
+      COOKIE_DOMAIN,
+      true,
+    ),
+    buildCookieString(ID_TOKEN_COOKIE_NAME, idToken, COOKIE_DOMAIN, true),
+    buildCookieString(IS_AUTHORIZED_COOKIE_NAME, 'true', COOKIE_DOMAIN, false),
+  ])
+}
+
+export function setCookie(
+  res: ServerResponse<IncomingMessage>,
+  cookieName: string,
+  cookieValue: string,
+) {
+  res.setHeader('Set-Cookie', [
+    buildCookieString(cookieName, cookieValue, COOKIE_DOMAIN, true),
   ])
 }
 
