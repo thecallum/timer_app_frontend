@@ -18,6 +18,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method !== 'POST') return res.status(405).end()
 
+  if (req.body.key === 'static_key') {
+
   const cookies = req.cookies
   const refreshToken = cookies[REFRESH_TOKEN_COOKIE_NAME] ?? null
 
@@ -40,11 +42,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     deleteAllCookies(res)
 
-    return res.status(201).end()
+    return res.status(204).end()
 
     // return res.redirect('/')
   } catch (error) {
     console.error({ error })
     return res.status(400).end()
   }
+}  return res.status(400).end()
 }
+
