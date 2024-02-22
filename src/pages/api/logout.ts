@@ -16,6 +16,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   // A potential solution to revoke accessTokens is to store them in DynamoDb when revoked.
   // However, this is out of scope for the current project
 
+  if (req.method !== 'POST') return res.status(405).end()
+
   const cookies = req.cookies
   const refreshToken = cookies[REFRESH_TOKEN_COOKIE_NAME] ?? null
 
@@ -38,8 +40,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     deleteAllCookies(res)
 
-    return res.redirect('/')
+    return res.status(201).end()
+
+    // return res.redirect('/')
   } catch (error) {
     console.error({ error })
+    return res.status(400).end()
   }
 }
