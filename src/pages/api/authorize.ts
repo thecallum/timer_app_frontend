@@ -1,10 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { authorizeAccessToken } from '../../auth/authorizeAccessToken'
 import { setCookies } from '@/auth/setCookies'
-import {
-  AUTH_STATE_COOKIE_NAME,
-  REFRESH_TOKEN_COOKIE_NAME,
-} from '@/auth/constants'
+import { AUTH_STATE_COOKIE_NAME } from '@/auth/constants'
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const state = req.query.state as string
