@@ -31,7 +31,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
+    console.info("Revoking refresh token")
     await axios.request(config)
+
+    console.info("Refresh token revoked")
 
     deleteAllCookies(res)
 
