@@ -36,9 +36,9 @@ jobs:
       - run:
           name: 'Deploy to production'
           command: |
-            yarn sst secrets set --stage prod SERVICE_API_URL $SERVICE_API_URL_PRODUCTION      
-            yarn sst secrets set --stage prod CLIENT_SECRET $CLIENT_SECRET_PRODUCTION      
             AUTH_DOMAIN=$AUTH_DOMAIN_PRODUCTION CLIENT_ID=$CLIENT_ID_PRODUCTION BASE_URL=$BASE_URL_PRODUCTION AUDIENCE=$AUDIENCE_PRODUCTION REDIRECT_URI=$REDIRECT_URI_PRODUCTION yarn deploy --stage prod
+# yarn sst secrets set --stage prod SERVICE_API_URL $SERVICE_API_URL_PRODUCTION      
+# yarn sst secrets set --stage prod CLIENT_SECRET $CLIENT_SECRET_PRODUCTION      
 workflows:
   development-pipeline:
     jobs:
