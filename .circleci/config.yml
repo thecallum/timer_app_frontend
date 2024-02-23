@@ -40,24 +40,24 @@ jobs:
             yarn sst secrets set --stage production CLIENT_SECRET $CLIENT_SECRET_PRODUCTION         
             AUTH_DOMAIN=$AUTH_DOMAIN_PRODUCTION CLIENT_ID=$CLIENT_ID_PRODUCTION BASE_URL=$BASE_URL_PRODUCTION AUDIENCE=$AUDIENCE_PRODUCTION REDIRECT_URI=$REDIRECT_URI_PRODUCTION yarn deploy --stage production
 workflows:
-  # development-pipeline:
-  #   jobs:
-  #     - build-and-test
-  #     - deploy-development:
-  #         requires: 
-  #           - build-and-test
-  #         filters:
-  #           branches:
-  #             only: main
+  development-pipeline:
+    jobs:
+      # - build-and-test
+      - deploy-development
+          # requires: 
+          #   - build-and-test
+          # filters:
+          #   branches:
+          #     only: main
   production-pipeline:
     jobs:
-      - build-and-test
+      # - build-and-test
           # filters:
           #   branches:
           #     only: release
-      - deploy-production:
-          requires: 
-            - build-and-test
+      - deploy-production
+          # requires: 
+          #   - build-and-test
           # filters:
           #   branches:
           #     only: release
