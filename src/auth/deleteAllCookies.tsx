@@ -8,6 +8,11 @@ import {
 } from '@/auth/constants'
 import { ServerResponse, IncomingMessage } from 'http'
 
+const COOKIE_DOMAIN =
+  process.env.NEXT_PUBLIC_LOCAL_ENV === 'true'
+    ? 'localhost'
+    : process.env.COOKIE_DOMAIN ?? ''
+
 export const deleteAllCookies = (res: ServerResponse<IncomingMessage>) => {
   res.setHeader(
     'Set-Cookie',
@@ -21,6 +26,9 @@ export const deleteAllCookies = (res: ServerResponse<IncomingMessage>) => {
       cookie.serialize(x, '', {
         maxAge: -1,
         path: '/',
+        domain: COOKIE_DOMAIN,
+        httpOnly: true,
+        secure: true,
       }),
     ),
   )
