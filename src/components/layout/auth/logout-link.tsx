@@ -1,25 +1,29 @@
-import axios from 'axios'
-import { useRouter } from 'next/router'
+// import axios from 'axios'
+import Link from 'next/link'
+// import { useRouter } from 'next/router'
 
 export const LogoutLink = () => {
-  const router = useRouter()
+  // const router = useRouter()
 
-  const handleLogout = async () => {
-    try {
-      await axios.post('/api/logout', {
-        key: 'static_key',
-      })
+  // const handleLogout = async () => {
+  //   try {
+  //     await axios.post('/api/logout', {
+  //       key: 'static_key',
+  //     })
 
-      router.push('/login')
-      window.location.reload()
-    } catch (error) {
-      console.error('Request failed', error) // Handle error
-    }
-  }
+  //     router.push('/login')
+  //     window.location.reload()
+  //   } catch (error) {
+  //     console.error('Request failed', error) // Handle error
+  //   }
+  // }
 
   return (
-    <button role="link" onClick={handleLogout}>
+    <Link
+      // role="link" onClick={handleLogout}
+      href="/api/logout"
+    >
       Sign out
-    </button>
+    </Link>
   )
 }
