@@ -17,7 +17,7 @@ export default {
         bind: [SERVICE_API_URL, CLIENT_SECRET],
         customDomain: {
           domainName:
-            stack.stage === 'prod'
+            stack.stage === 'production'
               ? 'timer-app.thecallum.com'
               : 'timer-app-development.thecallum.com',
           hostedZone: 'thecallum.com',
@@ -29,7 +29,7 @@ export default {
           NEXT_PUBLIC_AUDIENCE: process.env.AUDIENCE ?? '',
           NEXT_PUBLIC_REDIRECT_URI: process.env.REDIRECT_URI ?? '',
           COOKIE_DOMAIN:
-            stack.stage === 'prod'
+            stack.stage === 'production'
               ? 'timer-app.thecallum.com'
               : 'timer-app-development.thecallum.com',
         },
