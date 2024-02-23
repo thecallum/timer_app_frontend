@@ -18,9 +18,12 @@ import {
 import { Bounce, toast } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
 import { UpdateStatus } from '@/types/updateStatus'
+import { useIsAuthorized } from '@/auth/useIsAuthorized'
 
 export const useProjects = () => {
   const router = useRouter()
+
+  const isAuthorized = useIsAuthorized()
 
   const [projects, setProjects] = useState<{
     [key: number]: Project
@@ -193,6 +196,8 @@ export const useProjects = () => {
     })
 
   useEffect(() => {
+    if (!isAuthorized) return
+
     fetchProjects()
   }, [router.pathname])
 

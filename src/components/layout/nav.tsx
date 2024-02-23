@@ -2,6 +2,10 @@ import classNames from 'classnames'
 import Link from 'next/link'
 import { Logo } from './logo'
 
+import { useIsOpenRoute } from '@/auth/useIsOpenRoute'
+import { LoginLink } from './auth/login-link'
+import { LogoutLink } from './auth/logout-link'
+
 interface Props {
   showNavbar: boolean
   closeNavbar: () => void
@@ -9,6 +13,8 @@ interface Props {
 
 export const Nav = (props: Props) => {
   const { showNavbar, closeNavbar } = props
+
+  const isOpenRoute = useIsOpenRoute()
 
   return (
     <nav
@@ -40,23 +46,37 @@ export const Nav = (props: Props) => {
       </div>
 
       <div className="flex-col h-full justify-center items-start flex   box-boder  px-10 text-center shrink-1 lg:text-left lg:justify-between lg:items-center lg:h-[calc(100%-4rem)] lg:pb-2 lg:mt-0 lg:px-4">
-        <ul className="text-4xl  font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
-          <li className="hover:underline">
-            <Link href="/calendar" onClick={closeNavbar}>
-              Calendar
-            </Link>
-          </li>
-          <li className="hover:underline">
-            <Link href="/projects" onClick={closeNavbar}>
-              Projects
-            </Link>
-          </li>
-        </ul>
+        {!isOpenRoute ? (
+          <>
+            <ul className="text-4xl  font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
+              <li className="hover:underline">
+                <Link href="/" onClick={closeNavbar}>
+                  Calendar
+                </Link>
+              </li>
+              <li className="hover:underline">
+                <Link href="/projects" onClick={closeNavbar}>
+                  Projects
+                </Link>
+              </li>
+            </ul>
 
-        <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
-          <li className="line-through text-slate-400">Account</li>
-          <li className="line-through text-slate-400">Sign out</li>
-        </ul>
+            <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
+              <li className="line-through text-slate-400">Account</li>
+              <li className="text-slate-400">
+                <LogoutLink />
+              </li>
+            </ul>
+          </>
+        ) : (
+          <>
+            <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
+              <li className=" text-slate-400">
+                <LoginLink />
+              </li>
+            </ul>
+          </>
+        )}
       </div>
     </nav>
   )
