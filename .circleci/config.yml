@@ -42,22 +42,22 @@ jobs:
 workflows:
   development-pipeline:
     jobs:
-      # - build-and-test
+      - build-and-test
       - deploy-development
-        # requires:
-        #   - build-and-test
-        # filters:
-        #   branches:
-        #     only: main
+        requires:
+          - build-and-test
+        filters:
+          branches:
+            only: main
   production-pipeline:
     jobs:
-      # - build-and-test
-      # filters:
-      #   branches:
-      #     only: release
-      - deploy-production
-        # requires:
-        #   - build-and-test
-        # filters:
-        #   branches:
-        #     only: release
+      - build-and-test:
+      filters:
+        branches:
+          only: release
+      - deploy-production:
+        requires:
+          - build-and-test
+        filters:
+          branches:
+            only: release
