@@ -11,14 +11,26 @@ export const useCalendarControls = () => {
   const getStartOfWeek = (weeksInFuture: number) => {
     const dayCount = weeksInFuture * 7
 
-    return dayjs()
+    let startOfWeek = dayjs()
       .startOf('week')
       .add(1, 'day') // Adjust to start week on Monday
       .add(dayCount, 'day')
+
+  
+      // resolve bug when today is sunday 
+      // (was showing incorrect week)
+      if (dayjs().day() === 0)
+      {
+        startOfWeek = startOfWeek.add(-7, "day")
+      }
+
+      return startOfWeek
   }
 
   const getWeekDates = () => {
     const startOfWeek = getStartOfWeek(currentWeek)
+
+    console.log({ startOfWeek })
 
     return [...Array(7)].map((_, index) => startOfWeek.add(index, 'day'))
   }
