@@ -1,154 +1,296 @@
-import {
-  ACCESS_TOKEN_COOKIE_NAME,
-  IS_AUTHORIZED_COOKIE_NAME,
-} from '@/auth/constants'
-import { COOKIE_DOMAIN, buildCookieString } from '@/auth/setCookies'
-import { ProjectApiResponseObject } from '@/requests/types'
 import { test, expect } from './my-setup'
-import { assert } from 'console'
-// import { test } from './my-setup'
 
-test('is test', async ({ browser }) => {
-  const context = await browser.newContext()
-  // Create a new page inside context.
-  const page = await context.newPage()
+test.describe('Projects page', () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  test.beforeEach(async ({ page, login }) => {
+    // init with no projects
+    const getProjectsRequestAssertion = page.waitForResponse(
+      (res) => res.url().includes('/api/projects') && res.status() === 200,
+    )
 
-  const accessToken =
-    'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InBtXzFTckREd2FlcnhJeTRLMTNJTiJ9.eyJpc3MiOiJodHRwczovL2Rldi1pZzNqZmR0YXhkenJlZGh5LnVrLmF1dGgwLmNvbS8iLCJzdWIiOiJhdXRoMHw2NWMwOWRhN2Y5MDRhYjE2ZWY1ZTU0MzMiLCJhdWQiOlsiaHR0cHM6Ly9wY2sxem5qc2c2LmV4ZWN1dGUtYXBpLmV1LXdlc3QtMi5hbWF6b25hd3MuY29tLyIsImh0dHBzOi8vZGV2LWlnM2pmZHRheGR6cmVkaHkudWsuYXV0aDAuY29tL3VzZXJpbmZvIl0sImlhdCI6MTcwODc5MDg4NiwiZXhwIjoxNzA4NzkxMTg2LCJhenAiOiI1elREaVdMNFd4bDZORTJwZ0phQXNzZkpXYTZnQnpBUCIsInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwgb2ZmbGluZV9hY2Nlc3MifQ.GrfQedBWrjGCs_kY0Du0Tu3GKH6qvGuUAwxA94PIZa7ZN-sGJh1bdJrl_r2Xpu4cWFTETzIP_CJ_ROtgHshWwZp2n2-Hbeery2BLq5Mzx3XZSEKy1ztCKpk5_29j_di8ecsCPjLpAB7HF9KGWwgbS0lQlciOsFFK7GcDR4kKimluiazwdpCiNIaSdwtq5o8wcJg_uNm9Vrv1FZXkuPy-8SxzY8VsG_hr791bxBM2Z6iHzO25KRLyzFNA0_E371-C4neiy7OOLgjm3RF7YZ845HRzZt6JqI_-jZGZoBWND5D0p--sKb2zhwdU7Hyek4lYgODF3rPzDx6p2HR9niIw9Q'
+    page.route('**/api/projects', async (route) => {
+      const request = route.request()
 
-  // const cookies = [
-  //     buildCookieString(
-  //         ACCESS_TOKEN_COOKIE_NAME,
-  //         accessToken,
-  //         COOKIE_DOMAIN,
-  //         true,
-  //       ),
-  // ]
-
-  await context.addCookies([
-    {
-      name: ACCESS_TOKEN_COOKIE_NAME,
-      value: accessToken,
-      domain: 'http://localhost:3000',
-      httpOnly: true,
-      secure: true,
-      path: '/',
-    },
-    {
-      name: IS_AUTHORIZED_COOKIE_NAME,
-      value: 'true',
-      domain: 'http://localhost:3000',
-      httpOnly: false,
-      secure: true,
-      path: '/',
-    },
-  ])
-
-  const projectsResponse: ProjectApiResponseObject[] = [
-    {
-      id: 1,
-      description: 'description',
-      isActive: true,
-      projectColor: {
-        dark: '',
-        darkest: '',
-        light: '',
-        lightest: '',
-      },
-      totalEventDurationInMinutes: 100,
-    },
-  ]
-
-  //   let getProjectsRequestResolved = false
-
-  await page.route('**/api/projects', async (route) => {
-    await route.fulfill({ json: projectsResponse, status: 200 })
-    // getProjectsRequestResolved = true
-  })
-
-  await page.route('**/api/events**', async (route) => {
-    await route.fulfill({ json: [], status: 200 })
-  })
-
-  const getProjectsRequestAssertion = page.waitForRequest(
-    (request) =>
-      request.url().includes('/api/projects') && request.method() === 'GET',
-  )
-
-  await page.goto('http://localhost:3000/projects')
-
-  await getProjectsRequestAssertion
-  //   expect(getProjectsRequestResolved).toBeTruthy()
-
-  //1await responsePromise
-
-  // // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Projects/)
-})
-
-// const myTest = test.extend({
-//   webApp: async ({ page }, use) => {
-//     await page.goto('http://localhost:3000/login')
-
-//     await page
-//       .locator('div')
-//       .filter({ hasText: /^Login$/ })
-//       .click()
-//     await page.getByRole('button', { name: 'Login' }).click()
-//     await page.getByLabel('Email address').click()
-//     await page.getByLabel('Email address').fill('callummac@protonmail.com')
-//     await page.getByLabel('Email address').press('Tab')
-//     await page.getByLabel('Password').fill('Password1234!')
-//     await page.getByLabel('Password').press('Enter')
-
-//     await use(page)
-//   },
-// })
-
-test('test', async ({ page, webApp }) => {
-  await page.goto('http://localhost:3000/projects')
-
-  await page.getByRole('link', { name: 'Projects' }).click()
-  await page
-    .locator('div')
-    .filter({
-      hasText: /^ProjectsCreate projectProject nameTotal timeActions$/,
+      if (request.method() === 'GET') {
+        route.fulfill({ json: [], status: 200 })
+      }
     })
-    .first()
-    .click()
-  await page.getByRole('heading', { name: 'Projects' }).click()
-  await page.getByText('ProjectsCreate project').click()
-  await page.getByText('ProjectsCreate project').click()
-  await page.getByRole('button', { name: 'Create project' }).click()
-  await page.getByPlaceholder('Planning').fill('New Project')
-  await page.getByRole('button', { name: 'Close' }).click()
-  await page.getByRole('button', { name: 'Create project' }).click()
-  await page.getByPlaceholder('Planning').fill('New Project')
-  await page
-    .getByLabel('Create a project')
-    .getByRole('button', { name: 'Create project' })
-    .click()
-  await page.getByText('Project added').click()
-  await page
-    .getByRole('row', { name: 'New Project 0.0 hours Edit' })
-    .getByRole('button')
-    .click()
-  await page.getByPlaceholder('Planning').fill('New Project name updated')
-  await page.getByRole('button', { name: 'Close' }).click()
-  await page
-    .getByRole('row', { name: 'New Project 0.0 hours Edit' })
-    .getByRole('button')
-    .click()
-  await page.getByPlaceholder('Planning').fill('New Project name updated')
-  await page
-    .getByLabel('Edit project')
-    .getByRole('button', { name: 'Edit project' })
-    .click()
-  await page.getByRole('button', { name: 'Close' }).click()
-  await page
-    .getByRole('row', { name: 'New Project name updated 0.0' })
-    .getByRole('button')
-    .click()
-  await page.getByLabel('Edit project').getByRole('button').first().click()
-  await page.locator('html').click()
+
+    await page.goto('http://localhost:3000/projects')
+
+    await getProjectsRequestAssertion
+  })
+
+  test('shows empty list of projects', async ({ page }) => {
+    expect(await page.screenshot()).toMatchSnapshot('no-projects.png')
+  })
+
+  test('creates a project', async ({ page }) => {
+    const createProjectResponse = {
+      id: 82,
+      description: 'test',
+      projectColor: {
+        lightest: '#cffafe',
+        light: '#a5f3fc',
+        dark: '#0891b2',
+        darkest: '#164e63',
+      },
+      isActive: true,
+      totalEventDurationInMinutes: 0,
+    }
+
+    page.route('**/api/projects', async (route) => {
+      const request = route.request()
+
+      if (request.method() === 'POST') {
+        route.fulfill({ json: createProjectResponse, status: 200 })
+      }
+    })
+
+    // test cancel button
+    await page.getByText('Create a new project').click()
+    await page.getByRole('button', { name: 'Close' }).click()
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // create a project
+    await page.getByText('Create a new project').click()
+    await page.getByLabel('Project description').fill('New Project')
+
+    const createProjectRequestAssertion = page.waitForResponse((res) => {
+      const request = res.request()
+
+      return (
+        request.method() === 'POST' &&
+        res.url().includes('/api/projects') &&
+        res.status() === 200
+      )
+    })
+
+    await page.getByRole('button', { name: 'Create project' }).click()
+
+    await createProjectRequestAssertion
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // remove toast
+    await page.getByText('Project added').click()
+    await page.waitForSelector('text="Project added"', { state: 'detached' })
+
+    expect(await page.screenshot()).toMatchSnapshot('project-created.png')
+  })
+
+  test('edits a project', async ({ page }) => {
+    const createProjectResponse = {
+      id: 82,
+      description: 'test',
+      projectColor: {
+        lightest: '#cffafe',
+        light: '#a5f3fc',
+        dark: '#0891b2',
+        darkest: '#164e63',
+      },
+      isActive: true,
+      totalEventDurationInMinutes: 0,
+    }
+
+    const updateProjectResponse = {
+      id: 82,
+      description: 'updated description',
+      projectColor: {
+        lightest: '#cffafe',
+        light: '#a5f3fc',
+        dark: '#0891b2',
+        darkest: '#164e63',
+      },
+      isActive: true,
+      totalEventDurationInMinutes: 0,
+    }
+
+    page.route('**/api/projects', async (route) => {
+      const request = route.request()
+
+      if (request.method() === 'POST') {
+        route.fulfill({ json: createProjectResponse, status: 200 })
+      }
+    })
+
+    page.route('**/api/projects/**', async (route) => {
+      const request = route.request()
+
+      if (request.method() === 'PUT') {
+        route.fulfill({ json: updateProjectResponse, status: 200 })
+      }
+    })
+
+    // test cancel button
+    await page.getByText('Create a new project').click()
+    await page.getByRole('button', { name: 'Close' }).click()
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // create a project
+    await page.getByText('Create a new project').click()
+    await page.getByLabel('Project description').fill('New Project')
+
+    const createProjectRequestAssertion = page.waitForResponse((res) => {
+      const request = res.request()
+
+      return (
+        request.method() === 'POST' &&
+        res.url().includes('/api/projects') &&
+        res.status() === 200
+      )
+    })
+
+    await page.getByRole('button', { name: 'Create project' }).click()
+
+    await createProjectRequestAssertion
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // remove toast
+    await page.getByText('Project added').click()
+    await page.waitForSelector('text="Project added"', { state: 'detached' })
+
+    // edit the project
+
+    await page
+      .getByRole('row', { name: 'test 0.0 hours Edit' })
+      .getByRole('button')
+      .click()
+
+    await page
+      .getByLabel('Project description')
+      .fill('New Project name updated')
+
+    const updateProjectRequestAssertion = page.waitForResponse((res) => {
+      const request = res.request()
+
+      return (
+        request.method() === 'PUT' &&
+        res.url().includes(`/api/projects/`) &&
+        res.status() === 200
+      )
+    })
+
+    await page
+      .getByLabel('Edit project')
+      .getByRole('button', { name: 'Edit project' })
+      .click()
+
+    await updateProjectRequestAssertion
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // remove toast
+    await page.getByText('Project updated').click()
+    await page.waitForSelector('text="Project updated"', { state: 'detached' })
+
+    expect(await page.screenshot()).toMatchSnapshot('project-updated.png')
+  })
+
+  test('deletes a project', async ({ page }) => {
+    const createProjectResponse = {
+      id: 82,
+      description: 'test',
+      projectColor: {
+        lightest: '#cffafe',
+        light: '#a5f3fc',
+        dark: '#0891b2',
+        darkest: '#164e63',
+      },
+      isActive: true,
+      totalEventDurationInMinutes: 0,
+    }
+
+    const updateProjectResponse = {
+      id: 82,
+      description: 'updated description',
+      projectColor: {
+        lightest: '#cffafe',
+        light: '#a5f3fc',
+        dark: '#0891b2',
+        darkest: '#164e63',
+      },
+      isActive: true,
+      totalEventDurationInMinutes: 0,
+    }
+
+    page.route('**/api/projects', async (route) => {
+      const request = route.request()
+
+      if (request.method() === 'POST') {
+        route.fulfill({ json: createProjectResponse, status: 200 })
+      }
+    })
+
+    page.route('**/api/projects/**', async (route) => {
+      const request = route.request()
+
+      if (request.method() === 'DELETE') {
+        route.fulfill({ json: updateProjectResponse, status: 204 })
+      }
+    })
+
+    // test cancel button
+    await page.getByText('Create a new project').click()
+    await page.getByRole('button', { name: 'Close' }).click()
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // create a project
+    await page.getByText('Create a new project').click()
+    await page.getByLabel('Project description').fill('New Project')
+
+    const createProjectRequestAssertion = page.waitForResponse((res) => {
+      const request = res.request()
+
+      return (
+        request.method() === 'POST' &&
+        res.url().includes('/api/projects') &&
+        res.status() === 200
+      )
+    })
+
+    await page.getByRole('button', { name: 'Create project' }).click()
+
+    await createProjectRequestAssertion
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // remove toast
+    await page.getByText('Project added').click()
+    await page.waitForSelector('text="Project added"', { state: 'detached' })
+
+    // delete the project
+    await page
+      .getByRole('row', { name: 'test 0.0 hours Edit' })
+      .getByRole('button')
+      .click()
+
+    // await page.getByLabel('Edit project').getByRole('button').last().click()
+
+    const deleteProjectRequestAssertion = page.waitForResponse((res) => {
+      const request = res.request()
+
+      return (
+        request.method() === 'DELETE' &&
+        res.url().includes(`/api/projects/`) &&
+        res.status() === 204
+      )
+    })
+
+    await page.getByLabel('Delete project').click()
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    await deleteProjectRequestAssertion
+
+    // remove toast
+    await page.getByText('Project deleted').click()
+    await page.waitForSelector('text="Project deleted"', { state: 'detached' })
+
+    expect(await page.screenshot()).toMatchSnapshot('project-deleted.png')
+  })
 })

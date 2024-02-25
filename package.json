@@ -16,7 +16,6 @@
     "test": "playwright test",
     "test-browser": "playwright test --project=chromium",
     "generate": "playwright codegen"
-
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -29,6 +28,7 @@
     "eslint-plugin-jest": "^27.6.3",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.33.2",
+    "faker": "^6.6.6",
     "jode": "^0.0.0",
     "js-cookie": "^3.0.5",
     "next": "14.0.1",
@@ -46,6 +46,7 @@
   "devDependencies": {
     "@playwright/test": "^1.41.2",
     "@types/cookie": "^0.6.0",
+    "@types/faker": "^6.6.9",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.11.2",
     "@types/react": "^18.2.48",
