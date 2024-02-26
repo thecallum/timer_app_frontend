@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import { calculateDuration } from '../helpers/duration'
 import { formatDuration } from '@/helpers/formatter'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
+import { getTodaysDate } from '@/helpers/getTodaysDate'
 
 export const CalendarDates = () => {
   const { daysOfWeek, events } = useCalendarEventsContext()
@@ -16,7 +17,7 @@ export const CalendarDates = () => {
       day: x.format('DD'),
       name: x.format('ddd'),
       time: formatDuration(calculateDuration(eventsOnThisDay)),
-      current: x.isSame(dayjs(), 'day'),
+      current: x.isSame(getTodaysDate(), 'day'),
     }
   })
 

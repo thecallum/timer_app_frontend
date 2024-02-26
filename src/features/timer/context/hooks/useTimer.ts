@@ -2,6 +2,7 @@ import { useEffect, useReducer, useRef } from 'react'
 import useLocalStorage from '../../../../components/hooks/useLocalStorage'
 import { ITimerSnapshot, TimerState } from '../types'
 import { timerReducer } from './timerReducer'
+import { getTodaysDate } from '@/helpers/getTodaysDate'
 
 const LOCAL_STORAGE_KEY = 'TIMER_STATE'
 
@@ -64,7 +65,7 @@ export const useTimer = () => {
   const startTimer = () =>
     dispatch({
       type: 'START',
-      startedAt: new Date().toString(),
+      startedAt: getTodaysDate().toString(),
     })
 
   const stopTimer = () =>

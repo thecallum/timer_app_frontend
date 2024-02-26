@@ -6208,6 +6208,11 @@ mnemonist@^0.39.5:
   dependencies:
     obliterator "^2.0.1"
 
+mockdate@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/mockdate/-/mockdate-3.0.5.tgz#789be686deb3149e7df2b663d2bc4392bc3284fb"
+  integrity sha512-iniQP4rj1FhBdBYS/+eQv7j1tadJ9lJtdzgOpvsOHng/GbcDh2Fhdeq+ZRldrPYdXvCyfFUmFeEwEGXZB5I/AQ==
+
 mqtt-packet@^6.8.0:
   version "6.10.0"
   resolved "https://registry.npmjs.org/mqtt-packet/-/mqtt-packet-6.10.0.tgz"

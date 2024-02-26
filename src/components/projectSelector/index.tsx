@@ -30,7 +30,7 @@ export const ProjectSelector = (props: Props) => {
         />
       )}
     >
-      {({ ref, onClick }) => {
+      {({ ref, onClick, isOpen }) => {
         const projectColor = project?.projectColor ?? defaultProjectColor
 
         return (
@@ -40,6 +40,10 @@ export const ProjectSelector = (props: Props) => {
             // @ts-expect-error work around for react-popper library issue
             ref={ref}
             className="flex flex-row justify-start items-center py-2 px-4 rounded-md shadow-sm bg-purple-950"
+            aria-haspopup={true}
+            aria-expanded={isOpen}
+            aria-controls="projectList"
+            aria-label={`Select a project - Currently selected: ${project?.description ?? 'no project'}`}
           >
             <div
               className="w-3 h-3 rounded-full block"

@@ -3,6 +3,8 @@ import { test, expect } from './my-setup'
 test.describe('Projects page', () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   test.beforeEach(async ({ page, login }) => {
+    await page.setViewportSize({ width: 1920, height: 1080 })
+
     // init with no projects
     const getProjectsRequestAssertion = page.waitForResponse(
       (res) => res.url().includes('/api/projects') && res.status() === 200,
@@ -154,7 +156,6 @@ test.describe('Projects page', () => {
     await page.waitForSelector('text="Project added"', { state: 'detached' })
 
     // edit the project
-
     await page
       .getByRole('row', { name: 'test 0.0 hours Edit' })
       .getByRole('button')

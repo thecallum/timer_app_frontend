@@ -15,7 +15,7 @@
     "lintfix": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx --fix",
     "test": "playwright test",
     "test-browser": "playwright test --project=chromium",
-    "generate": "playwright codegen"
+    "generate": "playwright codegen --viewport-size \"1920, 2000\""
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -69,6 +69,7 @@
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-testing-library": "^6.2.0",
+    "mockdate": "^3.0.5",
     "playright": "^0.0.22",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
