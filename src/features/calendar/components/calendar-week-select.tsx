@@ -7,9 +7,12 @@ export const CalendarWeekSelect = () => {
   const endOfWeek = daysOfWeek[6].format('DD MMM')
 
   return (
-    <div className="w-full sm:w-auto shrink-0">
+    <div
+      className="w-full sm:w-auto shrink-0"
+      aria-label="Calendar week selector"
+    >
       <div className="bg-white rounded  border-slate-300 border h-14 px-6 shadow-sm text-slate-800 flex justify-center items-center">
-        <button onClick={previous}>
+        <button onClick={previous} aria-label="Show previous week">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -26,7 +29,7 @@ export const CalendarWeekSelect = () => {
         <span className="mx-3">
           {startOfWeek} - {endOfWeek}
         </span>
-        <button onClick={next}>
+        <button onClick={next} aria-label="Show next week">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -50,6 +53,7 @@ export const CalendarWeekSelect = () => {
         <span>
           <button
             onClick={reset}
+            aria-label="Show current week"
             className="mr-6 underline cursor-pointer text-sm text-slate-600"
           >
             Today
