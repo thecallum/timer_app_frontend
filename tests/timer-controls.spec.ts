@@ -11,7 +11,7 @@ import {
   waitForGetProjectsRequest,
 } from './test-helpers'
 
-test.describe('Timer controls', () => {
+test.describe('Calendar page', () => {
   test.beforeEach(async ({ page, login }) => {
     await page.setViewportSize({ width: 1920, height: 4000 })
 
@@ -25,8 +25,6 @@ test.describe('Timer controls', () => {
 
     await getEventsRequestAssertion
   })
-
-  test('timer controls work on projects page', async ({ page }) => {})
 
   test('can record event and save it to calendar', async ({ page }) => {
     // enter description
