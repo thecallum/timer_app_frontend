@@ -62,7 +62,7 @@ export const Nav = (props: Props) => {
             </ul>
 
             <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
-              <li className="line-through text-slate-400">Account</li>
+              {/* <li className="line-through text-slate-400">Account</li> */}
               <li className="text-slate-400">
                 <LogoutLink />
               </li>
