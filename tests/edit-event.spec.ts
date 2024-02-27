@@ -3,10 +3,14 @@ import { test, expect } from './my-setup'
 import {
   setupCreateCalendarEventIntercept,
   setupCreateProjectRequestIntercept,
+  setupDeleteCalendarEventIntercept,
   setupGetEventsIntercept,
   setupGetProjectsIntercept,
+  setupUpdateCalendarEventIntercept,
   waitForCreateEventRequest,
   waitForCreateProjectRequest,
+  waitForDeleteEventsRequest,
+  waitForUpdateEventRequest,
 } from './test-helpers'
 import dayjs from 'dayjs'
 
@@ -14,73 +18,64 @@ import dayjs from 'dayjs'
 test.beforeEach(async ({ page, login }) => {
   await page.setViewportSize({ width: 1920, height: 1080 })
 
-  setupGetEventsIntercept(page)
-  setupGetProjectsIntercept(page)
-})
-
-test('Opens model with correct timeslot', async ({ page }) => {
-  await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
-  expect(page.getByLabel('Event start time')).toHaveValue('2024-02-28T03:15')
-  expect(page.getByLabel('Event end time')).toHaveValue('03:30:00')
-
-  await page.getByRole('button', { name: 'Close' }).click()
-
-  await page.getByLabel('Create an event on February 28 at 3:45 AM.').click()
-  expect(page.getByLabel('Event start time')).toHaveValue('2024-02-28T03:45')
-  expect(page.getByLabel('Event end time')).toHaveValue('04:00:00')
-
-  await page.getByRole('button', { name: 'Close' }).click()
-
-  await page.getByLabel('Create an event on February 26 at 2:45 PM.').click()
-  expect(page.getByLabel('Event start time')).toHaveValue('2024-02-26T14:45')
-  expect(page.getByLabel('Event end time')).toHaveValue('15:00:00')
-
-  await page.getByRole('button', { name: 'Close' }).click()
-})
-
-test('Adds event to calendar', async ({ page }) => {
-  const createCalendarEventResponse: CalendarEventApiResponseObject = {
+  const existingEvent: CalendarEventApiResponseObject = {
     id: '126',
     projectId: null,
-    description: 'event name',
+    description: 'Event name',
     startTime: dayjs('2024-02-29T03:45:00Z'),
     endTime: dayjs('2024-02-29T04:00:00Z'),
   }
 
-  setupCreateCalendarEventIntercept(page, createCalendarEventResponse)
+  setupGetEventsIntercept(page, [existingEvent])
+  setupGetProjectsIntercept(page)
+})
 
-  await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
+test('Updates event description', async ({ page }) => {
+  const updateCalendarEventResponse: CalendarEventApiResponseObject = {
+    id: '126',
+    projectId: 82,
+    description: 'Updated description',
+    startTime: dayjs('2024-02-29T03:45:00Z'),
+    endTime: dayjs('2024-02-29T04:00:00Z'),
+  }
 
+  setupUpdateCalendarEventIntercept(page, updateCalendarEventResponse)
+
+  // open event
   await page
-    .locator('#addEventPopover')
-    .getByLabel('Event description')
-    .fill('event name')
+    .getByLabel(
+      'Calendar event: Event name on February 29 at 3:45 AM, not assigned to any project.',
+    )
+    .click()
 
-  const createEventRequestAssertion = waitForCreateEventRequest(page)
+  // update description
+  await page.getByPlaceholder('(no description)').fill('new description')
 
+  // save changes
+  const updateEventRequestAssertion = waitForUpdateEventRequest(page)
   await page.getByRole('button', { name: 'Save' }).click()
+  await updateEventRequestAssertion
 
-  await createEventRequestAssertion
-
-  // event added to calendar
+  // assert changes visible
   expect(
     page.getByLabel(
-      'Calendar event: event name on February 29 at 3:45 AM, not assigned to any project.',
+      'Calendar event: new description on February 29 at 3:45 AM, not assigned to any project.',
     ),
   ).toHaveCount(1)
 })
 
-test('Validates event name', async ({ page }) => {
-  // open project
-  await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
+test('Validates event description', async ({ page }) => {
+  // open event
+  await page
+    .getByLabel(
+      'Calendar event: Event name on February 29 at 3:45 AM, not assigned to any project.',
+    )
+    .click()
 
   // add description longer than 60 characters
-  await page
-    .locator('#addEventPopover')
-    .getByLabel('Event description')
-    .fill('aaaaaaaaaa'.repeat(7))
+  await page.getByPlaceholder('(no description)').fill('aaaaaaaaaa'.repeat(7))
 
-  // save
+  // save changes
   await page.getByRole('button', { name: 'Save' }).click()
 
   // assert error message
@@ -89,13 +84,51 @@ test('Validates event name', async ({ page }) => {
   ).toHaveCount(1)
 })
 
+test('Updates event time', async ({ page }) => {
+  const updateCalendarEventResponse: CalendarEventApiResponseObject = {
+    id: '126',
+    projectId: 82,
+    description: 'Event name',
+    startTime: dayjs('2024-02-29T04:15:00Z'),
+    endTime: dayjs('2024-02-29T04:00:00Z'),
+  }
+
+  setupUpdateCalendarEventIntercept(page, updateCalendarEventResponse)
+
+  // open event
+  await page
+    .getByLabel(
+      'Calendar event: Event name on February 29 at 3:45 AM, not assigned to any project.',
+    )
+    .click()
+
+  // update time
+  await page.getByLabel('Event start time').fill('2024-02-29T04:15')
+  await page.getByLabel('Event end time').fill('04:30:00')
+
+  // save changes
+  const updateEventRequestAssertion = waitForUpdateEventRequest(page)
+  await page.getByRole('button', { name: 'Save' }).click()
+  await updateEventRequestAssertion
+
+  // assert changes visible
+  expect(
+    page.getByLabel(
+      'Calendar event: Event name on February 29 at 4:15 AM, not assigned to any project.',
+    ),
+  ).toHaveCount(1)
+})
+
 test('Validates event time', async ({ page }) => {
-  setupGetEventsIntercept(page)
+  // open event
+  await page
+    .getByLabel(
+      'Calendar event: Event name on February 29 at 3:45 AM, not assigned to any project.',
+    )
+    .click()
 
-  // open modal
-  await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
-
-  // set end time before start time
+  // update time
+  await page.getByLabel('Event start time').fill('2024-02-29T04:15')
   await page.getByLabel('Event end time').fill('02:30:00')
 
   // save
@@ -105,58 +138,90 @@ test('Validates event time', async ({ page }) => {
   await expect(page.getByText('End time must be after start')).toHaveCount(1)
 })
 
-test('Can select a project', async ({ page }) => {
-  // open modal
-  await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
+test('Deletes event from calendar', async ({ page }) => {
+  setupDeleteCalendarEventIntercept(page)
 
-  // add description
+  // open event
   await page
-    .locator('#addEventPopover')
-    .getByLabel('Event description')
-    .fill('event name')
-
-  // select project
-  await page
-    .locator('#addEventPopover')
-    .getByLabel('Select a project - Currently selected: no project')
-    .click()
-  await page
-    .locator('#addEventPopover')
-    .getByLabel('Select project: Existing Project')
+    .getByLabel(
+      'Calendar event: Event name on February 29 at 3:45 AM, not assigned to any project.',
+    )
     .click()
 
-  // save event
-  const createCalendarEventResponse: CalendarEventApiResponseObject = {
+  // delete event
+  const deleteEventRequestAssertion = waitForDeleteEventsRequest(page)
+  await page.getByLabel('Delete event').click()
+  await deleteEventRequestAssertion
+
+  // assert event deleted
+  expect(
+    page.getByLabel(
+      'Calendar event: Event name on February 29 at 3:45 AM, not assigned to any project.',
+    ),
+  ).toHaveCount(0)
+})
+
+// can update event project
+// can create and select project
+
+test('Can update event project', async ({ page }) => {
+  const updateCalendarEventResponse: CalendarEventApiResponseObject = {
     id: '126',
     projectId: 82,
-    description: 'event name',
+    description: 'Updated description',
     startTime: dayjs('2024-02-29T03:45:00Z'),
     endTime: dayjs('2024-02-29T04:00:00Z'),
   }
 
-  setupCreateCalendarEventIntercept(page, createCalendarEventResponse)
+  setupUpdateCalendarEventIntercept(page, updateCalendarEventResponse)
 
-  const createEventRequestAssertion = waitForCreateEventRequest(page)
+  // open event
+  await page
+    .getByLabel(
+      'Calendar event: Event name on February 29 at 3:45 AM, not assigned to any project.',
+    )
+    .click()
+
+  // select project
+  await page
+    .locator('#editEventPopover')
+    .getByLabel('Select a project - Currently selected: no project')
+    .click()
+  await page
+    .locator('#editEventPopover')
+    .getByLabel('Select project: Existing Project')
+    .click()
+
+  // save changes
+  const updateEventRequestAssertion = waitForUpdateEventRequest(page)
   await page.getByRole('button', { name: 'Save' }).click()
-  await createEventRequestAssertion
+  await updateEventRequestAssertion
 
-  // event added to calendar
+  // assert changes visible
   expect(
     page.getByLabel(
-      'Calendar event: event name on February 29 at 3:45 AM, assigned to project Existing project.',
+      'Calendar event: Event name on February 29 at 3:45 AM, assigned to project Existing Project.',
     ),
   ).toHaveCount(1)
 })
 
-test('Can create and select a new project', async ({ page }) => {
-  // open modal
-  await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
+test('Can create and select project', async ({ page }) => {
+  const updateCalendarEventResponse: CalendarEventApiResponseObject = {
+    id: '126',
+    projectId: 83,
+    description: 'Updated description',
+    startTime: dayjs('2024-02-29T03:45:00Z'),
+    endTime: dayjs('2024-02-29T04:00:00Z'),
+  }
 
-  // add description
+  setupUpdateCalendarEventIntercept(page, updateCalendarEventResponse)
+
+  // open event
   await page
-    .locator('#addEventPopover')
-    .getByLabel('Event description')
-    .fill('event name')
+    .getByLabel(
+      'Calendar event: Event name on February 29 at 3:45 AM, not assigned to any project.',
+    )
+    .click()
 
   // select and create project
   await setupCreateProjectRequestIntercept(page)
@@ -164,7 +229,7 @@ test('Can create and select a new project', async ({ page }) => {
   const createProjectRequestAssertion = waitForCreateProjectRequest(page)
 
   await page
-    .locator('#addEventPopover')
+    .locator('#editEventPopover')
     .getByLabel('Select a project - Currently selected: no project')
     .click()
   await page.getByLabel('Create a new project').click()
@@ -174,29 +239,19 @@ test('Can create and select a new project', async ({ page }) => {
   await createProjectRequestAssertion
 
   await page
-    .locator('#addEventPopover')
+    .locator('#editEventPopover')
     .getByLabel('Select project: New project')
     .click()
 
-  // save event
-  const createCalendarEventResponse: CalendarEventApiResponseObject = {
-    id: '126',
-    projectId: 83,
-    description: 'event name',
-    startTime: dayjs('2024-02-29T03:45:00Z'),
-    endTime: dayjs('2024-02-29T04:00:00Z'),
-  }
-
-  setupCreateCalendarEventIntercept(page, createCalendarEventResponse)
-
-  const createEventRequestAssertion = waitForCreateEventRequest(page)
+  // save changes
+  const updateEventRequestAssertion = waitForUpdateEventRequest(page)
   await page.getByRole('button', { name: 'Save' }).click()
-  await createEventRequestAssertion
+  await updateEventRequestAssertion
 
-  // event added to calendar
+  // assert changes visible
   expect(
     page.getByLabel(
-      'Calendar event: event name on February 29 at 3:45 AM, assigned to project New project.',
+      'Calendar event: Event name on February 29 at 3:45 AM, assigned to project New project.',
     ),
   ).toHaveCount(1)
 })

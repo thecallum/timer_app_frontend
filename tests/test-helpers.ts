@@ -26,6 +26,14 @@ const createCalendarEventResponse: CalendarEventApiResponseObject = {
   endTime: dayjs('2024-02-29T04:00:00Z'),
 }
 
+const updateCalendarEventResponse: CalendarEventApiResponseObject = {
+  id: '126',
+  projectId: 82,
+  description: 'Updated description',
+  startTime: dayjs('2024-02-29T03:45:00Z'),
+  endTime: dayjs('2024-02-29T04:00:00Z'),
+}
+
 const createProjectResponse = {
   id: 83,
   description: 'New project',
@@ -39,9 +47,12 @@ const createProjectResponse = {
   totalEventDurationInMinutes: 0,
 }
 
-export const setupGetEventsIntercept = async (page: Page) => {
+export const setupGetEventsIntercept = async (
+  page: Page,
+  response: CalendarEventApiResponseObject[] = [],
+) => {
   page.route('**/api/events**', async (route) => {
-    route.fulfill({ json: [], status: 200 })
+    route.fulfill({ json: response, status: 200 })
   })
 }
 
@@ -68,6 +79,33 @@ export const setupCreateCalendarEventIntercept = async (
   })
 }
 
+export const setupUpdateCalendarEventIntercept = async (
+  page: Page,
+  body: CalendarEventApiResponseObject = updateCalendarEventResponse,
+) => {
+  await page.route('**/api/events/**', async (route) => {
+    const request = route.request()
+
+    if (request.method() === 'PUT') {
+      route.fulfill({ json: body, status: 200 })
+    }
+  })
+}
+
+
+export const setupDeleteCalendarEventIntercept = async (
+  page: Page,
+) => {
+  await page.route('**/api/events/**', async (route) => {
+    const request = route.request()
+
+    if (request.method() === 'DELETE') {
+      route.fulfill({status: 204 })
+    }
+  })
+}
+
+
 export const setupCreateProjectRequestIntercept = async (page: Page) => {
   await page.route('**/api/projects', async (route) => {
     const request = route.request()
@@ -84,12 +122,36 @@ export const waitForGetEventsRequest = (page: Page) => {
   )
 }
 
+export const waitForDeleteEventsRequest = (page: Page) => {
+  return page.waitForResponse((res) => {
+    const method = res.request().method()
+
+    return (
+      res.url().includes('/api/events') &&
+      res.status() === 204 &&
+      method === 'DELETE'
+    )
+  })
+}
+
 export const waitForCreateEventRequest = (page: Page) => {
   return page.waitForResponse((res) => {
     const request = res.request()
 
     return (
       request.method() === 'POST' &&
+      res.url().includes(`/api/events/`) &&
+      res.status() === 200
+    )
+  })
+}
+
+export const waitForUpdateEventRequest = (page: Page) => {
+  return page.waitForResponse((res) => {
+    const request = res.request()
+
+    return (
+      request.method() === 'PUT' &&
       res.url().includes(`/api/events/`) &&
       res.status() === 200
     )

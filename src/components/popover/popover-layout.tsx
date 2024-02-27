@@ -13,7 +13,7 @@ export const PopoverLayout = (props: Props) => {
         <h2 className="text-slate-800 text-xs ">{title}</h2>
 
         {onDelete && (
-          <button type="button" onClick={onDelete}>
+          <button type="button" onClick={onDelete} aria-label="Delete event">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"
