@@ -1,5 +1,6 @@
 import { test, expect } from './my-setup'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 test.beforeEach(async ({ page, login }) => {
   // MockDate.set('2024-02-28')
   await page.setViewportSize({ width: 1920, height: 4000 })

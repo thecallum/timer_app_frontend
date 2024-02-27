@@ -1,13 +1,11 @@
 import { CalendarEventApiResponseObject } from '@/requests/types'
 import { test, expect } from './my-setup'
 import {
-  setupCreateCalendarEventIntercept,
   setupCreateProjectRequestIntercept,
   setupDeleteCalendarEventIntercept,
   setupGetEventsIntercept,
   setupGetProjectsIntercept,
   setupUpdateCalendarEventIntercept,
-  waitForCreateEventRequest,
   waitForCreateProjectRequest,
   waitForDeleteEventsRequest,
   waitForUpdateEventRequest,

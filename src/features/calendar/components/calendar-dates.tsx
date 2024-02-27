@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import dayjs from 'dayjs'
 import { calculateDuration } from '../helpers/duration'
 import { formatDuration } from '@/helpers/formatter'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'

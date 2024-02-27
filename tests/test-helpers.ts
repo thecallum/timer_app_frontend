@@ -92,19 +92,15 @@ export const setupUpdateCalendarEventIntercept = async (
   })
 }
 
-
-export const setupDeleteCalendarEventIntercept = async (
-  page: Page,
-) => {
+export const setupDeleteCalendarEventIntercept = async (page: Page) => {
   await page.route('**/api/events/**', async (route) => {
     const request = route.request()
 
     if (request.method() === 'DELETE') {
-      route.fulfill({status: 204 })
+      route.fulfill({ status: 204 })
     }
   })
 }
-
 
 export const setupCreateProjectRequestIntercept = async (page: Page) => {
   await page.route('**/api/projects', async (route) => {

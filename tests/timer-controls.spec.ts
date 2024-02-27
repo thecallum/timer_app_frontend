@@ -1,4 +1,3 @@
-import { Page } from '@playwright/test'
 import { test, expect } from './my-setup'
 import {
   setupCreateCalendarEventIntercept,
@@ -11,6 +10,7 @@ import {
   waitForGetProjectsRequest,
 } from './test-helpers'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 test.beforeEach(async ({ page, login }) => {
   await page.setViewportSize({ width: 1920, height: 4000 })
 

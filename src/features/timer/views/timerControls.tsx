@@ -1,6 +1,5 @@
 import { ProjectSelector } from '@/components/projectSelector'
 import { formatDuration } from '@/helpers/formatter'
-import dayjs from 'dayjs'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { useTimerContext } from '../context/hooks/useTimerContext'
 import { CalendarEventApiRequestObject } from '@/requests/types'
