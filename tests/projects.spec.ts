@@ -106,6 +106,20 @@ test('edits a project', async ({ page }) => {
   expect(await page.screenshot()).toMatchSnapshot('project-updated.png')
 })
 
+test('validates project description', async ({ page }) => {
+  // create a project
+  await page.getByText('Create a new project').click()
+
+  // set invalid description
+  await page.getByLabel('Project description').fill('aaaaaaaaaa'.repeat(4))
+
+  // click add button
+  await page.getByRole('button', { name: 'Create project' }).click()
+
+  // assert error message
+  expect(page.getByText('Description cannot exceed 30 characters')).toHaveCount(1)
+})
+
 test('deletes a project', async ({ page }) => {
   setupCreateProjectRequestIntercept(page)
   setupDeleteProjectRequestIntercept(page)
