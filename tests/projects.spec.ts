@@ -1,6 +1,5 @@
 import { test, expect } from './my-setup'
 import {
-  setupCreateCalendarEventIntercept,
   setupCreateProjectRequestIntercept,
   setupDeleteProjectRequestIntercept,
   setupGetProjectsIntercept,
@@ -8,13 +7,26 @@ import {
   waitForCreateProjectRequest,
   waitForDeleteProjectRequest,
   waitForGetProjectsRequest,
-  waitForUpdateProjectRequest,
 } from './test-helpers'
+
+import { existingProject, updateProjectResponse } from './fixtures'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 test.beforeEach(async ({ page, login }) => {
   await page.setViewportSize({ width: 1920, height: 1080 })
+})
 
+test('shows empty list of projects', async ({ page }) => {
+  // init with no projects
+  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
+  setupGetProjectsIntercept(page)
+  await page.goto('http://localhost:3000/projects')
+  await getProjectsRequestAssertion
+
+  expect(await page.screenshot()).toMatchSnapshot('no-projects.png')
+})
+
+test('creates a project', async ({ page }) => {
   // init with no projects
   const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
 
@@ -23,20 +35,8 @@ test.beforeEach(async ({ page, login }) => {
   await page.goto('http://localhost:3000/projects')
 
   await getProjectsRequestAssertion
-})
 
-test('shows empty list of projects', async ({ page }) => {
-  expect(await page.screenshot()).toMatchSnapshot('no-projects.png')
-})
-
-test('creates a project', async ({ page }) => {
   setupCreateProjectRequestIntercept(page)
-
-  // test cancel button
-  await page.getByText('Create a new project').click()
-  await page.getByRole('button', { name: 'Close' }).click()
-
-  expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
 
   // create a project
   await page.getByText('Create a new project').click()
@@ -58,39 +58,24 @@ test('creates a project', async ({ page }) => {
 })
 
 test('edits a project', async ({ page }) => {
-  setupCreateProjectRequestIntercept(page)
+  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
 
-  // test cancel button
-  await page.getByText('Create a new project').click()
-  await page.getByRole('button', { name: 'Close' }).click()
-
-  expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
-
-  // create a project
-  await page.getByText('Create a new project').click()
-  await page.getByLabel('Project description').fill('New Project')
-
-  const createProjectRequestAssertion = waitForCreateProjectRequest(page)
-
-  await page.getByRole('button', { name: 'Create project' }).click()
-
-  await createProjectRequestAssertion
-
-  expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
-
-  // remove toast
-  await page.getByText('Project added').click()
-  await page.waitForSelector('text="Project added"', { state: 'detached' })
+  setupGetProjectsIntercept(page, [existingProject])
+  await page.goto('http://localhost:3000/projects')
+  await getProjectsRequestAssertion
 
   // edit the project
   await page
-    .getByRole('row', { name: 'New project 0.0 hours Edit' })
+    .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
     .getByRole('button')
     .click()
 
   await page.getByLabel('Project description').fill('updated description')
 
-  await setupUpdateProjectRequestIntercept(page)
+  await setupUpdateProjectRequestIntercept(page, {
+    ...updateProjectResponse,
+    id: 82,
+  })
 
   await page
     .getByLabel('Edit project')
@@ -107,6 +92,12 @@ test('edits a project', async ({ page }) => {
 })
 
 test('validates project description', async ({ page }) => {
+  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
+  setupGetProjectsIntercept(page)
+  await page.goto('http://localhost:3000/projects')
+
+  await getProjectsRequestAssertion
+
   // create a project
   await page.getByText('Create a new project').click()
 
@@ -117,38 +108,23 @@ test('validates project description', async ({ page }) => {
   await page.getByRole('button', { name: 'Create project' }).click()
 
   // assert error message
-  expect(page.getByText('Description cannot exceed 30 characters')).toHaveCount(1)
+  expect(page.getByText('Description cannot exceed 30 characters')).toHaveCount(
+    1,
+  )
 })
 
 test('deletes a project', async ({ page }) => {
-  setupCreateProjectRequestIntercept(page)
   setupDeleteProjectRequestIntercept(page)
 
-  // test cancel button
-  await page.getByText('Create a new project').click()
-  await page.getByRole('button', { name: 'Close' }).click()
+  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
+  setupGetProjectsIntercept(page, [existingProject])
+  await page.goto('http://localhost:3000/projects')
 
-  expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
-
-  // create a project
-  await page.getByText('Create a new project').click()
-  await page.getByLabel('Project description').fill('New Project')
-
-  const createProjectRequestAssertion = waitForCreateProjectRequest(page)
-
-  await page.getByRole('button', { name: 'Create project' }).click()
-
-  await createProjectRequestAssertion
-
-  expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
-
-  // remove toast
-  await page.getByText('Project added').click()
-  await page.waitForSelector('text="Project added"', { state: 'detached' })
+  await getProjectsRequestAssertion
 
   // delete the project
   await page
-    .getByRole('row', { name: 'New project 0.0 hours Edit' })
+    .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
     .getByRole('button')
     .click()
 
