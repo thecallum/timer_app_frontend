@@ -47,6 +47,19 @@ const createProjectResponse = {
   totalEventDurationInMinutes: 0,
 }
 
+const updateProjectResponse = {
+  id: 83,
+  description: 'updated description',
+  projectColor: {
+    lightest: '#cffafe',
+    light: '#a5f3fc',
+    dark: '#0891b2',
+    darkest: '#164e63',
+  },
+  isActive: true,
+  totalEventDurationInMinutes: 0,
+}
+
 export const setupGetEventsIntercept = async (
   page: Page,
   response: CalendarEventApiResponseObject[] = [],
@@ -56,12 +69,15 @@ export const setupGetEventsIntercept = async (
   })
 }
 
-export const setupGetProjectsIntercept = async (page: Page) => {
+export const setupGetProjectsIntercept = async (
+  page: Page,
+  body: ProjectApiResponseObject[] = [],
+) => {
   await page.route('**/api/projects**', async (route) => {
     const request = route.request()
 
     if (request.method() === 'GET') {
-      route.fulfill({ json: [existingProject], status: 200 })
+      route.fulfill({ json: body, status: 200 })
     }
   })
 }
@@ -108,6 +124,29 @@ export const setupCreateProjectRequestIntercept = async (page: Page) => {
 
     if (request.method() === 'POST') {
       route.fulfill({ json: createProjectResponse, status: 200 })
+    }
+  })
+}
+
+export const setupUpdateProjectRequestIntercept = async (
+  page: Page,
+  data: ProjectApiResponseObject = updateProjectResponse,
+) => {
+  await page.route('**/api/projects/**', async (route) => {
+    const request = route.request()
+
+    if (request.method() === 'PUT') {
+      route.fulfill({ json: data, status: 200 })
+    }
+  })
+}
+
+export const setupDeleteProjectRequestIntercept = async (page: Page) => {
+  await page.route('**/api/projects/**', async (route) => {
+    const request = route.request()
+
+    if (request.method() === 'DELETE') {
+      route.fulfill({ status: 204 })
     }
   })
 }
@@ -162,6 +201,30 @@ export const waitForCreateProjectRequest = (page: Page) => {
       request.method() === 'POST' &&
       res.url().includes('/api/projects') &&
       res.status() === 200
+    )
+  })
+}
+
+export const waitForUpdateProjectRequest = (page: Page) => {
+  return page.waitForResponse((res) => {
+    const request = res.request()
+
+    return (
+      request.method() === 'PUT' &&
+      res.url().includes('/api/projects/**') &&
+      res.status() === 200
+    )
+  })
+}
+
+export const waitForDeleteProjectRequest = (page: Page) => {
+  return page.waitForResponse((res) => {
+    const request = res.request()
+
+    return (
+      request.method() === 'DELETE' &&
+      res.url().includes(`/api/projects/`) &&
+      res.status() === 204
     )
   })
 }

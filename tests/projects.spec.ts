@@ -1,21 +1,24 @@
 import { test, expect } from './my-setup'
+import {
+  setupCreateCalendarEventIntercept,
+  setupCreateProjectRequestIntercept,
+  setupDeleteProjectRequestIntercept,
+  setupGetProjectsIntercept,
+  setupUpdateProjectRequestIntercept,
+  waitForCreateProjectRequest,
+  waitForDeleteProjectRequest,
+  waitForGetProjectsRequest,
+  waitForUpdateProjectRequest,
+} from './test-helpers'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 test.beforeEach(async ({ page, login }) => {
   await page.setViewportSize({ width: 1920, height: 1080 })
 
   // init with no projects
-  const getProjectsRequestAssertion = page.waitForResponse(
-    (res) => res.url().includes('/api/projects') && res.status() === 200,
-  )
+  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
 
-  page.route('**/api/projects', async (route) => {
-    const request = route.request()
-
-    if (request.method() === 'GET') {
-      route.fulfill({ json: [], status: 200 })
-    }
-  })
+  setupGetProjectsIntercept(page)
 
   await page.goto('http://localhost:3000/projects')
 
@@ -27,26 +30,7 @@ test('shows empty list of projects', async ({ page }) => {
 })
 
 test('creates a project', async ({ page }) => {
-  const createProjectResponse = {
-    id: 82,
-    description: 'test',
-    projectColor: {
-      lightest: '#cffafe',
-      light: '#a5f3fc',
-      dark: '#0891b2',
-      darkest: '#164e63',
-    },
-    isActive: true,
-    totalEventDurationInMinutes: 0,
-  }
-
-  page.route('**/api/projects', async (route) => {
-    const request = route.request()
-
-    if (request.method() === 'POST') {
-      route.fulfill({ json: createProjectResponse, status: 200 })
-    }
-  })
+  setupCreateProjectRequestIntercept(page)
 
   // test cancel button
   await page.getByText('Create a new project').click()
@@ -58,15 +42,7 @@ test('creates a project', async ({ page }) => {
   await page.getByText('Create a new project').click()
   await page.getByLabel('Project description').fill('New Project')
 
-  const createProjectRequestAssertion = page.waitForResponse((res) => {
-    const request = res.request()
-
-    return (
-      request.method() === 'POST' &&
-      res.url().includes('/api/projects') &&
-      res.status() === 200
-    )
-  })
+  const createProjectRequestAssertion = waitForCreateProjectRequest(page)
 
   await page.getByRole('button', { name: 'Create project' }).click()
 
@@ -82,47 +58,7 @@ test('creates a project', async ({ page }) => {
 })
 
 test('edits a project', async ({ page }) => {
-  const createProjectResponse = {
-    id: 82,
-    description: 'test',
-    projectColor: {
-      lightest: '#cffafe',
-      light: '#a5f3fc',
-      dark: '#0891b2',
-      darkest: '#164e63',
-    },
-    isActive: true,
-    totalEventDurationInMinutes: 0,
-  }
-
-  const updateProjectResponse = {
-    id: 82,
-    description: 'updated description',
-    projectColor: {
-      lightest: '#cffafe',
-      light: '#a5f3fc',
-      dark: '#0891b2',
-      darkest: '#164e63',
-    },
-    isActive: true,
-    totalEventDurationInMinutes: 0,
-  }
-
-  page.route('**/api/projects', async (route) => {
-    const request = route.request()
-
-    if (request.method() === 'POST') {
-      route.fulfill({ json: createProjectResponse, status: 200 })
-    }
-  })
-
-  page.route('**/api/projects/**', async (route) => {
-    const request = route.request()
-
-    if (request.method() === 'PUT') {
-      route.fulfill({ json: updateProjectResponse, status: 200 })
-    }
-  })
+  setupCreateProjectRequestIntercept(page)
 
   // test cancel button
   await page.getByText('Create a new project').click()
@@ -134,15 +70,7 @@ test('edits a project', async ({ page }) => {
   await page.getByText('Create a new project').click()
   await page.getByLabel('Project description').fill('New Project')
 
-  const createProjectRequestAssertion = page.waitForResponse((res) => {
-    const request = res.request()
-
-    return (
-      request.method() === 'POST' &&
-      res.url().includes('/api/projects') &&
-      res.status() === 200
-    )
-  })
+  const createProjectRequestAssertion = waitForCreateProjectRequest(page)
 
   await page.getByRole('button', { name: 'Create project' }).click()
 
@@ -156,28 +84,18 @@ test('edits a project', async ({ page }) => {
 
   // edit the project
   await page
-    .getByRole('row', { name: 'test 0.0 hours Edit' })
+    .getByRole('row', { name: 'New project 0.0 hours Edit' })
     .getByRole('button')
     .click()
 
-  await page.getByLabel('Project description').fill('New Project name updated')
+  await page.getByLabel('Project description').fill('updated description')
 
-  const updateProjectRequestAssertion = page.waitForResponse((res) => {
-    const request = res.request()
-
-    return (
-      request.method() === 'PUT' &&
-      res.url().includes(`/api/projects/`) &&
-      res.status() === 200
-    )
-  })
+  await setupUpdateProjectRequestIntercept(page)
 
   await page
     .getByLabel('Edit project')
     .getByRole('button', { name: 'Edit project' })
     .click()
-
-  await updateProjectRequestAssertion
 
   expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
 
@@ -189,47 +107,8 @@ test('edits a project', async ({ page }) => {
 })
 
 test('deletes a project', async ({ page }) => {
-  const createProjectResponse = {
-    id: 82,
-    description: 'test',
-    projectColor: {
-      lightest: '#cffafe',
-      light: '#a5f3fc',
-      dark: '#0891b2',
-      darkest: '#164e63',
-    },
-    isActive: true,
-    totalEventDurationInMinutes: 0,
-  }
-
-  const updateProjectResponse = {
-    id: 82,
-    description: 'updated description',
-    projectColor: {
-      lightest: '#cffafe',
-      light: '#a5f3fc',
-      dark: '#0891b2',
-      darkest: '#164e63',
-    },
-    isActive: true,
-    totalEventDurationInMinutes: 0,
-  }
-
-  page.route('**/api/projects', async (route) => {
-    const request = route.request()
-
-    if (request.method() === 'POST') {
-      route.fulfill({ json: createProjectResponse, status: 200 })
-    }
-  })
-
-  page.route('**/api/projects/**', async (route) => {
-    const request = route.request()
-
-    if (request.method() === 'DELETE') {
-      route.fulfill({ json: updateProjectResponse, status: 204 })
-    }
-  })
+  setupCreateProjectRequestIntercept(page)
+  setupDeleteProjectRequestIntercept(page)
 
   // test cancel button
   await page.getByText('Create a new project').click()
@@ -241,15 +120,7 @@ test('deletes a project', async ({ page }) => {
   await page.getByText('Create a new project').click()
   await page.getByLabel('Project description').fill('New Project')
 
-  const createProjectRequestAssertion = page.waitForResponse((res) => {
-    const request = res.request()
-
-    return (
-      request.method() === 'POST' &&
-      res.url().includes('/api/projects') &&
-      res.status() === 200
-    )
-  })
+  const createProjectRequestAssertion = waitForCreateProjectRequest(page)
 
   await page.getByRole('button', { name: 'Create project' }).click()
 
@@ -263,21 +134,11 @@ test('deletes a project', async ({ page }) => {
 
   // delete the project
   await page
-    .getByRole('row', { name: 'test 0.0 hours Edit' })
+    .getByRole('row', { name: 'New project 0.0 hours Edit' })
     .getByRole('button')
     .click()
 
-  // await page.getByLabel('Edit project').getByRole('button').last().click()
-
-  const deleteProjectRequestAssertion = page.waitForResponse((res) => {
-    const request = res.request()
-
-    return (
-      request.method() === 'DELETE' &&
-      res.url().includes(`/api/projects/`) &&
-      res.status() === 204
-    )
-  })
+  const deleteProjectRequestAssertion = waitForDeleteProjectRequest(page)
 
   await page.getByLabel('Delete project').click()
 
