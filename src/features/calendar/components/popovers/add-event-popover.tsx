@@ -54,7 +54,7 @@ export const AddEventPopover = (props: Props) => {
     }
 
     if (description.length > 60) {
-      errors['description'] = 'Description must be less than 100 characters'
+      errors['description'] = 'Description must be less than 60 characters'
     }
 
     return errors
@@ -95,7 +95,7 @@ export const AddEventPopover = (props: Props) => {
   }
 
   return (
-    <PopoverContainer>
+    <PopoverContainer id="addEventPopover">
       <form onSubmit={handleSubmit}>
         <PopoverLayout title="Add Event">
           <>
@@ -126,14 +126,15 @@ export const AddEventPopover = (props: Props) => {
             <div className="flex mb-2">
               <div className="mr-4">
                 <label
-                  htmlFor="eventStartTime"
+                  // htmlFor="eventStartTime"
                   className="text-slate-500 text-xs"
                 >
                   Start
                 </label>
                 <input
                   type="datetime-local"
-                  name=""
+                  name="eventStartTime"
+                  aria-label="Event start time"
                   id="eventStartTime"
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setStartDate(e.target.value)
@@ -145,7 +146,7 @@ export const AddEventPopover = (props: Props) => {
 
               <div>
                 <label
-                  htmlFor="eventEndTime"
+                  // htmlFor="eventEndTime"
                   className="text-slate-500 text-xs"
                 >
                   End
@@ -154,6 +155,8 @@ export const AddEventPopover = (props: Props) => {
                   type="time"
                   step={1}
                   name="eventEndTime"
+                  id="eventEndTime"
+                  aria-label="Event end time"
                   value={endTime}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setEndTime(e.target.value)

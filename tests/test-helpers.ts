@@ -1,5 +1,9 @@
 import { Page } from '@playwright/test'
-import { ProjectApiResponseObject } from '@/requests/types'
+import {
+  CalendarEventApiResponseObject,
+  ProjectApiResponseObject,
+} from '@/requests/types'
+import dayjs from 'dayjs'
 
 const existingProject: ProjectApiResponseObject = {
   id: 82,
@@ -14,12 +18,12 @@ const existingProject: ProjectApiResponseObject = {
   totalEventDurationInMinutes: 0,
 }
 
-const createCalendarEventResponse = {
-  id: 126,
+const createCalendarEventResponse: CalendarEventApiResponseObject = {
+  id: '126',
   projectId: 82,
   description: 'Updated description',
-  startTime: '2024-02-29T03:45:00Z',
-  endTime: '2024-02-29T04:00:00Z',
+  startTime: dayjs('2024-02-29T03:45:00Z'),
+  endTime: dayjs('2024-02-29T04:00:00Z'),
 }
 
 const createProjectResponse = {
@@ -51,12 +55,15 @@ export const setupGetProjectsIntercept = async (page: Page) => {
   })
 }
 
-export const setupCreateCalendarEventIntercept = async (page: Page) => {
+export const setupCreateCalendarEventIntercept = async (
+  page: Page,
+  body: CalendarEventApiResponseObject = createCalendarEventResponse,
+) => {
   await page.route('**/api/events/', async (route) => {
     const request = route.request()
 
     if (request.method() === 'POST') {
-      route.fulfill({ json: createCalendarEventResponse, status: 200 })
+      route.fulfill({ json: body, status: 200 })
     }
   })
 }
