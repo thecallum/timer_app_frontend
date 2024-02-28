@@ -25,4 +25,3 @@ export const test = playwright.test.extend({
     await use(page)
   },
 })
-

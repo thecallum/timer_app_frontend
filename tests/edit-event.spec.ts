@@ -29,7 +29,6 @@ test.beforeEach(async ({ page, login }) => {
 })
 
 test.describe('Edits an event', () => {
-
   test('Request error', async ({ page }) => {
     setupUpdateCalendarEventIntercept(page, null, 400)
 

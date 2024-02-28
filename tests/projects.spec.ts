@@ -27,7 +27,7 @@ test('shows empty list of projects', async ({ page }) => {
 })
 
 test.describe('creates a project', () => {
-  test.beforeEach(async ({ page, login }) => {
+  test.beforeEach(async ({ page }) => {
     // init with no projects
     const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
 
@@ -77,7 +77,7 @@ test.describe('creates a project', () => {
 })
 
 test.describe('edits a project', () => {
-  test.beforeEach(async ({ page, login }) => {
+  test.beforeEach(async ({ page }) => {
     const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
     setupGetProjectsIntercept(page, [existingProject])
     await page.goto('http://localhost:3000/projects')
@@ -178,7 +178,7 @@ test('validates project description', async ({ page }) => {
 })
 
 test.describe('deletes a project', () => {
-  test.beforeEach(async ({ page, login }) => {
+  test.beforeEach(async ({ page }) => {
     const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
     setupGetProjectsIntercept(page, [existingProject])
     await page.goto('http://localhost:3000/projects')

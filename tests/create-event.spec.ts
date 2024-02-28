@@ -53,7 +53,11 @@ test('request error', async ({ page }) => {
   await createEventRequestAssertion
 
   // event added to calendar
-  expect(page.locator('#addEventPopover').getByText('Request failed with status code 400')).toHaveCount(1)
+  expect(
+    page
+      .locator('#addEventPopover')
+      .getByText('Request failed with status code 400'),
+  ).toHaveCount(1)
 })
 
 test('Adds event to calendar', async ({ page }) => {
