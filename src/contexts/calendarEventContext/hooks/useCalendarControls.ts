@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import { getTodaysDate } from '@/helpers/getTodaysDate'
 import { useState } from 'react'
 
 export const useCalendarControls = () => {
@@ -11,10 +11,18 @@ export const useCalendarControls = () => {
   const getStartOfWeek = (weeksInFuture: number) => {
     const dayCount = weeksInFuture * 7
 
-    return dayjs()
+    let startOfWeek = getTodaysDate()
       .startOf('week')
       .add(1, 'day') // Adjust to start week on Monday
       .add(dayCount, 'day')
+
+    // resolve bug when today is sunday
+    // (was showing incorrect week)
+    if (getTodaysDate().day() === 0) {
+      startOfWeek = startOfWeek.add(-7, 'day')
+    }
+
+    return startOfWeek
   }
 
   const getWeekDates = () => {

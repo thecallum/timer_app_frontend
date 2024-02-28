@@ -1,10 +1,10 @@
 import { ProjectSelector } from '@/components/projectSelector'
 import { formatDuration } from '@/helpers/formatter'
-import dayjs from 'dayjs'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { useTimerContext } from '../context/hooks/useTimerContext'
 import { CalendarEventApiRequestObject } from '@/requests/types'
 import classNames from 'classnames'
+import { getTodaysDate } from '@/helpers/getTodaysDate'
 
 export const TimerControls = () => {
   const { addEvent } = useCalendarEventsContext()
@@ -27,10 +27,12 @@ export const TimerControls = () => {
   const handleStopTimer = () => {
     stopTimer()
 
+    const now = getTodaysDate()
+
     const request: CalendarEventApiRequestObject = {
       description: description,
-      startTime: dayjs().add(time * -1, 'second'),
-      endTime: dayjs(),
+      startTime: now.add(time * -1, 'second'),
+      endTime: now,
       projectId: projectId,
     }
 
@@ -61,6 +63,9 @@ export const TimerControls = () => {
 
         <div className="mr-2 shrink-0">
           <button
+            aria-label={
+              isRunning ? 'Save current recording' : 'Start recording an event'
+            }
             onClick={isRunning ? handleStopTimer : handleStartTimer}
             className={
               'w-10 h-10 rounded-full flex items-center justify-center shadow-md bg-purple-700 '

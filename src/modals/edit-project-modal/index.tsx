@@ -31,6 +31,8 @@ export const EditProjectModal = (props: Props) => {
           setRequestError(status.errorMessage)
           return
         }
+
+        close()
       })
       .finally(() => {
         setIsLoading(false)
@@ -88,7 +90,11 @@ export const EditProjectModal = (props: Props) => {
       <form onSubmit={handleSubmit}>
         {!!project && (
           <>
-            <ModalLayout title="Edit Project" onDelete={onDeleteProject}>
+            <ModalLayout
+              title="Edit Project"
+              onDelete={onDeleteProject}
+              deleteLabel="Delete project"
+            >
               <>
                 <TextInput
                   autoFocus

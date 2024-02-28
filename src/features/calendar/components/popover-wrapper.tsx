@@ -9,6 +9,7 @@ interface Props {
     ref: React.Dispatch<React.SetStateAction<HTMLDivElement | null>>
     onClick: () => void
     showPopover: boolean
+    isOpen: boolean
   }) => JSX.Element
 }
 
@@ -24,6 +25,7 @@ export const PopoverWrapper = (props: Props) => {
         ref: referenceProps.ref,
         onClick: referenceProps.onClick,
         showPopover: referenceProps.showPopover,
+        isOpen: showPopover,
       })}
 
       {showPopover && (

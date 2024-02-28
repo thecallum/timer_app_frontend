@@ -1,18 +1,20 @@
-interface Props {
+type Props = {
   children: JSX.Element
   title: string
-  onDelete?: () => void
-}
+} & (
+  | { onDelete: () => void; deleteLabel: string }
+  | { onDelete?: never; deleteLabel?: never }
+)
 
 export const ModalLayout = (props: Props) => {
-  const { children, title, onDelete } = props
+  const { children, title, onDelete, deleteLabel } = props
 
   return (
     <div className="p-4">
       <div className="flex items-start justify-between mb-2">
         <h2 className="text-slate-800 text-xs mb-2">{title}</h2>
         {onDelete && (
-          <button type="button" onClick={onDelete}>
+          <button type="button" onClick={onDelete} aria-label={deleteLabel}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="18"

@@ -6,7 +6,7 @@ import {
 } from '@/auth/constants'
 import { ServerResponse, IncomingMessage } from 'http'
 
-const COOKIE_DOMAIN =
+export const COOKIE_DOMAIN =
   process.env.NEXT_PUBLIC_LOCAL_ENV === 'true'
     ? 'localhost'
     : process.env.COOKIE_DOMAIN ?? ''
@@ -45,7 +45,7 @@ export function setCookie(
   ])
 }
 
-const buildCookieString = (
+export const buildCookieString = (
   name: string,
   value: string,
   domain: string,

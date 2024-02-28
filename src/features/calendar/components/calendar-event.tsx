@@ -23,6 +23,7 @@ export const CalendarEvent = (props: Props) => {
     top,
     left,
     width,
+    startTime,
   } = event
 
   const eventStyles = {
@@ -52,6 +53,8 @@ export const CalendarEvent = (props: Props) => {
             <div
               style={eventStyles}
               className="absolute p-[1px] overflow-hidden"
+              role="article"
+              aria-label={`Calendar event: ${description} on ${startTime.format('MMMM D')} at ${startTime.format('h:mm A')}, ${project?.description ? `assigned to project ${project?.description}` : `not assigned to any project`}.`}
             >
               <button
                 className={`w-full h-full cursor-pointer rounded-sm`}
