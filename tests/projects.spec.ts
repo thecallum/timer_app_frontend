@@ -26,69 +26,133 @@ test('shows empty list of projects', async ({ page }) => {
   expect(await page.screenshot()).toMatchSnapshot('no-projects.png')
 })
 
-test('creates a project', async ({ page }) => {
-  // init with no projects
-  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
+test.describe('creates a project', () => {
+  test.beforeEach(async ({ page, login }) => {
+    // init with no projects
+    const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
 
-  setupGetProjectsIntercept(page)
+    setupGetProjectsIntercept(page)
 
-  await page.goto('http://localhost:3000/projects')
+    await page.goto('http://localhost:3000/projects')
 
-  await getProjectsRequestAssertion
-
-  setupCreateProjectRequestIntercept(page)
-
-  // create a project
-  await page.getByText('Create a new project').click()
-  await page.getByLabel('Project description').fill('New Project')
-
-  const createProjectRequestAssertion = waitForCreateProjectRequest(page)
-
-  await page.getByRole('button', { name: 'Create project' }).click()
-
-  await createProjectRequestAssertion
-
-  expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
-
-  // remove toast
-  await page.getByText('Project added').click()
-  await page.waitForSelector('text="Project added"', { state: 'detached' })
-
-  expect(await page.screenshot()).toMatchSnapshot('project-created.png')
-})
-
-test('edits a project', async ({ page }) => {
-  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
-
-  setupGetProjectsIntercept(page, [existingProject])
-  await page.goto('http://localhost:3000/projects')
-  await getProjectsRequestAssertion
-
-  // edit the project
-  await page
-    .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
-    .getByRole('button')
-    .click()
-
-  await page.getByLabel('Project description').fill('updated description')
-
-  await setupUpdateProjectRequestIntercept(page, {
-    ...updateProjectResponse,
-    id: 82,
+    await getProjectsRequestAssertion
   })
 
-  await page
-    .getByLabel('Edit project')
-    .getByRole('button', { name: 'Edit project' })
-    .click()
+  test('request error', async ({ page }) => {
+    setupCreateProjectRequestIntercept(page, 400)
 
-  expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+    // create a project
+    await page.getByText('Create a new project').click()
+    await page.getByLabel('Project description').fill('New Project')
 
-  // remove toast
-  await page.getByText('Project updated').click()
-  await page.waitForSelector('text="Project updated"', { state: 'detached' })
+    const createProjectRequestAssertion = waitForCreateProjectRequest(page, 400)
+    await page.getByRole('button', { name: 'Create project' }).click()
+    await createProjectRequestAssertion
 
-  expect(await page.screenshot()).toMatchSnapshot('project-updated.png')
+    // assert error message
+    expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
+  })
+
+  test('project created', async ({ page }) => {
+    setupCreateProjectRequestIntercept(page)
+
+    // create a project
+    await page.getByText('Create a new project').click()
+    await page.getByLabel('Project description').fill('New Project')
+
+    const createProjectRequestAssertion = waitForCreateProjectRequest(page)
+
+    await page.getByRole('button', { name: 'Create project' }).click()
+
+    await createProjectRequestAssertion
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // remove toast
+    await page.getByText('Project added').click()
+    await page.waitForSelector('text="Project added"', { state: 'detached' })
+
+    expect(await page.screenshot()).toMatchSnapshot('project-created.png')
+  })
+})
+
+test.describe('edits a project', () => {
+  test.beforeEach(async ({ page, login }) => {
+    const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
+    setupGetProjectsIntercept(page, [existingProject])
+    await page.goto('http://localhost:3000/projects')
+    await getProjectsRequestAssertion
+  })
+
+  test('request error', async ({ page }) => {
+    setupCreateProjectRequestIntercept(page, 400)
+
+    // create a project
+    await page.getByText('Create a new project').click()
+    await page.getByLabel('Project description').fill('New Project')
+
+    const createProjectRequestAssertion = waitForCreateProjectRequest(page, 400)
+    await page.getByRole('button', { name: 'Create project' }).click()
+    await createProjectRequestAssertion
+
+    // assert error message
+    expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
+  })
+
+  test('request error', async ({ page }) => {
+    // edit the project
+    await page
+      .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
+      .getByRole('button')
+      .click()
+
+    await page.getByLabel('Project description').fill('updated description')
+
+    await setupUpdateProjectRequestIntercept(
+      page,
+      {
+        ...updateProjectResponse,
+        id: 82,
+      },
+      400,
+    )
+
+    await page
+      .getByLabel('Edit project')
+      .getByRole('button', { name: 'Edit project' })
+      .click()
+
+    // assert error message
+    expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
+  })
+
+  test('edits a project', async ({ page }) => {
+    // edit the project
+    await page
+      .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
+      .getByRole('button')
+      .click()
+
+    await page.getByLabel('Project description').fill('updated description')
+
+    await setupUpdateProjectRequestIntercept(page, {
+      ...updateProjectResponse,
+      id: 82,
+    })
+
+    await page
+      .getByLabel('Edit project')
+      .getByRole('button', { name: 'Edit project' })
+      .click()
+
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // remove toast
+    await page.getByText('Project updated').click()
+    await page.waitForSelector('text="Project updated"', { state: 'detached' })
+
+    expect(await page.screenshot()).toMatchSnapshot('project-updated.png')
+  })
 })
 
 test('validates project description', async ({ page }) => {
@@ -113,32 +177,49 @@ test('validates project description', async ({ page }) => {
   )
 })
 
-test('deletes a project', async ({ page }) => {
-  setupDeleteProjectRequestIntercept(page)
+test.describe('deletes a project', () => {
+  test.beforeEach(async ({ page, login }) => {
+    const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
+    setupGetProjectsIntercept(page, [existingProject])
+    await page.goto('http://localhost:3000/projects')
 
-  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
-  setupGetProjectsIntercept(page, [existingProject])
-  await page.goto('http://localhost:3000/projects')
+    await getProjectsRequestAssertion
+  })
 
-  await getProjectsRequestAssertion
+  test('request error', async ({ page }) => {
+    setupDeleteProjectRequestIntercept(page, 400)
 
-  // delete the project
-  await page
-    .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
-    .getByRole('button')
-    .click()
+    await page
+      .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
+      .getByRole('button')
+      .click()
 
-  const deleteProjectRequestAssertion = waitForDeleteProjectRequest(page)
+    const deleteProjectRequestAssertion = waitForDeleteProjectRequest(page, 400)
+    await page.getByLabel('Delete project').click()
+    await deleteProjectRequestAssertion
 
-  await page.getByLabel('Delete project').click()
+    // assert error message
+    expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
+  })
 
-  expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+  test('deletes a project', async ({ page }) => {
+    setupDeleteProjectRequestIntercept(page)
 
-  await deleteProjectRequestAssertion
+    await page
+      .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
+      .getByRole('button')
+      .click()
 
-  // remove toast
-  await page.getByText('Project deleted').click()
-  await page.waitForSelector('text="Project deleted"', { state: 'detached' })
+    const deleteProjectRequestAssertion = waitForDeleteProjectRequest(page)
+    await page.getByLabel('Delete project').click()
+    await deleteProjectRequestAssertion
 
-  expect(await page.screenshot()).toMatchSnapshot('project-deleted.png')
+    expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
+
+    // remove toast
+    await page.getByText('Project deleted').click()
+    await page.waitForSelector('text="Project deleted"', { state: 'detached' })
+
+    expect(await page.screenshot()).toMatchSnapshot('project-deleted.png')
+  })
 })

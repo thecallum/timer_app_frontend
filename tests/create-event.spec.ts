@@ -38,6 +38,24 @@ test('Opens model with correct timeslot', async ({ page }) => {
   await page.getByRole('button', { name: 'Close' }).click()
 })
 
+test('request error', async ({ page }) => {
+  setupCreateCalendarEventIntercept(page, null, 400)
+
+  await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
+
+  await page
+    .locator('#addEventPopover')
+    .getByLabel('Event description')
+    .fill('event name')
+
+  const createEventRequestAssertion = waitForCreateEventRequest(page, 400)
+  await page.getByRole('button', { name: 'Save' }).click()
+  await createEventRequestAssertion
+
+  // event added to calendar
+  expect(page.locator('#addEventPopover').getByText('Request failed with status code 400')).toHaveCount(1)
+})
+
 test('Adds event to calendar', async ({ page }) => {
   const createCalendarEventResponse: CalendarEventApiResponseObject = {
     id: '126',

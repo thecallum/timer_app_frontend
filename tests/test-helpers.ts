@@ -34,46 +34,52 @@ export const setupGetProjectsIntercept = async (
 
 export const setupCreateCalendarEventIntercept = async (
   page: Page,
-  body: CalendarEventApiResponseObject = createCalendarEventResponse,
+  body: CalendarEventApiResponseObject | null = createCalendarEventResponse,
+  status: number = 200,
 ) => {
   await page.route('**/api/events/', async (route) => {
     const request = route.request()
 
     if (request.method() === 'POST') {
-      route.fulfill({ json: body, status: 200 })
+      route.fulfill({ json: body, status })
     }
   })
 }
 
 export const setupUpdateCalendarEventIntercept = async (
   page: Page,
-  body: CalendarEventApiResponseObject = updateCalendarEventResponse,
+  body: CalendarEventApiResponseObject | null = updateCalendarEventResponse,
+  status: number = 200,
 ) => {
   await page.route('**/api/events/**', async (route) => {
     const request = route.request()
 
     if (request.method() === 'PUT') {
-      route.fulfill({ json: body, status: 200 })
+      route.fulfill({ json: body, status })
     }
   })
 }
 
-export const setupDeleteCalendarEventIntercept = async (page: Page) => {
+export const setupDeleteCalendarEventIntercept = async (
+  page: Page,
+  status: number = 204,
+) => {
   await page.route('**/api/events/**', async (route) => {
     const request = route.request()
 
     if (request.method() === 'DELETE') {
-      route.fulfill({ status: 204 })
+      route.fulfill({ status })
     }
   })
 }
 
-export const setupCreateProjectRequestIntercept = async (page: Page) => {
+export const setupCreateProjectRequestIntercept = async (
+  page: Page,
+  status: number = 200,
+) => {
   await page.route('**/api/projects', async (route) => {
-    const request = route.request()
-
-    if (request.method() === 'POST') {
-      route.fulfill({ json: createProjectResponse, status: 200 })
+    if (route.request().method() === 'POST') {
+      route.fulfill({ json: createProjectResponse, status })
     }
   })
 }
@@ -81,22 +87,26 @@ export const setupCreateProjectRequestIntercept = async (page: Page) => {
 export const setupUpdateProjectRequestIntercept = async (
   page: Page,
   data: ProjectApiResponseObject = updateProjectResponse,
+  status: number = 200,
 ) => {
   await page.route('**/api/projects/**', async (route) => {
     const request = route.request()
 
     if (request.method() === 'PUT') {
-      route.fulfill({ json: data, status: 200 })
+      route.fulfill({ json: data, status })
     }
   })
 }
 
-export const setupDeleteProjectRequestIntercept = async (page: Page) => {
+export const setupDeleteProjectRequestIntercept = async (
+  page: Page,
+  status: number = 204,
+) => {
   await page.route('**/api/projects/**', async (route) => {
     const request = route.request()
 
     if (request.method() === 'DELETE') {
-      route.fulfill({ status: 204 })
+      route.fulfill({ status })
     }
   })
 }
@@ -107,50 +117,56 @@ export const waitForGetEventsRequest = (page: Page) => {
   )
 }
 
-export const waitForDeleteEventsRequest = (page: Page) => {
+export const waitForDeleteEventsRequest = (
+  page: Page,
+  status: number = 204,
+) => {
   return page.waitForResponse((res) => {
     const method = res.request().method()
 
     return (
       res.url().includes('/api/events') &&
-      res.status() === 204 &&
+      res.status() === status &&
       method === 'DELETE'
     )
   })
 }
 
-export const waitForCreateEventRequest = (page: Page) => {
+export const waitForCreateEventRequest = (page: Page, status: number = 200) => {
   return page.waitForResponse((res) => {
     const request = res.request()
 
     return (
       request.method() === 'POST' &&
       res.url().includes(`/api/events/`) &&
-      res.status() === 200
+      res.status() === status
     )
   })
 }
 
-export const waitForUpdateEventRequest = (page: Page) => {
+export const waitForUpdateEventRequest = (page: Page, status: number = 200) => {
   return page.waitForResponse((res) => {
     const request = res.request()
 
     return (
       request.method() === 'PUT' &&
       res.url().includes(`/api/events/`) &&
-      res.status() === 200
+      res.status() === status
     )
   })
 }
 
-export const waitForCreateProjectRequest = (page: Page) => {
+export const waitForCreateProjectRequest = (
+  page: Page,
+  status: number = 200,
+) => {
   return page.waitForResponse((res) => {
     const request = res.request()
 
     return (
       request.method() === 'POST' &&
       res.url().includes('/api/projects') &&
-      res.status() === 200
+      res.status() === status
     )
   })
 }
@@ -167,14 +183,17 @@ export const waitForUpdateProjectRequest = (page: Page) => {
   })
 }
 
-export const waitForDeleteProjectRequest = (page: Page) => {
+export const waitForDeleteProjectRequest = (
+  page: Page,
+  statusCode: number = 204,
+) => {
   return page.waitForResponse((res) => {
     const request = res.request()
 
     return (
       request.method() === 'DELETE' &&
       res.url().includes(`/api/projects/`) &&
-      res.status() === 204
+      res.status() === statusCode
     )
   })
 }
