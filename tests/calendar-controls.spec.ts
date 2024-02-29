@@ -1,21 +1,25 @@
-import { test, expect } from './my-setup'
+import { existingProject } from '../playwright/fixtures'
+import { test, expect } from '../playwright/my-setup'
 import {
+  setupGetEventsIntercept,
   setupGetProjectsIntercept,
   waitForGetEventsRequest,
   waitForGetProjectsRequest,
-} from './test-helpers'
+} from '../playwright/test-helpers'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-test.beforeEach(async ({ page, login }) => {
+test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 })
 })
 
 test('shows the correct days of week', async ({ page }) => {
-  const getEventsRequestAssertion = waitForGetEventsRequest(page)
+  setupGetProjectsIntercept(page, [existingProject])
+  setupGetEventsIntercept(page, [])
 
-  await page.goto('http://localhost:3000/')
-
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.goto('http://localhost:3000/'),
+    waitForGetEventsRequest(page),
+    waitForGetProjectsRequest(page),
+  ])
 
   // check current week
   await page
@@ -136,6 +140,7 @@ test('loads events for each week', async ({ page }) => {
       endTime: '2024-02-29T04:00:00Z',
     },
   ]
+
   page.route(
     '**/api/events?startTime=02%2F12%2F2024&endTime=02%2F18%2F2024',
     async (route) => route.fulfill({ json: [events[0]], status: 200 }),
@@ -157,14 +162,13 @@ test('loads events for each week', async ({ page }) => {
     async (route) => route.fulfill({ json: [events[4]], status: 200 }),
   )
 
-  setupGetProjectsIntercept(page)
+  setupGetProjectsIntercept(page, [existingProject])
 
-  let getEventsRequestAssertion = waitForGetEventsRequest(page)
-  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
-
-  await page.goto('http://localhost:3000/')
-
-  await Promise.all([getEventsRequestAssertion, getProjectsRequestAssertion])
+  await Promise.all([
+    page.goto('http://localhost:3000/'),
+    waitForGetEventsRequest(page),
+    waitForGetProjectsRequest(page),
+  ])
 
   // check current week
   expect(
@@ -174,9 +178,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check previous week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByText('Previous').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByText('Previous').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -185,9 +190,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check previous week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByLabel('Show previous week').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByLabel('Show previous week').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -196,9 +202,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check next week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByText('Next').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByText('Next').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -207,9 +214,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check today
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByLabel('Show current week').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByLabel('Show current week').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -218,9 +226,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check next week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByText('Next').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByText('Next').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -229,9 +238,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check next week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByLabel('Show next week').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByLabel('Show next week').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -240,9 +250,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check today
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByLabel('Show current week').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByLabel('Show current week').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(

@@ -1,5 +1,5 @@
 import { CalendarEventApiResponseObject } from '@/requests/types'
-import { test, expect } from './my-setup'
+import { test, expect } from '../playwright/my-setup'
 import {
   setupCreateProjectRequestIntercept,
   setupDeleteCalendarEventIntercept,
@@ -8,12 +8,14 @@ import {
   setupUpdateCalendarEventIntercept,
   waitForCreateProjectRequest,
   waitForDeleteEventsRequest,
+  waitForGetEventsRequest,
+  waitForGetProjectsRequest,
   waitForUpdateEventRequest,
-} from './test-helpers'
+} from '../playwright/test-helpers'
 import dayjs from 'dayjs'
+import { existingProject, existingProjects } from '../playwright/fixtures'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-test.beforeEach(async ({ page, login }) => {
+test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 })
 
   const existingEvent: CalendarEventApiResponseObject = {
@@ -25,7 +27,13 @@ test.beforeEach(async ({ page, login }) => {
   }
 
   setupGetEventsIntercept(page, [existingEvent])
-  setupGetProjectsIntercept(page)
+  setupGetProjectsIntercept(page, [existingProject])
+
+  await Promise.all([
+    page.goto('http://localhost:3000/'),
+    waitForGetEventsRequest(page),
+    waitForGetProjectsRequest(page),
+  ])
 })
 
 test.describe('Edits an event', () => {
@@ -43,9 +51,10 @@ test.describe('Edits an event', () => {
     await page.getByPlaceholder('(no description)').fill('new description')
 
     // save changes
-    const updateEventRequestAssertion = waitForUpdateEventRequest(page, 400)
-    await page.getByRole('button', { name: 'Save' }).click()
-    await updateEventRequestAssertion
+    await Promise.all([
+      page.getByRole('button', { name: 'Save' }).click(),
+      waitForUpdateEventRequest(page, 400),
+    ])
 
     // assert changes visible
     expect(
@@ -77,9 +86,10 @@ test.describe('Edits an event', () => {
     await page.getByPlaceholder('(no description)').fill('new description')
 
     // save changes
-    const updateEventRequestAssertion = waitForUpdateEventRequest(page)
-    await page.getByRole('button', { name: 'Save' }).click()
-    await updateEventRequestAssertion
+    await Promise.all([
+      page.getByRole('button', { name: 'Save' }).click(),
+      waitForUpdateEventRequest(page),
+    ])
 
     // assert changes visible
     expect(
@@ -132,9 +142,10 @@ test.describe('Edits an event', () => {
     await page.getByLabel('Event end time').fill('04:30:00')
 
     // save changes
-    const updateEventRequestAssertion = waitForUpdateEventRequest(page)
-    await page.getByRole('button', { name: 'Save' }).click()
-    await updateEventRequestAssertion
+    await Promise.all([
+      page.getByRole('button', { name: 'Save' }).click(),
+      waitForUpdateEventRequest(page),
+    ])
 
     // assert changes visible
     expect(
@@ -192,9 +203,10 @@ test.describe('Edits an event', () => {
       .click()
 
     // save changes
-    const updateEventRequestAssertion = waitForUpdateEventRequest(page)
-    await page.getByRole('button', { name: 'Save' }).click()
-    await updateEventRequestAssertion
+    await Promise.all([
+      page.getByRole('button', { name: 'Save' }).click(),
+      waitForUpdateEventRequest(page),
+    ])
 
     // assert changes visible
     expect(
@@ -225,17 +237,17 @@ test.describe('Edits an event', () => {
     // select and create project
     await setupCreateProjectRequestIntercept(page)
 
-    const createProjectRequestAssertion = waitForCreateProjectRequest(page)
-
     await page
       .locator('#editEventPopover')
       .getByLabel('Select a project - Currently selected: no project')
       .click()
     await page.getByLabel('Create a new project').click()
     await page.getByPlaceholder('Planning').fill('New project')
-    await page.getByRole('button', { name: 'Create project' }).click()
 
-    await createProjectRequestAssertion
+    await Promise.all([
+      page.getByRole('button', { name: 'Create project' }).click(),
+      waitForCreateProjectRequest(page),
+    ])
 
     await page
       .locator('#editEventPopover')
@@ -243,9 +255,10 @@ test.describe('Edits an event', () => {
       .click()
 
     // save changes
-    const updateEventRequestAssertion = waitForUpdateEventRequest(page)
-    await page.getByRole('button', { name: 'Save' }).click()
-    await updateEventRequestAssertion
+    await Promise.all([
+      page.getByRole('button', { name: 'Save' }).click(),
+      waitForUpdateEventRequest(page),
+    ])
 
     // assert changes visible
     expect(
@@ -268,9 +281,10 @@ test.describe('Deletes event', () => {
       .click()
 
     // delete event
-    const deleteEventRequestAssertion = waitForDeleteEventsRequest(page, 400)
-    await page.getByLabel('Delete event').click()
-    await deleteEventRequestAssertion
+    await Promise.all([
+      page.getByLabel('Delete event').click(),
+      waitForDeleteEventsRequest(page, 400),
+    ])
 
     // assert error message
     expect(
@@ -291,9 +305,10 @@ test.describe('Deletes event', () => {
       .click()
 
     // delete event
-    const deleteEventRequestAssertion = waitForDeleteEventsRequest(page)
-    await page.getByLabel('Delete event').click()
-    await deleteEventRequestAssertion
+    await Promise.all([
+      page.getByLabel('Delete event').click(),
+      waitForDeleteEventsRequest(page),
+    ])
 
     // assert event deleted
     expect(
