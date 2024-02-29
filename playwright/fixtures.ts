@@ -66,7 +66,7 @@ export const existingProjects: ProjectApiResponseObject[] = [
     isActive: false,
     totalEventDurationInMinutes: 126,
   },
-  existingProject
+  existingProject,
 ]
 
 export const createCalendarEventResponse: CalendarEventApiResponseObject = {
@@ -110,7 +110,6 @@ export const updateProjectResponse = {
   isActive: true,
   totalEventDurationInMinutes: 0,
 }
-
 
 export const existingCalendarEvents: CalendarEventApiResponseObject[] = [
   {

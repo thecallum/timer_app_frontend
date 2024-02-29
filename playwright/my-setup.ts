@@ -10,6 +10,9 @@ export const test = baseTest.extend({
 
     console.log('Checking auth')
 
+    // implementation really slow because it relies on waitForNavigation to time out
+    // if there is a quicker way, potentially reversing the confition, that would be better
+
     try {
       await Promise.all([
         page.goto('http://localhost:3000'),

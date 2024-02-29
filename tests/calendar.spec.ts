@@ -5,7 +5,10 @@ import {
   waitForGetEventsRequest,
   waitForGetProjectsRequest,
 } from '../playwright/test-helpers'
-import { existingCalendarEvents, existingProjects } from '../playwright/fixtures'
+import {
+  existingCalendarEvents,
+  existingProjects,
+} from '../playwright/fixtures'
 
 test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 4000 })

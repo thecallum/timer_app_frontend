@@ -13,7 +13,7 @@ import {
   waitForUpdateEventRequest,
 } from '../playwright/test-helpers'
 import dayjs from 'dayjs'
-import { existingProject, existingProjects } from '../playwright/fixtures'
+import { existingProject } from '../playwright/fixtures'
 
 test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 })

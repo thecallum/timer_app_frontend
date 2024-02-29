@@ -7,7 +7,6 @@ import {
   waitForCreateProjectRequest,
   waitForDeleteProjectRequest,
   waitForGetProjectsRequest,
-  waitForUpdateEventRequest,
   waitForUpdateProjectRequest,
 } from '../playwright/test-helpers'
 
@@ -44,7 +43,7 @@ test.describe('creates a project', () => {
     // create a project
     await page.getByText('Create a new project').click()
     await page.getByLabel('Project description').fill('New Project')
-    
+
     await setupCreateProjectRequestIntercept(page, null, 400)
 
     await Promise.all([
@@ -53,7 +52,11 @@ test.describe('creates a project', () => {
     ])
 
     // assert error message
-    expect(page.getByLabel('Create a project').getByText('Request failed with status code 400')).toHaveCount(1)
+    expect(
+      page
+        .getByLabel('Create a project')
+        .getByText('Request failed with status code 400'),
+    ).toHaveCount(1)
   })
 
   test('project created', async ({ page }) => {
@@ -108,7 +111,11 @@ test.describe('edits a project', () => {
     ])
 
     // assert error message
-    expect(page.getByLabel('Edit project').getByText('Request failed with status code 400')).toHaveCount(1)
+    expect(
+      page
+        .getByLabel('Edit project')
+        .getByText('Request failed with status code 400'),
+    ).toHaveCount(1)
   })
 
   test('edits a project', async ({ page }) => {
