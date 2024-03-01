@@ -27,7 +27,7 @@ jobs:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
-      - run: AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY yarn test-ci
+      - run: AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY yarn test_dev && yarn test-ci
       # - run: SHARD="$((${CIRCLE_NODE_INDEX}+1))"; npx playwright test -- --shard=${SHARD}/${CIRCLE_NODE_TOTAL}
   deploy-development:
     executor: node/default
