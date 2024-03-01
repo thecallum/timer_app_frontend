@@ -15,7 +15,7 @@
     "lint": "eslint . --max-warnings 0 --ext .js,.jsx",
     "lintfix": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx --fix",
     "test": "playwright test",
-    "test-ci": "start-server-and-test start_dev 127.0.0.1:3000 test",
+    "test-ci": "start-server-and-test start_dev http://localhost:3000 test",
     "__test-ci": "start-test start_dev 3000 test ",
     "test-browser": "playwright test --project=chromium",
     "generate": "playwright codegen --viewport-size \"1920, 2000\""
