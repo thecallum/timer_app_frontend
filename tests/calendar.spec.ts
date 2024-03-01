@@ -24,7 +24,7 @@ test('shows empty calendar page', async ({ page }) => {
     waitForGetProjectsRequest(page),
   ])
 
-  console.log("test")
+  console.log('test')
 
   expect(await page.screenshot()).toMatchSnapshot('empty-calendar.png')
 })

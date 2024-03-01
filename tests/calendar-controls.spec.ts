@@ -22,82 +22,83 @@ test('shows the correct days of week', async ({ page }) => {
   ])
 
   // check current week
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[0].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[0].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[0].png')
+
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[0].png',
+  )
 
   // check previous week
   page.getByText('Previous').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[-1].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[-1].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[-1].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[-1].png',
+  )
 
   // check previous week
   page.getByLabel('Show previous week').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[-2].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[-2].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[-2].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[-2].png',
+  )
 
   // check next week
   page.getByText('Next').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[-1].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[-1].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[-1].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[-1].png',
+  )
 
   // check today
   page.getByLabel('Show current week').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[0].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[0].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[0].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[0].png',
+  )
 
   // check next week
   page.getByText('Next').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[1].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[1].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[1].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[1].png',
+  )
 
   // check next week
   page.getByLabel('Show next week').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[2].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[2].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[2].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[2].png',
+  )
 
   // check today
   page.getByLabel('Show current week').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[0].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[0].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[0].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[0].png',
+  )
 
   // expect(await page.screenshot()).toMatchSnapshot('no-projects.png')
 })

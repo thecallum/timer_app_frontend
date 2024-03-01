@@ -3,7 +3,7 @@ export * from '@playwright/test'
 
 const authFile = 'playwright/.auth/user.json'
 
-export const test = baseTest.extend({
+export const test = baseTest.extend<{ _autoSnapshotSuffix: void; page: Page }>({
   page: async ({ page }, use) => {
     // initialise existing storage state
     await page.context().storageState({ path: authFile })
@@ -28,6 +28,13 @@ export const test = baseTest.extend({
 
     await use(page)
   },
+  _autoSnapshotSuffix: [
+    async ({}, use, testInfo) => {
+      testInfo.snapshotSuffix = ''
+      await use()
+    },
+    { auto: true },
+  ],
 })
 
 const handleLogin = async (page: Page) => {
