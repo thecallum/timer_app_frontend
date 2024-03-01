@@ -21,7 +21,6 @@
     "generate": "playwright codegen --viewport-size \"1920, 2000\""
   },
   "dependencies": {
-    "@next/font": "^14.1.0",
     "@popperjs/core": "^2.11.8",
     "@types/uuid": "^9.0.7",
     "axios": "^1.6.7",
