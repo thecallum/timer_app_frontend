@@ -20,6 +20,11 @@ jobs:
           command: |
             export TEST=true
             yarn build_test
+      - store_artifacts:
+          path: ./playwright-report
+          destination: playwright-report-first
+      - store_artifacts:
+          path: /tmp/artifacts
   e2e-tests:
     executor: pw-jammy-development
     # parallelism: 4
