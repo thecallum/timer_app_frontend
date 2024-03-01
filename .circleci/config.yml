@@ -3,6 +3,11 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.2
 
+executors:
+  pw-jammy-development:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.42.0-jammy
+
 jobs:
   build-and-test:
     executor: node/default
@@ -15,6 +20,15 @@ jobs:
           command: |
             export TEST=true
             yarn build_test
+  e2e-tests:
+    executor: pw-jammy-development
+    # parallelism: 4
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: yarn
+      - run: yarn test
+      # - run: SHARD="$((${CIRCLE_NODE_INDEX}+1))"; npx playwright test -- --shard=${SHARD}/${CIRCLE_NODE_TOTAL}
   deploy-development:
     executor: node/default
     steps:
@@ -43,6 +57,7 @@ workflows:
   development-pipeline:
     jobs:
       - build-and-test
+      - e2e-tests
       - deploy-development:
           requires: 
             - build-and-test
