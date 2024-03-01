@@ -31,7 +31,7 @@ jobs:
           command: |
             export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID 
             export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY 
-            yarn start_dev && yarn test-ci
+            yarn yarn test-ci
       # - run: SHARD="$((${CIRCLE_NODE_INDEX}+1))"; npx playwright test -- --shard=${SHARD}/${CIRCLE_NODE_TOTAL}
   deploy-development:
     executor: node/default
