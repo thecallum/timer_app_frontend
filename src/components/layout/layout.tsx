@@ -2,10 +2,8 @@ import { useIsOpenRoute } from '@/auth/useIsOpenRoute'
 import { Header } from '@/components/layout/header'
 import { Nav } from '@/components/layout/nav'
 import { TimerControls } from '@/features/timer'
-import { inter } from '@/pages/_app'
 import { useState } from 'react'
 import { ToastContainer } from 'react-toastify'
-import { orbitron } from './fonts'
 
 interface Props {
   children: JSX.Element
@@ -26,7 +24,7 @@ export const Layout = (props: Props) => {
   }
 
   return (
-    <div className={`${inter.variable} ${orbitron.variable}`}>
+    <div>
       <Header toggleNavbar={toggleNavbar} />
 
       <div className="flex flex-row h-[calc(100vh-4rem)] grow-0 lg:h-[100vh]">
