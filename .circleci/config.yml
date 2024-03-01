@@ -6,7 +6,7 @@ orbs:
 executors:
   pw-jammy-development:
     docker:
-      - image: mcr.microsoft.com/playwright:v1.42.0-jammy
+      - image: mcr.microsoft.com/playwright:v1.41.2-jammy
 
 jobs:
   build-and-test:
