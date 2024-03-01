@@ -1861,6 +1861,11 @@
   dependencies:
     glob "7.1.7"
 
+"@next/font@^14.1.0":
+  version "14.1.0"
+  resolved "https://registry.yarnpkg.com/@next/font/-/font-14.1.0.tgz#6f6c4510e36dad505cf64403f92f235d2838d265"
+  integrity sha512-9hJ7bEYDI7UGQ1a++5zRD3F2VUu9NIaK5Hro/uL9bvFFs6b0Cy1OdLtLQHCIQE7sSMt8Rbu4VtcbnlubsseelA==
+
 "@next/swc-darwin-arm64@14.0.1":
   version "14.0.1"
   resolved "https://registry.yarnpkg.com/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.0.1.tgz#75a5f872c4077ecd536d7496bc24f3d312d5dcd0"
@@ -6760,20 +6765,12 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-playright@^0.0.22:
-  version "0.0.22"
-  resolved "https://registry.npmjs.org/playright/-/playright-0.0.22.tgz"
-  integrity sha512-CAnov0flTUoiXrypVkbtDmY/K0iKCrW/RGlUO9a8jIah7u7NkTteLFt3GKHkIWOAM7rp9N751MgBGg9IkhdiYw==
-  dependencies:
-    playwright "^1.12.2"
-    typescript "^4.1.2"
-
 playwright-core@1.41.2:
   version "1.41.2"
   resolved "https://registry.npmjs.org/playwright-core/-/playwright-core-1.41.2.tgz"
   integrity sha512-VaTvwCA4Y8kxEe+kfm2+uUUw5Lubf38RxF7FpBxLPmGe5sdNkSg5e3ChEigaGrX7qdqT3pt2m/98LiyvU2x6CA==
 
-playwright@1.41.2, playwright@^1.12.2:
+playwright@1.41.2:
   version "1.41.2"
   resolved "https://registry.npmjs.org/playwright/-/playwright-1.41.2.tgz"
   integrity sha512-v0bOa6H2GJChDL8pAeLa/LZC4feoAMbSQm1/jF/ySsWWoaNItvrMP7GEkvEEFyCTUYKMxjQKaTSg5up7nR6/8A==
@@ -8016,11 +8013,6 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   integrity sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==
-
-typescript@^4.1.2:
-  version "4.9.5"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz"
-  integrity sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==
 
 typescript@^5:
   version "5.3.3"
