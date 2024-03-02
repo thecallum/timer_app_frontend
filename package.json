@@ -5,7 +5,7 @@
   "scripts": {
     "dev_env": "sst bind next dev",
     "start": "sst bind next start --stage development",
-     "prestart": "sst bind next build",
+
     "start_dev": "sst bind next dev --stage development",
     "dev": "next dev",
     "build_test": "next build",
@@ -16,7 +16,7 @@
     "lint": "eslint . --max-warnings 0 --ext .js,.jsx",
     "lintfix": "eslint . --max-warnings 0 --ext .js,.jsx,.ts,.tsx --fix",
     "test": "playwright test",
-    "test-ci": "start-server-and-test start http://localhost:3000 test",
+    "test-ci": "start-server-and-test start_dev http://localhost:3000 test",
     "__test-ci": "start-test start_dev 3000 test ",
     "test-browser": "playwright test --project=chromium",
     "generate": "playwright codegen --viewport-size \"1920, 2000\""
