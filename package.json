@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev_env": "sst bind next dev",
-    "start": "sst bind next start",
+    "start": "sst bind next start --stage development",
      "prestart": "sst bind next build",
     "start_dev": "sst bind next dev --stage development",
     "dev": "next dev",
