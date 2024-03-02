@@ -29,5 +29,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   setCookies(res, accessToken, refreshToken, idToken)
 
   res.redirect('/')
-
 }

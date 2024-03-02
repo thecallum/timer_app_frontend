@@ -29,6 +29,7 @@ export const test = baseTest.extend<{ _autoSnapshotSuffix: void; page: Page }>({
     await use(page)
   },
   _autoSnapshotSuffix: [
+    // eslint-disable-next-line no-empty-pattern
     async ({}, use, testInfo) => {
       testInfo.snapshotSuffix = ''
       await use()
