@@ -24,7 +24,7 @@ test('shows empty calendar page', async ({ page }) => {
     waitForGetProjectsRequest(page),
   ])
 
-  console.log('test')
+  await page.evaluate(() => document.fonts.ready)
 
   expect(await page.screenshot()).toMatchSnapshot('empty-calendar.png')
 })
@@ -37,6 +37,8 @@ test('shows calendar with events', async ({ page }) => {
     waitForGetEventsRequest(page),
     waitForGetProjectsRequest(page),
   ])
+
+  await page.evaluate(() => document.fonts.ready)
 
   expect(await page.screenshot()).toMatchSnapshot('calendar-with-events.png')
 })

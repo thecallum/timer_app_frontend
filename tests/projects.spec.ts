@@ -25,6 +25,8 @@ test('shows empty list of projects', async ({ page }) => {
     waitForGetProjectsRequest(page),
   ])
 
+  await page.evaluate(() => document.fonts.ready)
+
   expect(await page.screenshot()).toMatchSnapshot('no-projects.png')
 })
 
@@ -76,6 +78,8 @@ test.describe('creates a project', () => {
     // remove toast
     await page.getByText('Project added').click()
     await page.waitForSelector('text="Project added"', { state: 'detached' })
+
+    await page.evaluate(() => document.fonts.ready)
 
     expect(await page.screenshot()).toMatchSnapshot('project-created.png')
   })
@@ -142,6 +146,8 @@ test.describe('edits a project', () => {
     // remove toast
     await page.getByText('Project updated').click()
     await page.waitForSelector('text="Project updated"', { state: 'detached' })
+
+    await page.evaluate(() => document.fonts.ready)
 
     expect(await page.screenshot()).toMatchSnapshot('project-updated.png')
   })
@@ -215,6 +221,8 @@ test.describe('deletes a project', () => {
     // remove toast
     await page.getByText('Project deleted').click()
     await page.waitForSelector('text="Project deleted"', { state: 'detached' })
+
+    await page.evaluate(() => document.fonts.ready)
 
     expect(await page.screenshot()).toMatchSnapshot('project-deleted.png')
   })

@@ -21,6 +21,8 @@ test('shows the correct days of week', async ({ page }) => {
     waitForGetProjectsRequest(page),
   ])
 
+  await page.evaluate(() => document.fonts.ready)
+
   // check current week
   expect(
     await page.getByLabel('Calendar week selector').screenshot(),
@@ -99,8 +101,6 @@ test('shows the correct days of week', async ({ page }) => {
   expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
     'days-of-week-[0].png',
   )
-
-  // expect(await page.screenshot()).toMatchSnapshot('no-projects.png')
 })
 
 test('loads events for each week', async ({ page }) => {
