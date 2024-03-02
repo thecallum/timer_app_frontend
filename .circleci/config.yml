@@ -23,7 +23,7 @@ jobs:
             yarn build_test
 
   e2e-tests:
-     executor: win/default
+    executor: win/default
     steps:
       - checkout
       - node/install:
