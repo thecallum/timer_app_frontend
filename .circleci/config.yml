@@ -45,7 +45,6 @@ jobs:
           path: ./playwright-report
           destination: playwright-report
 
-      
   # e2e-tests:
   #   executor: pw-jammy-development
   #   # parallelism: 4
@@ -55,15 +54,15 @@ jobs:
   #         pkg-manager: yarn
   #     - run:
   #         command: |
-  #           export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID 
-  #           export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY 
+  #           export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  #           export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
   #           yarn test-ci
   #     - store_artifacts:
   #         path: ./playwright-report
   #         destination: playwright-report-first
   #     - store_artifacts:
   #         path: /tmp/artifacts
-      # - run: SHARD="$((${CIRCLE_NODE_INDEX}+1))"; npx playwright test -- --shard=${SHARD}/${CIRCLE_NODE_TOTAL}
+  # - run: SHARD="$((${CIRCLE_NODE_INDEX}+1))"; npx playwright test -- --shard=${SHARD}/${CIRCLE_NODE_TOTAL}
   deploy-development:
     executor: node/default
     steps:
@@ -94,7 +93,7 @@ workflows:
       - build-and-test
       - e2e-tests
       - deploy-development:
-          requires: 
+          requires:
             - build-and-test
           filters:
             branches:
@@ -106,7 +105,7 @@ workflows:
             branches:
               only: release
       - deploy-production:
-          requires: 
+          requires:
             - build-and-test
           filters:
             branches:
