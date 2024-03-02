@@ -89,12 +89,7 @@ export const TimerControls = () => {
             'text-purple-100': isRunning,
           })}
         >
-          <span 
-          className={classNames([
-            inconsolata.className,
-            "text-2xl"
-          ])}
-          >
+          <span className={classNames([inconsolata.className, 'text-2xl'])}>
             {formatDuration(time)}
           </span>
         </div>

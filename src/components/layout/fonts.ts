@@ -11,10 +11,8 @@ export const orbitron = Orbitron({
   display: 'block',
 })
 
-
-
 export const inconsolata = Inconsolata({
   subsets: ['latin'],
   display: 'block',
-  weight: ["400"]
+  weight: ['400'],
 })
