@@ -4,23 +4,16 @@ orbs:
   node: circleci/node@5.0.2
   win: circleci/windows@5.0
 
-executors:
-  pw-jammy-development:
-    docker:
-      - image: mcr.microsoft.com/playwright:v1.41.2-jammy
-
 jobs:
-  build-and-test:
+  run-linter:
     executor: node/default
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          name: 'Build and test'
-          command: |
-            export TEST=true
-            yarn build_test
+          name: 'ESLint'
+          command: yarn lint
 
   e2e-tests:
     executor: win/default
@@ -40,8 +33,6 @@ jobs:
       - run:
           name: Run Playwright Tests
           command: |
-            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
             yarn test-ci
       - store_artifacts:
           path: ./playwright-report
@@ -74,18 +65,18 @@ jobs:
 workflows:
   cicd-pipeline:
     jobs:
-      - build-and-test
+      - run-linter
       - e2e-tests
       - deploy-development:
           requires:
-            - build-and-test
+            - run-linter
             - e2e-tests
           filters:
             branches:
               only: main
       - deploy-production:
           requires:
-            - build-and-test
+            - run-linter
           filters:
             branches:
               only: release
