@@ -186,22 +186,22 @@ test.describe('deletes a project', () => {
     ])
   })
 
-  // test('request error', async ({ page }) => {
-  //   await setupDeleteProjectRequestIntercept(page, 400)
+  test('request error', async ({ page }) => {
+    await setupDeleteProjectRequestIntercept(page, 400)
 
-  //   await page
-  //     .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
-  //     .getByRole('button')
-  //     .click()
+    await page
+      .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
+      .getByRole('button')
+      .click()
 
-  //   await Promise.all([
-  //     page.getByLabel('Delete project').click(),
-  //     waitForDeleteProjectRequest(page, 400),
-  //   ])
+    await Promise.all([
+      page.getByLabel('Delete project').click(),
+      waitForDeleteProjectRequest(page, 400),
+    ])
 
-  //   // assert error message
-  //   expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
-  // })
+    // assert error message
+    expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
+  })
 
   test('deletes a project', async ({ page }) => {
     await setupDeleteProjectRequestIntercept(page)
