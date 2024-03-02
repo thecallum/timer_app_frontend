@@ -2,13 +2,15 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.2
+  windows: circleci/windows@2.4.0
 
 executors:
   pw-jammy-development:
     docker:
       - image: mcr.microsoft.com/playwright:v1.41.2-jammy
-
-# some change
+  windows-executor:
+    executor: windows/default
+    shell: bash.exe
 
 jobs:
   build-and-test:
@@ -22,24 +24,45 @@ jobs:
           command: |
             export TEST=true
             yarn build_test
-      
+
   e2e-tests:
-    executor: pw-jammy-development
-    # parallelism: 4
+    executor: windows-executor
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - node/install:
+          install-yarn: true
+          node-version: '14.17.0'
       - run:
+          name: Install Playwright
+          command: yarn add playwright
+      - run:
+          name: Run Playwright Tests
           command: |
-            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID 
-            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY 
+            export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+            export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
             yarn test-ci
       - store_artifacts:
           path: ./playwright-report
-          destination: playwright-report-first
-      - store_artifacts:
-          path: /tmp/artifacts
+          destination: playwright-report
+
+      
+  # e2e-tests:
+  #   executor: pw-jammy-development
+  #   # parallelism: 4
+  #   steps:
+  #     - checkout
+  #     - node/install-packages:
+  #         pkg-manager: yarn
+  #     - run:
+  #         command: |
+  #           export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID 
+  #           export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY 
+  #           yarn test-ci
+  #     - store_artifacts:
+  #         path: ./playwright-report
+  #         destination: playwright-report-first
+  #     - store_artifacts:
+  #         path: /tmp/artifacts
       # - run: SHARD="$((${CIRCLE_NODE_INDEX}+1))"; npx playwright test -- --shard=${SHARD}/${CIRCLE_NODE_TOTAL}
   deploy-development:
     executor: node/default
