@@ -1,4 +1,4 @@
-import { Inter, Orbitron } from 'next/font/google'
+import { Inter, Orbitron, Inconsolata } from 'next/font/google'
 
 export const inter = Inter({
   subsets: ['latin'],
@@ -9,4 +9,12 @@ export const inter = Inter({
 export const orbitron = Orbitron({
   subsets: ['latin'],
   display: 'block',
+})
+
+
+
+export const inconsolata = Inconsolata({
+  subsets: ['latin'],
+  display: 'block',
+  weight: ["400"]
 })
