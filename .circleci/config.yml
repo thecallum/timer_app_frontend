@@ -2,19 +2,42 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.2
+  win: circleci/windows@5.0
 
 jobs:
-  build-and-test:
+  run-linter:
     executor: node/default
     steps:
       - checkout
       - node/install-packages:
           pkg-manager: yarn
       - run:
-          name: 'Build and test'
+          name: 'ESLint'
+          command: yarn lint
+
+  e2e-tests:
+    executor: win/default
+    steps:
+      - checkout
+      - run:
           command: |
-            export TEST=true
-            yarn build_test
+            nvm install 21
+            nvm use 21
+      - run:
+          command: npm install --global yarn
+      - run:
+          name: Install Playwright
+          command: |
+            yarn
+            yarn playwright install 
+      - run:
+          name: Run Playwright Tests
+          command: |
+            yarn test-ci
+      - store_artifacts:
+          path: ./playwright-report
+          destination: playwright-report
+
   deploy-development:
     executor: node/default
     steps:
@@ -40,24 +63,20 @@ jobs:
             yarn sst secrets set --stage production CLIENT_SECRET $CLIENT_SECRET_PRODUCTION         
             AUTH_DOMAIN=$AUTH_DOMAIN_PRODUCTION CLIENT_ID=$CLIENT_ID_PRODUCTION BASE_URL=$BASE_URL_PRODUCTION AUDIENCE=$AUDIENCE_PRODUCTION REDIRECT_URI=$REDIRECT_URI_PRODUCTION yarn deploy --stage production
 workflows:
-  development-pipeline:
+  cicd-pipeline:
     jobs:
-      - build-and-test
+      - run-linter
+      - e2e-tests
       - deploy-development:
-          requires: 
-            - build-and-test
+          requires:
+            - run-linter
+            - e2e-tests
           filters:
             branches:
               only: main
-  production-pipeline:
-    jobs:
-      - build-and-test:
-          filters:
-            branches:
-              only: release
       - deploy-production:
-          requires: 
-            - build-and-test
+          requires:
+            - run-linter
           filters:
             branches:
               only: release

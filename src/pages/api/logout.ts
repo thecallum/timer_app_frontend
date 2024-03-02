@@ -37,9 +37,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     console.info('Refresh token revoked')
 
     deleteAllCookies(res)
-    return res.redirect('/login')
+    res.redirect('/login')
   } catch (error) {
     console.error({ error })
-    return res.redirect('/')
+    res.redirect('/')
   }
 }

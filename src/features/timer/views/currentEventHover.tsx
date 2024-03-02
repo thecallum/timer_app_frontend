@@ -37,6 +37,9 @@ export const CurrentEventHover = () => {
         top: `${startedAtInMinutes * HEIGHT_ONE_MINUTE}px`,
         height: `${Math.max(timeInMinutes, 15) * HEIGHT_ONE_MINUTE}px`,
       }}
+      role="status"
+      aria-live="polite"
+      aria-label={`Recording in progress for event ${description ?? 'with no description'}, ${project?.description ? `assigned to project ${project?.description}` : `not assigned to any project`}.`}
     >
       <div
         className="w-full h-full rounded-sm border border-dashed shadow-lg"

@@ -30,7 +30,7 @@ export const Calendar = () => {
       <div className="flex justify-center mt-4 h-full  ">
         <ContainerFullWidth>
           <Page>
-            <div className="h-full flex flex-col" ref={setContainerRef}>
+            <div className="min-h-full flex flex-col" ref={setContainerRef}>
               <CalendarDates />
               <div className="flex overflow-y-auto overflow-x-hidden border-t border-slate-200 relative">
                 <CalendarHours />

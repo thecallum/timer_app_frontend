@@ -20,18 +20,20 @@ export const SelectProjectPopover = (props: Props) => {
   const { openModal } = useCreateProjectModalContext()
 
   return (
-    <PopoverContainer width="w-64">
+    <PopoverContainer width="w-64" id={'projectList'}>
       <>
         <PopoverLayout title="Project">
           <ul className="">
             {[defaultProject, ...projects].map((x) => {
-              const { description: name, id } = x
+              const { description, id } = x
 
               const projectColor = x?.projectColor ?? defaultProjectColor
 
               return (
                 <li key={id}>
                   <button
+                    aria-current={id === currentProject?.id}
+                    aria-label={`Select project: ${description}`}
                     type="button"
                     className={classNames(
                       'flex flex-row justify-start items-center p-2 my-1 rounded-md w-full hover:bg-slate-100',
@@ -49,7 +51,7 @@ export const SelectProjectPopover = (props: Props) => {
                       className="ml-2 text-sm leading-tight w-full overflow-hidden text-ellipsis text-left"
                       style={{ color: projectColor.dark }}
                     >
-                      {name}
+                      {description}
                     </div>
                   </button>
                 </li>
@@ -61,6 +63,7 @@ export const SelectProjectPopover = (props: Props) => {
         <PopoverControls>
           <div className="flex items-center justify-center">
             <button
+              aria-label="Create a new project"
               type="button"
               onClick={openModal}
               className="text-slate-600  underline underline-offset-1 text-sm"

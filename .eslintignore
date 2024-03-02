@@ -5,3 +5,5 @@ public/
 db/
 cypress/plugins/*
 src/handler.js
+playwright-report
+playwright/.auth
