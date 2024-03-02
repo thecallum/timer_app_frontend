@@ -6,10 +6,6 @@
 
 @import 'tailwindcss/tailwind.css';
 
-body {
-  font-family: inter;
-}
-
 .ReactModal__Overlay {
   z-index: 20;
 }
