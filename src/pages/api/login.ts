@@ -19,5 +19,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   setCookie(res, AUTH_STATE_COOKIE_NAME, state)
 
-  return res.redirect(LOGIN_URL)
+  res.redirect(LOGIN_URL)
 }

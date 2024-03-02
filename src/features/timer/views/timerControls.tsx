@@ -5,6 +5,7 @@ import { useTimerContext } from '../context/hooks/useTimerContext'
 import { CalendarEventApiRequestObject } from '@/requests/types'
 import classNames from 'classnames'
 import { getTodaysDate } from '@/helpers/getTodaysDate'
+import { inconsolata } from '@/components/layout/fonts'
 
 export const TimerControls = () => {
   const { addEvent } = useCalendarEventsContext()
@@ -88,7 +89,9 @@ export const TimerControls = () => {
             'text-purple-100': isRunning,
           })}
         >
-          <span className="font-mono">{formatDuration(time)}</span>
+          <span className={classNames([inconsolata.className, 'text-2xl'])}>
+            {formatDuration(time)}
+          </span>
         </div>
 
         <div className="shrink-0">

@@ -10,9 +10,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const stateCookie = cookies[AUTH_STATE_COOKIE_NAME] ?? null
 
   if (stateCookie !== state) {
-    // console.log({ state })
     console.info('State didnt match stored state')
-    return res.redirect('/login')
+    res.redirect('/login')
+    return
   }
 
   const code = req.query.code as string
@@ -20,12 +20,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const response = await authorizeAccessToken(code)
 
   if (response === null) {
-    return res.redirect('/login')
+    res.redirect('/login')
+    return
   }
 
   const { accessToken, refreshToken, idToken } = response
 
   setCookies(res, accessToken, refreshToken, idToken)
 
-  return res.redirect('/')
+  res.redirect('/')
 }

@@ -1,4 +1,5 @@
-import { test, expect } from './my-setup'
+import { existingProjects } from '../playwright/fixtures'
+import { test, expect } from '../playwright/my-setup'
 import {
   setupCreateCalendarEventIntercept,
   setupCreateProjectRequestIntercept,
@@ -8,24 +9,24 @@ import {
   waitForCreateProjectRequest,
   waitForGetEventsRequest,
   waitForGetProjectsRequest,
-} from './test-helpers'
+} from '../playwright/test-helpers'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-test.beforeEach(async ({ page, login }) => {
+test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 4000 })
 
-  setupGetEventsIntercept(page)
+  setupGetEventsIntercept(page, [])
+  setupGetProjectsIntercept(page, existingProjects)
 
-  const getEventsRequestAssertion = waitForGetEventsRequest(page)
-
-  setupGetProjectsIntercept(page)
-
-  await page.goto('http://localhost:3000/')
-
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.goto('http://localhost:3000/'),
+    waitForGetEventsRequest(page),
+    waitForGetProjectsRequest(page),
+  ])
 })
 
 test('can record event and save it to calendar', async ({ page }) => {
+  await setupCreateCalendarEventIntercept(page)
+
   // enter description
   await page.getByPlaceholder('What are you working on?').fill('Current task')
 
@@ -52,13 +53,11 @@ test('can record event and save it to calendar', async ({ page }) => {
   ).toHaveCount(1)
 
   // end recording
-  await setupCreateCalendarEventIntercept(page)
 
-  const createCalendarEventRequestAssertion = waitForCreateEventRequest(page)
-
-  await page.getByLabel('Save current recording').click()
-
-  await createCalendarEventRequestAssertion
+  await Promise.all([
+    page.getByLabel('Save current recording').click(),
+    waitForCreateEventRequest(page),
+  ])
 
   // timer controls reset
   expect(page.getByPlaceholder('What are you working on?')).toHaveValue('')
@@ -101,11 +100,8 @@ test('can resume recording when page reloaded', async ({ page }) => {
     ),
   ).toHaveCount(1)
 
-  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
-
   // reload page - assert event still saved
   await page.reload()
-  await getProjectsRequestAssertion
 
   // timer controlls needs to re-init
   await page.waitForTimeout(100)
@@ -164,6 +160,8 @@ test('can edit in progress recording', async ({ page }) => {
 })
 
 test('can create and select a new project', async ({ page }) => {
+  await setupCreateProjectRequestIntercept(page)
+
   // enter description
   await page.getByPlaceholder('What are you working on?').fill('Current task')
 
@@ -178,17 +176,17 @@ test('can create and select a new project', async ({ page }) => {
   ).toHaveCount(1)
 
   // create and select project
-  await setupCreateProjectRequestIntercept(page)
-  const createProjectRequestAssertion = waitForCreateProjectRequest(page)
 
   await page
     .getByLabel('Select a project - Currently selected: no project')
     .click()
   await page.getByLabel('Create a new project').click()
   await page.getByPlaceholder('Planning').fill('New project')
-  await page.getByRole('button', { name: 'Create project' }).click()
 
-  await createProjectRequestAssertion
+  await Promise.all([
+    page.getByRole('button', { name: 'Create project' }).click(),
+    waitForCreateProjectRequest(page),
+  ])
 
   await page.getByLabel('Select project: New project').click()
 

@@ -1,5 +1,5 @@
 import { CalendarEventApiResponseObject } from '@/requests/types'
-import { test, expect } from './my-setup'
+import { test, expect } from '../playwright/my-setup'
 import {
   setupCreateCalendarEventIntercept,
   setupCreateProjectRequestIntercept,
@@ -7,15 +7,26 @@ import {
   setupGetProjectsIntercept,
   waitForCreateEventRequest,
   waitForCreateProjectRequest,
-} from './test-helpers'
+  waitForGetEventsRequest,
+  waitForGetProjectsRequest,
+} from '../playwright/test-helpers'
 import dayjs from 'dayjs'
+import {
+  existingCalendarEvents,
+  existingProjects,
+} from '../playwright/fixtures'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-test.beforeEach(async ({ page, login }) => {
+test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 })
 
-  setupGetEventsIntercept(page)
-  setupGetProjectsIntercept(page)
+  setupGetEventsIntercept(page, existingCalendarEvents)
+  setupGetProjectsIntercept(page, existingProjects)
+
+  await Promise.all([
+    page.goto('http://localhost:3000/'),
+    waitForGetEventsRequest(page),
+    waitForGetProjectsRequest(page),
+  ])
 })
 
 test('Opens model with correct timeslot', async ({ page }) => {
@@ -48,9 +59,10 @@ test('request error', async ({ page }) => {
     .getByLabel('Event description')
     .fill('event name')
 
-  const createEventRequestAssertion = waitForCreateEventRequest(page, 400)
-  await page.getByRole('button', { name: 'Save' }).click()
-  await createEventRequestAssertion
+  await Promise.all([
+    page.getByRole('button', { name: 'Save' }).click(),
+    waitForCreateEventRequest(page, 400),
+  ])
 
   // event added to calendar
   expect(
@@ -78,11 +90,10 @@ test('Adds event to calendar', async ({ page }) => {
     .getByLabel('Event description')
     .fill('event name')
 
-  const createEventRequestAssertion = waitForCreateEventRequest(page)
-
-  await page.getByRole('button', { name: 'Save' }).click()
-
-  await createEventRequestAssertion
+  await Promise.all([
+    page.getByRole('button', { name: 'Save' }).click(),
+    waitForCreateEventRequest(page),
+  ])
 
   // event added to calendar
   expect(
@@ -112,8 +123,6 @@ test('Validates event name', async ({ page }) => {
 })
 
 test('Validates event time', async ({ page }) => {
-  setupGetEventsIntercept(page)
-
   // open modal
   await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
 
@@ -158,9 +167,10 @@ test('Can select a project', async ({ page }) => {
 
   setupCreateCalendarEventIntercept(page, createCalendarEventResponse)
 
-  const createEventRequestAssertion = waitForCreateEventRequest(page)
-  await page.getByRole('button', { name: 'Save' }).click()
-  await createEventRequestAssertion
+  await Promise.all([
+    page.getByRole('button', { name: 'Save' }).click(),
+    waitForCreateEventRequest(page),
+  ])
 
   // event added to calendar
   expect(
@@ -183,17 +193,17 @@ test('Can create and select a new project', async ({ page }) => {
   // select and create project
   await setupCreateProjectRequestIntercept(page)
 
-  const createProjectRequestAssertion = waitForCreateProjectRequest(page)
-
   await page
     .locator('#addEventPopover')
     .getByLabel('Select a project - Currently selected: no project')
     .click()
   await page.getByLabel('Create a new project').click()
   await page.getByPlaceholder('Planning').fill('New project')
-  await page.getByRole('button', { name: 'Create project' }).click()
 
-  await createProjectRequestAssertion
+  await Promise.all([
+    page.getByRole('button', { name: 'Create project' }).click(),
+    waitForCreateProjectRequest(page),
+  ])
 
   await page
     .locator('#addEventPopover')
@@ -211,9 +221,10 @@ test('Can create and select a new project', async ({ page }) => {
 
   setupCreateCalendarEventIntercept(page, createCalendarEventResponse)
 
-  const createEventRequestAssertion = waitForCreateEventRequest(page)
-  await page.getByRole('button', { name: 'Save' }).click()
-  await createEventRequestAssertion
+  await Promise.all([
+    page.getByRole('button', { name: 'Save' }).click(),
+    waitForCreateEventRequest(page),
+  ])
 
   // event added to calendar
   expect(

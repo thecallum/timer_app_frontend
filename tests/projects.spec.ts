@@ -1,4 +1,4 @@
-import { test, expect } from './my-setup'
+import { test, expect } from '../playwright/my-setup'
 import {
   setupCreateProjectRequestIntercept,
   setupDeleteProjectRequestIntercept,
@@ -7,21 +7,25 @@ import {
   waitForCreateProjectRequest,
   waitForDeleteProjectRequest,
   waitForGetProjectsRequest,
-} from './test-helpers'
+  waitForUpdateProjectRequest,
+} from '../playwright/test-helpers'
 
-import { existingProject, updateProjectResponse } from './fixtures'
+import { existingProject, updateProjectResponse } from '../playwright/fixtures'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-test.beforeEach(async ({ page, login }) => {
+test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 })
 })
 
 test('shows empty list of projects', async ({ page }) => {
   // init with no projects
-  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
-  setupGetProjectsIntercept(page)
-  await page.goto('http://localhost:3000/projects')
-  await getProjectsRequestAssertion
+  await setupGetProjectsIntercept(page, [])
+
+  await Promise.all([
+    page.goto('http://localhost:3000/projects'),
+    waitForGetProjectsRequest(page),
+  ])
+
+  await page.evaluate(() => document.fonts.ready)
 
   expect(await page.screenshot()).toMatchSnapshot('no-projects.png')
 })
@@ -29,42 +33,45 @@ test('shows empty list of projects', async ({ page }) => {
 test.describe('creates a project', () => {
   test.beforeEach(async ({ page }) => {
     // init with no projects
-    const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
+    await setupGetProjectsIntercept(page, [])
 
-    setupGetProjectsIntercept(page)
-
-    await page.goto('http://localhost:3000/projects')
-
-    await getProjectsRequestAssertion
+    await Promise.all([
+      page.goto('http://localhost:3000/projects'),
+      waitForGetProjectsRequest(page),
+    ])
   })
 
   test('request error', async ({ page }) => {
-    setupCreateProjectRequestIntercept(page, 400)
-
     // create a project
     await page.getByText('Create a new project').click()
     await page.getByLabel('Project description').fill('New Project')
 
-    const createProjectRequestAssertion = waitForCreateProjectRequest(page, 400)
-    await page.getByRole('button', { name: 'Create project' }).click()
-    await createProjectRequestAssertion
+    await setupCreateProjectRequestIntercept(page, null, 400)
+
+    await Promise.all([
+      page.getByRole('button', { name: 'Create project' }).click(),
+      waitForCreateProjectRequest(page, 400),
+    ])
 
     // assert error message
-    expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
+    expect(
+      page
+        .getByLabel('Create a project')
+        .getByText('Request failed with status code 400'),
+    ).toHaveCount(1)
   })
 
   test('project created', async ({ page }) => {
-    setupCreateProjectRequestIntercept(page)
+    await setupCreateProjectRequestIntercept(page)
 
     // create a project
     await page.getByText('Create a new project').click()
     await page.getByLabel('Project description').fill('New Project')
 
-    const createProjectRequestAssertion = waitForCreateProjectRequest(page)
-
-    await page.getByRole('button', { name: 'Create project' }).click()
-
-    await createProjectRequestAssertion
+    await Promise.all([
+      page.getByRole('button', { name: 'Create project' }).click(),
+      waitForCreateProjectRequest(page),
+    ])
 
     expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
 
@@ -72,34 +79,25 @@ test.describe('creates a project', () => {
     await page.getByText('Project added').click()
     await page.waitForSelector('text="Project added"', { state: 'detached' })
 
+    await page.evaluate(() => document.fonts.ready)
+
     expect(await page.screenshot()).toMatchSnapshot('project-created.png')
   })
 })
 
 test.describe('edits a project', () => {
   test.beforeEach(async ({ page }) => {
-    const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
-    setupGetProjectsIntercept(page, [existingProject])
-    await page.goto('http://localhost:3000/projects')
-    await getProjectsRequestAssertion
+    await setupGetProjectsIntercept(page, [existingProject])
+
+    await Promise.all([
+      page.goto('http://localhost:3000/projects'),
+      waitForGetProjectsRequest(page),
+    ])
   })
 
   test('request error', async ({ page }) => {
-    setupCreateProjectRequestIntercept(page, 400)
+    await setupUpdateProjectRequestIntercept(page, null, 400)
 
-    // create a project
-    await page.getByText('Create a new project').click()
-    await page.getByLabel('Project description').fill('New Project')
-
-    const createProjectRequestAssertion = waitForCreateProjectRequest(page, 400)
-    await page.getByRole('button', { name: 'Create project' }).click()
-    await createProjectRequestAssertion
-
-    // assert error message
-    expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
-  })
-
-  test('request error', async ({ page }) => {
     // edit the project
     await page
       .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
@@ -108,22 +106,20 @@ test.describe('edits a project', () => {
 
     await page.getByLabel('Project description').fill('updated description')
 
-    await setupUpdateProjectRequestIntercept(
-      page,
-      {
-        ...updateProjectResponse,
-        id: 82,
-      },
-      400,
-    )
-
-    await page
-      .getByLabel('Edit project')
-      .getByRole('button', { name: 'Edit project' })
-      .click()
+    await Promise.all([
+      page
+        .getByLabel('Edit project')
+        .getByRole('button', { name: 'Edit project' })
+        .click(),
+      waitForUpdateProjectRequest(page, 400),
+    ])
 
     // assert error message
-    expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
+    expect(
+      page
+        .getByLabel('Edit project')
+        .getByText('Request failed with status code 400'),
+    ).toHaveCount(1)
   })
 
   test('edits a project', async ({ page }) => {
@@ -151,16 +147,19 @@ test.describe('edits a project', () => {
     await page.getByText('Project updated').click()
     await page.waitForSelector('text="Project updated"', { state: 'detached' })
 
+    await page.evaluate(() => document.fonts.ready)
+
     expect(await page.screenshot()).toMatchSnapshot('project-updated.png')
   })
 })
 
 test('validates project description', async ({ page }) => {
-  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
-  setupGetProjectsIntercept(page)
-  await page.goto('http://localhost:3000/projects')
+  await setupGetProjectsIntercept(page, [])
 
-  await getProjectsRequestAssertion
+  await Promise.all([
+    page.goto('http://localhost:3000/projects'),
+    waitForGetProjectsRequest(page),
+  ])
 
   // create a project
   await page.getByText('Create a new project').click()
@@ -179,46 +178,51 @@ test('validates project description', async ({ page }) => {
 
 test.describe('deletes a project', () => {
   test.beforeEach(async ({ page }) => {
-    const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
-    setupGetProjectsIntercept(page, [existingProject])
-    await page.goto('http://localhost:3000/projects')
+    await setupGetProjectsIntercept(page, [existingProject])
 
-    await getProjectsRequestAssertion
+    await Promise.all([
+      page.goto('http://localhost:3000/projects'),
+      waitForGetProjectsRequest(page),
+    ])
   })
 
   test('request error', async ({ page }) => {
-    setupDeleteProjectRequestIntercept(page, 400)
+    await setupDeleteProjectRequestIntercept(page, 400)
 
     await page
       .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
       .getByRole('button')
       .click()
 
-    const deleteProjectRequestAssertion = waitForDeleteProjectRequest(page, 400)
-    await page.getByLabel('Delete project').click()
-    await deleteProjectRequestAssertion
+    await Promise.all([
+      page.getByLabel('Delete project').click(),
+      waitForDeleteProjectRequest(page, 400),
+    ])
 
     // assert error message
     expect(page.getByText('Request failed with status code 400')).toHaveCount(1)
   })
 
   test('deletes a project', async ({ page }) => {
-    setupDeleteProjectRequestIntercept(page)
+    await setupDeleteProjectRequestIntercept(page)
 
     await page
       .getByRole('row', { name: 'Existing Project 0.0 hours Edit' })
       .getByRole('button')
       .click()
 
-    const deleteProjectRequestAssertion = waitForDeleteProjectRequest(page)
-    await page.getByLabel('Delete project').click()
-    await deleteProjectRequestAssertion
+    await Promise.all([
+      page.getByLabel('Delete project').click(),
+      waitForDeleteProjectRequest(page),
+    ])
 
     expect(page.getByRole('button', { name: 'Close' })).toBeHidden()
 
     // remove toast
     await page.getByText('Project deleted').click()
     await page.waitForSelector('text="Project deleted"', { state: 'detached' })
+
+    await page.evaluate(() => document.fonts.ready)
 
     expect(await page.screenshot()).toMatchSnapshot('project-deleted.png')
   })

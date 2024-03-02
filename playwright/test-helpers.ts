@@ -75,18 +75,19 @@ export const setupDeleteCalendarEventIntercept = async (
 
 export const setupCreateProjectRequestIntercept = async (
   page: Page,
+  body: ProjectApiResponseObject | null = createProjectResponse,
   status: number = 200,
 ) => {
   await page.route('**/api/projects', async (route) => {
     if (route.request().method() === 'POST') {
-      route.fulfill({ json: createProjectResponse, status })
+      route.fulfill({ json: body, status })
     }
   })
 }
 
 export const setupUpdateProjectRequestIntercept = async (
   page: Page,
-  data: ProjectApiResponseObject = updateProjectResponse,
+  data: ProjectApiResponseObject | null = updateProjectResponse,
   status: number = 200,
 ) => {
   await page.route('**/api/projects/**', async (route) => {
@@ -171,14 +172,17 @@ export const waitForCreateProjectRequest = (
   })
 }
 
-export const waitForUpdateProjectRequest = (page: Page) => {
+export const waitForUpdateProjectRequest = (
+  page: Page,
+  status: number = 200,
+) => {
   return page.waitForResponse((res) => {
     const request = res.request()
 
     return (
       request.method() === 'PUT' &&
-      res.url().includes('/api/projects/**') &&
-      res.status() === 200
+      res.url().includes('/api/projects/') &&
+      res.status() === status
     )
   })
 }

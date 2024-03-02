@@ -1,101 +1,106 @@
-import { test, expect } from './my-setup'
+import { existingProject } from '../playwright/fixtures'
+import { test, expect } from '../playwright/my-setup'
 import {
+  setupGetEventsIntercept,
   setupGetProjectsIntercept,
   waitForGetEventsRequest,
   waitForGetProjectsRequest,
-} from './test-helpers'
+} from '../playwright/test-helpers'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-test.beforeEach(async ({ page, login }) => {
+test.beforeEach(async ({ page }) => {
   await page.setViewportSize({ width: 1920, height: 1080 })
 })
 
 test('shows the correct days of week', async ({ page }) => {
-  const getEventsRequestAssertion = waitForGetEventsRequest(page)
+  setupGetProjectsIntercept(page, [existingProject])
+  setupGetEventsIntercept(page, [])
 
-  await page.goto('http://localhost:3000/')
+  await Promise.all([
+    page.goto('http://localhost:3000/'),
+    waitForGetEventsRequest(page),
+    waitForGetProjectsRequest(page),
+  ])
 
-  await getEventsRequestAssertion
+  await page.evaluate(() => document.fonts.ready)
 
   // check current week
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[0].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[0].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[0].png')
+
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[0].png',
+  )
 
   // check previous week
   page.getByText('Previous').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[-1].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[-1].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[-1].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[-1].png',
+  )
 
   // check previous week
   page.getByLabel('Show previous week').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[-2].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[-2].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[-2].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[-2].png',
+  )
 
   // check next week
   page.getByText('Next').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[-1].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[-1].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[-1].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[-1].png',
+  )
 
   // check today
   page.getByLabel('Show current week').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[0].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[0].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[0].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[0].png',
+  )
 
   // check next week
   page.getByText('Next').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[1].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[1].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[1].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[1].png',
+  )
 
   // check next week
   page.getByLabel('Show next week').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[2].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[2].png' })
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[2].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[2].png',
+  )
 
   // check today
   page.getByLabel('Show current week').click()
 
-  await page
-    .getByLabel('Calendar week selector')
-    .screenshot({ path: 'week-selector-[0].png' })
-  await page
-    .getByLabel('Days of week')
-    .screenshot({ path: 'days-of-week-[0].png' })
-
-  // expect(await page.screenshot()).toMatchSnapshot('no-projects.png')
+  expect(
+    await page.getByLabel('Calendar week selector').screenshot(),
+  ).toMatchSnapshot('week-selector-[0].png')
+  expect(await page.getByLabel('Days of week').screenshot()).toMatchSnapshot(
+    'days-of-week-[0].png',
+  )
 })
 
 test('loads events for each week', async ({ page }) => {
@@ -136,6 +141,7 @@ test('loads events for each week', async ({ page }) => {
       endTime: '2024-02-29T04:00:00Z',
     },
   ]
+
   page.route(
     '**/api/events?startTime=02%2F12%2F2024&endTime=02%2F18%2F2024',
     async (route) => route.fulfill({ json: [events[0]], status: 200 }),
@@ -157,14 +163,13 @@ test('loads events for each week', async ({ page }) => {
     async (route) => route.fulfill({ json: [events[4]], status: 200 }),
   )
 
-  setupGetProjectsIntercept(page)
+  setupGetProjectsIntercept(page, [existingProject])
 
-  let getEventsRequestAssertion = waitForGetEventsRequest(page)
-  const getProjectsRequestAssertion = waitForGetProjectsRequest(page)
-
-  await page.goto('http://localhost:3000/')
-
-  await Promise.all([getEventsRequestAssertion, getProjectsRequestAssertion])
+  await Promise.all([
+    page.goto('http://localhost:3000/'),
+    waitForGetEventsRequest(page),
+    waitForGetProjectsRequest(page),
+  ])
 
   // check current week
   expect(
@@ -174,9 +179,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check previous week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByText('Previous').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByText('Previous').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -185,9 +191,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check previous week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByLabel('Show previous week').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByLabel('Show previous week').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -196,9 +203,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check next week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByText('Next').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByText('Next').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -207,9 +215,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check today
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByLabel('Show current week').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByLabel('Show current week').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -218,9 +227,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check next week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByText('Next').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByText('Next').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -229,9 +239,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check next week
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByLabel('Show next week').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByLabel('Show next week').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
@@ -240,9 +251,10 @@ test('loads events for each week', async ({ page }) => {
   ).toHaveCount(1)
 
   // check today
-  getEventsRequestAssertion = waitForGetEventsRequest(page)
-  await page.getByLabel('Show current week').click()
-  await getEventsRequestAssertion
+  await Promise.all([
+    page.getByLabel('Show current week').click(),
+    waitForGetEventsRequest(page),
+  ])
 
   expect(
     page.getByLabel(
