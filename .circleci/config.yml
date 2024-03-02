@@ -26,11 +26,13 @@ jobs:
     executor: win/default
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      - run:
+          command: nvm install 21 && nvm use 21
+      - run:
+          command: npm install --global yarn
       - run:
           name: Install Playwright
-          command: yarn add playwright
+          command: yarn
       - run:
           name: Run Playwright Tests
           command: |
