@@ -24,7 +24,7 @@ export const Layout = (props: Props) => {
   }
 
   return (
-    <>
+    <div>
       <Header toggleNavbar={toggleNavbar} />
 
       <div className="flex flex-row h-[calc(100vh-4rem)] grow-0 lg:h-[100vh]">
@@ -38,6 +38,6 @@ export const Layout = (props: Props) => {
       </div>
 
       <ToastContainer />
-    </>
+    </div>
   )
 }

@@ -1,3 +1,4 @@
+import { getTodaysDate } from '@/helpers/getTodaysDate'
 import { TimerState } from '../types'
 
 type TimerAction =
@@ -8,7 +9,7 @@ type TimerAction =
   | { type: 'TICK' }
 
 const getElapsedSeconds = (timestamp: Date) => {
-  const now = new Date()
+  const now = getTodaysDate().toDate()
   const differenceInMilliseconds = now.getTime() - timestamp.getTime()
   const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000)
 
@@ -31,7 +32,7 @@ export const timerReducer = (
         isRunning: true,
         startedAt:
           action.startedAt === null
-            ? new Date()
+            ? getTodaysDate().toDate()
             : new Date(action.startedAt as string),
         time: initialTime,
       }
