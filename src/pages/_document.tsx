@@ -5,8 +5,10 @@ import { Html, Head, Main, NextScript } from 'next/document'
 export default function Document() {
   return (
     <Html lang="en">
-      <Head></Head>
-      <body className={classNames([inter.className, 'bg-slate-50 box-border'])}>
+      <Head />
+      <body
+        className={classNames(['bg-slate-100 box-border', inter.className])}
+      >
         <Main />
         <NextScript />
       </body>

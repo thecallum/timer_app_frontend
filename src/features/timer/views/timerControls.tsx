@@ -88,7 +88,9 @@ export const TimerControls = () => {
             'text-purple-100': isRunning,
           })}
         >
-          <span className="font-mono">{formatDuration(time)}</span>
+          <span className="[font-family:monospace]">
+            {formatDuration(time)}
+          </span>
         </div>
 
         <div className="shrink-0">
