@@ -34,7 +34,9 @@ jobs:
           command: npm install --global yarn
       - run:
           name: Install Playwright
-          command: yarn playwright install
+          command: |
+            yarn
+            yarn playwright install 
       - run:
           name: Run Playwright Tests
           command: |
