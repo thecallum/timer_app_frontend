@@ -2,15 +2,12 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.2
-  windows: circleci/windows@2.4.0
+  windows: circleci/windows@5.0
 
 executors:
   pw-jammy-development:
     docker:
       - image: mcr.microsoft.com/playwright:v1.41.2-jammy
-  windows-executor:
-    executor: windows/default
-    shell: bash.exe
 
 jobs:
   build-and-test:
@@ -26,7 +23,7 @@ jobs:
             yarn build_test
 
   e2e-tests:
-    executor: windows-executor
+     executor: win/default
     steps:
       - checkout
       - node/install:
