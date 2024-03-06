@@ -5,7 +5,7 @@ import { setCookie } from '@/auth/setCookies'
 
 const domain = process.env.NEXT_PUBLIC_AUTH_DOMAIN
 const redirectUri =
-  process.env.NEXT_PUBLIC_LOCAL_ENV === 'true'
+  process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000/api/authorize'
     : process.env.NEXT_PUBLIC_REDIRECT_URI
 const audience = process.env.NEXT_PUBLIC_AUDIENCE

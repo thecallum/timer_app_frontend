@@ -7,7 +7,7 @@ import {
 import { ServerResponse, IncomingMessage } from 'http'
 
 export const COOKIE_DOMAIN =
-  process.env.NEXT_PUBLIC_LOCAL_ENV === 'true'
+  process.env.NODE_ENV === 'development'
     ? 'localhost'
     : process.env.COOKIE_DOMAIN ?? ''
 
