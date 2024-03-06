@@ -1,7 +1,5 @@
 import * as jose from 'jose'
-
-const AUTH_DOMAIN = process.env.NEXT_PUBLIC_AUTH_DOMAIN
-const AUDIENCE = process.env.NEXT_PUBLIC_AUDIENCE
+import { AUTH_AUDIENCE, AUTH_DOMAIN } from './config'
 
 export const validateToken = async (
   accessToken: string | null,
@@ -15,7 +13,7 @@ export const validateToken = async (
   try {
     await jose.jwtVerify(accessToken, JWKS, {
       issuer: `${AUTH_DOMAIN}/`,
-      audience: AUDIENCE,
+      audience: AUTH_AUDIENCE,
     })
     return true
   } catch (error) {

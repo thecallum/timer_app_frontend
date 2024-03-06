@@ -1,16 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { Config } from 'sst/node/config'
-
-const AUTH_DOMAIN = process.env.NEXT_PUBLIC_AUTH_DOMAIN
-const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID
-const REDIRECT_URI =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000/api/authorize'
-    : process.env.NEXT_PUBLIC_REDIRECT_URI
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const CLIENT_SECRET = process.env.TEST === 'true' ? '' : Config.CLIENT_SECRET
+import { AUTH_DOMAIN, CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } from './config'
 
 export const authorizeAccessToken = async (
   code: string,
