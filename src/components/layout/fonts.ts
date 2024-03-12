@@ -14,5 +14,5 @@ export const orbitron = Orbitron({
 export const robotoMono = Roboto_Mono({
   subsets: ['latin'],
   display: 'block',
-  weight: ['400' ],
+  weight: ['400'],
 })
