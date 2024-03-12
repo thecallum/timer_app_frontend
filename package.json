@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev_env": "sst bind next dev",
+    "dev_env": "sst bind next dev --stage development",
     "start": "sst bind next start --stage development",
 
     "start_dev": "sst bind next dev --stage development",
