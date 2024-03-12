@@ -1,12 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios'
-import { Config } from 'sst/node/config'
-
-const AUTH_DOMAIN = process.env.NEXT_PUBLIC_AUTH_DOMAIN
-const CLIENT_ID = process.env.NEXT_PUBLIC_CLIENT_ID
-
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const CLIENT_SECRET = process.env.TEST === 'true' ? '' : Config.CLIENT_SECRET
+import { AUTH_DOMAIN, CLIENT_ID, CLIENT_SECRET } from './config'
 
 export const refreshAccessToken = async (
   refreshToken: string | null,
