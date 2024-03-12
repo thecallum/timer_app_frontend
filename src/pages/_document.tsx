@@ -7,7 +7,7 @@ export default function Document() {
     <Html lang="en">
       <Head />
       <body
-        className={classNames(['bg-slate-100 box-border', inter.className])}
+        className={classNames(['bg-slate-50 box-border', inter.className])}
       >
         <Main />
         <NextScript />
