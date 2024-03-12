@@ -6,9 +6,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head />
-      <body
-        className={classNames(['bg-slate-100 box-border', inter.className])}
-      >
+      <body className={classNames(['bg-slate-50 box-border', inter.className])}>
         <Main />
         <NextScript />
       </body>
