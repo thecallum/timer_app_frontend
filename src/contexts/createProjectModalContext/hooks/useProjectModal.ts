@@ -1,7 +1,7 @@
 import { useClickOutContext } from '@/contexts/clickOutContext'
 import { useProjectsContext } from '@/contexts/projectsContext'
 import { ProjectApiRequestObject } from '@/requests/types'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 export const useProjectModal = () => {
   const { addProject } = useProjectsContext()
@@ -11,16 +11,14 @@ export const useProjectModal = () => {
   const [requestError, setRequestError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    setModalAsOpen(modalIsOpen)
-  }, [modalIsOpen])
-
   const closeModal = () => {
     setTimeout(() => setModalIsOpen(false))
+    setModalAsOpen(false)
   }
 
   const openModal = () => {
     setModalIsOpen(true)
+    setModalAsOpen(true)
   }
 
   const onCreateProject = async (request: ProjectApiRequestObject) => {
