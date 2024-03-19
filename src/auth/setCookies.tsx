@@ -1,7 +1,6 @@
 import {
   ACCESS_TOKEN_COOKIE_NAME,
   ID_TOKEN_COOKIE_NAME,
-  IS_AUTHORIZED_COOKIE_NAME,
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/auth/constants'
 import { ServerResponse, IncomingMessage } from 'http'
@@ -27,7 +26,6 @@ export function setCookies(
       true,
     ),
     buildCookieString(ID_TOKEN_COOKIE_NAME, idToken, COOKIE_DOMAIN, true),
-    buildCookieString(IS_AUTHORIZED_COOKIE_NAME, 'true', COOKIE_DOMAIN, false),
   ])
 }
 
