@@ -7,6 +7,12 @@ type TimerAction =
   | { type: 'SET_PROJECT'; projectId: number | null }
   | { type: 'SET_DESCRIPTION'; description: string }
   | { type: 'TICK' }
+  | {
+      type: 'REHYDRATE'
+      description: string
+      projectId: number | null
+      startedAt: string
+    }
 
 const getElapsedSeconds = (timestamp: Date) => {
   const now = getTodaysDate().toDate()
@@ -48,6 +54,16 @@ export const timerReducer = (
     }
     case 'TICK': {
       return { ...state, time: state.time + 1 }
+    }
+    case 'REHYDRATE': {
+      return {
+        ...state,
+        description: action.description,
+        projectId: action.projectId,
+        isRunning: true,
+        startedAt: new Date(action.startedAt),
+        time: getElapsedSeconds(new Date(action.startedAt)),
+      }
     }
     default: {
       return state
