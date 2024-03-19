@@ -6,6 +6,7 @@ const nextConfig = {
     unoptimized: true,
   },
   optimizeFonts: false,
+  reactStrictMode: true,
 }
 
 module.exports = nextConfig
