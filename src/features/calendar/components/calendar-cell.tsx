@@ -3,24 +3,28 @@ import { PopoverWrapper } from './popover-wrapper'
 import { AddEventPopover } from './popovers/add-event-popover'
 import dayjs from 'dayjs'
 import { useClickOutContext } from '@/contexts/clickOutContext'
+import { memo, useMemo } from 'react'
 
 interface Props {
   day: dayjs.Dayjs
   containerRef: HTMLDivElement | null
 }
 
-export const CalendarCell = (props: Props) => {
+export const CalendarCell = memo(function CalendarCell(props: Props) {
   const { day, containerRef } = props
   const { clickoutSubscriberCount } = useClickOutContext()
 
   // Dont open popover if other popovers still visible
   const disableClick = clickoutSubscriberCount > 0
 
+  const cellTimes = useMemo(
+    () => [...Array(4)].map((_, index) => day.add(15 * index, 'minute')),
+    [day],
+  )
+
   return (
     <div className="border-slate-200 h-32 border-b flex flex-col">
-      {[...Array(4)].map((_, index) => {
-        const cellTime = day.add(15 * index, 'minute')
-
+      {cellTimes.map((cellTime, index) => {
         return (
           <PopoverWrapper
             containerRef={containerRef}
@@ -53,4 +57,4 @@ export const CalendarCell = (props: Props) => {
       })}
     </div>
   )
-}
+})
