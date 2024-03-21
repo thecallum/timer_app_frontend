@@ -1,19 +1,9 @@
-import { ICalendarFiveMinuteSlot } from './types'
-import { generateFiveMinuteSlots } from './generateFiveMinuteSlots'
 import { CalendarEvent } from '@/types/calendarEvents'
-
-const fiveMinuteSlots = generateFiveMinuteSlots()
 
 export const matchEventsToTimeSlots = (
   events: CalendarEvent[],
-): ICalendarFiveMinuteSlot[] => {
-  const response: ICalendarFiveMinuteSlot[] = fiveMinuteSlots.map((slot) => ({
-    ...slot,
-    // map events that occur within this timeslot
-    eventIds: [],
-  }))
-
-  // console.log({ response })
+): { [key: number]: string[] } => {
+  const response: { [key: number]: string[] } = {}
 
   events.forEach((event) => {
     const firstFiveMinuteSlot = Math.floor(event.startTimeInMinutes / 5) - 1
@@ -26,7 +16,11 @@ export const matchEventsToTimeSlots = (
       i <= Math.min(lastFiveMinuteSlot, 287);
       i++
     ) {
-      response[i].eventIds = [...response[i].eventIds, event.id]
+      if (Object.prototype.hasOwnProperty.call(response, i)) {
+        response[i].push(event.id)
+      } else {
+        response[i] = [event.id]
+      }
     }
   })
 

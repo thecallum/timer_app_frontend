@@ -1,32 +1,23 @@
-import { CalendarEvent } from '@/types/calendarEvents'
-import { ICalendarFiveMinuteSlot } from './types'
-
-export const findParallelEventsById = (
-  events: CalendarEvent[],
-  timeSlots: ICalendarFiveMinuteSlot[],
-) => {
+export const findParallelEventsById = (timeSlots: {
+  [key: number]: string[]
+}) => {
   const parallelEvents: {
     [key: string]: string[]
   } = {}
 
-  events.forEach((event) => {
-    parallelEvents[event.id] = findParallelEvents(event, timeSlots)
-  })
+  Object.keys(timeSlots)
+    .map(Number)
+    .map((key) => timeSlots[key])
+    .filter((x) => x.length > 1)
+    .forEach((timeslot) => {
+      timeslot.forEach((eventId) => {
+        if (Object.prototype.hasOwnProperty.call(parallelEvents, eventId)) {
+          parallelEvents[eventId] = [...parallelEvents[eventId], ...timeslot]
+        } else {
+          parallelEvents[eventId] = [...timeslot]
+        }
+      })
+    })
 
   return parallelEvents
-}
-
-const findParallelEvents = (
-  event: CalendarEvent,
-  timeSlots: ICalendarFiveMinuteSlot[],
-) => {
-  const timeSlotsContainingThisEvent = timeSlots.filter(
-    (row) =>
-      event.startTimeInSeconds < row.endTimeInSeconds &&
-      event.endTimeInSeconds > row.startTimeInSeconds,
-  )
-
-  // extract the parallelIds for each of these timeslots
-  // giving us a list of all events that conflict with this event
-  return timeSlotsContainingThisEvent.map((row) => row.eventIds).flat()
 }

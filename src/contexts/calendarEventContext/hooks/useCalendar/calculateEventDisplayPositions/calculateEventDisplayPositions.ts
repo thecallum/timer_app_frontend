@@ -3,7 +3,7 @@ import { matchEventsToTimeSlots } from './matchEventsToTimeSlots'
 import { findParallelEventsById } from './findParallelEvents'
 import { calculateDisplayPositionsById } from './calculateDisplayPositionsById'
 import { findLargestColumnCount } from './findLargestColumnCount'
-import { ICalendarFiveMinuteSlot } from './types'
+// import { CalendarFiveMinuteSlot } from './types'
 import { CalendarEvent } from '@/types/calendarEvents'
 import {
   HEIGHT_FIVE_MINUTES,
@@ -12,9 +12,9 @@ import {
 
 const getDisplayPositions = (
   events: CalendarEvent[],
-  timeSlots: ICalendarFiveMinuteSlot[],
+  timeSlots: { [key: number]: string[] },
 ) => {
-  const parallelEventsById = findParallelEventsById(events, timeSlots)
+  const parallelEventsById = findParallelEventsById(timeSlots)
   const largestColumnCount = findLargestColumnCount(timeSlots)
 
   return calculateDisplayPositionsById(
@@ -33,10 +33,6 @@ export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
   const timeSlotsWithContainingEvents = eventsGroupedByDay.map((events) =>
     matchEventsToTimeSlots(events),
   )
-
-  // console.log(
-  //   timeSlotsWithContainingEvents[2].filter((x) => x.eventIds.length > 0),
-  // )
 
   // 3. get display positions for each event
   const computedDisplayPositionsById = eventsGroupedByDay.map((events, index) =>

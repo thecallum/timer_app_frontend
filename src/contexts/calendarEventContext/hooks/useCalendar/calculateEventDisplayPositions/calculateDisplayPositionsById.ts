@@ -7,11 +7,12 @@ const INITIAL_LEFT_POSITION = 0
 export const calculateDisplayPositionsById = (
   events: CalendarEvent[],
   parallelEventsById: {
-    [key: string]: string[]
+    [key: number]: string[]
   },
   largestColumnCount: number,
 ) => {
-  const displayPositionsById = populateInitialDisplayPositions(
+  const eventDisplayPositionsByEventId = populateInitialDisplayPositions(
+    events,
     parallelEventsById,
     largestColumnCount,
   )
@@ -19,12 +20,13 @@ export const calculateDisplayPositionsById = (
   events
     // sort by oldest first
     .sort((a, b) => a.startTimeInSeconds - b.startTimeInSeconds)
-    .map((x) => displayPositionsById[x.id])
-    .forEach((eventPosition) => {
+    .forEach((event) => {
+      const eventPosition = eventDisplayPositionsByEventId[event.id]
+
       // 1. grab parallel event positions with ids
       const parallelEvents = getParallelEvents(
         eventPosition.parallelColumnIds,
-        displayPositionsById,
+        eventDisplayPositionsByEventId,
       )
 
       // 2. identify which displayPositions are taken
@@ -48,7 +50,7 @@ export const calculateDisplayPositionsById = (
       )
     })
 
-  return displayPositionsById
+  return eventDisplayPositionsByEventId
 }
 
 const getParallelEvents = (
@@ -63,6 +65,7 @@ const calculateLeftPosition = (displayPosition: number, width: number) => {
 }
 
 const populateInitialDisplayPositions = (
+  events: CalendarEvent[],
   parallelEventsById: {
     [key: string]: string[]
   },
@@ -74,9 +77,15 @@ const populateInitialDisplayPositions = (
 
   const widthForAllEventsInColumn = 1 / largestColumnCount
 
-  Object.keys(parallelEventsById).forEach((id) => {
-    initialDisplayPositionsById[id] = {
-      parallelColumnIds: parallelEventsById[id],
+  events.forEach((event) => {
+    let parallelIds: string[] = []
+
+    if (Object.prototype.hasOwnProperty.call(parallelEventsById, event.id)) {
+      parallelIds = parallelEventsById[event.id]
+    }
+
+    initialDisplayPositionsById[event.id] = {
+      parallelColumnIds: parallelIds,
       displayPosition: INITIAL_DISPLAY_POSITION,
       computedLeft: INITIAL_LEFT_POSITION,
       computedWidth: widthForAllEventsInColumn,

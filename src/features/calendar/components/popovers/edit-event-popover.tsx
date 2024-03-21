@@ -38,8 +38,6 @@ export const EditEventPopover = (props: Props) => {
     projectId,
   )
 
-  // console.log(dateFormat(start, 'yyyy-mm-dd"T"hh:mm:ss'))
-
   const [startDate, setStartDate] = useState<string>(
     dateFormat(start, 'yyyy-mm-dd"T"hh:MM:ss'),
   )
@@ -57,8 +55,6 @@ export const EditEventPopover = (props: Props) => {
 
     return date
   }
-
-  console.log(getEndTimeAsDate(), startDate)
 
   const timeDifferenceInSeconds =
     (getEndTimeAsDate().getTime() - new Date(startDate).getTime()) / 1000

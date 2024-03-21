@@ -10,12 +10,6 @@ import { Project, ProjectColor } from '@/types/projects'
 export const CalendarEventRequestToDomain = (
   request: CalendarEventApiResponseObject,
 ) => {
-  // console.log(
-  //   { request },
-  //   new Date(request.startTime),
-  //   new Date(request.endTime),
-  // )
-
   return new CalendarEvent(
     request.id,
     request.description,

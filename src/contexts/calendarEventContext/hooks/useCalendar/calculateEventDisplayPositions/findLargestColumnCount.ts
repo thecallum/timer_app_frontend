@@ -1,5 +1,9 @@
-import { ICalendarFiveMinuteSlot } from './types'
+export const findLargestColumnCount = (timeslots: {
+  [key: number]: string[]
+}) => {
+  const columnCounts = Object.keys(timeslots)
+    .map(Number)
+    .map((key) => timeslots[key].length)
 
-export const findLargestColumnCount = (rows: ICalendarFiveMinuteSlot[]) => {
-  return Math.max(...rows.map((x) => x.eventIds.length))
+  return Math.max(...columnCounts)
 }

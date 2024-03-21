@@ -30,8 +30,6 @@ export const useTimer = () => {
     if (!didInit) {
       didInit = true
 
-      console.log('init timer')
-
       const snapshot = getLocalStorageValue()
       if (!snapshot) return
 
