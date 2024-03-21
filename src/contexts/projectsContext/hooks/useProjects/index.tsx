@@ -18,6 +18,7 @@ import {
 import { Bounce, toast } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
 import { UpdateStatus } from '@/types/updateStatus'
+import { useIsAuthorized } from '@/auth/useIsAuthorized'
 
 export const useProjects = () => {
   const router = useRouter()
@@ -27,6 +28,7 @@ export const useProjects = () => {
   }>({})
 
   const [isLoading, setIsLoading] = useState(true)
+  const isAuthorized = useIsAuthorized()
 
   const addProject = async (request: ProjectApiRequestObject) =>
     new Promise<UpdateStatus>((resolve) => {
@@ -193,6 +195,8 @@ export const useProjects = () => {
     })
 
   useEffect(() => {
+    if (!isAuthorized) return
+
     fetchProjects()
   }, [router.pathname])
 

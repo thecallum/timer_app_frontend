@@ -24,6 +24,7 @@ import {
 import { Bounce, toast } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
 import { UpdateStatus } from '../../../../types/updateStatus'
+import { useIsAuthorized } from '@/auth/useIsAuthorized'
 
 dayjs.extend(isSameOrAfter)
 
@@ -33,6 +34,7 @@ export const useCalendar = () => {
   })
 
   const [isLoading, setIsLoading] = useState(false)
+  const isAuthorized = useIsAuthorized()
 
   const { daysOfWeek, next, previous, reset, currentWeek, showingCurrentWeek } =
     useCalendarControls()
@@ -78,6 +80,7 @@ export const useCalendar = () => {
     })
 
   useEffect(() => {
+    if (!isAuthorized) return
     // fetch each time page changes
     fetchEventsForPage()
   }, [currentWeek])
