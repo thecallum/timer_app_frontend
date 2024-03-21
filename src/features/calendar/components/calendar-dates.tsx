@@ -3,21 +3,22 @@ import { calculateDuration } from '../helpers/duration'
 import { formatDuration } from '@/helpers/formatter'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { getTodaysDate } from '@/helpers/getTodaysDate'
+import dateFormat from 'dateformat'
 
 export const CalendarDates = () => {
   const { daysOfWeek, events } = useCalendarEventsContext()
 
   const weekDaysArray = daysOfWeek.map((x) => {
-    const eventsOnThisDay = events.filter((e) =>
-      e.startTime.startOf('day').isSame(x.startOf('day')),
+    const eventsOnThisDay = events.filter(
+      (e) => e.startTime.getDate() == x.getDate(),
     )
 
     return {
       date: x,
-      day: x.format('DD'),
-      name: x.format('ddd'),
+      day: dateFormat(x, 'dd'),
+      name: dateFormat(x, 'ddd'),
       time: formatDuration(calculateDuration(eventsOnThisDay)),
-      current: x.isSame(getTodaysDate(), 'day'),
+      current: x.getDate() === getTodaysDate().getDate(),
     }
   })
 
@@ -53,7 +54,7 @@ export const CalendarDates = () => {
                 </div>
                 <div
                   className="text-slate-500 text-xs hidden lg:block"
-                  aria-label={`Total event duration for ${date.format('dddd')}`}
+                  aria-label={`Total event duration for ${dateFormat(date, 'dddd')}`}
                 >
                   {time}
                 </div>

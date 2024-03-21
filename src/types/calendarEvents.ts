@@ -1,12 +1,10 @@
-import dayjs from 'dayjs'
-
 export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 export class CalendarEvent {
   public id: string
   public description: string
-  public startTime: dayjs.Dayjs
-  public endTime: dayjs.Dayjs
+  public startTime: Date
+  public endTime: Date
   public projectId: number | null
 
   public left: number = 0
@@ -17,39 +15,60 @@ export class CalendarEvent {
   constructor(
     id: string,
     description: string,
-    startTime: dayjs.Dayjs,
-    endTime: dayjs.Dayjs,
+    startTime: Date,
+    endTime: Date,
     projectId: number | null,
   ) {
     this.id = id
     this.description = description
-    this.startTime = startTime
-    this.endTime = endTime
+    this.startTime = new Date(startTime)
+    this.endTime = new Date(endTime)
     this.projectId = projectId
   }
 
   public get dayOfWeek(): DayOfWeek {
     // Sunday is zero, replace with 7
-    const dayOfWeek = this.startTime.day()
+    // const dayOfWeek = this.startTime.day()
+
+    const dayOfWeek = this.startTime.getDay()
+
     if (dayOfWeek === 0) return 7
 
     return dayOfWeek as DayOfWeek
   }
 
   public get durationInSeconds() {
-    return this.endTime.diff(this.startTime, 'second')
+    const durationInMs = this.endTime.getTime() - this.startTime.getTime()
+    return durationInMs / 1000
   }
 
   public get durationInMinutes() {
-    return Math.ceil(this.durationInSeconds / 60)
+    const durationInMs = this.endTime.getTime() - this.startTime.getTime()
+    return durationInMs / 1000 / 60
   }
 
   public get startTimeInSeconds() {
-    return this.startTime.diff(this.startTime.startOf('day'), 'second')
+    const midnight = new Date(this.startTime)
+    midnight.setHours(0)
+    midnight.setMinutes(0)
+    midnight.setSeconds(0)
+    midnight.setMilliseconds(0)
+
+    const diff = this.startTime.getTime() - midnight.getTime()
+
+    return diff / 1000
   }
 
   public get startTimeInMinutes() {
-    return Math.ceil(this.startTimeInSeconds / 60)
+    const midnight = new Date(this.startTime)
+    midnight.setHours(0)
+    midnight.setMinutes(0)
+    midnight.setSeconds(0)
+    midnight.setMilliseconds(0)
+
+    const diff = this.startTime.getTime() - midnight.getTime()
+
+    return diff / 1000 / 60
   }
 
   public get endTimeInSeconds() {

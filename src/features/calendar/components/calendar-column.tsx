@@ -1,9 +1,8 @@
 import { memo, useMemo } from 'react'
 import { CalendarCell } from './calendar-cell'
-import dayjs from 'dayjs'
 
 interface Props {
-  day: dayjs.Dayjs
+  day: Date
   containerRef: HTMLDivElement | null
 }
 
@@ -11,7 +10,14 @@ export const CalendarColumn = memo(function CalendarColumn(props: Props) {
   const { day, containerRef } = props
 
   const hours = useMemo(
-    () => [...Array(24)].map((_, index) => day.add(index, 'hour')),
+    () =>
+      [...Array(24)].map((_, index) => {
+        const date = new Date(day)
+
+        date.setHours(date.getHours() + index)
+
+        return date
+      }),
     [day],
   )
 

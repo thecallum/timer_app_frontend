@@ -1,12 +1,12 @@
 import classNames from 'classnames'
 import { PopoverWrapper } from './popover-wrapper'
 import { AddEventPopover } from './popovers/add-event-popover'
-import dayjs from 'dayjs'
 import { useClickOutContext } from '@/contexts/clickOutContext'
 import { memo, useMemo } from 'react'
+import dateFormat from 'dateformat'
 
 interface Props {
-  day: dayjs.Dayjs
+  day: Date
   containerRef: HTMLDivElement | null
 }
 
@@ -18,7 +18,13 @@ export const CalendarCell = memo(function CalendarCell(props: Props) {
   const disableClick = clickoutSubscriberCount > 0
 
   const cellTimes = useMemo(
-    () => [...Array(4)].map((_, index) => day.add(15 * index, 'minute')),
+    () =>
+      [...Array(4)].map((_, index) => {
+        const date = new Date(day)
+
+        date.setMinutes(date.getMinutes() + 15 * index)
+        return date
+      }),
     [day],
   )
 
@@ -39,7 +45,7 @@ export const CalendarCell = memo(function CalendarCell(props: Props) {
           >
             {({ ref, onClick, showPopover }) => (
               <button
-                aria-label={`Create an event on ${cellTime.format('MMMM D')} at ${cellTime.format('h:mm A')}.`}
+                aria-label={`Create an event on ${dateFormat(cellTime, 'MMMM D')} at ${dateFormat(cellTime, 'h:mm A')}.`}
                 className={classNames(`flex-grow cursor-pointer rounded-sm`, {
                   'bg-slate-200': showPopover,
                   'hover:bg-slate-50': !disableClick,

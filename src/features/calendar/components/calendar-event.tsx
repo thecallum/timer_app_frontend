@@ -4,6 +4,7 @@ import { PopoverWrapper } from './popover-wrapper'
 import { EditEventPopover } from './popovers/edit-event-popover'
 import { CalendarEvent as CalendarEventType } from '@/types/calendarEvents'
 import { defaultProjectColor } from '@/types/projects'
+import dateFormat from 'dateformat'
 
 interface Props {
   event: CalendarEventType
@@ -54,7 +55,7 @@ export const CalendarEvent = (props: Props) => {
               style={eventStyles}
               className="absolute p-[1px] overflow-hidden"
               role="article"
-              aria-label={`Calendar event: ${description} on ${startTime.format('MMMM D')} at ${startTime.format('h:mm A')}, ${project?.description ? `assigned to project ${project?.description}` : `not assigned to any project`}.`}
+              aria-label={`Calendar event: ${description} on ${dateFormat(startTime, 'MMMM D')} at ${dateFormat(startTime, 'h:mm A')}, ${project?.description ? `assigned to project ${project?.description}` : `not assigned to any project`}.`}
             >
               <button
                 className={`w-full h-full cursor-pointer rounded-sm`}

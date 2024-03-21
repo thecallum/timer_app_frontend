@@ -5,7 +5,6 @@ import {
 } from '@/components/popover'
 import { ProjectSelector } from '../../../../components/projectSelector'
 import { useState } from 'react'
-import dayjs from 'dayjs'
 import classNames from 'classnames'
 import { ErrorMessage } from '@/components/form/error-message'
 import { TextInput } from '@/components/form'
@@ -13,6 +12,7 @@ import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { formatDuration } from '@/helpers/formatter'
 import { CalendarEvent } from '@/types/calendarEvents'
+import dateFormat from 'dateformat'
 
 interface Props {
   close: () => void
@@ -38,21 +38,30 @@ export const EditEventPopover = (props: Props) => {
     projectId,
   )
 
+  // console.log(dateFormat(start, 'yyyy-mm-dd"T"hh:mm:ss'))
+
   const [startDate, setStartDate] = useState<string>(
-    start.format('YYYY-MM-DDTHH:mm:ss'),
+    dateFormat(start, 'yyyy-mm-dd"T"hh:mm:ss'),
   )
-  const [endTime, setEndTime] = useState<string>(end.format('HH:mm:ss'))
+  const [endTime, setEndTime] = useState<string>(dateFormat(end, 'hh:mm:ss'))
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const getEndTimeAsDate = () => {
     const [hour, minute, second] = endTime.split(':').map(Number)
-    return dayjs(startDate).hour(hour).minute(minute).second(second)
+
+    const date = new Date(startDate)
+    date.setHours(hour)
+    date.setMinutes(minute)
+    date.setSeconds(second)
+    date.setMilliseconds(0)
+
+    return date
   }
 
-  const timeDifferenceInSeconds = getEndTimeAsDate().diff(
-    dayjs(startDate),
-    'second',
-  )
+  console.log(getEndTimeAsDate(), startDate)
+
+  const timeDifferenceInSeconds =
+    (getEndTimeAsDate().getTime() - new Date(startDate).getTime()) / 1000
 
   const onDeleteEvent = () => {
     setRequestError(null)
@@ -70,7 +79,7 @@ export const EditEventPopover = (props: Props) => {
   const validate = () => {
     const errors: { [key: string]: string } = {}
 
-    if (!getEndTimeAsDate().isAfter(dayjs(startDate))) {
+    if (new Date(startDate) > getEndTimeAsDate()) {
       errors['end'] = 'End time must be after start'
     }
 
@@ -91,7 +100,7 @@ export const EditEventPopover = (props: Props) => {
       return
     }
 
-    event.startTime = dayjs(startDate)
+    event.startTime = new Date(startDate)
     event.endTime = getEndTimeAsDate()
     event.description = description
     event.projectId = selectedProjectId

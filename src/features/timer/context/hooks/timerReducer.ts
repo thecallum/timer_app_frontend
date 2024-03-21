@@ -15,7 +15,7 @@ type TimerAction =
     }
 
 const getElapsedSeconds = (timestamp: Date) => {
-  const now = getTodaysDate().toDate()
+  const now = getTodaysDate()
   const differenceInMilliseconds = now.getTime() - timestamp.getTime()
   const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000)
 
@@ -38,7 +38,7 @@ export const timerReducer = (
         isRunning: true,
         startedAt:
           action.startedAt === null
-            ? getTodaysDate().toDate()
+            ? getTodaysDate()
             : new Date(action.startedAt as string),
         time: initialTime,
       }

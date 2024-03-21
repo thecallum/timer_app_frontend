@@ -6,16 +6,21 @@ import {
 } from '@/requests/types'
 import { CalendarEvent } from '@/types/calendarEvents'
 import { Project, ProjectColor } from '@/types/projects'
-import dayjs from 'dayjs'
 
 export const CalendarEventRequestToDomain = (
   request: CalendarEventApiResponseObject,
 ) => {
+  // console.log(
+  //   { request },
+  //   new Date(request.startTime),
+  //   new Date(request.endTime),
+  // )
+
   return new CalendarEvent(
     request.id,
     request.description,
-    dayjs(request.startTime),
-    dayjs(request.endTime),
+    request.startTime,
+    request.endTime,
     request.projectId,
   )
 }

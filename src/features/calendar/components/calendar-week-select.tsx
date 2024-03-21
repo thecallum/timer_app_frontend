@@ -1,10 +1,11 @@
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
+import dateFormat from 'dateformat'
 
 export const CalendarWeekSelect = () => {
   const { daysOfWeek, next, previous, reset } = useCalendarEventsContext()
 
-  const startOfWeek = daysOfWeek[0].format('DD MMM')
-  const endOfWeek = daysOfWeek[6].format('DD MMM')
+  const startOfWeek = dateFormat(daysOfWeek[0], 'dd mmm')
+  const endOfWeek = dateFormat(daysOfWeek[6], 'dd mmm')
 
   return (
     <div

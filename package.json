@@ -5,7 +5,6 @@
   "scripts": {
     "dev_env": "sst bind next dev --stage development",
     "start": "sst bind next start --stage development",
-
     "start_dev": "sst bind next dev --stage development",
     "dev": "next dev",
     "build_test": "next build",
@@ -27,6 +26,8 @@
     "axios": "^1.6.7",
     "classnames": "^2.3.2",
     "cookie": "^0.6.0",
+    "date-format": "^4.0.14",
+    "dateformat": "^5.0.3",
     "dayjs": "^1.11.10",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "^27.6.3",
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@playwright/test": "^1.41.2",
     "@types/cookie": "^0.6.0",
+    "@types/dateformat": "^5.0.2",
     "@types/faker": "^6.6.9",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.11.2",

@@ -21,6 +21,8 @@ const findParallelEvents = (
   return events.filter((x) => {
     const eventStartTime = x.startTimeInSeconds
 
+    console.log({ eventStartTime })
+
     const fiveMinutesAfterStartTime = eventStartTime + 300
     // minimum height = 5 minutes
     const eventEndTime = Math.max(x.endTimeInSeconds, fiveMinutesAfterStartTime)

@@ -12,7 +12,13 @@ export const CalendarGrid = memo(function CalendarGrid(props: Props) {
   const { daysOfWeek } = useCalendarEventsContext()
 
   const columnDays = useMemo(
-    () => daysOfWeek.map((day) => day.startOf('day')),
+    () =>
+      daysOfWeek.map((day) => {
+        const date = new Date(day)
+        date.setHours(0, 0, 0, 0)
+
+        return date
+      }),
     [daysOfWeek],
   )
 

@@ -13,10 +13,11 @@ import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { formatDuration } from '@/helpers/formatter'
 import { CalendarEventApiRequestObject } from '@/requests/types'
+import dateFormat from 'dateformat'
 
 interface Props {
   close: () => void
-  time: dayjs.Dayjs
+  time: Date
   containerRef: HTMLDivElement | null
 }
 
@@ -30,11 +31,13 @@ export const AddEventPopover = (props: Props) => {
   const [requestError, setRequestError] = useState<string | null>(null)
 
   const [startDate, setStartDate] = useState<string>(
-    time.format('YYYY-MM-DDTHH:mm:ss'),
+    dateFormat(time, 'YYYY-MM-DDTHH:mm:ss'),
   )
-  const [endTime, setEndTime] = useState<string>(
-    time.add(15, 'minute').format('HH:mm:ss'),
-  )
+  const [endTime, setEndTime] = useState<string>(() => {
+    const date = new Date(time.getTime() + 1000 * 60 * 15)
+
+    return dateFormat(date, 'HH:mm:ss')
+  })
 
   const getEndTimeAsDate = () => {
     const [hour, minute, second] = endTime.split(':').map(Number)
@@ -72,8 +75,8 @@ export const AddEventPopover = (props: Props) => {
 
     const request: CalendarEventApiRequestObject = {
       description,
-      startTime: dayjs(startDate),
-      endTime: getEndTimeAsDate(),
+      startTime: new Date(startDate),
+      endTime: new Date(getEndTimeAsDate().format()),
       projectId: projectId,
     }
 

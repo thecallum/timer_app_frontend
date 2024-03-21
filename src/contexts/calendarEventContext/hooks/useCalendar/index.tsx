@@ -1,9 +1,5 @@
 import { useEffect, useReducer, useState } from 'react'
-
-import dayjs from 'dayjs'
 import { calculateEventDisplayPositions } from './calculateEventDisplayPositions'
-
-import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
 import { reducer } from './reducer'
 import { useCalendarControls } from '../useCalendarControls'
 import {
@@ -25,8 +21,6 @@ import { Bounce, toast } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
 import { UpdateStatus } from '../../../../types/updateStatus'
 import { useIsAuthorized } from '@/auth/useIsAuthorized'
-
-dayjs.extend(isSameOrAfter)
 
 export const useCalendar = () => {
   const [state, dispatch] = useReducer(reducer, {

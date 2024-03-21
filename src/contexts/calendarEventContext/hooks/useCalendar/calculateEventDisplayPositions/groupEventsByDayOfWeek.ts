@@ -7,5 +7,7 @@ export const groupEventsByDayOfWeek = (allEvents: CalendarEvent[]) => {
     eventsPerDayOfWeek[event.dayOfWeek - 1].push(event)
   })
 
+
+
   return eventsPerDayOfWeek
 }
