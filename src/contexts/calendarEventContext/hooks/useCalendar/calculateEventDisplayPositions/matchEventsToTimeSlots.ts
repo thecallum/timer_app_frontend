@@ -1,4 +1,4 @@
-import { ICalendarFiveMinuteSlot, ParallelEventSlot } from './types'
+import { ICalendarFiveMinuteSlot } from './types'
 import { generateFiveMinuteSlots } from './generateFiveMinuteSlots'
 import { CalendarEvent } from '@/types/calendarEvents'
 
@@ -7,31 +7,28 @@ const fiveMinuteSlots = generateFiveMinuteSlots()
 export const matchEventsToTimeSlots = (
   events: CalendarEvent[],
 ): ICalendarFiveMinuteSlot[] => {
-  return fiveMinuteSlots.map((slot) => ({
+  const response: ICalendarFiveMinuteSlot[] = fiveMinuteSlots.map((slot) => ({
     ...slot,
     // map events that occur within this timeslot
-    eventIds: findParallelEvents(slot, events).map((x) => x.id),
+    eventIds: [],
   }))
-}
 
-const findParallelEvents = (
-  slot: ParallelEventSlot,
-  events: CalendarEvent[],
-) => {
-  return events.filter((x) => {
-    const eventStartTime = x.startTimeInSeconds
+  // console.log({ response })
 
-    console.log({ eventStartTime })
+  events.forEach((event) => {
+    const firstFiveMinuteSlot = Math.floor(event.startTimeInMinutes / 5) - 1
+    const lastFiveMinuteSlot = Math.ceil(event.endTimeInSeconds / 60 / 5) - 1
 
-    const fiveMinutesAfterStartTime = eventStartTime + 300
-    // minimum height = 5 minutes
-    const eventEndTime = Math.max(x.endTimeInSeconds, fiveMinutesAfterStartTime)
+    // loop over each of the 5 minute slots
 
-    return (
-      (slot.endTimeInSeconds >= eventStartTime &&
-        slot.endTimeInSeconds < eventEndTime) ||
-      (slot.startTimeInSeconds >= eventStartTime &&
-        slot.startTimeInSeconds < eventEndTime)
-    )
+    for (
+      let i = firstFiveMinuteSlot;
+      i <= Math.min(lastFiveMinuteSlot, 287);
+      i++
+    ) {
+      response[i].eventIds = [...response[i].eventIds, event.id]
+    }
   })
+
+  return response
 }

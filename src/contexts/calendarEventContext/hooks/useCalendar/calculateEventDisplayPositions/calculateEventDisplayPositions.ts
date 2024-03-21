@@ -34,6 +34,10 @@ export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
     matchEventsToTimeSlots(events),
   )
 
+  // console.log(
+  //   timeSlotsWithContainingEvents[2].filter((x) => x.eventIds.length > 0),
+  // )
+
   // 3. get display positions for each event
   const computedDisplayPositionsById = eventsGroupedByDay.map((events, index) =>
     getDisplayPositions(events, timeSlotsWithContainingEvents[index]),
