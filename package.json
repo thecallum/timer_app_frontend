@@ -44,6 +44,7 @@
     "react-modal": "^3.16.1",
     "react-popper": "^2.3.0",
     "react-toastify": "^10.0.4",
+    "react-window": "^1.8.10",
     "sst": "^2.40.0",
     "uuid": "^9.0.1",
     "validator": "^13.11.0"
@@ -58,6 +59,7 @@
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@types/react-modal": "^3.16.3",
+    "@types/react-virtualized": "^9.21.29",
     "@types/validator": "^13.11.6",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
