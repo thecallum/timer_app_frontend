@@ -33,7 +33,13 @@ export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
     const displayPosition =
       computedDisplayPositionsById[event.dayOfWeek - 1][event.id]
 
-    event.width = displayPosition.computedWidth
+    // fill width of space
+    if (displayPosition.parallelColumnIds.length < 2) {
+      event.width = 1
+    } else {
+      event.width = displayPosition.computedWidth
+    }
+
     event.left = displayPosition.computedLeft
 
     event.top = event.startTimeInMinutes * HEIGHT_ONE_MINUTE
