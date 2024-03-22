@@ -29,6 +29,7 @@ export const CalendarColumn = memo(function CalendarColumn(props: Props) {
   const [currentSelectedButton, setCurrentSelectedButton] = useState<
     string | null
   >(null)
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
 
   // Dont open popover if other popovers still visible
   const disableClick = clickoutSubscriberCount > 0
@@ -57,7 +58,7 @@ export const CalendarColumn = memo(function CalendarColumn(props: Props) {
         <AddEventPopover
           containerRef={containerRef}
           close={handleClose}
-          time={new Date()}
+          time={selectedDate}
         />
       </PopoverComponentWrapper>
 
@@ -90,9 +91,17 @@ export const CalendarColumn = memo(function CalendarColumn(props: Props) {
                     }
                     isDisabled={!disableClick}
                     onClick={(e: React.MouseEvent<HTMLElement>) => {
-                      openPopover(e.currentTarget)
-
                       setCurrentSelectedButton(`${cellIndex}-${buttonIndex}`)
+
+                      const selectedDate = new Date(day)
+                      selectedDate.setHours(hour)
+                      selectedDate.setMinutes(buttonIndex * 15)
+
+                      console.log({ selectedDate })
+
+                      setSelectedDate(selectedDate)
+
+                      openPopover(e.currentTarget)
                     }}
                   />
                 )

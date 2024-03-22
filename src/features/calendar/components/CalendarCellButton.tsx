@@ -3,7 +3,6 @@ import classNames from 'classnames'
 
 interface Props {
   onClick: (e: React.MouseEvent<HTMLElement>) => void
-
   isActive: boolean
   isDisabled: boolean
   label: string

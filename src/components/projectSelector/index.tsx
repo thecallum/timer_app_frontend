@@ -19,6 +19,7 @@ export const ProjectSelector = (props: Props) => {
 
   const {
     handleOpen,
+    handleClose,
     setReferenceElement,
     setPopperElement,
     showPopover,
@@ -40,8 +41,7 @@ export const ProjectSelector = (props: Props) => {
           currentProject={project ?? defaultProject}
           selectProjectId={(x) => {
             setProjectId(x)
-
-            setTimeout(close)
+            handleClose()
           }}
         />
       </PopoverComponentWrapper>

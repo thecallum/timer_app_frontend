@@ -39,9 +39,9 @@ export const EditEventPopover = (props: Props) => {
   )
 
   const [startDate, setStartDate] = useState<string>(
-    dateFormat(start, 'yyyy-mm-dd"T"hh:MM:ss'),
+    dateFormat(start, 'yyyy-mm-dd"T"HH:MM:ss'),
   )
-  const [endTime, setEndTime] = useState<string>(dateFormat(end, 'hh:MM:ss'))
+  const [endTime, setEndTime] = useState<string>(dateFormat(end, 'HH:MM:ss'))
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   const getEndTimeAsDate = () => {
