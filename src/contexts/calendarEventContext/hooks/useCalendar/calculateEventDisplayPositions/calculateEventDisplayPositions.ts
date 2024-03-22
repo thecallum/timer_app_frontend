@@ -1,43 +1,32 @@
 import { groupEventsByDayOfWeek } from './groupEventsByDayOfWeek'
-import { matchEventsToTimeSlots } from './matchEventsToTimeSlots'
-import { findParallelEventsById } from './findParallelEvents'
+import { getParallelEvents } from './getParallelEvents'
 import { calculateDisplayPositionsById } from './calculateDisplayPositionsById'
-import { findLargestColumnCount } from './findLargestColumnCount'
-// import { CalendarFiveMinuteSlot } from './types'
 import { CalendarEvent } from '@/types/calendarEvents'
 import {
   HEIGHT_FIVE_MINUTES,
   HEIGHT_ONE_MINUTE,
 } from '@/constants/calendar-constants'
 
-const getDisplayPositions = (
-  events: CalendarEvent[],
-  timeSlots: { [key: number]: string[] },
-) => {
-  const parallelEventsById = findParallelEventsById(timeSlots)
-  const largestColumnCount = findLargestColumnCount(timeSlots)
-
-  return calculateDisplayPositionsById(
-    events,
-    parallelEventsById,
-    largestColumnCount,
-  )
-}
-
 export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
   // 1. Group events by day of week
   const eventsGroupedByDay = groupEventsByDayOfWeek(allEvents)
 
-  // 2. Group each event into 5 minute slots
-  // For every 5 minute slot, include any event that fits into that slot
-  const timeSlotsWithContainingEvents = eventsGroupedByDay.map((events) =>
-    matchEventsToTimeSlots(events),
-  )
+  // 2. get display positions for each event
+  const computedDisplayPositionsById = eventsGroupedByDay.map((events) => {
+    // Identify which events run in parallel
+    const parallelEvents = getParallelEvents(events)
 
-  // 3. get display positions for each event
-  const computedDisplayPositionsById = eventsGroupedByDay.map((events, index) =>
-    getDisplayPositions(events, timeSlotsWithContainingEvents[index]),
-  )
+    const largestColumnCount = Object.values(parallelEvents).reduce(
+      (longest, current) => Math.max(longest, current.size),
+      1,
+    )
+
+    return calculateDisplayPositionsById(
+      events,
+      parallelEvents,
+      largestColumnCount,
+    )
+  })
 
   // map the display position to each event
   return allEvents.map((event) => {

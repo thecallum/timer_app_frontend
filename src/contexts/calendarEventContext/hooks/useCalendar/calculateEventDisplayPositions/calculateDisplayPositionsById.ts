@@ -7,7 +7,7 @@ const INITIAL_LEFT_POSITION = 0
 export const calculateDisplayPositionsById = (
   events: CalendarEvent[],
   parallelEventsById: {
-    [key: number]: string[]
+    [key: number]: Set<string>
   },
   largestColumnCount: number,
 ) => {
@@ -24,9 +24,8 @@ export const calculateDisplayPositionsById = (
       const eventPosition = eventDisplayPositionsByEventId[event.id]
 
       // 1. grab parallel event positions with ids
-      const parallelEvents = getParallelEvents(
-        eventPosition.parallelColumnIds,
-        eventDisplayPositionsByEventId,
+      const parallelEvents = eventPosition.parallelColumnIds.map(
+        (x) => eventDisplayPositionsByEventId[x],
       )
 
       // 2. identify which displayPositions are taken
@@ -53,13 +52,6 @@ export const calculateDisplayPositionsById = (
   return eventDisplayPositionsByEventId
 }
 
-const getParallelEvents = (
-  eventIds: string[],
-  displayPositionsById: {
-    [key: string]: CalendarEventPosition
-  },
-) => eventIds.map((x) => displayPositionsById[x])
-
 const calculateLeftPosition = (displayPosition: number, width: number) => {
   return (displayPosition - 1) * width
 }
@@ -67,7 +59,7 @@ const calculateLeftPosition = (displayPosition: number, width: number) => {
 const populateInitialDisplayPositions = (
   events: CalendarEvent[],
   parallelEventsById: {
-    [key: string]: string[]
+    [key: string]: Set<string>
   },
   largestColumnCount: number,
 ) => {
@@ -81,7 +73,7 @@ const populateInitialDisplayPositions = (
     let parallelIds: string[] = []
 
     if (Object.prototype.hasOwnProperty.call(parallelEventsById, event.id)) {
-      parallelIds = parallelEventsById[event.id]
+      parallelIds = [...parallelEventsById[event.id]]
     }
 
     initialDisplayPositionsById[event.id] = {
