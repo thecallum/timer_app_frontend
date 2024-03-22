@@ -1,10 +1,11 @@
 import { useProjectsContext } from '@/contexts/projectsContext'
 import { CalendarEventView } from './calendar-event-view'
-import { PopoverWrapper } from './popover-wrapper'
 import { EditEventPopover } from './popovers/edit-event-popover'
 import { CalendarEvent as CalendarEventType } from '@/types/calendarEvents'
 import { defaultProjectColor } from '@/types/projects'
 import dateFormat from 'dateformat'
+import { usePopover } from '../hooks/usePopover'
+import { PopoverComponentWrapper } from './PopoverComponentWrapper'
 
 interface Props {
   event: CalendarEventType
@@ -14,6 +15,16 @@ interface Props {
 export const CalendarEvent = (props: Props) => {
   const { event, containerRef } = props
   const { getProjectById } = useProjectsContext()
+
+  const {
+    handleOpen,
+    handleClose,
+    setReferenceElement,
+    setPopperElement,
+    showPopover,
+    popperStyles,
+    popperAttributes,
+  } = usePopover(containerRef)
 
   const {
     description,
@@ -34,48 +45,45 @@ export const CalendarEvent = (props: Props) => {
     width: `calc((100%/7)*${width})`,
   }
 
+  const project = getProjectById(projectId)
+  const projectColor = project?.projectColor ?? defaultProjectColor
+
   return (
     <li className="relative">
-      <PopoverWrapper
-        containerRef={containerRef}
-        popoverComponent={({ close }) => (
-          <EditEventPopover
-            containerRef={containerRef}
-            event={event}
-            close={close}
-          />
-        )}
+      <PopoverComponentWrapper
+        showPopover={showPopover}
+        setRef={setPopperElement}
+        popperStyles={popperStyles}
+        popperAttributes={popperAttributes}
       >
-        {({ ref, onClick }) => {
-          const project = getProjectById(projectId)
-          const projectColor = project?.projectColor ?? defaultProjectColor
+        <EditEventPopover
+          containerRef={containerRef}
+          event={event}
+          close={handleClose}
+        />
+      </PopoverComponentWrapper>
 
-          return (
-            <div
-              style={eventStyles}
-              className="absolute p-[1px] overflow-hidden"
-              role="article"
-              aria-label={`Calendar event: ${description} on ${dateFormat(startTime, 'MMMM D')} at ${dateFormat(startTime, 'h:mm A')}, ${project?.description ? `assigned to project ${project?.description}` : `not assigned to any project`}.`}
-            >
-              <button
-                className={`w-full h-full cursor-pointer rounded-sm`}
-                // @ts-expect-error work around for react-popper library issue
-                ref={ref}
-                onClick={onClick}
-                style={{
-                  background: projectColor.light,
-                }}
-              >
-                <CalendarEventView
-                  description={description}
-                  durationInSeconds={durationInSeconds}
-                  project={project}
-                />
-              </button>
-            </div>
-          )
-        }}
-      </PopoverWrapper>
+      <div
+        style={eventStyles}
+        className="absolute p-[1px] overflow-hidden"
+        role="article"
+        aria-label={`Calendar event: ${description} on ${dateFormat(startTime, 'MMMM D')} at ${dateFormat(startTime, 'h:mm A')}, ${project?.description ? `assigned to project ${project?.description}` : `not assigned to any project`}.`}
+      >
+        <button
+          className={`w-full h-full cursor-pointer rounded-sm`}
+          ref={setReferenceElement}
+          onClick={handleOpen}
+          style={{
+            background: projectColor.light,
+          }}
+        >
+          <CalendarEventView
+            description={description}
+            durationInSeconds={durationInSeconds}
+            project={project}
+          />
+        </button>
+      </div>
     </li>
   )
 }

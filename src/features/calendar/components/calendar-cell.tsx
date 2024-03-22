@@ -1,9 +1,10 @@
 import classNames from 'classnames'
-import { PopoverWrapper } from './popover-wrapper'
 import { AddEventPopover } from './popovers/add-event-popover'
 import { useClickOutContext } from '@/contexts/clickOutContext'
-import { memo, useMemo } from 'react'
+import { Fragment, memo, useMemo, useState } from 'react'
 import dateFormat from 'dateformat'
+import { PopoverComponentWrapper } from './PopoverComponentWrapper'
+import { usePopover } from '../hooks/usePopover'
 
 interface Props {
   day: Date
@@ -16,6 +17,18 @@ export const CalendarCell = memo(function CalendarCell(props: Props) {
 
   // Dont open popover if other popovers still visible
   const disableClick = clickoutSubscriberCount > 0
+
+  const [currentElement, setCurrentElement] = useState(0)
+
+  const {
+    handleOpen,
+    handleClose,
+    setReferenceElement,
+    setPopperElement,
+    showPopover,
+    popperStyles,
+    popperAttributes,
+  } = usePopover(containerRef)
 
   const cellTimes = useMemo(
     () =>
@@ -30,37 +43,41 @@ export const CalendarCell = memo(function CalendarCell(props: Props) {
 
   return (
     <div className="border-slate-200 h-32 border-b flex flex-col">
-      {cellTimes.map((cellTime, index) => {
-        return (
-          <PopoverWrapper
-            containerRef={containerRef}
-            popoverComponent={({ close }) => (
-              <AddEventPopover
-                containerRef={containerRef}
-                close={close}
-                time={cellTime}
-              />
-            )}
-            key={index}
-          >
-            {({ ref, onClick, showPopover }) => (
-              <button
-                aria-label={`Create an event on ${dateFormat(cellTime, 'MMMM D')} at ${dateFormat(cellTime, 'h:mm A')}.`}
-                className={classNames(`flex-grow cursor-pointer rounded-sm`, {
-                  'bg-slate-200': showPopover,
-                  'hover:bg-slate-50': !disableClick,
-                })}
-                // @ts-expect-error work around for react-popper library issue
-                ref={ref}
-                onClick={() => {
-                  if (disableClick) return
-                  onClick()
-                }}
-              ></button>
-            )}
-          </PopoverWrapper>
-        )
-      })}
+      <PopoverComponentWrapper
+        showPopover={showPopover}
+        setRef={setPopperElement}
+        popperStyles={popperStyles}
+        popperAttributes={popperAttributes}
+      >
+        <AddEventPopover
+          containerRef={containerRef}
+          close={handleClose}
+          time={new Date()}
+        />
+      </PopoverComponentWrapper>
+
+      <Fragment>
+        {cellTimes.map((cellTime, index) => {
+          return (
+            <button
+              key={index}
+              aria-label={`Create an event on ${dateFormat(cellTime, 'MMMM D')} at ${dateFormat(cellTime, 'h:mm A')}.`}
+              className={classNames(`flex-grow cursor-pointer rounded-sm`, {
+                'bg-slate-200': showPopover && currentElement === index, // showPopover,
+                'hover:bg-slate-50': !disableClick,
+              })}
+              onClick={(e: React.MouseEvent<HTMLElement>) => {
+                if (disableClick) return
+
+                setReferenceElement(e.currentTarget)
+                setCurrentElement(index)
+
+                handleOpen()
+              }}
+            ></button>
+          )
+        })}
+      </Fragment>
     </div>
   )
 })
