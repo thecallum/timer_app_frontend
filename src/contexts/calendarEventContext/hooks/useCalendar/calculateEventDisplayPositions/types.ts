@@ -1,11 +1,5 @@
-export type ParallelEventSlot = {
+export interface CalendarFiveMinuteSlot {
   startTimeInSeconds: number
-  endTimeInSeconds: number
-}
-
-export interface ICalendarFiveMinuteSlot {
-  startTimeInSeconds: number
-  endTimeInSeconds: number
   eventIds: string[]
 }
 

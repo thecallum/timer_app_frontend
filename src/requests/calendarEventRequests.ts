@@ -1,12 +1,12 @@
 import { AxiosRequestConfig } from 'axios'
-import { Dayjs } from 'dayjs'
 import { CalendarEventApiRequestObject } from './types'
 import { frontendRequest } from './frontendRequest'
+import dateFormat from 'dateformat'
 
-export const fetchEvents = (startTime: Dayjs, endTime: Dayjs) => {
+export const fetchEvents = (startTime: Date, endTime: Date) => {
   const params = {
-    startTime: startTime.format('MM/DD/YYYY'),
-    endTime: endTime.format('MM/DD/YYYY'),
+    startTime: dateFormat(startTime, 'mm/dd/yyyy'),
+    endTime: dateFormat(endTime, 'mm/dd/yyyy'),
   }
 
   const config: AxiosRequestConfig = {

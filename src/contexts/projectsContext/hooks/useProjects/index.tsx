@@ -23,13 +23,12 @@ import { useIsAuthorized } from '@/auth/useIsAuthorized'
 export const useProjects = () => {
   const router = useRouter()
 
-  const isAuthorized = useIsAuthorized()
-
   const [projects, setProjects] = useState<{
     [key: number]: Project
   }>({})
 
   const [isLoading, setIsLoading] = useState(true)
+  const isAuthorized = useIsAuthorized()
 
   const addProject = async (request: ProjectApiRequestObject) =>
     new Promise<UpdateStatus>((resolve) => {

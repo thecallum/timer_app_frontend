@@ -32,7 +32,7 @@ export const TimerControls = () => {
 
     const request: CalendarEventApiRequestObject = {
       description: description,
-      startTime: now.add(time * -1, 'second'),
+      startTime: new Date(now.getTime() + time * -1000),
       endTime: now,
       projectId: projectId,
     }

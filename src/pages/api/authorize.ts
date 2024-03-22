@@ -3,7 +3,7 @@ import { authorizeAccessToken } from '../../auth/authorizeAccessToken'
 import { setCookies } from '@/auth/setCookies'
 import { AUTH_STATE_COOKIE_NAME } from '@/auth/constants'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const Authorize = async (req: NextApiRequest, res: NextApiResponse) => {
   const state = req.query.state as string
 
   const cookies = req.cookies
@@ -30,3 +30,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.redirect('/')
 }
+
+export default Authorize

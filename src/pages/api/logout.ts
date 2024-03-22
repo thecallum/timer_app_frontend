@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig } from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { AUTH_DOMAIN, CLIENT_ID, CLIENT_SECRET } from '@/auth/config'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const Logout = async (req: NextApiRequest, res: NextApiResponse) => {
   // Logout revokes refresh token, as an access token cannot be revoked.
   // A potential solution to revoke accessTokens is to store them in DynamoDb when revoked.
   // However, this is out of scope for the current project
@@ -36,3 +36,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.redirect('/')
   }
 }
+
+export default Logout

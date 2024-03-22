@@ -14,6 +14,8 @@ const initialState: TimerState = {
   description: '',
 }
 
+let didInit = false
+
 export const useTimer = () => {
   const [state, dispatch] = useReducer(timerReducer, initialState)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
@@ -25,17 +27,20 @@ export const useTimer = () => {
   } = useLocalStorage<ITimerSnapshot>(LOCAL_STORAGE_KEY)
 
   useEffect(() => {
-    // Load from local storage on initial load
-    const snapshot = getLocalStorageValue()
-    if (!snapshot) return
+    if (!didInit) {
+      didInit = true
 
-    dispatch({ type: 'SET_DESCRIPTION', description: snapshot.description })
-    dispatch({
-      type: 'SET_PROJECT',
-      projectId: snapshot.projectId,
-    })
-    dispatch({ type: 'START', startedAt: snapshot.startedAt })
-  }, [])
+      const snapshot = getLocalStorageValue()
+      if (!snapshot) return
+
+      dispatch({
+        type: 'REHYDRATE',
+        description: snapshot.description,
+        projectId: snapshot.projectId,
+        startedAt: snapshot.startedAt,
+      })
+    }
+  }, [getLocalStorageValue])
 
   useEffect(() => {
     if (state.isRunning) {
@@ -44,47 +49,57 @@ export const useTimer = () => {
       }, 1000)
     }
 
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
+    return () => clearInterval(intervalRef.current ?? undefined)
   }, [state.isRunning])
 
-  useEffect(() => {
-    if (!state.isRunning) {
-      clearLocalStorageValue()
-      return
-    }
+  const startTimer = () => {
+    const today = getTodaysDate()
 
-    updateLocalStorageValue({
-      startedAt: state.startedAt?.toISOString() ?? '',
-      description: state.description,
-      projectId: state.projectId,
-    })
-  }, [state])
-
-  const startTimer = () =>
     dispatch({
       type: 'START',
-      startedAt: getTodaysDate().toString(),
+      startedAt: today.toString(),
     })
 
-  const stopTimer = () =>
+    updateLocalStorageValue({
+      ...state,
+      startedAt: today.toISOString(),
+    })
+  }
+
+  const stopTimer = () => {
     dispatch({
       type: 'STOP',
       initialState,
     })
 
-  const setProject = (projectId: number | null) =>
+    clearLocalStorageValue()
+  }
+
+  const setProject = (projectId: number | null) => {
     dispatch({
       type: 'SET_PROJECT',
       projectId,
     })
 
-  const setDescription = (description: string) =>
+    updateLocalStorageValue({
+      ...state,
+      startedAt: state.startedAt?.toISOString() ?? '',
+      projectId,
+    })
+  }
+
+  const setDescription = (description: string) => {
     dispatch({
       type: 'SET_DESCRIPTION',
       description,
     })
+
+    updateLocalStorageValue({
+      ...state,
+      startedAt: state.startedAt?.toISOString() ?? '',
+      description,
+    })
+  }
 
   return {
     ...state,

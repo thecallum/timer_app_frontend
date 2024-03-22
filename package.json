@@ -5,7 +5,6 @@
   "scripts": {
     "dev_env": "sst bind next dev --stage development",
     "start": "sst bind next start --stage development",
-
     "start_dev": "sst bind next dev --stage development",
     "dev": "next dev",
     "build_test": "next build",
@@ -27,6 +26,8 @@
     "axios": "^1.6.7",
     "classnames": "^2.3.2",
     "cookie": "^0.6.0",
+    "date-format": "^4.0.14",
+    "dateformat": "^5.0.3",
     "dayjs": "^1.11.10",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "^27.6.3",
@@ -43,6 +44,7 @@
     "react-modal": "^3.16.1",
     "react-popper": "^2.3.0",
     "react-toastify": "^10.0.4",
+    "react-window": "^1.8.10",
     "sst": "^2.40.0",
     "uuid": "^9.0.1",
     "validator": "^13.11.0"
@@ -50,12 +52,14 @@
   "devDependencies": {
     "@playwright/test": "^1.41.2",
     "@types/cookie": "^0.6.0",
+    "@types/dateformat": "^5.0.2",
     "@types/faker": "^6.6.9",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20.11.2",
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@types/react-modal": "^3.16.3",
+    "@types/react-virtualized": "^9.21.29",
     "@types/validator": "^13.11.6",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
