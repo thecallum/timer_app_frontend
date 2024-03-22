@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useReducer, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 import { calculateEventDisplayPositions } from './calculateEventDisplayPositions'
 import { reducer } from './reducer'
 import { useCalendarControls } from '../useCalendarControls'
