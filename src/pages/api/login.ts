@@ -10,7 +10,7 @@ import {
   AUTH_SCOPE,
 } from '@/auth/config'
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const Login = async (req: NextApiRequest, res: NextApiResponse) => {
   const state = uuidv4()
 
   const LOGIN_URL = `${AUTH_DOMAIN}/authorize?state=${state}&response_type=code&scope=${AUTH_SCOPE}&client_id=${CLIENT_ID}&audience=${AUTH_AUDIENCE}&redirect_uri=${REDIRECT_URI}`
@@ -19,3 +19,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   res.redirect(LOGIN_URL)
 }
+
+export default Login

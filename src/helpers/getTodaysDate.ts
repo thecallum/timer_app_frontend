@@ -1,16 +1,20 @@
-import dayjs from 'dayjs'
-
 export const getTodaysDate = () => {
-  const today = dayjs()
+  const today = new Date()
 
   if (process.env.NEXT_PUBLIC_PLAYWRIGHT_TEST) {
-    const hardCodedDate = dayjs(process.env.NEXT_PUBLIC_TODAYS_DATE)
+    // Parse the environment variable to a Date object
+    const hardCodedDate = new Date(
+      process.env.NEXT_PUBLIC_TODAYS_DATE as string,
+    )
 
-    // combine hardcoded date, with the correct time
+    // Combine hardcoded date with the correct time from "today"
+    hardCodedDate.setHours(
+      today.getHours(),
+      today.getMinutes(),
+      today.getSeconds(),
+    )
+
     return hardCodedDate
-      .hour(today.hour())
-      .minute(today.minute())
-      .second(today.second())
   }
 
   return today

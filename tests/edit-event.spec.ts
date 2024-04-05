@@ -12,7 +12,6 @@ import {
   waitForGetProjectsRequest,
   waitForUpdateEventRequest,
 } from '../playwright/test-helpers'
-import dayjs from 'dayjs'
 import { existingProject } from '../playwright/fixtures'
 
 test.beforeEach(async ({ page }) => {
@@ -22,8 +21,8 @@ test.beforeEach(async ({ page }) => {
     id: '126',
     projectId: null,
     description: 'Event name',
-    startTime: dayjs('2024-02-29T03:45:00Z'),
-    endTime: dayjs('2024-02-29T04:00:00Z'),
+    startTime: new Date('2024-02-29T03:45:00Z'),
+    endTime: new Date('2024-02-29T04:00:00Z'),
   }
 
   setupGetEventsIntercept(page, [existingEvent])
@@ -69,8 +68,8 @@ test.describe('Edits an event', () => {
       id: '126',
       projectId: 82,
       description: 'Updated description',
-      startTime: dayjs('2024-02-29T03:45:00Z'),
-      endTime: dayjs('2024-02-29T04:00:00Z'),
+      startTime: new Date('2024-02-29T03:45:00Z'),
+      endTime: new Date('2024-02-29T04:00:00Z'),
     }
 
     setupUpdateCalendarEventIntercept(page, updateCalendarEventResponse)
@@ -124,8 +123,8 @@ test.describe('Edits an event', () => {
       id: '126',
       projectId: 82,
       description: 'Event name',
-      startTime: dayjs('2024-02-29T04:15:00Z'),
-      endTime: dayjs('2024-02-29T04:00:00Z'),
+      startTime: new Date('2024-02-29T04:15:00Z'),
+      endTime: new Date('2024-02-29T04:00:00Z'),
     }
 
     setupUpdateCalendarEventIntercept(page, updateCalendarEventResponse)
@@ -179,8 +178,8 @@ test.describe('Edits an event', () => {
       id: '126',
       projectId: 82,
       description: 'Updated description',
-      startTime: dayjs('2024-02-29T03:45:00Z'),
-      endTime: dayjs('2024-02-29T04:00:00Z'),
+      startTime: new Date('2024-02-29T03:45:00Z'),
+      endTime: new Date('2024-02-29T04:00:00Z'),
     }
 
     setupUpdateCalendarEventIntercept(page, updateCalendarEventResponse)
@@ -221,8 +220,8 @@ test.describe('Edits an event', () => {
       id: '126',
       projectId: 83,
       description: 'Updated description',
-      startTime: dayjs('2024-02-29T03:45:00Z'),
-      endTime: dayjs('2024-02-29T04:00:00Z'),
+      startTime: new Date('2024-02-29T03:45:00Z'),
+      endTime: new Date('2024-02-29T04:00:00Z'),
     }
 
     setupUpdateCalendarEventIntercept(page, updateCalendarEventResponse)

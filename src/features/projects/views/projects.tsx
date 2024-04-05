@@ -15,7 +15,6 @@ export const Projects = () => {
   }
 
   const closeEditModal = () => {
-    console.log('close edit modal')
     setEditProjectModal(null)
   }
 
