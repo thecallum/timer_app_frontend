@@ -8,8 +8,6 @@ export const test = baseTest.extend<{ _autoSnapshotSuffix: void; page: Page }>({
     // initialise existing storage state
     await page.context().storageState({ path: authFile })
 
-    console.log('Checking auth')
-
     // implementation really slow because it relies on waitForNavigation to time out
     // if there is a quicker way, potentially reversing the confition, that would be better
 
@@ -19,11 +17,9 @@ export const test = baseTest.extend<{ _autoSnapshotSuffix: void; page: Page }>({
         page.waitForNavigation(),
       ])
 
-      console.log('User navigated')
-
       await handleLogin(page)
     } catch (error) {
-      console.log('User didnt navigate. Auth is probably good.')
+      //
     }
 
     await use(page)

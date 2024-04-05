@@ -59,8 +59,6 @@ export const useProjects = () => {
           })
         })
         .catch((err) => {
-          console.error(err)
-
           toast.update(notification, {
             render: (
               <ErrorMessage
@@ -116,7 +114,6 @@ export const useProjects = () => {
           })
         })
         .catch((err) => {
-          console.error(err)
           toast.update(notification, {
             render: (
               <ErrorMessage
@@ -169,7 +166,6 @@ export const useProjects = () => {
           })
         })
         .catch((err) => {
-          console.error(err)
           toast.update(notification, {
             render: (
               <ErrorMessage
@@ -224,7 +220,6 @@ export const useProjects = () => {
           })
         })
         .catch((err) => {
-          console.error(err)
           resolve({
             success: false,
             errorMessage: err.message,

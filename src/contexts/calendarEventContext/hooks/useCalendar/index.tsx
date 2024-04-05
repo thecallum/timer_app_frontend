@@ -62,7 +62,6 @@ export const useCalendar = () => {
           })
         })
         .catch((err) => {
-          console.error(err)
           resolve({
             success: false,
             errorMessage: err.message,
@@ -108,8 +107,6 @@ export const useCalendar = () => {
           })
         })
         .catch((err) => {
-          console.error(err)
-
           toast.update(notification, {
             render: (
               <ErrorMessage
@@ -164,7 +161,6 @@ export const useCalendar = () => {
           })
         })
         .catch((err) => {
-          console.error(err)
           toast.update(notification, {
             render: (
               <ErrorMessage label="Failed to add event" message={err.message} />
@@ -213,7 +209,6 @@ export const useCalendar = () => {
           })
         })
         .catch((err) => {
-          console.error(err)
           toast.update(notification, {
             render: (
               <ErrorMessage

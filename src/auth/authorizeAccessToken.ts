@@ -27,15 +27,12 @@ export const authorizeAccessToken = async (
   try {
     const response = await axios.request(config)
 
-    // console.log({ data: response.data })
-
     return {
       accessToken: response.data['access_token'],
       refreshToken: response.data['refresh_token'],
       idToken: response.data['id_token'],
     }
   } catch (error) {
-    // console.error({ error })
     return null
   }
 }
