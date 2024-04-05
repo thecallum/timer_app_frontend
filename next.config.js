@@ -5,7 +5,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  optimizeFonts: false,
   reactStrictMode: true,
 }
 
