@@ -17,10 +17,21 @@ import {
   CalendarEventApiRequestObject,
   CalendarEventApiResponseObject,
 } from '@/requests/types'
-import { Bounce, toast } from 'react-toastify'
+import { Bounce, Id, toast, UpdateOptions } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
 import { UpdateStatus } from '../../../../types/updateStatus'
 import { useIsAuthorized } from '@/auth/useIsAuthorized'
+
+const displayToast = (notification: Id, options: UpdateOptions<unknown>) => {
+  toast.update(notification, {
+    isLoading: false,
+    autoClose: 3000,
+    closeOnClick: true,
+    draggable: true,
+    transition: Bounce,
+    ...options,
+  })
+}
 
 export const useCalendar = () => {
   const [state, dispatch] = useReducer(reducer, {
@@ -92,14 +103,9 @@ export const useCalendar = () => {
             type: 'update_event',
             event,
           })
-          toast.update(notification, {
+          displayToast(notification, {
             render: 'Event updated',
             type: 'success',
-            isLoading: false,
-            autoClose: 3000,
-            closeOnClick: true,
-            draggable: true,
-            transition: Bounce,
           })
           resolve({
             success: true,
@@ -107,7 +113,7 @@ export const useCalendar = () => {
           })
         })
         .catch((err) => {
-          toast.update(notification, {
+          displayToast(notification, {
             render: (
               <ErrorMessage
                 label="Failed to update event"
@@ -115,11 +121,6 @@ export const useCalendar = () => {
               />
             ),
             type: 'error',
-            isLoading: false,
-            autoClose: 3000,
-            closeOnClick: true,
-            draggable: true,
-            transition: Bounce,
           })
           resolve({
             success: false,
@@ -146,14 +147,9 @@ export const useCalendar = () => {
             event,
           })
 
-          toast.update(notification, {
+          displayToast(notification, {
             render: 'Event added',
             type: 'success',
-            isLoading: false,
-            autoClose: 3000,
-            closeOnClick: true,
-            draggable: true,
-            transition: Bounce,
           })
           resolve({
             success: true,
@@ -161,16 +157,11 @@ export const useCalendar = () => {
           })
         })
         .catch((err) => {
-          toast.update(notification, {
+          displayToast(notification, {
             render: (
               <ErrorMessage label="Failed to add event" message={err.message} />
             ),
             type: 'error',
-            isLoading: false,
-            autoClose: 3000,
-            closeOnClick: true,
-            draggable: true,
-            transition: Bounce,
           })
           resolve({
             success: false,
@@ -194,22 +185,19 @@ export const useCalendar = () => {
             type: 'delete_event',
             event,
           })
-          toast.update(notification, {
+
+          displayToast(notification, {
             render: 'Event deleted',
             type: 'success',
-            isLoading: false,
-            autoClose: 3000,
-            closeOnClick: true,
-            draggable: true,
-            transition: Bounce,
           })
+
           resolve({
             success: true,
             errorMessage: null,
           })
         })
         .catch((err) => {
-          toast.update(notification, {
+          displayToast(notification, {
             render: (
               <ErrorMessage
                 label="Failed to delete event"
@@ -217,11 +205,6 @@ export const useCalendar = () => {
               />
             ),
             type: 'error',
-            isLoading: false,
-            autoClose: 3000,
-            closeOnClick: true,
-            draggable: true,
-            transition: Bounce,
           })
           resolve({
             success: false,
