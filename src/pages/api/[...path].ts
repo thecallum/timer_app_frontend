@@ -26,11 +26,8 @@ export default async function handler(
   let idToken = extractCookie(headers, ID_TOKEN_COOKIE_NAME)
 
   if (!(await isAuthorized(accessToken))) {
-    console.info('access token invalid, gonna try refresh the token')
-
     const result = await refreshAccessToken(refreshToken)
     if (result === null) {
-      console.info('Unable to refresh token')
       deleteAllCookies(res)
       res.status(401).end()
       return
