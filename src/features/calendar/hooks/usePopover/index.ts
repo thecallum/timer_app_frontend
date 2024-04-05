@@ -1,11 +1,12 @@
+import { useClickOutContext } from '@/contexts/clickOutContext'
 import { useEffect, useRef, useState } from 'react'
 import { usePopper } from 'react-popper'
 import { getPopoverOptions } from './popoverOptions'
-import { useClickOutContext } from '@/contexts/clickOutContext'
 
 export const usePopover = (containerRef: HTMLDivElement | null) => {
-  const [referenceElement, setReferenceElement] =
-    useState<HTMLDivElement | null>(null)
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
+    null,
+  )
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null)
 
   const { styles, attributes } = usePopper(
@@ -14,7 +15,14 @@ export const usePopover = (containerRef: HTMLDivElement | null) => {
     getPopoverOptions(containerRef),
   )
 
-  const [showPopover, setShowPopover] = useState(false)
+  const handleOpen = () => {
+    setTimeout(() => setShowPopover(true))
+  }
+
+  const handleClose = () => {
+    setShowPopover(() => false)
+  }
+
   const subscriberId = useRef<string | null>(null)
 
   const { subscribe, unsubscribe } = useClickOutContext()
@@ -37,6 +45,7 @@ export const usePopover = (containerRef: HTMLDivElement | null) => {
     subscriberId.current = null
   }
 
+  const [showPopover, setShowPopover] = useState(false)
   useEffect(() => {
     if (!showPopover || popperElement === null) {
       closeSubscription()
@@ -50,30 +59,15 @@ export const usePopover = (containerRef: HTMLDivElement | null) => {
     }
   }, [showPopover, popperElement])
 
-  const handleOpen = () => {
-    setTimeout(() => setShowPopover(true))
-  }
-
-  const handleClose = () => {
-    setShowPopover(() => false)
-  }
-
-  const referenceProps = {
-    ref: setReferenceElement,
-    onClick: handleOpen,
-    showPopover,
-  }
-
-  const elementProps = {
-    ref: setPopperElement,
-    styles: styles.popper,
-    otherAttributes: attributes.popper,
-  }
-
   return {
-    referenceProps,
-    elementProps,
-    showPopover,
+    handleOpen,
     handleClose,
+
+    setReferenceElement,
+    setPopperElement,
+
+    showPopover,
+    popperStyles: styles.popper,
+    popperAttributes: attributes.popper,
   }
 }

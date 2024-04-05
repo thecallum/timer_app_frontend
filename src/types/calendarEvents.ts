@@ -1,12 +1,16 @@
-import dayjs from 'dayjs'
+import {
+  getDayOfWeek,
+  getMinuteValue,
+  getSecondValue,
+} from '@/helpers/timeHelpers'
 
 export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 export class CalendarEvent {
   public id: string
   public description: string
-  public startTime: dayjs.Dayjs
-  public endTime: dayjs.Dayjs
+  public startTime: Date
+  public endTime: Date
   public projectId: number | null
 
   public left: number = 0
@@ -17,39 +21,37 @@ export class CalendarEvent {
   constructor(
     id: string,
     description: string,
-    startTime: dayjs.Dayjs,
-    endTime: dayjs.Dayjs,
+    startTime: Date,
+    endTime: Date,
     projectId: number | null,
   ) {
     this.id = id
     this.description = description
-    this.startTime = startTime
-    this.endTime = endTime
+    this.startTime = new Date(startTime)
+    this.endTime = new Date(endTime)
     this.projectId = projectId
   }
 
   public get dayOfWeek(): DayOfWeek {
-    // Sunday is zero, replace with 7
-    const dayOfWeek = this.startTime.day()
-    if (dayOfWeek === 0) return 7
-
-    return dayOfWeek as DayOfWeek
+    return getDayOfWeek(this.startTime)
   }
 
   public get durationInSeconds() {
-    return this.endTime.diff(this.startTime, 'second')
+    const durationInMs = this.endTime.getTime() - this.startTime.getTime()
+    return durationInMs / 1000
   }
 
   public get durationInMinutes() {
-    return Math.ceil(this.durationInSeconds / 60)
+    const durationInMs = this.endTime.getTime() - this.startTime.getTime()
+    return durationInMs / 1000 / 60
   }
 
   public get startTimeInSeconds() {
-    return this.startTime.diff(this.startTime.startOf('day'), 'second')
+    return getSecondValue(this.startTime)
   }
 
   public get startTimeInMinutes() {
-    return Math.ceil(this.startTimeInSeconds / 60)
+    return getMinuteValue(this.startTime)
   }
 
   public get endTimeInSeconds() {

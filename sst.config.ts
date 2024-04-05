@@ -23,11 +23,10 @@ export default {
           hostedZone: 'thecallum.com',
         },
         environment: {
-          NEXT_PUBLIC_AUTH_DOMAIN: process.env.AUTH_DOMAIN ?? '',
-          NEXT_PUBLIC_CLIENT_ID: process.env.CLIENT_ID ?? '',
-          NEXT_PUBLIC_BASE_URL: process.env.BASE_URL ?? '',
-          NEXT_PUBLIC_AUDIENCE: process.env.AUDIENCE ?? '',
-          NEXT_PUBLIC_REDIRECT_URI: process.env.REDIRECT_URI ?? '',
+          AUTH_DOMAIN: process.env.AUTH_DOMAIN ?? '',
+          CLIENT_ID: process.env.CLIENT_ID ?? '',
+          AUDIENCE: process.env.AUDIENCE ?? '',
+          REDIRECT_URI: process.env.REDIRECT_URI ?? '',
           COOKIE_DOMAIN:
             stack.stage === 'production'
               ? 'timer-app.thecallum.com'

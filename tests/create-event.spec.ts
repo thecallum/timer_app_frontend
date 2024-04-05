@@ -10,7 +10,6 @@ import {
   waitForGetEventsRequest,
   waitForGetProjectsRequest,
 } from '../playwright/test-helpers'
-import dayjs from 'dayjs'
 import {
   existingCalendarEvents,
   existingProjects,
@@ -77,8 +76,8 @@ test('Adds event to calendar', async ({ page }) => {
     id: '126',
     projectId: null,
     description: 'event name',
-    startTime: dayjs('2024-02-29T03:45:00Z'),
-    endTime: dayjs('2024-02-29T04:00:00Z'),
+    startTime: new Date('2024-02-29T03:45:00Z'),
+    endTime: new Date('2024-02-29T04:00:00Z'),
   }
 
   setupCreateCalendarEventIntercept(page, createCalendarEventResponse)
@@ -161,8 +160,8 @@ test('Can select a project', async ({ page }) => {
     id: '126',
     projectId: 82,
     description: 'event name',
-    startTime: dayjs('2024-02-29T03:45:00Z'),
-    endTime: dayjs('2024-02-29T04:00:00Z'),
+    startTime: new Date('2024-02-29T03:45:00Z'),
+    endTime: new Date('2024-02-29T04:00:00Z'),
   }
 
   setupCreateCalendarEventIntercept(page, createCalendarEventResponse)
@@ -215,8 +214,8 @@ test('Can create and select a new project', async ({ page }) => {
     id: '126',
     projectId: 83,
     description: 'event name',
-    startTime: dayjs('2024-02-29T03:45:00Z'),
-    endTime: dayjs('2024-02-29T04:00:00Z'),
+    startTime: new Date('2024-02-29T03:45:00Z'),
+    endTime: new Date('2024-02-29T04:00:00Z'),
   }
 
   setupCreateCalendarEventIntercept(page, createCalendarEventResponse)

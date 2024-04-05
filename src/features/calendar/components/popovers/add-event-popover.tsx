@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { ProjectSelector } from '../../../../components/projectSelector'
 import {
   PopoverContainer,
@@ -13,10 +12,11 @@ import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { formatDuration } from '@/helpers/formatter'
 import { CalendarEventApiRequestObject } from '@/requests/types'
+import dateFormat from 'dateformat'
 
 interface Props {
   close: () => void
-  time: dayjs.Dayjs
+  time: Date
   containerRef: HTMLDivElement | null
 }
 
@@ -30,26 +30,36 @@ export const AddEventPopover = (props: Props) => {
   const [requestError, setRequestError] = useState<string | null>(null)
 
   const [startDate, setStartDate] = useState<string>(
-    time.format('YYYY-MM-DDTHH:mm:ss'),
+    dateFormat(time, 'yyyy-mm-dd"T"HH:MM:ss'),
   )
-  const [endTime, setEndTime] = useState<string>(
-    time.add(15, 'minute').format('HH:mm:ss'),
-  )
+  const [endTime, setEndTime] = useState<string>(() => {
+    const date = new Date(time.getTime() + 1000 * 60 * 15)
+
+    return dateFormat(date, 'HH:MM:ss')
+  })
 
   const getEndTimeAsDate = () => {
     const [hour, minute, second] = endTime.split(':').map(Number)
-    return dayjs(startDate).hour(hour).minute(minute).second(second)
+
+    const endDate = new Date(startDate)
+
+    endDate.setHours(hour)
+    endDate.setMinutes(minute)
+    endDate.setSeconds(second)
+    endDate.setMilliseconds(0)
+
+    return endDate
   }
 
-  const timeDifferenceInSeconds = getEndTimeAsDate().diff(
-    dayjs(startDate),
-    'second',
-  )
+  const timeDifferenceInMs =
+    getEndTimeAsDate().getTime() - new Date(startDate).getTime()
+
+  const timeDifferenceInSeconds = timeDifferenceInMs / 1000
 
   const validate = () => {
     const errors: { [key: string]: string } = {}
 
-    if (!getEndTimeAsDate().isAfter(dayjs(startDate))) {
+    if (getEndTimeAsDate() < new Date(startDate)) {
       errors['end'] = 'End time must be after start'
     }
 
@@ -72,7 +82,7 @@ export const AddEventPopover = (props: Props) => {
 
     const request: CalendarEventApiRequestObject = {
       description,
-      startTime: dayjs(startDate),
+      startTime: new Date(startDate),
       endTime: getEndTimeAsDate(),
       projectId: projectId,
     }

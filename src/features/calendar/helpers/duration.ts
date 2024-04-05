@@ -6,5 +6,5 @@ export const calculateDuration = (events: CalendarEvent[]) => {
     0,
   )
 
-  return totalDurationInSeconds
+  return Math.floor(totalDurationInSeconds)
 }

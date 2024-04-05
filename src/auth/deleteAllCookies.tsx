@@ -7,11 +7,7 @@ import {
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/auth/constants'
 import { ServerResponse, IncomingMessage } from 'http'
-
-const COOKIE_DOMAIN =
-  process.env.NEXT_PUBLIC_LOCAL_ENV === 'true'
-    ? 'localhost'
-    : process.env.COOKIE_DOMAIN ?? ''
+import { COOKIE_DOMAIN } from './config'
 
 export const deleteAllCookies = (res: ServerResponse<IncomingMessage>) => {
   res.setHeader(

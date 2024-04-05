@@ -13,10 +13,7 @@ import { refreshAccessToken } from '../../auth/refreshAccessToken'
 import { setCookies } from '@/auth/setCookies'
 import { deleteAllCookies } from '@/auth/deleteAllCookies'
 
-// enable running next build in pipeline without bind
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-const API_URL = process.env.TEST === 'true' ? '' : Config.SERVICE_API_URL
+const API_URL = Config.SERVICE_API_URL
 
 export default async function handler(
   req: NextApiRequest,
