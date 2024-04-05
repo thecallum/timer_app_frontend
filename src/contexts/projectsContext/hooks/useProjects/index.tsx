@@ -30,7 +30,6 @@ export const useProjects = () => {
   }>({})
 
   const [isLoading, setIsLoading] = useState(true)
-  const isAuthorized = useIsAuthorized()
 
   const addProject = async (request: ProjectApiRequestObject) =>
     new Promise<UpdateStatus>((resolve) => {
