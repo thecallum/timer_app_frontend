@@ -1,4 +1,3 @@
-import dayjs from 'dayjs'
 import { ProjectSelector } from '../../../../components/projectSelector'
 import {
   PopoverContainer,
@@ -41,18 +40,26 @@ export const AddEventPopover = (props: Props) => {
 
   const getEndTimeAsDate = () => {
     const [hour, minute, second] = endTime.split(':').map(Number)
-    return dayjs(startDate).hour(hour).minute(minute).second(second)
+
+    const endDate = new Date(startDate)
+
+    endDate.setHours(hour)
+    endDate.setMinutes(minute)
+    endDate.setSeconds(second)
+    endDate.setMilliseconds(0)
+
+    return endDate
   }
 
-  const timeDifferenceInSeconds = getEndTimeAsDate().diff(
-    dayjs(startDate),
-    'second',
-  )
+  const timeDifferenceInMs =
+    getEndTimeAsDate().getTime() - new Date(startDate).getTime()
+
+  const timeDifferenceInSeconds = timeDifferenceInMs / 1000
 
   const validate = () => {
     const errors: { [key: string]: string } = {}
 
-    if (!getEndTimeAsDate().isAfter(dayjs(startDate))) {
+    if (getEndTimeAsDate() < new Date(startDate)) {
       errors['end'] = 'End time must be after start'
     }
 
@@ -76,7 +83,7 @@ export const AddEventPopover = (props: Props) => {
     const request: CalendarEventApiRequestObject = {
       description,
       startTime: new Date(startDate),
-      endTime: new Date(getEndTimeAsDate().format()),
+      endTime: getEndTimeAsDate(),
       projectId: projectId,
     }
 

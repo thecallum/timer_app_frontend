@@ -1,3 +1,9 @@
+import {
+  getDayOfWeek,
+  getMinuteValue,
+  getSecondValue,
+} from '@/helpers/timeHelpers'
+
 export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 export class CalendarEvent {
@@ -27,14 +33,7 @@ export class CalendarEvent {
   }
 
   public get dayOfWeek(): DayOfWeek {
-    // Sunday is zero, replace with 7
-    // const dayOfWeek = this.startTime.day()
-
-    const dayOfWeek = this.startTime.getDay()
-
-    if (dayOfWeek === 0) return 7
-
-    return dayOfWeek as DayOfWeek
+    return getDayOfWeek(this.startTime)
   }
 
   public get durationInSeconds() {
@@ -48,27 +47,11 @@ export class CalendarEvent {
   }
 
   public get startTimeInSeconds() {
-    const midnight = new Date(this.startTime)
-    midnight.setHours(0)
-    midnight.setMinutes(0)
-    midnight.setSeconds(0)
-    midnight.setMilliseconds(0)
-
-    const diff = this.startTime.getTime() - midnight.getTime()
-
-    return diff / 1000
+    return getSecondValue(this.startTime)
   }
 
   public get startTimeInMinutes() {
-    const midnight = new Date(this.startTime)
-    midnight.setHours(0)
-    midnight.setMinutes(0)
-    midnight.setSeconds(0)
-    midnight.setMilliseconds(0)
-
-    const diff = this.startTime.getTime() - midnight.getTime()
-
-    return diff / 1000 / 60
+    return getMinuteValue(this.startTime)
   }
 
   public get endTimeInSeconds() {

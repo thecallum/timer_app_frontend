@@ -18,6 +18,7 @@ export const useCalendarControls = () => {
     monday.setHours(0, 0, 0, 0) // Set to midnight
 
     monday.setDate(monday.getDate() + weeksInFuture * 7)
+
     // resolve bug when today is sunday
     // (was showing incorrect week)
     if (getTodaysDate().getDay() === 0) {
