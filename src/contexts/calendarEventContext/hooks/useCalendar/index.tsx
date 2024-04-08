@@ -49,9 +49,9 @@ export const useCalendar = () => {
       setIsLoading(true)
 
       // clear events while next page is loading
-      dispatch({
-        type: 'clear_events',
-      })
+      // dispatch({
+      //   type: 'clear_events',
+      // })
 
       const startTime = daysOfWeek[0]
       const endTime = daysOfWeek[6]
