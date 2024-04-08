@@ -17,9 +17,6 @@ export const validateToken = async (
     })
     return true
   } catch (error) {
-    console.info('Error validating token')
-    console.error(error)
-
     return false
   }
 }

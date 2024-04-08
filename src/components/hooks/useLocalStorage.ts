@@ -14,7 +14,6 @@ const useLocalStorage = <T>(localStorageKey: string) => {
       const obj: T = JSON.parse(jsonValue)
       return obj
     } catch (error) {
-      console.error('Failed to deserialize localStorage value', error)
       return null
     }
   }

@@ -24,15 +24,11 @@ const Logout = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    console.info('Revoking refresh token')
     await axios.request(config)
-
-    console.info('Refresh token revoked')
 
     deleteAllCookies(res)
     res.redirect('/login')
   } catch (error) {
-    console.error({ error })
     res.redirect('/')
   }
 }

@@ -10,7 +10,6 @@ const Authorize = async (req: NextApiRequest, res: NextApiResponse) => {
   const stateCookie = cookies[AUTH_STATE_COOKIE_NAME] ?? null
 
   if (stateCookie !== state) {
-    console.info('State didnt match stored state')
     res.redirect('/login')
     return
   }

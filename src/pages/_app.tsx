@@ -8,21 +8,24 @@ import { Layout } from '../components/layout/layout'
 
 import 'react-toastify/dist/ReactToastify.css'
 import '@/styles/globals.css'
+import { inter } from '@/components/layout/fonts'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ProjectsContextProvider>
-      <CalendarContextProvider>
-        <ClickOutContextProvider>
-          <TimerContextProvider>
-            <CreateProjectModalContextProvider>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </CreateProjectModalContextProvider>
-          </TimerContextProvider>
-        </ClickOutContextProvider>
-      </CalendarContextProvider>
-    </ProjectsContextProvider>
+    <main className={inter.className}>
+      <ProjectsContextProvider>
+        <CalendarContextProvider>
+          <ClickOutContextProvider>
+            <TimerContextProvider>
+              <CreateProjectModalContextProvider>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </CreateProjectModalContextProvider>
+            </TimerContextProvider>
+          </ClickOutContextProvider>
+        </CalendarContextProvider>
+      </ProjectsContextProvider>
+    </main>
   )
 }

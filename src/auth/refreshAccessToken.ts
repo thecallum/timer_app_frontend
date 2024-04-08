@@ -35,7 +35,6 @@ export const refreshAccessToken = async (
       idToken: response.data['id_token'],
     }
   } catch (error) {
-    // console.info({ error })
     return null
   }
 }

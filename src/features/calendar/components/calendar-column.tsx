@@ -97,8 +97,6 @@ export const CalendarColumn = memo(function CalendarColumn(props: Props) {
                       selectedDate.setHours(hour)
                       selectedDate.setMinutes(buttonIndex * 15)
 
-                      console.log({ selectedDate })
-
                       setSelectedDate(selectedDate)
 
                       openPopover(e.currentTarget)
