@@ -8,10 +8,12 @@ import {
   REFRESH_TOKEN_COOKIE_NAME,
 } from '@/auth/constants'
 import { IncomingHttpHeaders } from 'http'
-import { validateToken } from '@/auth/validateToken'
 import { refreshAccessToken } from '../../auth/refreshAccessToken'
 import { setCookies } from '@/auth/setCookies'
 import { deleteAllCookies } from '@/auth/deleteAllCookies'
+import { FastJson } from 'fast-json'
+
+const fastJson = new FastJson()
 
 const API_URL = Config.SERVICE_API_URL
 
@@ -25,7 +27,7 @@ export default async function handler(
   let refreshToken = extractCookie(headers, REFRESH_TOKEN_COOKIE_NAME)
   let idToken = extractCookie(headers, ID_TOKEN_COOKIE_NAME)
 
-  if (!(await isAuthorized(accessToken))) {
+  if (await tokenExpired(accessToken)) {
     const result = await refreshAccessToken(refreshToken)
     if (result === null) {
       deleteAllCookies(res)
@@ -91,8 +93,29 @@ const extractCookie = (headers: IncomingHttpHeaders, cookieName: string) => {
   }
 }
 
-const isAuthorized = async (accessToken: string | null) => {
-  if (accessToken === null) return false
+const tokenExpired = async (accessToken: string | null) => {
+  if (accessToken === null) return true
 
-  return await validateToken(accessToken)
+  try {
+    const parts = accessToken.split('.')
+    if (parts.length !== 3) return true // Basic check for JWT structure
+
+    const payload = parts[1]
+    const payloadDecoded = Buffer.from(payload, 'base64url').toString('utf8')
+
+    let exp: number = 0
+
+    // Path is a string representing a javascript object path
+    fastJson.on('exp', (value) => {
+      exp = parseInt(value as string)
+    })
+
+    fastJson.write(payloadDecoded)
+
+    const now = Math.floor(Date.now() / 1000)
+
+    return exp < now
+  } catch (error) {
+    return true
+  }
 }
