@@ -8,6 +8,16 @@ import dateFormat from 'dateformat'
 export const CalendarDates = () => {
   const { daysOfWeek, events } = useCalendarEventsContext()
 
+  const isToday = (date: Date) => {
+    const today = getTodaysDate()
+
+    if (date.getDate() !== today.getDate()) return false
+    if (date.getMonth() !== today.getMonth()) return false
+    if (date.getFullYear() !== today.getFullYear()) return false
+
+    return true
+  }
+
   const weekDaysArray = daysOfWeek.map((x) => {
     const eventsOnThisDay = events.filter(
       (e) => e.startTime.getDate() == x.getDate(),
@@ -18,7 +28,7 @@ export const CalendarDates = () => {
       day: dateFormat(x, 'dd'),
       name: dateFormat(x, 'ddd'),
       time: formatDuration(calculateDuration(eventsOnThisDay)),
-      current: x.getDate() === getTodaysDate().getDate(),
+      current: isToday(x),
     }
   })
 
