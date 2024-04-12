@@ -34,13 +34,13 @@ export const CalendarDates = () => {
 
   return (
     <div className="ml-6 mb-2 h-12 lg:ml-16 mr-[10px]">
-      <ul className="flex justify-between" aria-label="Days of week">
+      <ul className="grid grid-cols-7" aria-label="Days of week">
         {weekDaysArray.map(({ day, name, time, current, date }) => (
-          <li className="flex-grow flex-shrink-0" key={name}>
-            <div className="flex flex-col items-center xl:flex-row justify-center">
+          <li className="" key={name}>
+            <div className="flex flex-col items-center  lg:grid lg:grid-cols-2 lg:gap-2">
               <div
                 className={classNames(
-                  ' text-2xl font-light w-9 h-9 rounded-full flex items-center justify-center xl:mr-3',
+                  ' text-2xl font-light w-9 h-9 rounded-full flex items-center lg:justify-self-end justify-center ',
                   {
                     'bg-purple-100': current,
                     'text-slate-600': !current,
@@ -49,7 +49,7 @@ export const CalendarDates = () => {
                 )}
               >
                 <span
-                  className="text-center text-lg lg:text-2xl"
+                  className="text-center text-lg lg:text-2xl "
                   aria-label="Day of month"
                 >
                   {day}
