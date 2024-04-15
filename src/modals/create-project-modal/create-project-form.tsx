@@ -1,10 +1,13 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
+import { TextInputWithLabel } from '@/components/form/text-input-with-label'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
 import { ModalControls, ModalLayout } from '@/modals/components'
 import { ProjectApiRequestObject } from '@/requests/types'
+import { ProjectColors } from '@/types/colors'
 import { ProjectColor, defaultProjectColor } from '@/types/projects'
 import { useState } from 'react'
+import { SketchPicker, CirclePicker, CirclePickerProps } from 'react-color'
 
 interface Props {
   modalColor: ProjectColor
@@ -19,6 +22,10 @@ export const CreateProjectForm = (props: Props) => {
 
   const [description, setDescription] = useState('')
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
+
+  const [selectedColor, setSelectedColor] = useState<ProjectColor>(
+    () => modalColor ?? defaultProjectColor,
+  )
 
   const validate = () => {
     const errors: { [key: string]: string } = {}
@@ -44,40 +51,57 @@ export const CreateProjectForm = (props: Props) => {
 
     const request: ProjectApiRequestObject = {
       description: description,
-      projectColor: modalColor,
+      projectColor: selectedColor,
     }
 
     await onCreateProject(request)
   }
 
-  const projectColor = modalColor ?? defaultProjectColor
+  // const projectColor =
+
+  const handleSelectColor = (color: string) => {
+    // find color in project colors
+    const selectedColor = Object.entries(ProjectColors).filter(
+      ([, value]) => value.dark === color,
+    )[0][1]
+
+    setSelectedColor(selectedColor)
+  }
 
   return (
     <form onSubmit={handleSubmit} className="">
       <ModalLayout title="Create project">
         <>
-          <div className="flex justify-start items-center mt-4 mb-2">
-            <div
-              className="w-6 h-6 rounded-full mr-4 flex-shrink-0"
-              style={{
-                background: projectColor.dark,
-              }}
-            />
+          <TextInputWithLabel
+            label="Project name"
+            autoFocus
+            value={description}
+            setValue={setDescription}
+            id="description"
+            name="description"
+            ariaLabel="Project description"
+            placeholder="Planning"
+            error={errors?.description}
+          />
 
-            <TextInput
-              autoFocus
-              value={description}
-              setValue={setDescription}
-              id="description"
-              name="description"
-              ariaLabel="Project description"
-              placeholder="Planning"
-              error={errors?.description}
-            />
-          </div>
           {errors?.description && (
             <ErrorMessage message={errors?.description} />
           )}
+
+          <div>
+            <div className="text-slate-500 text-xs mb-2">Project color</div>
+
+            <CirclePicker
+              circleSpacing={10}
+              circleSize={20}
+              width="100%"
+              colors={Object.entries(ProjectColors).map(
+                ([, value]) => value.dark,
+              )}
+              onChangeComplete={(a) => handleSelectColor(a.hex)}
+              color={selectedColor.dark}
+            />
+          </div>
 
           {requestError !== null && <ErrorMessage message={requestError} />}
         </>

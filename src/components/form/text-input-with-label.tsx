@@ -19,8 +19,8 @@ export const TextInputWithLabel = (props: Props) => {
   } = props
 
   return (
-    <div>
-      <label htmlFor={id} className="text-slate-500 text-xs">
+    <div className="flex flex-col w-full">
+      <label htmlFor={id} className="text-slate-500 text-xs mb-1">
         {label}
       </label>
       <div className="mb-2">
