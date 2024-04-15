@@ -21,13 +21,13 @@ export const Projects = () => {
   return (
     <>
       <div className="flex flex-col items-center mt-8">
-        <div className="w-[calc(100%-30px)] sm:w-[calc(100%-60px)] max-w-[1200px]">
-          <div className="mb-4 flex flex-col  items-start justify-between md:flex-row md:items-center">
+        <div className="w-[calc(100%-30px)] sm:w-[calc(100%-60px)] max-w-[1200px] overflow-y-auto">
+          <div className="mb-4 flex flex-col  items-start justify-between md:flex-row md:items-center ">
             <h1 className="text-2xl text-slate-700 mb-2 md:mb-0">Projects</h1>
 
             <button
               onClick={openModal}
-              className="bg-purple-500 shadow-md text-white rounded px-4 py-2 text-lg"
+              className="bg-purple-500 shadow-md text-white rounded px-4 py-2 text-lg "
             >
               Create a new project
             </button>

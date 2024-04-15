@@ -1,9 +1,12 @@
 import { ErrorMessage, TextInput } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
+import { TextInputWithLabel } from '@/components/form/text-input-with-label'
 import { useProjectsContext } from '@/contexts/projectsContext'
 import { ModalContainer, ModalControls, ModalLayout } from '@/modals/components'
-import { Project } from '@/types/projects'
+import { ProjectColors } from '@/types/colors'
+import { defaultProjectColor, Project, ProjectColor } from '@/types/projects'
 import { useState } from 'react'
+import { CirclePicker } from 'react-color'
 
 interface Props {
   isOpen: boolean
@@ -20,6 +23,10 @@ export const EditProjectModal = (props: Props) => {
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [isLoading, setIsLoading] = useState(false)
   const [requestError, setRequestError] = useState<string | null>(null)
+
+  const [selectedColor, setSelectedColor] = useState<ProjectColor>(
+    () => project?.projectColor ?? defaultProjectColor,
+  )
 
   const onEditProject = async (project: Project) => {
     setIsLoading(true)
@@ -82,7 +89,17 @@ export const EditProjectModal = (props: Props) => {
     onEditProject({
       ...(project as Project),
       description,
+      projectColor: selectedColor,
     })
+  }
+
+  const handleSelectColor = (color: string) => {
+    // find color in project colors
+    const selectedColor = Object.entries(ProjectColors).filter(
+      ([, value]) => value.dark === color,
+    )[0][1]
+
+    setSelectedColor(selectedColor)
   }
 
   return (
@@ -96,7 +113,8 @@ export const EditProjectModal = (props: Props) => {
               deleteLabel="Delete project"
             >
               <>
-                <TextInput
+                <TextInputWithLabel
+                  label="Project name"
                   autoFocus
                   value={description}
                   setValue={setDescription}
@@ -106,6 +124,24 @@ export const EditProjectModal = (props: Props) => {
                   placeholder="Planning"
                   error={errors?.description}
                 />
+
+                <div>
+                  <div className="text-slate-500 text-xs mb-2">
+                    Project color
+                  </div>
+
+                  <CirclePicker
+                    circleSpacing={10}
+                    circleSize={20}
+                    width="100%"
+                    colors={Object.entries(ProjectColors).map(
+                      ([, value]) => value.dark,
+                    )}
+                    onChangeComplete={(a) => handleSelectColor(a.hex)}
+                    color={selectedColor.dark}
+                  />
+                </div>
+
                 {errors?.description && (
                   <ErrorMessage message={errors?.description} />
                 )}
