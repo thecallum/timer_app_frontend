@@ -52,7 +52,6 @@ html {
   }
 }
 
-
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
@@ -72,4 +71,19 @@ html {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+
+/* CSS for mobile devices */
+@media (max-width: 800px) {
+  .popover {
+    position: fixed;
+    inset: 0 0 0 0 !important;
+    transform: none !important;
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

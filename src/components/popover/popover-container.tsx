@@ -13,7 +13,7 @@ export const PopoverContainer = (props: Props) => {
     <div
       id={id}
       className={classNames(
-        'bg-white shadow-xl rounded-md border border-slate-50 z-10 max-w-[100vw]',
+        'bg-white shadow-2xl  rounded-md border border-slate-50 z-10 max-w-[calc(100vw-30px)] w-full',
         { [width as string]: width },
       )}
     >

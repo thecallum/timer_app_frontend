@@ -46,13 +46,16 @@ export const useClickout = () => {
   }
 
   const handleClick = (event: MouseEvent) => {
+    console.log('HANDLE CLICK ', event.target)
+
     // Ignore any click events if modal is open
     if (modalIsOpen) return
 
     const topSubscriber = getTopSubscriber()
+    console.log({ topSubscriber })
     if (!topSubscriber?.element) return
 
-    if (!clickWithinElement(topSubscriber.element, event)) {
+    if (!clickWithinElement(topSubscriber.element.childNodes[0], event)) {
       topSubscriber.callback()
     }
   }
