@@ -48,9 +48,8 @@ export const SelectProjectPopover = (props: Props) => {
 
   const filteredProjects = filterProjects()
 
-
   // https://casesandberg.github.io/react-color/
-  
+
   return (
     <PopoverContainer id={'projectList'}>
       <>

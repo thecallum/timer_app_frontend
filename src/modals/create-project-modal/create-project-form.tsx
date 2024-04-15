@@ -1,4 +1,4 @@
-import { ErrorMessage, TextInput } from '@/components/form'
+import { ErrorMessage } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { TextInputWithLabel } from '@/components/form/text-input-with-label'
 import { useCreateProjectModalContext } from '@/contexts/createProjectModalContext'
@@ -7,7 +7,7 @@ import { ProjectApiRequestObject } from '@/requests/types'
 import { ProjectColors } from '@/types/colors'
 import { ProjectColor, defaultProjectColor } from '@/types/projects'
 import { useState } from 'react'
-import { SketchPicker, CirclePicker, CirclePickerProps } from 'react-color'
+import { CirclePicker } from 'react-color'
 
 interface Props {
   modalColor: ProjectColor
@@ -56,8 +56,6 @@ export const CreateProjectForm = (props: Props) => {
 
     await onCreateProject(request)
   }
-
-  // const projectColor =
 
   const handleSelectColor = (color: string) => {
     // find color in project colors
