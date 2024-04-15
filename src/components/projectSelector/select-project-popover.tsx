@@ -15,7 +15,7 @@ interface Props {
   selectProjectId: (projectId: number | null) => void
 }
 
-const PROJECTS_PAGE_SIZE = 10
+// const PROJECTS_PAGE_SIZE = 10
 
 export const SelectProjectPopover = (props: Props) => {
   const { selectProjectId, currentProject } = props
@@ -25,25 +25,31 @@ export const SelectProjectPopover = (props: Props) => {
 
   const [filterText, setFilterText] = useState('')
 
+  const sortDescription = (a: Project, b: Project) => {
+    const descriptionA = a.description.toLowerCase()
+    const descriptionB = b.description.toLowerCase()
+
+    if (descriptionA === descriptionB) return 0
+
+    return descriptionA > descriptionB ? 1 : -1
+  }
+
   const filterProjects = () => {
     if (filterText === '') {
-      return [defaultProject, ...projects.sort().slice(0, PROJECTS_PAGE_SIZE)]
+      return [defaultProject, ...projects.sort(sortDescription)]
     }
 
     return projects
       .filter((x) =>
-        filterText === ''
-          ? true
-          : x.description.toLowerCase().includes(filterText.toLowerCase()),
+        x.description.toLowerCase().includes(filterText.toLowerCase()),
       )
-      .sort()
-      .slice(0, PROJECTS_PAGE_SIZE)
+      .sort(sortDescription)
   }
 
   const filteredProjects = filterProjects()
 
   return (
-    <PopoverContainer width="w-72" id={'projectList'}>
+    <PopoverContainer id={'projectList'}>
       <>
         <PopoverLayout title="Projects">
           <div>
@@ -59,7 +65,7 @@ export const SelectProjectPopover = (props: Props) => {
               />
             </div>
 
-            <ul className="">
+            <ul className="max-h-96 overflow-y-auto">
               {filteredProjects.map((x) => {
                 const { description, id } = x
 
