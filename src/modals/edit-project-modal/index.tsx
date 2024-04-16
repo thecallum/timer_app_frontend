@@ -1,4 +1,4 @@
-import { ErrorMessage, TextInput } from '@/components/form'
+import { ErrorMessage } from '@/components/form'
 import { ButtonPrimary, ButtonSecondary } from '@/components/form/buttons'
 import { TextInputWithLabel } from '@/components/form/text-input-with-label'
 import { useProjectsContext } from '@/contexts/projectsContext'

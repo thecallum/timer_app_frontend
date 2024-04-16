@@ -45,7 +45,7 @@ export const TimerControls = () => {
   }
 
   return (
-    <div className="bg-purple-500 flex  w-full shadow-md flex-col items-center justify-center">
+    <div className="bg-purple-500 flex w-full  lg:w-[calc(100%-10rem)] z-10 shadow-md flex-col items-center justify-center fixed mt-14 lg:mt-0">
       <div className=" items-center justify-end flex w-full  flex-col-reverse">
         <div className="w-full bg-purple-500 ">
           <div className="max-w-[1540px] w-full mx-auto">

@@ -27,13 +27,13 @@ export const Layout = (props: Props) => {
     <div>
       <Header toggleNavbar={toggleNavbar} />
 
-      <div className="flex flex-row h-[calc(100vh-4rem)] grow-0 lg:h-[100vh]">
-        <Nav closeNavbar={closeNavbar} showNavbar={showNavbar} />
+      <Nav closeNavbar={closeNavbar} showNavbar={showNavbar} />
 
-        <div className="flex-grow w-[calc(100%-10rem)]">
+      <div className="flex">
+        <div className="flex-grow w-auto lg:ml-40">
           {!isOpenRoute && <TimerControls />}
 
-          <div className="h-[calc(100%-3.5rem)]">{children}</div>
+          <div className="h-auto mt-[148px] lg:mt-[92px]">{children}</div>
         </div>
       </div>
 
