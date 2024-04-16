@@ -10,7 +10,7 @@ export const ContainerFullWidth = (props: Props) => {
       id="mainElement"
       className="flex justify-between items-center w-full flex-col h-full"
     >
-      <div className="w-[calc(100%-30px)] sm:w-[calc(100%-60px)] h-[calc(100%-30px)] sm:h-[calc(100%-45px)] ">
+      <div className="w-[calc(100%-30px)] sm:w-[calc(100%-60px)] h-[calc(100%-30px)] sm:h-[calc(100%-65px)] ">
         {children}
       </div>
     </div>

@@ -33,7 +33,7 @@ export const Layout = (props: Props) => {
         <div className="flex-grow w-auto lg:ml-40">
           {!isOpenRoute && <TimerControls />}
 
-          <div className="h-auto mt-[148px] lg:mt-[92px]">{children}</div>
+          <div className="h-auto mt-[180px] lg:mt-[124px]">{children}</div>
         </div>
       </div>
 
