@@ -1,11 +1,12 @@
 import { groupEventsByDayOfWeek } from './groupEventsByDayOfWeek'
-import { getParallelEvents } from './getParallelEvents'
 import { calculateDisplayPositionsById } from './calculateDisplayPositionsById'
 import { CalendarEvent } from '@/types/calendarEvents'
 import {
   HEIGHT_FIVE_MINUTES,
   HEIGHT_ONE_MINUTE,
 } from '@/constants/calendar-constants'
+import { getEventsByTimeslot } from './getEventsByTimeslot'
+import { getParallelEventsByEventId } from './getParallelEventsByEventId'
 
 export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
   // 1. Group events by day of week
@@ -13,11 +14,13 @@ export const calculateEventDisplayPositions = (allEvents: CalendarEvent[]) => {
 
   // 2. get display positions for each event
   const computedDisplayPositionsById = eventsGroupedByDay.map((events) => {
-    // Identify which events run in parallel
-    const parallelEvents = getParallelEvents(events)
+    const timeSlots = getEventsByTimeslot(events)
 
-    const largestColumnCount = Object.values(parallelEvents).reduce(
-      (longest, current) => Math.max(longest, current.size),
+    // Identify which events run in parallel
+    const parallelEvents = getParallelEventsByEventId(timeSlots)
+
+    const largestColumnCount = Object.values(timeSlots).reduce(
+      (longest, current) => Math.max(longest, current.length),
       1,
     )
 
