@@ -7,6 +7,9 @@ import dotenv from 'dotenv'
  */
 dotenv.config()
 
+process.env.NEXT_PUBLIC_PLAYWRIGHT_TEST = 'true'
+process.env.NEXT_PUBLIC_TODAYS_DATE = '2024-02-28'
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
