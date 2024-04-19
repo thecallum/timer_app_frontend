@@ -23,6 +23,8 @@ test('shows the correct days of week', async ({ page }) => {
 
   await page.evaluate(() => document.fonts.ready)
 
+  await page.waitForTimeout(100)
+
   // check current week
   expect(
     await page.getByLabel('Calendar week selector').screenshot(),
@@ -35,6 +37,8 @@ test('shows the correct days of week', async ({ page }) => {
   // check previous week
   page.getByText('Previous').click()
 
+  await page.waitForTimeout(100)
+
   expect(
     await page.getByLabel('Calendar week selector').screenshot(),
   ).toMatchSnapshot('week-selector-[-1].png')
@@ -44,6 +48,8 @@ test('shows the correct days of week', async ({ page }) => {
 
   // check previous week
   page.getByLabel('Show previous week').click()
+
+  await page.waitForTimeout(100)
 
   expect(
     await page.getByLabel('Calendar week selector').screenshot(),
@@ -55,6 +61,8 @@ test('shows the correct days of week', async ({ page }) => {
   // check next week
   page.getByText('Next').click()
 
+  await page.waitForTimeout(100)
+
   expect(
     await page.getByLabel('Calendar week selector').screenshot(),
   ).toMatchSnapshot('week-selector-[-1].png')
@@ -64,6 +72,8 @@ test('shows the correct days of week', async ({ page }) => {
 
   // check today
   page.getByLabel('Show current week').click()
+
+  await page.waitForTimeout(100)
 
   expect(
     await page.getByLabel('Calendar week selector').screenshot(),
@@ -75,6 +85,8 @@ test('shows the correct days of week', async ({ page }) => {
   // check next week
   page.getByText('Next').click()
 
+  await page.waitForTimeout(100)
+
   expect(
     await page.getByLabel('Calendar week selector').screenshot(),
   ).toMatchSnapshot('week-selector-[1].png')
@@ -85,6 +97,8 @@ test('shows the correct days of week', async ({ page }) => {
   // check next week
   page.getByLabel('Show next week').click()
 
+  await page.waitForTimeout(100)
+
   expect(
     await page.getByLabel('Calendar week selector').screenshot(),
   ).toMatchSnapshot('week-selector-[2].png')
@@ -94,6 +108,8 @@ test('shows the correct days of week', async ({ page }) => {
 
   // check today
   page.getByLabel('Show current week').click()
+
+  await page.waitForTimeout(100)
 
   expect(
     await page.getByLabel('Calendar week selector').screenshot(),
