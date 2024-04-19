@@ -19,8 +19,8 @@ export const Nav = (props: Props) => {
   return (
     <nav
       className={classNames(
-        `bg-slate-700 w-full lg:w-40  flex-shrink-0 flex flex-col text-slate-200 shadow-2xl absolute top-0 h-full z-[100] 
-        lg:static lg:h-full lg:block overflow-hidden`,
+        `bg-slate-700 w-full lg:w-40  flex-shrink-0 flex flex-col text-slate-200 shadow-2xl top-0 z-[100] 
+         lg:block overflow-hidden fixed h-screen`,
         {
           hidden: !showNavbar,
         },
@@ -62,20 +62,17 @@ export const Nav = (props: Props) => {
             </ul>
 
             <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
-              {/* <li className="line-through text-slate-400">Account</li> */}
               <li className="text-slate-400">
                 <LogoutLink />
               </li>
             </ul>
           </>
         ) : (
-          <>
-            <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
-              <li className=" text-slate-400">
-                <LoginLink />
-              </li>
-            </ul>
-          </>
+          <ul className="text-4xl font-extralight lg:text-lg [&>li]:mb-4 w-full lg:[&>li]:mb-0  ">
+            <li className=" text-slate-400">
+              <LoginLink />
+            </li>
+          </ul>
         )}
       </div>
     </nav>

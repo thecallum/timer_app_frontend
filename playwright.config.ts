@@ -32,6 +32,13 @@ export default defineConfig({
     trace: 'on',
   },
 
+  expect: {
+    toMatchSnapshot: {
+      maxDiffPixelRatio: 0.1,
+      maxDiffPixels: 100,
+    },
+  },
+
   /* Configure projects for major browsers */
   projects: [
     {

@@ -21,13 +21,13 @@ export const Projects = () => {
   return (
     <>
       <div className="flex flex-col items-center mt-8">
-        <div className="w-[calc(100%-30px)] sm:w-[calc(100%-60px)] max-w-[1200px]">
-          <div className="mb-4 flex flex-col  items-start justify-between md:flex-row md:items-center">
+        <div className="w-[calc(100%-30px)] sm:w-[calc(100%-60px)] max-w-[1200px] overflow-y-auto">
+          <div className="mb-4 flex flex-col  items-start justify-between md:flex-row md:items-center ">
             <h1 className="text-2xl text-slate-700 mb-2 md:mb-0">Projects</h1>
 
             <button
               onClick={openModal}
-              className="bg-purple-500 shadow-md text-white rounded px-4 py-2 text-lg"
+              className="bg-purple-500 shadow-md text-white rounded px-4 py-2 text-lg "
             >
               Create a new project
             </button>
@@ -72,42 +72,57 @@ export const Projects = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {projects.map((project, index) => {
-                            const projectColor =
-                              project?.projectColor ?? defaultProjectColor
+                          {projects
+                            .sort((a, b) => {
+                              if (
+                                a.totalEventDurationInMinutes ===
+                                b.totalEventDurationInMinutes
+                              )
+                                return 0
 
-                            return (
-                              <tr key={index} className="hover:bg-slate-100">
-                                <td className="px-5 py-5 border-b border-slate-200 text-sm">
-                                  <div className="flex items-center">
-                                    <div
-                                      className="w-2 h-2 mr-2 rounded-full"
-                                      style={{ background: projectColor.dark }}
-                                    ></div>
-                                    <div className="text-slate-900 max-w-40 md:max-w-96 lg:max-w-lg xl:max-w-none text-ellipsis overflow-hidden">
-                                      {project.description}
+                              return b.totalEventDurationInMinutes >
+                                a.totalEventDurationInMinutes
+                                ? 1
+                                : -1
+                            })
+                            .map((project, index) => {
+                              const projectColor =
+                                project?.projectColor ?? defaultProjectColor
+
+                              return (
+                                <tr key={index} className="hover:bg-slate-100">
+                                  <td className="px-5 py-5 border-b border-slate-200 text-sm">
+                                    <div className="flex items-center">
+                                      <div
+                                        className="w-2 h-2 mr-2 rounded-full"
+                                        style={{
+                                          background: projectColor.dark,
+                                        }}
+                                      ></div>
+                                      <div className="text-slate-900 max-w-40 md:max-w-96 lg:max-w-lg xl:max-w-none text-ellipsis overflow-hidden">
+                                        {project.description}
+                                      </div>
                                     </div>
-                                  </div>
-                                </td>
-                                <td className="px-5 py-5 border-b border-slate-200 text-right text-sm">
-                                  <p className="text-slate-700 whitespace-nowrap ">
-                                    {(
-                                      project.totalEventDurationInMinutes / 60
-                                    ).toFixed(1)}{' '}
-                                    hours
-                                  </p>
-                                </td>
-                                <td className="px-5 py-5 border-b border-slate-200 text-sm  ">
-                                  <button
-                                    onClick={() => openEditModal(project)}
-                                    className="text-slate-700 underline whitespace-nowrap"
-                                  >
-                                    Edit project
-                                  </button>
-                                </td>
-                              </tr>
-                            )
-                          })}
+                                  </td>
+                                  <td className="px-5 py-5 border-b border-slate-200 text-right text-sm">
+                                    <p className="text-slate-700 whitespace-nowrap ">
+                                      {(
+                                        project.totalEventDurationInMinutes / 60
+                                      ).toFixed(1)}{' '}
+                                      hours
+                                    </p>
+                                  </td>
+                                  <td className="px-5 py-5 border-b border-slate-200 text-sm  ">
+                                    <button
+                                      onClick={() => openEditModal(project)}
+                                      className="text-slate-700 underline whitespace-nowrap"
+                                    >
+                                      Edit project
+                                    </button>
+                                  </td>
+                                </tr>
+                              )
+                            })}
                         </tbody>
                       </table>
                     )}

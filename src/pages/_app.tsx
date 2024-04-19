@@ -4,7 +4,6 @@ import { CreateProjectModalContextProvider } from '@/contexts/createProjectModal
 import { ProjectsContextProvider } from '@/contexts/projectsContext'
 import { TimerContextProvider } from '@/features/timer/context/contextProvider'
 import type { AppProps } from 'next/app'
-import { Layout } from '../components/layout/layout'
 
 import 'react-toastify/dist/ReactToastify.css'
 import '@/styles/globals.css'
@@ -18,9 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <ClickOutContextProvider>
             <TimerContextProvider>
               <CreateProjectModalContextProvider>
-                <Layout>
-                  <Component {...pageProps} />
-                </Layout>
+                <Component {...pageProps} />
               </CreateProjectModalContextProvider>
             </TimerContextProvider>
           </ClickOutContextProvider>
