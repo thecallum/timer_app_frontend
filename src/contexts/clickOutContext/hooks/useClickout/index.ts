@@ -41,7 +41,7 @@ export const useClickout = () => {
     return state.subscriberStack[topSubscriberId]
   }
 
-  const clickWithinElement = (element: HTMLElement, event: MouseEvent) => {
+  const clickWithinElement = (element: ChildNode, event: MouseEvent) => {
     return element.contains(event.target as Node)
   }
 
