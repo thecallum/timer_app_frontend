@@ -49,7 +49,7 @@ jobs:
           command: |
             yarn sst secrets set --stage development SERVICE_API_URL $SERVICE_API_URL_DEVELOPMENT      
             yarn sst secrets set --stage development CLIENT_SECRET $CLIENT_SECRET_DEVELOPMENT      
-            AUTH_DOMAIN=$AUTH_DOMAIN_DEVELOPMENT CLIENT_ID=$CLIENT_ID_DEVELOPMENT AUDIENCE=$AUDIENCE_DEVELOPMENT REDIRECT_URI=$REDIRECT_URI_DEVELOPMENT yarn deploy --stage development
+            NEXT_PUBLIC_TEST_ENV=false AUTH_DOMAIN=$AUTH_DOMAIN_DEVELOPMENT CLIENT_ID=$CLIENT_ID_DEVELOPMENT AUDIENCE=$AUDIENCE_DEVELOPMENT REDIRECT_URI=$REDIRECT_URI_DEVELOPMENT yarn deploy --stage development
   deploy-production:
     executor: node/default
     steps:
@@ -61,7 +61,7 @@ jobs:
           command: |
             yarn sst secrets set --stage production SERVICE_API_URL $SERVICE_API_URL_PRODUCTION 
             yarn sst secrets set --stage production CLIENT_SECRET $CLIENT_SECRET_PRODUCTION         
-            AUTH_DOMAIN=$AUTH_DOMAIN_PRODUCTION CLIENT_ID=$CLIENT_ID_PRODUCTION AUDIENCE=$AUDIENCE_PRODUCTION REDIRECT_URI=$REDIRECT_URI_PRODUCTION yarn deploy --stage production
+            NEXT_PUBLIC_TEST_ENV=false AUTH_DOMAIN=$AUTH_DOMAIN_PRODUCTION CLIENT_ID=$CLIENT_ID_PRODUCTION AUDIENCE=$AUDIENCE_PRODUCTION REDIRECT_URI=$REDIRECT_URI_PRODUCTION yarn deploy --stage production
 workflows:
   cicd-pipeline:
     jobs:
