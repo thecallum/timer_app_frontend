@@ -133,7 +133,7 @@ export const AddEventPopover = (props: Props) => {
               />
             </div>
 
-            <div className="flex mb-2">
+            <div className="flex mb-2 flex-wrap">
               <div className="mr-4">
                 <label
                   htmlFor="eventStartTime"

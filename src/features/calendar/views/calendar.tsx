@@ -18,7 +18,7 @@ export const Calendar = () => {
       top={
         <ContainerFullWidth>
           <>
-            <h1 className="text-slate-800 text-2xl mb-4 mt-8">Calendar</h1>
+            <h1 className="text-slate-800 text-2xl mb-4">Calendar</h1>
             <div className="flex flex-col justify-between items-start sm:flex-row">
               <CalendarWeekSummary />
               <CalendarWeekSelect />

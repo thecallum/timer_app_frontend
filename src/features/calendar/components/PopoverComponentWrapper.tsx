@@ -20,7 +20,7 @@ export const PopoverComponentWrapper = (props: Props) => {
     <>
       {showPopover && (
         <div
-          className="absolute z-20"
+          className="absolute z-20 popover"
           ref={setRef}
           style={popperStyles}
           {...popperAttributes}
