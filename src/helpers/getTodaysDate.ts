@@ -4,7 +4,7 @@ export const getTodaysDate = () => {
   //eslint-disable-next-line no-extra-boolean-cast
   const useMockDate: boolean = !!process.env.TEST_ENV
 
-  console.log({ TEST_ENV: process.env.TEST_ENV })
+  // console.log({ TEST_ENV: process.env.TEST_ENV })
 
   if (useMockDate) {
     // Parse the environment variable to a Date object
