@@ -5,7 +5,7 @@
   "scripts": {
     "dev_env": "sst bind next dev --stage development",
     "start": "sst bind next start --stage development",
-    "start_dev": "sst bind next dev --stage development",
+    "start_dev": "set TEST_ENV=true && sst bind next dev --stage development",
     "dev": "next dev",
     "build_test": "next build",
     "build": "sst bind next build",

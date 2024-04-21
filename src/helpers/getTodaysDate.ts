@@ -1,7 +1,7 @@
 export const getTodaysDate = () => {
   const today = new Date()
 
-  if (process.env.NEXT_PUBLIC_PLAYWRIGHT_TEST) {
+  if (process.env.TEST_ENV) {
     // Parse the environment variable to a Date object
     const hardCodedDate = new Date(
       process.env.NEXT_PUBLIC_TODAYS_DATE as string,
