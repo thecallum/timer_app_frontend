@@ -33,8 +33,7 @@ jobs:
       - run:
           name: Run Playwright Tests
           command: |
-            TEST_ENV=true
-            yarn test-ci
+            TEST_ENV=trueyarn test-ci
       - store_artifacts:
           path: ./playwright-report
           destination: playwright-report
