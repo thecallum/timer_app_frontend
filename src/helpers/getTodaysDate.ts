@@ -2,10 +2,9 @@ export const getTodaysDate = () => {
   const today = new Date()
 
   //eslint-disable-next-line no-extra-boolean-cast
-  // const useMockDate: boolean = !!process.env.TEST_ENV
+  const useMockDate: boolean = !!process.env.TEST_ENV
 
-  // eslint-disable-next-line no-constant-condition
-  if (true) {
+  if (useMockDate) {
     // Parse the environment variable to a Date object
     const hardCodedDate = new Date(
       process.env.NEXT_PUBLIC_TODAYS_DATE as string,
