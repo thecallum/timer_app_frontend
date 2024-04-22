@@ -6,7 +6,13 @@ import { useProjectsContext } from '@/contexts/projectsContext'
 import { HEIGHT_ONE_MINUTE } from '@/constants/calendar-constants'
 import { getDayOfWeek, getMinuteValue } from '@/helpers/timeHelpers'
 
-export const CurrentEventHover = () => {
+interface Props {
+  gridSizeMultiplier: number
+}
+
+export const CurrentEventHover = (props: Props) => {
+  const { gridSizeMultiplier } = props
+
   const { showingCurrentWeek } = useCalendarEventsContext()
   const { time, isRunning, startedAt, description, projectId } =
     useTimerContext()
@@ -30,8 +36,8 @@ export const CurrentEventHover = () => {
       className={`absolute w-[calc(100%/7)] p-[2px]`}
       style={{
         left: `calc(100%/7 * ${dayOfWeek - 1} )`,
-        top: `${startedAtInMinutes * HEIGHT_ONE_MINUTE}px`,
-        height: `${Math.max(timeInMinutes, 15) * HEIGHT_ONE_MINUTE}px`,
+        top: `${((startedAtInMinutes * HEIGHT_ONE_MINUTE) / 2) * gridSizeMultiplier}px`,
+        height: `${((Math.max(timeInMinutes, 15) * HEIGHT_ONE_MINUTE) / 2) * gridSizeMultiplier}px`,
       }}
       role="status"
       aria-live="polite"

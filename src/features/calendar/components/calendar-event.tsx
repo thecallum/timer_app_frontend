@@ -10,10 +10,11 @@ import { PopoverComponentWrapper } from './PopoverComponentWrapper'
 interface Props {
   event: CalendarEventType
   containerRef: HTMLDivElement | null
+  gridSizeMultiplier: number
 }
 
 export const CalendarEvent = (props: Props) => {
-  const { event, containerRef } = props
+  const { event, containerRef, gridSizeMultiplier } = props
   const { getProjectById } = useProjectsContext()
 
   const {
@@ -39,8 +40,8 @@ export const CalendarEvent = (props: Props) => {
   } = event
 
   const eventStyles = {
-    height: `${height}px`,
-    top: `${top}px`,
+    height: `${(height / 2) * gridSizeMultiplier}px`,
+    top: `${(top / 2) * gridSizeMultiplier}px`,
     left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${left}))`,
     width: `calc((100%/7)*${width})`,
   }
