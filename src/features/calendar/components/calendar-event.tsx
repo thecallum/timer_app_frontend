@@ -30,61 +30,65 @@ export const CalendarEvent = (props: Props) => {
   const {
     description,
     projectId,
-    dayOfWeek,
     durationInSeconds,
-    height,
-    top,
-    left,
-    width,
+    displayPositions,
     startTime,
   } = event
-
-  const eventStyles = {
-    height: `${(height / 2) * gridSizeMultiplier}px`,
-    top: `${(top / 2) * gridSizeMultiplier}px`,
-    left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${left}))`,
-    width: `calc((100%/7)*${width})`,
-  }
 
   const project = getProjectById(projectId)
   const projectColor = project?.projectColor ?? defaultProjectColor
 
   return (
-    <li className="relative">
-      <PopoverComponentWrapper
-        showPopover={showPopover}
-        setRef={setPopperElement}
-        popperStyles={popperStyles}
-        popperAttributes={popperAttributes}
-      >
-        <EditEventPopover
-          containerRef={containerRef}
-          event={event}
-          close={handleClose}
-        />
-      </PopoverComponentWrapper>
+    <>
+      {displayPositions.map((x, index) => {
+        const { height, top, left, width, column } = x
 
-      <div
-        style={eventStyles}
-        className="absolute p-[1px] overflow-hidden"
-        role="article"
-        aria-label={`Calendar event: ${description} on ${dateFormat(startTime, 'mmmm dd')} at ${dateFormat(startTime, 'h:MM TT')}, ${project?.description ? `assigned to project ${project?.description}` : `not assigned to any project`}.`}
-      >
-        <button
-          className={`w-full h-full cursor-pointer rounded-sm`}
-          ref={setReferenceElement}
-          onClick={handleOpen}
-          style={{
-            background: projectColor.light,
-          }}
-        >
-          <CalendarEventView
-            description={description}
-            durationInSeconds={durationInSeconds}
-            project={project}
-          />
-        </button>
-      </div>
-    </li>
+        const eventStyles = {
+          height: `${(height / 2) * gridSizeMultiplier}px`,
+          top: `${(top / 2) * gridSizeMultiplier}px`,
+          left: `calc((100% / 7 * ${column}) + (100% / 7 * ${left}))`,
+          width: `calc((100%/7)*${width})`,
+        }
+
+        return (
+          <li key={index} className="relative">
+            <PopoverComponentWrapper
+              showPopover={showPopover}
+              setRef={setPopperElement}
+              popperStyles={popperStyles}
+              popperAttributes={popperAttributes}
+            >
+              <EditEventPopover
+                containerRef={containerRef}
+                event={event}
+                close={handleClose}
+              />
+            </PopoverComponentWrapper>
+
+            <div
+              style={eventStyles}
+              className="absolute p-[1px] overflow-hidden"
+              role="article"
+              aria-label={`Calendar event: ${description} on ${dateFormat(startTime, 'mmmm dd')} at ${dateFormat(startTime, 'h:MM TT')}, ${project?.description ? `assigned to project ${project?.description}` : `not assigned to any project`}.`}
+            >
+              <button
+                className={`w-full h-full cursor-pointer rounded-sm`}
+                ref={setReferenceElement}
+                onClick={handleOpen}
+                style={{
+                  background: projectColor.light,
+                }}
+              >
+                <CalendarEventView
+                  description={description}
+                  durationInSeconds={durationInSeconds}
+                  project={project}
+                />
+              </button>
+            </div>
+          </li>
+        )
+      })}
+    </>
   )
 }

@@ -21,32 +21,39 @@ export const calculateDisplayPositionsById = (
     // sort by oldest first
     .sort((a, b) => a.startTimeInSeconds - b.startTimeInSeconds)
     .forEach((event) => {
-      const eventPosition = eventDisplayPositionsByEventId[event.id]
+      const eventPositions = eventDisplayPositionsByEventId[event.id]
 
-      // 1. grab parallel event positions with ids
-      const parallelEvents = eventPosition.parallelColumnIds.map(
-        (x) => eventDisplayPositionsByEventId[x],
-      )
+      eventPositions.forEach((eventPosition) => {
+        // const eventPosition = eventPositions[0]
 
-      // 2. identify which displayPositions are taken
-      const takenPositions = new Set(
-        parallelEvents.map((x) => x.displayPosition),
-      )
+        // 1. grab parallel event positions with ids
+        const parallelEvents = eventPosition.parallelColumnIds.map((x) => {
+          const parallelEvent = eventDisplayPositionsByEventId[x]
 
-      // 3. find the next, smallest, display position
-      let nextDisplayPosition = 1
-      while (takenPositions.has(nextDisplayPosition)) {
-        nextDisplayPosition++
-      }
+          // ?? this may need to very which event position details we get
+          return parallelEvent[0]
+        })
 
-      // 4. assign the position
-      eventPosition.displayPosition = nextDisplayPosition
+        // 2. identify which displayPositions are taken
+        const takenPositions = new Set(
+          parallelEvents.map((x) => x.displayPosition),
+        )
 
-      // 5. calculate the left position based on its display position
-      eventPosition.computedLeft = calculateLeftPosition(
-        nextDisplayPosition,
-        eventPosition.computedWidth,
-      )
+        // 3. find the next, smallest, display position
+        let nextDisplayPosition = 1
+        while (takenPositions.has(nextDisplayPosition)) {
+          nextDisplayPosition++
+        }
+
+        // 4. assign the position
+        eventPosition.displayPosition = nextDisplayPosition
+
+        // 5. calculate the left position based on its display position
+        eventPosition.computedLeft = calculateLeftPosition(
+          nextDisplayPosition,
+          eventPosition.computedWidth,
+        )
+      })
     })
 
   return eventDisplayPositionsByEventId
@@ -64,7 +71,7 @@ const populateInitialDisplayPositions = (
   largestColumnCount: number,
 ) => {
   const initialDisplayPositionsById: {
-    [key: string]: CalendarEventPosition
+    [key: string]: CalendarEventPosition[]
   } = {}
 
   const widthForAllEventsInColumn = 1 / largestColumnCount
@@ -76,11 +83,17 @@ const populateInitialDisplayPositions = (
       parallelIds = [...parallelEventsById[event.id]]
     }
 
-    initialDisplayPositionsById[event.id] = {
+    const position = {
       parallelColumnIds: parallelIds,
       displayPosition: INITIAL_DISPLAY_POSITION,
       computedLeft: INITIAL_LEFT_POSITION,
       computedWidth: widthForAllEventsInColumn,
+    }
+
+    if (event.id in initialDisplayPositionsById) {
+      initialDisplayPositionsById[event.id].push(position)
+    } else {
+      initialDisplayPositionsById[event.id] = [position]
     }
   })
 

@@ -34,3 +34,27 @@ export const getDayOfWeek = (date: Date): DayOfWeek => {
 
   return dayOfWeek as DayOfWeek
 }
+
+export function isSameDay(date1: Date, date2: Date) {
+  return (
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
+  )
+}
+
+export function getMidnightDates(startDate: Date, endDate: Date): Date[] {
+  const midnightDates: Date[] = []
+  const currentDate = new Date(startDate)
+
+  // Loop through each day between startDate and endDate
+  while (currentDate <= endDate) {
+    // Set the time to midnight
+    currentDate.setHours(0, 0, 0, 0)
+    midnightDates.push(new Date(currentDate)) // Push a new Date object to prevent reference sharing
+    // Move to the next day
+    currentDate.setDate(currentDate.getDate() + 1)
+  }
+
+  return midnightDates
+}

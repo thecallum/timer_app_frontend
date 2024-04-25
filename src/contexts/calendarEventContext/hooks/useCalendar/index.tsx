@@ -216,7 +216,7 @@ export const useCalendar = () => {
         })
     })
 
-  const events = calculateEventDisplayPositions(state.events)
+  const events = calculateEventDisplayPositions(state.events, daysOfWeek)
 
   return {
     isLoading,
