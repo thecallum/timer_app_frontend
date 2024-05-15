@@ -67,7 +67,6 @@ export const CalendarEventDisplayPosition = (props: Props) => {
         role="article"
         aria-label={`Calendar event: ${description} on ${dateFormat(startTime, 'mmmm dd')} at ${dateFormat(startTime, 'h:MM TT')}, ${project?.description ? `assigned to project ${project?.description}` : `not assigned to any project`}.`}
       >
-        <div>Show: {showPopover.toString()}</div>
         <button
           className={`w-full h-full cursor-pointer rounded-sm`}
           ref={setReferenceElement}
