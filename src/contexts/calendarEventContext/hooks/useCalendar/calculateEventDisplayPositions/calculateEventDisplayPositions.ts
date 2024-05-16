@@ -46,6 +46,8 @@ export const calculateEventDisplayPositions = (
 
   // map the display position to each event
   return allEvents.map((event) => {
+    event.displayPositions = []
+
     const daysThatTheEventOccuredIn = getMidnightDates(
       event.startTime,
       event.endTime,
@@ -107,12 +109,6 @@ export const calculateEventDisplayPositions = (
           )
         } else if (isSameDay(event.endTime, date)) {
           // is height
-
-          // console.log(
-          //   'same day end time',
-          //   event.endTime,
-          //   event.endTime.getMinutes(),
-          // )
 
           const numberOfMins =
             event.endTime.getMinutes() + event.endTime.getHours() * 60

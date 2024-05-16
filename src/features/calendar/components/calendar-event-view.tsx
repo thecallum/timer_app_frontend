@@ -38,7 +38,7 @@ export const CalendarEventView = (props: Props) => {
           color: projectColor.darkest,
         }}
       >
-        {formatDuration(durationInSeconds)}
+        {formatDuration(durationInSeconds)} | {durationInSeconds}
       </div>
     </div>
   )
