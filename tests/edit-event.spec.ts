@@ -138,7 +138,7 @@ test.describe('Edits an event', () => {
 
     // update time
     await page.getByLabel('Event start time').fill('2024-02-29T04:15')
-    await page.getByLabel('Event end time').fill('04:30:00')
+    await page.getByLabel('Event end time').fill('2024-02-29T04:30')
 
     // save changes
     await Promise.all([
@@ -164,7 +164,7 @@ test.describe('Edits an event', () => {
 
     // update time
     await page.getByLabel('Event start time').fill('2024-02-29T04:15')
-    await page.getByLabel('Event end time').fill('02:30:00')
+    await page.getByLabel('Event end time').fill('2024-02-29T03:30')
 
     // save
     await page.getByRole('button', { name: 'Save' }).click()

@@ -1,9 +1,9 @@
 import classNames from 'classnames'
-import { calculateDuration } from '../helpers/duration'
 import { formatDuration } from '@/helpers/formatter'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { getTodaysDate } from '@/helpers/getTodaysDate'
 import dateFormat from 'dateformat'
+import { calculateEventDurationForDayOfWeek } from '@/helpers/timeHelpers'
 
 export const CalendarDates = () => {
   const { daysOfWeek, events } = useCalendarEventsContext()
@@ -19,15 +19,13 @@ export const CalendarDates = () => {
   }
 
   const weekDaysArray = daysOfWeek.map((x) => {
-    const eventsOnThisDay = events.filter(
-      (e) => e.startTime.getDate() == x.getDate(),
-    )
+    const duration = calculateEventDurationForDayOfWeek(x, events)
 
     return {
       date: x,
       day: dateFormat(x, 'dd'),
       name: dateFormat(x, 'ddd'),
-      time: formatDuration(calculateDuration(eventsOnThisDay)),
+      time: formatDuration(duration),
       current: isToday(x),
     }
   })

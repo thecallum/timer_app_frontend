@@ -1,10 +1,18 @@
 import {
-  getDayOfWeek,
+  getMidnightDates,
   getMinuteValue,
   getSecondValue,
 } from '@/helpers/timeHelpers'
 
 export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+export type CalendarEventDisplayPosition = {
+  left: number
+  width: number
+  top: number
+  height: number
+  column: number
+}
 
 export class CalendarEvent {
   public id: string
@@ -13,10 +21,7 @@ export class CalendarEvent {
   public endTime: Date
   public projectId: number | null
 
-  public left: number = 0
-  public width: number = 0
-  public top: number = 0
-  public height: number = 0
+  public displayPositions: CalendarEventDisplayPosition[] = []
 
   constructor(
     id: string,
@@ -32,8 +37,8 @@ export class CalendarEvent {
     this.projectId = projectId
   }
 
-  public get dayOfWeek(): DayOfWeek {
-    return getDayOfWeek(this.startTime)
+  public get dates(): Date[] {
+    return getMidnightDates(this.startTime, this.endTime)
   }
 
   public get durationInSeconds() {

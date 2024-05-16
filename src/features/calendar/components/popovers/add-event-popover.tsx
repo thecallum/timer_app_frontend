@@ -32,34 +32,21 @@ export const AddEventPopover = (props: Props) => {
   const [startDate, setStartDate] = useState<string>(
     dateFormat(time, 'yyyy-mm-dd"T"HH:MM:ss'),
   )
-  const [endTime, setEndTime] = useState<string>(() => {
-    const date = new Date(time.getTime() + 1000 * 60 * 15)
-
-    return dateFormat(date, 'HH:MM:ss')
+  const [endDate, setEndDate] = useState<string>(() => {
+    const date = new Date(time)
+    date.setTime(date.getTime() + 1000 * 60 * 15)
+    return dateFormat(date, 'yyyy-mm-dd"T"HH:MM:ss')
   })
 
-  const getEndTimeAsDate = () => {
-    const [hour, minute, second] = endTime.split(':').map(Number)
-
-    const endDate = new Date(startDate)
-
-    endDate.setHours(hour)
-    endDate.setMinutes(minute)
-    endDate.setSeconds(second)
-    endDate.setMilliseconds(0)
-
-    return endDate
-  }
-
   const timeDifferenceInMs =
-    getEndTimeAsDate().getTime() - new Date(startDate).getTime()
+    new Date(endDate).getTime() - new Date(startDate).getTime()
 
   const timeDifferenceInSeconds = timeDifferenceInMs / 1000
 
   const validate = () => {
     const errors: { [key: string]: string } = {}
 
-    if (getEndTimeAsDate() < new Date(startDate)) {
+    if (new Date(startDate) > new Date(endDate)) {
       errors['end'] = 'End time must be after start'
     }
 
@@ -83,7 +70,7 @@ export const AddEventPopover = (props: Props) => {
     const request: CalendarEventApiRequestObject = {
       description,
       startTime: new Date(startDate),
-      endTime: getEndTimeAsDate(),
+      endTime: new Date(endDate),
       projectId: projectId,
     }
 
@@ -162,14 +149,13 @@ export const AddEventPopover = (props: Props) => {
                   End
                 </label>
                 <input
-                  type="time"
-                  step={1}
+                  type="datetime-local"
                   name="eventEndTime"
                   id="eventEndTime"
                   aria-label="Event end time"
-                  value={endTime}
+                  value={endDate}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setEndTime(e.target.value)
+                    setEndDate(e.target.value)
                   }
                   className={classNames(
                     'block border rounded py-2 px-4 shadow-sm text-slate-600 text-sm',
