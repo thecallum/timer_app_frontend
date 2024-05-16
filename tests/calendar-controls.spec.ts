@@ -125,36 +125,36 @@ test('loads events for each week', async ({ page }) => {
       id: 126,
       projectId: 82,
       description: 'Event -2',
-      startTime: '2024-02-29T03:45:00Z',
-      endTime: '2024-02-29T04:00:00Z',
+      startTime: '2024-02-12T03:45:00Z',
+      endTime: '2024-02-12T04:00:00Z',
     },
     {
       id: 127,
       projectId: 82,
       description: 'Event -1',
-      startTime: '2024-02-29T03:45:00Z',
-      endTime: '2024-02-29T04:00:00Z',
+      startTime: '2024-02-19T03:45:00Z',
+      endTime: '2024-02-19T04:00:00Z',
     },
     {
       id: 128,
       projectId: 82,
       description: 'Event 0',
-      startTime: '2024-02-29T03:45:00Z',
-      endTime: '2024-02-29T04:00:00Z',
+      startTime: '2024-02-26T03:45:00Z',
+      endTime: '2024-02-26T04:00:00Z',
     },
     {
       id: 129,
       projectId: 82,
       description: 'Event 1',
-      startTime: '2024-02-29T03:45:00Z',
-      endTime: '2024-02-29T04:00:00Z',
+      startTime: '2024-03-04T03:45:00Z',
+      endTime: '2024-03-04T04:00:00Z',
     },
     {
       id: 130,
       projectId: 82,
       description: 'Event 2',
-      startTime: '2024-02-29T03:45:00Z',
-      endTime: '2024-02-29T04:00:00Z',
+      startTime: '2024-03-11T03:45:00Z',
+      endTime: '2024-03-11T04:00:00Z',
     },
   ]
 
@@ -190,7 +190,7 @@ test('loads events for each week', async ({ page }) => {
   // check current week
   expect(
     page.getByLabel(
-      'Calendar event: Event 0 on February 29 at 3:45 AM, assigned to project Existing Project.',
+      'Calendar event: Event 0 on February 26 at 3:45 AM, assigned to project Existing Project.',
     ),
   ).toHaveCount(1)
 
@@ -202,7 +202,7 @@ test('loads events for each week', async ({ page }) => {
 
   expect(
     page.getByLabel(
-      'Calendar event: Event -1 on February 29 at 3:45 AM, assigned to project Existing Project.',
+      'Calendar event: Event -1 on February 19 at 3:45 AM, assigned to project Existing Project.',
     ),
   ).toHaveCount(1)
 
@@ -214,7 +214,7 @@ test('loads events for each week', async ({ page }) => {
 
   expect(
     page.getByLabel(
-      'Calendar event: Event -2 on February 29 at 3:45 AM, assigned to project Existing Project.',
+      'Calendar event: Event -2 on February 12 at 3:45 AM, assigned to project Existing Project.',
     ),
   ).toHaveCount(1)
 
@@ -226,7 +226,7 @@ test('loads events for each week', async ({ page }) => {
 
   expect(
     page.getByLabel(
-      'Calendar event: Event -1 on February 29 at 3:45 AM, assigned to project Existing Project.',
+      'Calendar event: Event -1 on February 19 at 3:45 AM, assigned to project Existing Project.',
     ),
   ).toHaveCount(1)
 
@@ -238,7 +238,7 @@ test('loads events for each week', async ({ page }) => {
 
   expect(
     page.getByLabel(
-      'Calendar event: Event 0 on February 29 at 3:45 AM, assigned to project Existing Project.',
+      'Calendar event: Event 0 on February 26 at 3:45 AM, assigned to project Existing Project.',
     ),
   ).toHaveCount(1)
 
@@ -250,7 +250,7 @@ test('loads events for each week', async ({ page }) => {
 
   expect(
     page.getByLabel(
-      'Calendar event: Event 1 on February 29 at 3:45 AM, assigned to project Existing Project.',
+      'Calendar event: Event 1 on March 04 at 3:45 AM, assigned to project Existing Project.',
     ),
   ).toHaveCount(1)
 
@@ -262,7 +262,7 @@ test('loads events for each week', async ({ page }) => {
 
   expect(
     page.getByLabel(
-      'Calendar event: Event 2 on February 29 at 3:45 AM, assigned to project Existing Project.',
+      'Calendar event: Event 2 on March 11 at 3:45 AM, assigned to project Existing Project.',
     ),
   ).toHaveCount(1)
 
@@ -274,7 +274,7 @@ test('loads events for each week', async ({ page }) => {
 
   expect(
     page.getByLabel(
-      'Calendar event: Event 0 on February 29 at 3:45 AM, assigned to project Existing Project.',
+      'Calendar event: Event 0 on February 26 at 3:45 AM, assigned to project Existing Project.',
     ),
   ).toHaveCount(1)
 })

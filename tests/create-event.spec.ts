@@ -31,19 +31,19 @@ test.beforeEach(async ({ page }) => {
 test('Opens model with correct timeslot', async ({ page }) => {
   await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
   expect(page.getByLabel('Event start time')).toHaveValue('2024-02-28T03:15')
-  expect(page.getByLabel('Event end time')).toHaveValue('03:30:00')
+  expect(page.getByLabel('Event end time')).toHaveValue('2024-02-28T03:30')
 
   await page.getByRole('button', { name: 'Close' }).click()
 
   await page.getByLabel('Create an event on February 28 at 3:45 AM.').click()
   expect(page.getByLabel('Event start time')).toHaveValue('2024-02-28T03:45')
-  expect(page.getByLabel('Event end time')).toHaveValue('04:00:00')
+  expect(page.getByLabel('Event end time')).toHaveValue('2024-02-28T04:00')
 
   await page.getByRole('button', { name: 'Close' }).click()
 
   await page.getByLabel('Create an event on February 26 at 2:45 PM.').click()
   expect(page.getByLabel('Event start time')).toHaveValue('2024-02-26T14:45')
-  expect(page.getByLabel('Event end time')).toHaveValue('15:00:00')
+  expect(page.getByLabel('Event end time')).toHaveValue('2024-02-26T15:00')
 
   await page.getByRole('button', { name: 'Close' }).click()
 })
@@ -126,7 +126,7 @@ test('Validates event time', async ({ page }) => {
   await page.getByLabel('Create an event on February 28 at 3:15 AM.').click()
 
   // set end time before start time
-  await page.getByLabel('Event end time').fill('02:30:00')
+  await page.getByLabel('Event end time').fill('2024-02-28T01:30')
 
   // save
   await page.getByRole('button', { name: 'Save' }).click()
