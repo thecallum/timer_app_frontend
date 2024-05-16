@@ -1,5 +1,4 @@
 import classNames from 'classnames'
-import { calculateDuration } from '../helpers/duration'
 import { formatDuration } from '@/helpers/formatter'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { getTodaysDate } from '@/helpers/getTodaysDate'
@@ -60,7 +59,6 @@ export const CalendarDates = () => {
         duration += 86400
       }
     })
-
 
     return {
       date: x,
