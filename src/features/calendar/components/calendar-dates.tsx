@@ -3,7 +3,7 @@ import { formatDuration } from '@/helpers/formatter'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { getTodaysDate } from '@/helpers/getTodaysDate'
 import dateFormat from 'dateformat'
-import { isSameDay } from '@/helpers/timeHelpers'
+import { calculateEventDurationForDayOfWeek } from '@/helpers/timeHelpers'
 
 export const CalendarDates = () => {
   const { daysOfWeek, events } = useCalendarEventsContext()
@@ -19,46 +19,7 @@ export const CalendarDates = () => {
   }
 
   const weekDaysArray = daysOfWeek.map((x) => {
-    let duration = 0
-
-    events.forEach((event) => {
-      // 1. if same day, calculate as normal
-      if (isSameDay(event.startTime, x) && isSameDay(event.endTime, x)) {
-        duration += event.durationInSeconds
-        return
-      }
-
-      // 2. if starts today
-      if (isSameDay(event.startTime, x)) {
-        // calculate duration for today
-
-        let durationForEvent = 86400 // start as whole day
-
-        durationForEvent -= event.startTime.getSeconds()
-        durationForEvent -= event.startTime.getMinutes() * 60
-        durationForEvent -= event.startTime.getHours() * 60 * 60
-
-        duration += durationForEvent
-        return
-      }
-
-      // 3. if event ends today
-      if (isSameDay(event.endTime, x)) {
-        let durationForEvent = 0
-
-        durationForEvent += event.endTime.getSeconds()
-        durationForEvent += event.endTime.getMinutes() * 60
-        durationForEvent += event.endTime.getHours() * 60 * 60
-
-        duration += durationForEvent
-        return
-      }
-
-      // else, event spans full period
-      if (event.startTime < x && event.endTime > x) {
-        duration += 86400
-      }
-    })
+    const duration = calculateEventDurationForDayOfWeek(x, events)
 
     return {
       date: x,

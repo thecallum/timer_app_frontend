@@ -1,11 +1,15 @@
 import { formatDuration } from '@/helpers/formatter'
-import { calculateDuration } from '../helpers/duration'
 import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
+import { calculateEventDurationForDayOfWeek } from '@/helpers/timeHelpers'
 
 export const CalendarWeekSummary = () => {
-  const { events } = useCalendarEventsContext()
+  const { events, daysOfWeek } = useCalendarEventsContext()
 
-  const duration = calculateDuration(events)
+  let duration = 0
+
+  daysOfWeek.forEach((dayOfWeek) => {
+    duration += calculateEventDurationForDayOfWeek(dayOfWeek, events)
+  })
 
   return (
     <div className="bg-slate-100 h-14 px-6 items-center mb-4 justify-center text-slate-600 shadow-sm rounded w-full hidden sm:flex sm:mb-0 sm:mr-4 sm:w-auto shrink-0">
