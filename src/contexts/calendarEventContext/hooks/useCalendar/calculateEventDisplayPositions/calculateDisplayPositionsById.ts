@@ -19,7 +19,7 @@ export const calculateDisplayPositionsById = (
 
   events
     // sort by oldest first
-    .sort((a, b) => a.startTimeInSeconds - b.startTimeInSeconds)
+    .sort((a, b) => a.startTime.getTime() - b.startTime.getTime())
     .forEach((event) => {
       const eventPositions = eventDisplayPositionsByEventId[event.id]
 
