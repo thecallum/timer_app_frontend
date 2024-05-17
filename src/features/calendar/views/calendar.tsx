@@ -53,12 +53,6 @@ export const Calendar = () => {
 
               <div className="flex flex-row justify-end items-center">
                 <div className="mr-6">
-                  <label
-                    htmlFor="calendarGridSize"
-                    className="text-slate-500 text-xs mb-1"
-                  >
-                    Grid size
-                  </label>
                   <div>
                     <select
                       name="calendarGridSize"
@@ -67,7 +61,7 @@ export const Calendar = () => {
                       onInput={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setGridSize(e.target.value as GridSize)
                       }
-                      className="shadow-sm text-m,d flex-grow text-slate-800 rounded block p-2 w-full border bg-white outline-none"
+                      className="bg-white rounded  border-slate-300 border h-14 px-4 shadow-sm text-slate-800 flex justify-center items-center text-center"
                     >
                       {Object.values(GridSize).map((x) => (
                         <option key={x} value={x}>
@@ -76,15 +70,15 @@ export const Calendar = () => {
                       ))}
                     </select>
                   </div>
-                </div>
-
-                <div className="mr-6">
                   <label
                     htmlFor="calendarGridSize"
                     className="text-slate-500 text-xs mb-1"
                   >
-                    Calendar view
+                    Grid size
                   </label>
+                </div>
+
+                <div className="mr-6">
                   <div>
                     <select
                       name="calendarGridSize"
@@ -93,7 +87,7 @@ export const Calendar = () => {
                       onInput={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setCalendarView(e.target.value as CalendarView)
                       }
-                      className="shadow-sm text-m,d flex-grow text-slate-800 rounded block p-2 w-full border bg-white outline-none"
+                      className="bg-white rounded  border-slate-300 border h-14 px-4 shadow-sm text-slate-800 flex justify-center items-center text-center"
                     >
                       {Object.values(CalendarView).map((x) => (
                         <option key={x} value={x}>
@@ -102,6 +96,12 @@ export const Calendar = () => {
                       ))}
                     </select>
                   </div>
+                  <label
+                    htmlFor="calendarGridSize"
+                    className="text-slate-500 text-xs mb-1"
+                  >
+                    Calendar view
+                  </label>
                 </div>
 
                 <CalendarWeekSelect />

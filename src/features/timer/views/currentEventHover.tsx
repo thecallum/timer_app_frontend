@@ -13,7 +13,7 @@ interface Props {
 export const CurrentEventHover = (props: Props) => {
   const { gridSizeMultiplier } = props
 
-  const { calendarViewOffset } = useCalendarEventsContext()
+  const { calendarViewOffset, daysOfWeek } = useCalendarEventsContext()
   const { time, isRunning, startedAt, description, projectId } =
     useTimerContext()
 
@@ -36,9 +36,9 @@ export const CurrentEventHover = (props: Props) => {
 
   return (
     <div
-      className={`absolute w-[calc(100%/7)] p-[2px]`}
+      className={`absolute w-[calc(100%/${daysOfWeek.length})] p-[2px]`}
       style={{
-        left: `calc(100%/7 * ${dayOfWeek - 1} )`,
+        left: `calc(100%/${daysOfWeek.length} * ${(daysOfWeek.length === 1 ? 1 : dayOfWeek) - 1} )`,
         top: `${((startedAtInMinutes * HEIGHT_ONE_MINUTE) / 2) * gridSizeMultiplier}px`,
         height: `${((Math.max(timeInMinutes, 15) * HEIGHT_ONE_MINUTE) / 2) * gridSizeMultiplier}px`,
       }}
