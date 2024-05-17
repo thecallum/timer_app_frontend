@@ -10,11 +10,17 @@ interface Props {
 export const CalendarWeekSummary = (props: Props) => {
   const { calendarView } = props
 
-  const { events, daysOfWeek } = useCalendarEventsContext()
+  const {
+    events: displayPositionsById,
+    daysOfWeek,
+    eventsById,
+  } = useCalendarEventsContext()
 
   let duration = 0
 
-  daysOfWeek.forEach((dayOfWeek) => {
+  daysOfWeek.forEach((dayOfWeek, index) => {
+    const events = displayPositionsById[index].map((x) => eventsById[x.eventId])
+
     duration += calculateEventDurationForDayOfWeek(dayOfWeek, events)
   })
 

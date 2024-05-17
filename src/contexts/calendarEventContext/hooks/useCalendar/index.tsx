@@ -215,8 +215,17 @@ export const useCalendar = () => {
 
   const events = calculateEventDisplayPositions(state.events, daysOfWeek)
 
+  const eventsById: {
+    [key: string]: CalendarEvent
+  } = {}
+
+  state.events.forEach((event) => {
+    eventsById[event.id] = event
+  })
+
   return {
     isLoading,
+    eventsById,
     updateEvent,
     addEvent,
     deleteEvent,

@@ -12,6 +12,7 @@ export type CalendarEventDisplayPosition = {
   top: number
   height: number
   column: number
+  eventId: string
 }
 
 export class CalendarEvent {
@@ -20,8 +21,6 @@ export class CalendarEvent {
   public startTime: Date
   public endTime: Date
   public projectId: number | null
-
-  public displayPositions: CalendarEventDisplayPosition[] = []
 
   constructor(
     id: string,
