@@ -5,10 +5,11 @@ interface Props {
   event: CalendarEventType
   containerRef: HTMLDivElement | null
   gridSizeMultiplier: number
+  columnCount: number
 }
 
 export const CalendarEvent = (props: Props) => {
-  const { event, containerRef, gridSizeMultiplier } = props
+  const { event, containerRef, gridSizeMultiplier, columnCount } = props
 
   return (
     <>
@@ -19,6 +20,7 @@ export const CalendarEvent = (props: Props) => {
           key={index}
           containerRef={containerRef}
           gridSizeMultiplier={gridSizeMultiplier}
+          columnCount={columnCount}
         />
       ))}
     </>

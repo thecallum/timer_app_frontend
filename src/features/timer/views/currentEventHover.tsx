@@ -13,7 +13,7 @@ interface Props {
 export const CurrentEventHover = (props: Props) => {
   const { gridSizeMultiplier } = props
 
-  const { showingCurrentWeek } = useCalendarEventsContext()
+  const { calendarViewOffset } = useCalendarEventsContext()
   const { time, isRunning, startedAt, description, projectId } =
     useTimerContext()
 
@@ -29,7 +29,10 @@ export const CurrentEventHover = (props: Props) => {
 
   const projectColor = project?.projectColor ?? defaultProjectColor
 
-  if (!isRunning || !showingCurrentWeek) return null
+  if (!isRunning) return null
+
+  // only show if on current page
+  if (calendarViewOffset !== 0) return null
 
   return (
     <div

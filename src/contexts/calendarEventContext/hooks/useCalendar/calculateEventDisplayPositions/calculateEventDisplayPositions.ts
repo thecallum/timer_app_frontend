@@ -10,11 +10,7 @@ import {
 } from '@/constants/calendar-constants'
 import { getEventsByTimeslot } from './getEventsByTimeslot'
 import { getParallelEventsByEventId } from './getParallelEventsByEventId'
-import {
-  getDayOfWeek,
-  getMidnightDates,
-  isSameDay,
-} from '@/helpers/timeHelpers'
+import { getMidnightDates, isSameDay } from '@/helpers/timeHelpers'
 
 export const calculateEventDisplayPositions = (
   allEvents: CalendarEvent[],
@@ -54,73 +50,68 @@ export const calculateEventDisplayPositions = (
     )
 
     daysThatTheEventOccuredIn.forEach((date) => {
-      if (
-        isSameDay(date, daysOfWeek[0]) ||
-        isSameDay(date, daysOfWeek[1]) ||
-        isSameDay(date, daysOfWeek[2]) ||
-        isSameDay(date, daysOfWeek[3]) ||
-        isSameDay(date, daysOfWeek[4]) ||
-        isSameDay(date, daysOfWeek[5]) ||
-        isSameDay(date, daysOfWeek[6])
-      ) {
-        const displayPositions =
-          computedDisplayPositionsById[getDayOfWeek(date) - 1][event.id]
+      daysOfWeek.forEach((dayOfWeek, index) => {
+        if (isSameDay(date, dayOfWeek)) {
+          const displayPositions = computedDisplayPositionsById[index][event.id]
 
-        const displayPosition = displayPositions[0]
+          const displayPosition = displayPositions[0]
 
-        let column: number = 0
+          let column: number = 0
 
-        daysOfWeek.forEach((day, index) => {
-          if (isSameDay(day, date)) {
-            column = index
+          daysOfWeek.forEach((day, index) => {
+            if (isSameDay(day, date)) {
+              column = index
+            }
+          })
+
+          const columnDisplayPosititon: CalendarEventDisplayPosition = {
+            height: 0,
+            left: 0,
+            top: 0,
+            width: 0,
+            column: column,
           }
-        })
 
-        const columnDisplayPosititon: CalendarEventDisplayPosition = {
-          height: 0,
-          left: 0,
-          top: 0,
-          width: 0,
-          column: column,
+          // fill width of space
+          if (displayPosition.parallelColumnIds.length < 2) {
+            columnDisplayPosititon.width = 1
+          } else {
+            columnDisplayPosititon.width = displayPosition.computedWidth
+          }
+          columnDisplayPosititon.left = displayPosition.computedLeft
+
+          // if start time is same day, use normal calculation
+          if (isSameDay(event.startTime, date)) {
+            columnDisplayPosititon.top =
+              event.startTimeInMinutes * HEIGHT_ONE_MINUTE
+          } else {
+            // started on different day, so must be at top
+            columnDisplayPosititon.top = 0
+          }
+
+          // if end time is same day, use normal.
+          if (isSameDay(event.startTime, date)) {
+            columnDisplayPosititon.height = Math.max(
+              event.durationInMinutes * HEIGHT_ONE_MINUTE,
+              HEIGHT_FIVE_MINUTES,
+            )
+          } else if (isSameDay(event.endTime, date)) {
+            // is height
+
+            const numberOfMins =
+              event.endTime.getMinutes() + event.endTime.getHours() * 60
+
+            columnDisplayPosititon.height = numberOfMins * HEIGHT_ONE_MINUTE
+          } else {
+            // full height
+            columnDisplayPosititon.height = HEIGHT_ONE_MINUTE * 60 * 24
+          }
+
+          event.displayPositions.push(columnDisplayPosititon)
+
+          return
         }
-
-        // fill width of space
-        if (displayPosition.parallelColumnIds.length < 2) {
-          columnDisplayPosititon.width = 1
-        } else {
-          columnDisplayPosititon.width = displayPosition.computedWidth
-        }
-        columnDisplayPosititon.left = displayPosition.computedLeft
-
-        // if start time is same day, use normal calculation
-        if (isSameDay(event.startTime, date)) {
-          columnDisplayPosititon.top =
-            event.startTimeInMinutes * HEIGHT_ONE_MINUTE
-        } else {
-          // started on different day, so must be at top
-          columnDisplayPosititon.top = 0
-        }
-
-        // if end time is same day, use normal.
-        if (isSameDay(event.startTime, date)) {
-          columnDisplayPosititon.height = Math.max(
-            event.durationInMinutes * HEIGHT_ONE_MINUTE,
-            HEIGHT_FIVE_MINUTES,
-          )
-        } else if (isSameDay(event.endTime, date)) {
-          // is height
-
-          const numberOfMins =
-            event.endTime.getMinutes() + event.endTime.getHours() * 60
-
-          columnDisplayPosititon.height = numberOfMins * HEIGHT_ONE_MINUTE
-        } else {
-          // full height
-          columnDisplayPosititon.height = HEIGHT_ONE_MINUTE * 60 * 24
-        }
-
-        event.displayPositions.push(columnDisplayPosititon)
-      }
+      })
     })
 
     return event

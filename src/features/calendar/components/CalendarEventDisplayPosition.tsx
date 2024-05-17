@@ -15,10 +15,17 @@ export interface Props {
   event: CalendarEventType
   containerRef: HTMLDivElement | null
   gridSizeMultiplier: number
+  columnCount: number
 }
 
 export const CalendarEventDisplayPosition = (props: Props) => {
-  const { displayPosition, event, containerRef, gridSizeMultiplier } = props
+  const {
+    displayPosition,
+    event,
+    containerRef,
+    gridSizeMultiplier,
+    columnCount,
+  } = props
 
   const {
     handleOpen,
@@ -42,8 +49,8 @@ export const CalendarEventDisplayPosition = (props: Props) => {
   const eventStyles = {
     height: `${(height / 2) * gridSizeMultiplier}px`,
     top: `${(top / 2) * gridSizeMultiplier}px`,
-    left: `calc((100% / 7 * ${column}) + (100% / 7 * ${left}))`,
-    width: `calc((100%/7)*${width})`,
+    left: `calc((100% / ${columnCount} * ${column}) + (100% / ${columnCount} * ${left}))`,
+    width: `calc((100%/${columnCount})*${width})`,
   }
 
   return (

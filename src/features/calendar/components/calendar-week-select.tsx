@@ -5,7 +5,7 @@ export const CalendarWeekSelect = () => {
   const { daysOfWeek, next, previous, reset } = useCalendarEventsContext()
 
   const startOfWeek = dateFormat(daysOfWeek[0], 'dd mmm')
-  const endOfWeek = dateFormat(daysOfWeek[6], 'dd mmm')
+  const endOfWeek = dateFormat(daysOfWeek[daysOfWeek.length - 1], 'dd mmm')
 
   return (
     <div

@@ -1,12 +1,17 @@
+import { CalendarView } from '@/features/calendar'
 import { getTodaysDate } from '@/helpers/getTodaysDate'
 import { useState } from 'react'
 
 export const useCalendarControls = () => {
-  const [currentWeek, setCurrentWeek] = useState(0)
+  const [calendarView, setCalendarView] = useState<CalendarView>(
+    CalendarView.Week,
+  )
 
-  const next = () => setCurrentWeek((x) => x + 1)
-  const previous = () => setCurrentWeek((x) => x - 1)
-  const reset = () => setCurrentWeek(() => 0)
+  const [calendarViewOffset, setCalendarViewOffset] = useState(0)
+
+  const next = () => setCalendarViewOffset((x) => x + 1)
+  const previous = () => setCalendarViewOffset((x) => x - 1)
+  const reset = () => setCalendarViewOffset(() => 0)
 
   const getStartOfWeek = (weeksInFuture: number) => {
     const date = getTodaysDate()
@@ -28,25 +33,33 @@ export const useCalendarControls = () => {
     return monday
   }
 
-  const getWeekDates = () => {
-    const startOfWeek = getStartOfWeek(currentWeek)
+  const getDaysOfWeek = (calendarView: CalendarView) => {
+    if (calendarView === CalendarView.Week) {
+      const startOfWeek = getStartOfWeek(calendarViewOffset)
 
-    return [...Array(7)].map((_, index) => {
-      const date = new Date(startOfWeek)
-      date.setDate(date.getDate() + index)
-      return date
-    })
+      return [...Array(7)].map((_, index) => {
+        const date = new Date(startOfWeek)
+        date.setDate(date.getDate() + index)
+        return date
+      })
+    }
+
+    // day view
+    const date = getTodaysDate()
+    date.setDate(date.getDate() + calendarViewOffset)
+
+    return [date]
   }
 
-  const daysOfWeek = getWeekDates()
-  const showingCurrentWeek = currentWeek === 0
+  const daysOfWeek = getDaysOfWeek(calendarView)
 
   return {
     daysOfWeek,
     next,
     previous,
     reset,
-    currentWeek,
-    showingCurrentWeek,
+    calendarViewOffset,
+    calendarView,
+    setCalendarView,
   }
 }

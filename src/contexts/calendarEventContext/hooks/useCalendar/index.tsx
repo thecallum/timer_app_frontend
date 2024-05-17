@@ -41,8 +41,15 @@ export const useCalendar = () => {
   const [isLoading, setIsLoading] = useState(false)
   const isAuthorized = useIsAuthorized()
 
-  const { daysOfWeek, next, previous, reset, currentWeek, showingCurrentWeek } =
-    useCalendarControls()
+  const {
+    daysOfWeek,
+    next,
+    previous,
+    reset,
+    calendarViewOffset,
+    calendarView,
+    setCalendarView,
+  } = useCalendarControls()
 
   const fetchEventsForPage = async () =>
     new Promise<UpdateStatus>((resolve) => {
@@ -87,7 +94,7 @@ export const useCalendar = () => {
     if (!isAuthorized) return
     // fetch each time page changes
     fetchEventsForPage()
-  }, [currentWeek])
+  }, [calendarViewOffset])
 
   const updateEvent = async (event: CalendarEvent) =>
     new Promise<UpdateStatus>((resolve) => {
@@ -228,6 +235,8 @@ export const useCalendar = () => {
     next,
     previous,
     reset,
-    showingCurrentWeek,
+    calendarViewOffset,
+    calendarView,
+    setCalendarView,
   }
 }

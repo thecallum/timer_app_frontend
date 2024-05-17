@@ -8,7 +8,7 @@ interface Props {
 
 export const CalendarEvents = (props: Props) => {
   const { containerRef, gridSizeMultiplier } = props
-  const { events } = useCalendarEventsContext()
+  const { events, daysOfWeek } = useCalendarEventsContext()
 
   return (
     <ul className="absolute top-0 left-0 w-full ">
@@ -18,6 +18,7 @@ export const CalendarEvents = (props: Props) => {
           containerRef={containerRef}
           key={index}
           event={event}
+          columnCount={daysOfWeek.length}
         />
       ))}
     </ul>
