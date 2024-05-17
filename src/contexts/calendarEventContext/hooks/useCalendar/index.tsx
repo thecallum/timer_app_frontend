@@ -213,8 +213,6 @@ export const useCalendar = () => {
         })
     })
 
-  const events = calculateEventDisplayPositions(state.events, daysOfWeek)
-
   const eventsById: {
     [key: string]: CalendarEvent
   } = {}
@@ -222,6 +220,12 @@ export const useCalendar = () => {
   state.events.forEach((event) => {
     eventsById[event.id] = event
   })
+
+  const events = calculateEventDisplayPositions(
+    state.events,
+    daysOfWeek,
+    eventsById,
+  )
 
   return {
     isLoading,

@@ -22,16 +22,12 @@ export const CalendarEvent = (props: Props) => {
   } = props
 
   return (
-    <>
-      {/* {event.displayPosition.map((x, index) => ( */}
-      <CalendarEventDisplayPosition
-        displayPosition={eventDisplayPosition}
-        event={event}
-        containerRef={containerRef}
-        gridSizeMultiplier={gridSizeMultiplier}
-        columnCount={columnCount}
-      />
-      {/* ))} */}
-    </>
+    <CalendarEventDisplayPosition
+      displayPosition={eventDisplayPosition}
+      event={event}
+      containerRef={containerRef}
+      gridSizeMultiplier={gridSizeMultiplier}
+      columnCount={columnCount}
+    />
   )
 }

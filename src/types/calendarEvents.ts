@@ -7,8 +7,10 @@ import {
 export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 export type CalendarEventDisplayPosition = {
-  left: number
+  parallelColumnIds: string[]
+  displayPosition: number
   width: number
+  left: number
   top: number
   height: number
   column: number
