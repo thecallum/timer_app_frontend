@@ -17,21 +17,11 @@ import {
   CalendarEventApiRequestObject,
   CalendarEventApiResponseObject,
 } from '@/requests/types'
-import { Bounce, Id, toast, UpdateOptions } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
 import { UpdateStatus } from '../../../../types/updateStatus'
 import { useIsAuthorized } from '@/auth/useIsAuthorized'
-
-const displayToast = (notification: Id, options: UpdateOptions<unknown>) => {
-  toast.update(notification, {
-    isLoading: false,
-    autoClose: 3000,
-    closeOnClick: true,
-    draggable: true,
-    transition: Bounce,
-    ...options,
-  })
-}
+import { displayToast } from '@/toasts/displayToast'
 
 export const useCalendar = () => {
   const [state, dispatch] = useReducer(reducer, {
