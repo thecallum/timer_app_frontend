@@ -9,6 +9,13 @@ export const useCalendarControls = () => {
 
   const [calendarViewOffset, setCalendarViewOffset] = useState(0)
 
+  const updateCalendarView = (view: CalendarView) => {
+    // day => week (show week containing day)
+    // week => day (show first day of week)
+
+    setCalendarView(view)
+  }
+
   const next = () => setCalendarViewOffset((x) => x + 1)
   const previous = () => setCalendarViewOffset((x) => x - 1)
   const reset = () => setCalendarViewOffset(() => 0)
@@ -60,6 +67,6 @@ export const useCalendarControls = () => {
     reset,
     calendarViewOffset,
     calendarView,
-    setCalendarView,
+    setCalendarView: updateCalendarView,
   }
 }
