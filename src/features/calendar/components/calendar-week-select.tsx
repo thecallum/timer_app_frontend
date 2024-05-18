@@ -12,7 +12,10 @@ export const CalendarWeekSelect = () => {
       className="w-full sm:w-auto shrink-0"
       aria-label="Calendar week selector"
     >
-      <div className="bg-white rounded  border-slate-300 border h-14 px-6 shadow-sm text-slate-800 flex justify-center items-center">
+      <div
+        className="bg-white rounded border-slate-300 border h-14 px-6 shadow-sm text-slate-800 flex justify-center items-center"
+        aria-label="Page controls"
+      >
         <button onClick={previous} aria-label="Show previous week">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +31,9 @@ export const CalendarWeekSelect = () => {
         </button>
 
         <span className="mx-3">
-          {startOfWeek} - {endOfWeek}
+          {startOfWeek === endOfWeek
+            ? `${startOfWeek}`
+            : `${startOfWeek} - ${endOfWeek}`}
         </span>
         <button onClick={next} aria-label="Show next week">
           <svg

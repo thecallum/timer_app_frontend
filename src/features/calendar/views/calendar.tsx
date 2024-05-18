@@ -81,8 +81,8 @@ export const Calendar = () => {
                 <div className="mr-6">
                   <div>
                     <select
-                      name="calendarGridSize"
-                      id="calendarGridSize"
+                      name="calendarView"
+                      id="calendarView"
                       value={calendarView}
                       onInput={(e: React.ChangeEvent<HTMLSelectElement>) =>
                         setCalendarView(e.target.value as CalendarView)
@@ -97,7 +97,7 @@ export const Calendar = () => {
                     </select>
                   </div>
                   <label
-                    htmlFor="calendarGridSize"
+                    htmlFor="calendarView"
                     className="text-slate-500 text-xs mb-1"
                   >
                     Calendar view
