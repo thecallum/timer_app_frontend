@@ -1,15 +1,11 @@
-import {
-  getDayOfWeek,
-  getMidnightDates,
-  isSameDay,
-} from '@/helpers/timeHelpers'
+import { getMidnightDates, isSameDay } from '@/helpers/timeHelpers'
 import { CalendarEvent } from '@/types/calendarEvents'
 
 export const groupEventsByDayOfWeek = (
   allEvents: CalendarEvent[],
   daysOfWeek: Date[],
 ) => {
-  const eventsPerDayOfWeek: CalendarEvent[][] = [[], [], [], [], [], [], []]
+  const eventsPerDayOfWeek: CalendarEvent[][] = daysOfWeek.map(() => [])
 
   allEvents.forEach((event) => {
     const daysThatTheEventOccuredIn = getMidnightDates(
@@ -18,17 +14,14 @@ export const groupEventsByDayOfWeek = (
     )
 
     daysThatTheEventOccuredIn.forEach((date) => {
-      if (
-        isSameDay(date, daysOfWeek[0]) ||
-        isSameDay(date, daysOfWeek[1]) ||
-        isSameDay(date, daysOfWeek[2]) ||
-        isSameDay(date, daysOfWeek[3]) ||
-        isSameDay(date, daysOfWeek[4]) ||
-        isSameDay(date, daysOfWeek[5]) ||
-        isSameDay(date, daysOfWeek[6])
-      ) {
-        eventsPerDayOfWeek[getDayOfWeek(date) - 1].push(event)
-      }
+      // def needs refactoring
+
+      daysOfWeek.forEach((dayOfWeek, index) => {
+        if (isSameDay(date, dayOfWeek)) {
+          eventsPerDayOfWeek[index].push(event)
+          return
+        }
+      })
     })
   })
 

@@ -6,7 +6,11 @@ import dateFormat from 'dateformat'
 import { calculateEventDurationForDayOfWeek } from '@/helpers/timeHelpers'
 
 export const CalendarDates = () => {
-  const { daysOfWeek, events } = useCalendarEventsContext()
+  const {
+    daysOfWeek,
+    events: displayPositionsById,
+    eventsById,
+  } = useCalendarEventsContext()
 
   const isToday = (date: Date) => {
     const today = getTodaysDate()
@@ -18,7 +22,9 @@ export const CalendarDates = () => {
     return true
   }
 
-  const weekDaysArray = daysOfWeek.map((x) => {
+  const weekDaysArray = daysOfWeek.map((x, index) => {
+    const events = displayPositionsById[index].map((x) => eventsById[x.eventId])
+
     const duration = calculateEventDurationForDayOfWeek(x, events)
 
     return {
@@ -32,7 +38,13 @@ export const CalendarDates = () => {
 
   return (
     <div className="ml-6 mb-2 h-12 lg:ml-16 mr-[10px]">
-      <ul className="grid grid-cols-7" aria-label="Days of week">
+      <ul
+        className={`grid `}
+        style={{
+          gridTemplateColumns: `repeat(${weekDaysArray.length}, minmax(0, 1fr))`,
+        }}
+        aria-label="Days of week"
+      >
         {weekDaysArray.map(({ day, name, time, current, date }) => (
           <li className="" key={name}>
             <div className="flex flex-col items-center  lg:grid lg:grid-cols-2 lg:gap-2">

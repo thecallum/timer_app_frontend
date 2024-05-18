@@ -1,20 +1,15 @@
 import { groupEventsByDayOfWeek } from './groupEventsByDayOfWeek'
-import { calculateDisplayPositionsById } from './calculateDisplayPositionsById'
 import {
   CalendarEvent,
   CalendarEventDisplayPosition,
 } from '@/types/calendarEvents'
+import { getParallelEventsByEventId } from './getParallelEventsByEventId'
+import { getEventsByTimeslot } from './getEventsByTimeslot'
 import {
   HEIGHT_FIVE_MINUTES,
   HEIGHT_ONE_MINUTE,
 } from '@/constants/calendar-constants'
-import { getEventsByTimeslot } from './getEventsByTimeslot'
-import { getParallelEventsByEventId } from './getParallelEventsByEventId'
-import {
-  getDayOfWeek,
-  getMidnightDates,
-  isSameDay,
-} from '@/helpers/timeHelpers'
+import { isSameDay } from '@/helpers/timeHelpers'
 
 export const calculateEventDisplayPositions = (
   allEvents: CalendarEvent[],
@@ -24,105 +19,147 @@ export const calculateEventDisplayPositions = (
   const eventsGroupedByDay = groupEventsByDayOfWeek(allEvents, daysOfWeek)
 
   // 2. get display positions for each event
-  const computedDisplayPositionsById = eventsGroupedByDay.map(
-    (events, index) => {
-      const timeSlots = getEventsByTimeslot(events, daysOfWeek[index])
+  return eventsGroupedByDay.map((eventsForDay, columnIndex) => {
+    const displayPositions: CalendarEventDisplayPosition[] = []
 
-      // Identify which events run in parallel
-      const parallelEvents = getParallelEventsByEventId(timeSlots)
+    const dayOfWeek = daysOfWeek[columnIndex]
 
-      const largestColumnCount = Object.values(timeSlots).reduce(
-        (longest, current) => Math.max(longest, current.length),
-        1,
-      )
-
-      return calculateDisplayPositionsById(
-        events,
-        parallelEvents,
-        largestColumnCount,
-      )
-    },
-  )
-
-  // map the display position to each event
-  return allEvents.map((event) => {
-    event.displayPositions = []
-
-    const daysThatTheEventOccuredIn = getMidnightDates(
-      event.startTime,
-      event.endTime,
+    const initialDisplayPositions = populateInitialDisplayPositions(
+      eventsForDay,
+      dayOfWeek,
+      columnIndex,
     )
 
-    daysThatTheEventOccuredIn.forEach((date) => {
-      if (
-        isSameDay(date, daysOfWeek[0]) ||
-        isSameDay(date, daysOfWeek[1]) ||
-        isSameDay(date, daysOfWeek[2]) ||
-        isSameDay(date, daysOfWeek[3]) ||
-        isSameDay(date, daysOfWeek[4]) ||
-        isSameDay(date, daysOfWeek[5]) ||
-        isSameDay(date, daysOfWeek[6])
-      ) {
-        const displayPositions =
-          computedDisplayPositionsById[getDayOfWeek(date) - 1][event.id]
+    eventsForDay
+      // sort by oldest first
+      .sort((a, b) => a.startTime.getTime() - b.startTime.getTime())
+      .forEach((event) => {
+        const displayPosition = initialDisplayPositions[event.id]
 
-        const displayPosition = displayPositions[0]
+        // 4. assign the position
+        displayPosition.eventColumnOrder = calculateEventColumnOrder(
+          displayPosition.parallelColumnIds,
+          initialDisplayPositions,
+        )
 
-        let column: number = 0
+        displayPosition.top = calculateEventTopPosition(event, dayOfWeek)
+        displayPosition.height = calculateEventHeight(event, dayOfWeek)
 
-        daysOfWeek.forEach((day, index) => {
-          if (isSameDay(day, date)) {
-            column = index
-          }
-        })
+        // 5. calculate the left position based on its display position
+        displayPosition.left = calculateLeftPosition(
+          displayPosition.eventColumnOrder,
+          displayPosition.width,
+        )
 
-        const columnDisplayPosititon: CalendarEventDisplayPosition = {
-          height: 0,
-          left: 0,
-          top: 0,
-          width: 0,
-          column: column,
-        }
-
-        // fill width of space
+        // fill width if event has no parallel events
         if (displayPosition.parallelColumnIds.length < 2) {
-          columnDisplayPosititon.width = 1
-        } else {
-          columnDisplayPosititon.width = displayPosition.computedWidth
-        }
-        columnDisplayPosititon.left = displayPosition.computedLeft
-
-        // if start time is same day, use normal calculation
-        if (isSameDay(event.startTime, date)) {
-          columnDisplayPosititon.top =
-            event.startTimeInMinutes * HEIGHT_ONE_MINUTE
-        } else {
-          // started on different day, so must be at top
-          columnDisplayPosititon.top = 0
+          displayPosition.width = 1
         }
 
-        // if end time is same day, use normal.
-        if (isSameDay(event.startTime, date)) {
-          columnDisplayPosititon.height = Math.max(
-            event.durationInMinutes * HEIGHT_ONE_MINUTE,
-            HEIGHT_FIVE_MINUTES,
-          )
-        } else if (isSameDay(event.endTime, date)) {
-          // is height
+        displayPositions.push(displayPosition)
+      })
 
-          const numberOfMins =
-            event.endTime.getMinutes() + event.endTime.getHours() * 60
-
-          columnDisplayPosititon.height = numberOfMins * HEIGHT_ONE_MINUTE
-        } else {
-          // full height
-          columnDisplayPosititon.height = HEIGHT_ONE_MINUTE * 60 * 24
-        }
-
-        event.displayPositions.push(columnDisplayPosititon)
-      }
-    })
-
-    return event
+    return displayPositions
   })
+}
+
+const calculateLeftPosition = (displayPosition: number, width: number) => {
+  return (displayPosition - 1) * width
+}
+
+const populateInitialDisplayPositions = (
+  events: CalendarEvent[],
+  date: Date,
+  columnIndex: number,
+) => {
+  const timeSlots = getEventsByTimeslot(events, date)
+
+  const largestColumnCount = Object.values(timeSlots).reduce(
+    (longest, current) => Math.max(longest, current.length),
+    1,
+  )
+
+  // Identify which events run in parallel
+  const parallelEvents = getParallelEventsByEventId(timeSlots)
+
+  const initialDisplayPositionsById: {
+    [key: string]: CalendarEventDisplayPosition
+  } = {}
+
+  events.forEach((event) => {
+    const position: CalendarEventDisplayPosition = {
+      eventId: event.id,
+      top: 0,
+      left: 0,
+      width: 1 / largestColumnCount,
+      height: 0,
+      parallelColumnIds: [],
+      eventColumnOrder: 0,
+      column: columnIndex,
+    }
+
+    if (Object.prototype.hasOwnProperty.call(parallelEvents, event.id)) {
+      position.parallelColumnIds = [...parallelEvents[event.id]]
+    }
+
+    initialDisplayPositionsById[event.id] = position
+  })
+
+  return initialDisplayPositionsById
+}
+
+const calculateEventColumnOrder = (
+  parallelColumnIds: string[],
+  initialDisplayPositions: {
+    [key: string]: CalendarEventDisplayPosition
+  },
+) => {
+  // 1. grab parallel event positions with ids
+  const parallelEventDisplayPositions = parallelColumnIds.map(
+    (x) => initialDisplayPositions[x],
+  )
+
+  // 2. identify which displayPositions are taken
+  const takenPositions = new Set(
+    parallelEventDisplayPositions.map((x) => x.eventColumnOrder),
+  )
+
+  // 3. find the next, smallest, display position
+  let nextDisplayPosition = 1
+  while (takenPositions.has(nextDisplayPosition)) {
+    nextDisplayPosition++
+  }
+
+  return nextDisplayPosition
+}
+
+const calculateEventTopPosition = (event: CalendarEvent, dayOfWeek: Date) => {
+  const { startTime, startTimeInMinutes } = event
+
+  // if start time is same day, use normal calculation
+  // event started today
+  if (isSameDay(startTime, dayOfWeek)) {
+    return startTimeInMinutes * HEIGHT_ONE_MINUTE
+  }
+
+  // started on different day, so must be at top
+  return 0
+}
+
+const calculateEventHeight = (event: CalendarEvent, dayOfWeek: Date) => {
+  const { durationInMinutes, startTime, endTime } = event
+
+  // if end time is same day, use normal.
+  if (isSameDay(startTime, dayOfWeek)) {
+    return Math.max(durationInMinutes * HEIGHT_ONE_MINUTE, HEIGHT_FIVE_MINUTES)
+  }
+
+  // event ends on this day
+  if (isSameDay(endTime, dayOfWeek)) {
+    const numberOfMins = endTime.getMinutes() + endTime.getHours() * 60
+    return numberOfMins * HEIGHT_ONE_MINUTE
+  }
+
+  // full height
+  return HEIGHT_ONE_MINUTE * 60 * 24
 }
