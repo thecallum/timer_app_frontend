@@ -15,6 +15,8 @@ export type CalendarEventDisplayPosition = {
   height: number
   column: number
   eventId: string
+  largestTimeslotContainingThisEvent: number
+  largestTimeslotIds: Set<string>
 }
 
 export class CalendarEvent {
@@ -61,6 +63,7 @@ export class CalendarEvent {
   }
 
   public get endTimeInSeconds() {
-    return this.startTimeInSeconds + this.durationInSeconds
+    // return this.startTimeInSeconds + this.durationInSeconds
+    return getSecondValue(this.endTime)
   }
 }

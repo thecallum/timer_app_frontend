@@ -1,4 +1,4 @@
-export const getParallelEventsByEventId = (timeSlots: string[][]) => {
+export const getParallelEventsByEventId = (timeSlots: Set<string>[]) => {
   const parallelEvents: {
     [key: string]: Set<string>
   } = {}
@@ -8,7 +8,7 @@ export const getParallelEventsByEventId = (timeSlots: string[][]) => {
 
   timeSlots.forEach((timeslot) => {
     // needs to be at least two events
-    if (timeslot.length < 2) return
+    if (timeslot.size < 2) return
 
     timeslot.forEach((eventId) => {
       if (Object.prototype.hasOwnProperty.call(parallelEvents, eventId)) {

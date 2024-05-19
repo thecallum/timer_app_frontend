@@ -10,6 +10,7 @@ import {
   HEIGHT_ONE_MINUTE,
 } from '@/constants/calendar-constants'
 import { isSameDay } from '@/helpers/timeHelpers'
+import { populateInitialDisplayPositions } from './populateInitialDisplayPositions'
 
 export const calculateEventDisplayPositions = (
   allEvents: CalendarEvent[],
@@ -21,14 +22,31 @@ export const calculateEventDisplayPositions = (
   // 2. get display positions for each event
   return eventsGroupedByDay.map((eventsForDay, columnIndex) => {
     const displayPositions: CalendarEventDisplayPosition[] = []
-
+    
     const dayOfWeek = daysOfWeek[columnIndex]
+    // console.log(dayOfWeek)
+
+    const timeSlots = getEventsByTimeslot(eventsForDay, dayOfWeek)
+
+    // console.log({ timeSlots })
+
+    // const largestColumnCount = Object.values(timeSlots).reduce(
+    //   (longest, current) => Math.max(longest, current.size),
+    //   1,
+    // )
+    // Identify which events run in parallel
+    const parallelEvents = getParallelEventsByEventId(timeSlots)
+
+    // console.log({ parallelEvents })
 
     const initialDisplayPositions = populateInitialDisplayPositions(
       eventsForDay,
-      dayOfWeek,
       columnIndex,
+      parallelEvents,
+      timeSlots,
     )
+
+    let largestColumnWidth = 1
 
     eventsForDay
       // sort by oldest first
@@ -45,19 +63,30 @@ export const calculateEventDisplayPositions = (
         displayPosition.top = calculateEventTopPosition(event, dayOfWeek)
         displayPosition.height = calculateEventHeight(event, dayOfWeek)
 
+        displayPosition.width =
+          1 / displayPosition.largestTimeslotContainingThisEvent
+
+        largestColumnWidth = Math.max(
+          largestColumnWidth,
+          displayPosition.largestTimeslotContainingThisEvent,
+        )
+
         // 5. calculate the left position based on its display position
         displayPosition.left = calculateLeftPosition(
           displayPosition.eventColumnOrder,
           displayPosition.width,
         )
 
-        // fill width if event has no parallel events
-        if (displayPosition.parallelColumnIds.length < 2) {
-          displayPosition.width = 1
-        }
-
         displayPositions.push(displayPosition)
       })
+
+    // dont need to calculate largest one
+    largestColumnWidth -= 1
+
+    while (largestColumnWidth > 1) {
+      // console.log({ largestColumnWidth })
+      largestColumnWidth--
+    }
 
     return displayPositions
   })
@@ -65,47 +94,6 @@ export const calculateEventDisplayPositions = (
 
 const calculateLeftPosition = (displayPosition: number, width: number) => {
   return (displayPosition - 1) * width
-}
-
-const populateInitialDisplayPositions = (
-  events: CalendarEvent[],
-  date: Date,
-  columnIndex: number,
-) => {
-  const timeSlots = getEventsByTimeslot(events, date)
-
-  const largestColumnCount = Object.values(timeSlots).reduce(
-    (longest, current) => Math.max(longest, current.length),
-    1,
-  )
-
-  // Identify which events run in parallel
-  const parallelEvents = getParallelEventsByEventId(timeSlots)
-
-  const initialDisplayPositionsById: {
-    [key: string]: CalendarEventDisplayPosition
-  } = {}
-
-  events.forEach((event) => {
-    const position: CalendarEventDisplayPosition = {
-      eventId: event.id,
-      top: 0,
-      left: 0,
-      width: 1 / largestColumnCount,
-      height: 0,
-      parallelColumnIds: [],
-      eventColumnOrder: 0,
-      column: columnIndex,
-    }
-
-    if (Object.prototype.hasOwnProperty.call(parallelEvents, event.id)) {
-      position.parallelColumnIds = [...parallelEvents[event.id]]
-    }
-
-    initialDisplayPositionsById[event.id] = position
-  })
-
-  return initialDisplayPositionsById
 }
 
 const calculateEventColumnOrder = (
