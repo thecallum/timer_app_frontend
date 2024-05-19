@@ -22,13 +22,13 @@ export const calculateEventDisplayPositions = (
   // 2. get display positions for each event
   return eventsGroupedByDay.map((eventsForDay, columnIndex) => {
     const displayPositions: CalendarEventDisplayPosition[] = []
-    
+
     const dayOfWeek = daysOfWeek[columnIndex]
     // console.log(dayOfWeek)
 
     const timeSlots = getEventsByTimeslot(eventsForDay, dayOfWeek)
 
-    // console.log({ timeSlots })
+    // console.log({ columnIndex, timeSlots })
 
     // const largestColumnCount = Object.values(timeSlots).reduce(
     //   (longest, current) => Math.max(longest, current.size),
@@ -63,6 +63,8 @@ export const calculateEventDisplayPositions = (
         displayPosition.top = calculateEventTopPosition(event, dayOfWeek)
         displayPosition.height = calculateEventHeight(event, dayOfWeek)
 
+        // console.log(event.description, displayPosition.largestTimeslotIds)
+
         displayPosition.width =
           1 / displayPosition.largestTimeslotContainingThisEvent
 
@@ -84,6 +86,32 @@ export const calculateEventDisplayPositions = (
     largestColumnWidth -= 1
 
     while (largestColumnWidth > 1) {
+      const eventsToUpdate = displayPositions.filter(
+        (x) =>
+          x.largestTimeslotContainingThisEvent <= largestColumnWidth &&
+          x.largestTimeslotContainingThisEvent !== 1,
+      )
+      // console.log({ eventsToUpdate, largestColumnWidth })
+
+      eventsToUpdate.forEach((event) => {
+        // calculate total events
+        const displayPositionsOfOtherEvents = [...event.largestTimeslotIds].map(
+          (x) => initialDisplayPositions[x],
+        )
+
+        console.log(event.eventId, displayPositionsOfOtherEvents)
+
+        let totalSize = 0
+
+        displayPositionsOfOtherEvents.forEach(displayPosition => {
+          if (displayPosition.eventId === event.eventId) return
+          totalSize += displayPosition.width
+        });
+
+        event.left = totalSize
+        event.width =  (1 - totalSize)
+      })
+
       // console.log({ largestColumnWidth })
       largestColumnWidth--
     }
