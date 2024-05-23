@@ -36,7 +36,7 @@ export const useCalendar = () => {
     next,
     previous,
     reset,
-    calendarViewOffset,
+    currentDay,
     calendarView,
     setCalendarView,
   } = useCalendarControls()
@@ -84,7 +84,7 @@ export const useCalendar = () => {
     if (!isAuthorized) return
     // fetch each time page changes
     fetchEventsForPage()
-  }, [calendarViewOffset])
+  }, [currentDay])
 
   const updateEvent = async (event: CalendarEvent) =>
     new Promise<UpdateStatus>((resolve) => {
@@ -234,7 +234,7 @@ export const useCalendar = () => {
     next,
     previous,
     reset,
-    calendarViewOffset,
+    currentDay,
     calendarView,
     setCalendarView,
   }
