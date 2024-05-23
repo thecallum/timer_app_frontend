@@ -4,7 +4,7 @@ import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { defaultProjectColor } from '@/types/projects'
 import { useProjectsContext } from '@/contexts/projectsContext'
 import { HEIGHT_ONE_MINUTE } from '@/constants/calendar-constants'
-import { getDayOfWeek, getMinuteValue } from '@/helpers/timeHelpers'
+import { getDayOfWeek, getMinuteValue, isSameDay } from '@/helpers/timeHelpers'
 import { getTodaysDate } from '@/helpers/getTodaysDate'
 
 interface Props {
@@ -33,7 +33,7 @@ export const CurrentEventHover = (props: Props) => {
   if (!isRunning) return null
 
   // only show if on current page
-  if (currentDay !== getTodaysDate()) return null
+  if (!isSameDay(currentDay, getTodaysDate())) return null
 
   return (
     <div
