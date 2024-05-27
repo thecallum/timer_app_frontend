@@ -83,7 +83,7 @@ export const CalendarEvent = (props: Props) => {
           }}
         >
           <CalendarEventView
-            description={`${event.id} ${description}`}
+            description={description}
             durationInSeconds={durationInSeconds}
             project={project}
           />

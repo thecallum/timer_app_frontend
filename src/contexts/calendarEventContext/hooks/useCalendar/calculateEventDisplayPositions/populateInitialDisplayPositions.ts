@@ -6,9 +6,6 @@ import {
 export const populateInitialDisplayPositions = (
   events: CalendarEvent[],
   columnIndex: number,
-  parallelEvents: {
-    [key: string]: Set<string>
-  },
   timeSlots: Set<string>[],
 ) => {
   const initialDisplayPositionsById: {
@@ -21,20 +18,22 @@ export const populateInitialDisplayPositions = (
       x.has(event.id),
     )
 
+    let largestTimeslotSize = 0
+    let idsOfEventsOfLargestTimeSlots: Set<string>[] = []
 
-    const largestTimeslotIds = timeslotsContainingThisEvent.reduce(
-      (longest, current) => (current.size > longest.size ? current : longest),
-      new Set<string>(),
-    )
+    timeslotsContainingThisEvent.forEach((timeSlot) => {
+      if (timeSlot.size > largestTimeslotSize) {
+        largestTimeslotSize = timeSlot.size
 
-    // console.log({ description: event.description,timeslotsContainingThisEvent, largestTimeslotIds})
+        // empty array, and add current timeslot
+        idsOfEventsOfLargestTimeSlots = [timeSlot]
+        return
+      }
 
-
-    // const largestTimeslotContainingThisEvent =
-    //   timeslotsContainingThisEvent.reduce(
-    //     (longest, current) => Math.max(longest, current.size),
-    //     1,
-    //   )
+      if (timeSlot.size === largestTimeslotSize) {
+        idsOfEventsOfLargestTimeSlots.push(timeSlot)
+      }
+    })
 
     const position: CalendarEventDisplayPosition = {
       eventId: event.id,
@@ -42,15 +41,10 @@ export const populateInitialDisplayPositions = (
       left: 0,
       width: 0,
       height: 0,
-      parallelColumnIds: [],
       eventColumnOrder: 0,
       column: columnIndex,
-      largestTimeslotIds,
-      largestTimeslotContainingThisEvent: largestTimeslotIds.size,
-    }
-
-    if (Object.prototype.hasOwnProperty.call(parallelEvents, event.id)) {
-      position.parallelColumnIds = [...parallelEvents[event.id]]
+      idsOfEventsOfLargestTimeSlots: idsOfEventsOfLargestTimeSlots,
+      largestTimeslotContainingThisEvent: largestTimeslotSize,
     }
 
     initialDisplayPositionsById[event.id] = position

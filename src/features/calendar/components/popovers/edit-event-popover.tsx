@@ -109,7 +109,10 @@ export const EditEventPopover = (props: Props) => {
   return (
     <PopoverContainer id="editEventPopover">
       <form onSubmit={handleSubmit}>
-        <PopoverLayout title="Edit Event" onDelete={onDeleteEvent}>
+        <PopoverLayout
+          title={`Edit Event ${event.id}`}
+          onDelete={onDeleteEvent}
+        >
           <>
             <div className="mb-2">
               <TextInput
@@ -118,6 +121,7 @@ export const EditEventPopover = (props: Props) => {
                 setValue={setDescription}
                 id="description"
                 name="description"
+                j
                 ariaLabel="Event description"
                 placeholder="(no description)"
                 error={errors?.description}

@@ -3,7 +3,6 @@ import {
   CalendarEvent,
   CalendarEventDisplayPosition,
 } from '@/types/calendarEvents'
-import { getParallelEventsByEventId } from './getParallelEventsByEventId'
 import { getEventsByTimeslot } from './getEventsByTimeslot'
 import {
   HEIGHT_FIVE_MINUTES,
@@ -21,29 +20,22 @@ export const calculateEventDisplayPositions = (
 
   // 2. get display positions for each event
   return eventsGroupedByDay.map((eventsForDay, columnIndex) => {
-    const displayPositions: CalendarEventDisplayPosition[] = []
+    const displayPositionsById: {
+      [key: string]: CalendarEventDisplayPosition
+    } = {}
 
     const dayOfWeek = daysOfWeek[columnIndex]
-    // console.log(dayOfWeek)
-
     const timeSlots = getEventsByTimeslot(eventsForDay, dayOfWeek)
-
-    // console.log({ columnIndex, timeSlots })
-
-    // const largestColumnCount = Object.values(timeSlots).reduce(
-    //   (longest, current) => Math.max(longest, current.size),
-    //   1,
-    // )
-    // Identify which events run in parallel
-    const parallelEvents = getParallelEventsByEventId(timeSlots)
-
-    // console.log({ parallelEvents })
 
     const initialDisplayPositions = populateInitialDisplayPositions(
       eventsForDay,
       columnIndex,
-      parallelEvents,
       timeSlots,
+    )
+
+    const mostParalellEvents = timeSlots.reduce(
+      (longest, current) => (current.size > longest ? current.size : longest),
+      1,
     )
 
     let largestColumnWidth = 1
@@ -54,24 +46,21 @@ export const calculateEventDisplayPositions = (
       .forEach((event) => {
         const displayPosition = initialDisplayPositions[event.id]
 
+        // update largestColumnWidth
+        largestColumnWidth = Math.max(
+          largestColumnWidth,
+          displayPosition.largestTimeslotContainingThisEvent,
+        )
+
         // 4. assign the position
         displayPosition.eventColumnOrder = calculateEventColumnOrder(
-          displayPosition.parallelColumnIds,
+          displayPosition.idsOfEventsOfLargestTimeSlots,
           initialDisplayPositions,
         )
 
         displayPosition.top = calculateEventTopPosition(event, dayOfWeek)
         displayPosition.height = calculateEventHeight(event, dayOfWeek)
-
-        // console.log(event.description, displayPosition.largestTimeslotIds)
-
-        displayPosition.width =
-          1 / displayPosition.largestTimeslotContainingThisEvent
-
-        largestColumnWidth = Math.max(
-          largestColumnWidth,
-          displayPosition.largestTimeslotContainingThisEvent,
-        )
+        displayPosition.width = 1 / mostParalellEvents
 
         // 5. calculate the left position based on its display position
         displayPosition.left = calculateLeftPosition(
@@ -79,44 +68,108 @@ export const calculateEventDisplayPositions = (
           displayPosition.width,
         )
 
-        displayPositions.push(displayPosition)
+        displayPositionsById[displayPosition.eventId] = displayPosition
       })
 
-    // dont need to calculate largest one
-    largestColumnWidth -= 1
+    // So far, we have worked out the width based so that all events can fit
 
-    while (largestColumnWidth > 1) {
-      const eventsToUpdate = displayPositions.filter(
-        (x) =>
-          x.largestTimeslotContainingThisEvent <= largestColumnWidth &&
-          x.largestTimeslotContainingThisEvent !== 1,
+    // now were looking for events that could potentially be expanded.
+    // so any events with less parallelEvents than the max
+    // (future reference, we could recursively do this from largest to smallest for better resizing)
+    // eg 7, 6, 5, 4, 3, 2, 1...
+
+    const eventsToUpdate = Object.keys(displayPositionsById).filter((x) => {
+      const displayPosition = displayPositionsById[x]
+
+      // less than largest parallel events
+      return (
+        displayPosition.largestTimeslotContainingThisEvent < largestColumnWidth
       )
-      // console.log({ eventsToUpdate, largestColumnWidth })
+    })
 
-      eventsToUpdate.forEach((event) => {
-        // calculate total events
-        const displayPositionsOfOtherEvents = [...event.largestTimeslotIds].map(
-          (x) => initialDisplayPositions[x],
-        )
+    // the above events can be expanded because the number of parallel events is less than the max
+    //    (which is what the current sizing it based on)
 
-        console.log(event.eventId, displayPositionsOfOtherEvents)
+    // pared events are two events that can be expanded that share the same space
+    // so we should expand these at the same time, and distribute the additional width
+    const pairedEvents = findPairedEvents(eventsToUpdate, displayPositionsById)
 
-        let totalSize = 0
+    pairedEvents.forEach((eventPair) => {
+      const primaryEventId = eventPair[0]
+      const primaryEvent = displayPositionsById[primaryEventId]
 
-        displayPositionsOfOtherEvents.forEach(displayPosition => {
-          if (displayPosition.eventId === event.eventId) return
-          totalSize += displayPosition.width
-        });
+      const pairSet = new Set<string>(eventPair)
 
-        event.left = totalSize
-        event.width =  (1 - totalSize)
+      // fetch the display positions of other events that have matching timeslots,
+      // ordered by display position/
+
+      const displayPositionsOfOtherEvents = [
+        ...new Set(
+          primaryEvent.idsOfEventsOfLargestTimeSlots.map((x) => [...x]).flat(),
+        ),
+      ]
+        .map((x) => displayPositionsById[x])
+        .sort((a, b) => a.eventColumnOrder - b.eventColumnOrder)
+
+      // identify the open space for the eventPair to expand to, by finding the most left position,
+      // and the most right positino
+
+      let foundElementYet = false
+
+      let mostLeftPosition = 0
+      let mostRightPosition = 1
+
+      displayPositionsOfOtherEvents.forEach((displayPosition) => {
+        if (pairSet.has(displayPosition.eventId.toString())) {
+          // in middle section (looking at one of the pairSet positions)
+          // switch found element to true so we can start looking at the right position
+          foundElementYet = true
+          return
+        }
+
+        if (!foundElementYet) {
+          // still looking for most left position
+          mostLeftPosition = Math.max(
+            mostLeftPosition,
+            displayPosition.left + displayPosition.width,
+          )
+          return
+        }
+
+        // passed the middle section, looking for most right position
+        mostRightPosition = Math.min(mostRightPosition, displayPosition.left)
       })
 
-      // console.log({ largestColumnWidth })
-      largestColumnWidth--
-    }
+      // calculate width based on the unused space of fixed elements
+      const totalAvailableGapSize = mostRightPosition - mostLeftPosition
 
-    return displayPositions
+      // distribute the total available space between each event
+      const newCalculatedWidth = totalAvailableGapSize / eventPair.length
+
+      let currentLeft = 0
+
+      eventPair
+        .map((id) => displayPositionsById[id])
+        .sort((a, b) => a.eventColumnOrder - b.eventColumnOrder)
+
+        .forEach((event, index) => {
+          event.width = newCalculatedWidth
+
+          if (index === 0) {
+            // first element most left
+            currentLeft = mostLeftPosition
+          } else {
+            // append the width (to offset the previous element(s))
+            currentLeft += newCalculatedWidth
+          }
+
+          event.left = currentLeft
+        })
+    })
+
+    return Object.keys(displayPositionsById).map(
+      (id) => displayPositionsById[id],
+    )
   })
 }
 
@@ -125,13 +178,18 @@ const calculateLeftPosition = (displayPosition: number, width: number) => {
 }
 
 const calculateEventColumnOrder = (
-  parallelColumnIds: string[],
+  idsOfEventsOfLargestTimeSlots: Set<string>[],
   initialDisplayPositions: {
     [key: string]: CalendarEventDisplayPosition
   },
 ) => {
   // 1. grab parallel event positions with ids
-  const parallelEventDisplayPositions = parallelColumnIds.map(
+
+  // there can be multiple occurances of parallelEvents with the same count
+  // we can just pick the first for our usecase
+  const parallelEvents = [...idsOfEventsOfLargestTimeSlots[0]]
+
+  const parallelEventDisplayPositions = parallelEvents.map(
     (x) => initialDisplayPositions[x],
   )
 
@@ -178,4 +236,37 @@ const calculateEventHeight = (event: CalendarEvent, dayOfWeek: Date) => {
 
   // full height
   return HEIGHT_ONE_MINUTE * 60 * 24
+}
+
+const findPairedEvents = (
+  eventsToUpdate: string[],
+  displayPositionsById: {
+    [key: string]: CalendarEventDisplayPosition
+  },
+) => {
+  const idsToUpdate = new Set<string>(eventsToUpdate)
+
+  // we need to find paired events. these are events that want to expand into the same shared occupied space
+  // by pairing these events, we can update them both at the same time, and ensure they arent overlapping each other
+
+  const pairedEvents: string[][] = []
+
+  idsToUpdate.forEach((eventId) => {
+    idsToUpdate.delete(eventId)
+    const event = displayPositionsById[eventId]
+
+    // identify sibling events
+    const pairedEventsForThisEvent: string[] = [eventId.toString()]
+
+    event.idsOfEventsOfLargestTimeSlots.forEach((id) => {
+      if (idsToUpdate.has(id.toString())) {
+        pairedEventsForThisEvent.push(id.toString())
+        idsToUpdate.delete(id.toString())
+      }
+    })
+
+    pairedEvents.push(pairedEventsForThisEvent)
+  })
+
+  return pairedEvents
 }
