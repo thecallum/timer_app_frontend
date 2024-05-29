@@ -121,7 +121,6 @@ export const EditEventPopover = (props: Props) => {
                 setValue={setDescription}
                 id="description"
                 name="description"
-                j
                 ariaLabel="Event description"
                 placeholder="(no description)"
                 error={errors?.description}
