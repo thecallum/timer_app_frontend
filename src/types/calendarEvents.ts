@@ -7,7 +7,6 @@ import {
 export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 
 export type CalendarEventDisplayPosition = {
-  parallelColumnIds: string[]
   eventColumnOrder: number
   width: number
   left: number
@@ -15,6 +14,8 @@ export type CalendarEventDisplayPosition = {
   height: number
   column: number
   eventId: string
+  largestTimeslotContainingThisEvent: number
+  idsOfEventsOfLargestTimeSlots: Set<string>[]
 }
 
 export class CalendarEvent {
@@ -61,6 +62,7 @@ export class CalendarEvent {
   }
 
   public get endTimeInSeconds() {
-    return this.startTimeInSeconds + this.durationInSeconds
+    // return this.startTimeInSeconds + this.durationInSeconds
+    return getSecondValue(this.endTime)
   }
 }
