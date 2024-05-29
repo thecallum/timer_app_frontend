@@ -17,21 +17,11 @@ import {
   CalendarEventApiRequestObject,
   CalendarEventApiResponseObject,
 } from '@/requests/types'
-import { Bounce, Id, toast, UpdateOptions } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { ErrorMessage } from '@/components/toasts/error-message'
 import { UpdateStatus } from '../../../../types/updateStatus'
 import { useIsAuthorized } from '@/auth/useIsAuthorized'
-
-const displayToast = (notification: Id, options: UpdateOptions<unknown>) => {
-  toast.update(notification, {
-    isLoading: false,
-    autoClose: 3000,
-    closeOnClick: true,
-    draggable: true,
-    transition: Bounce,
-    ...options,
-  })
-}
+import { displayToast } from '@/toasts/displayToast'
 
 export const useCalendar = () => {
   const [state, dispatch] = useReducer(reducer, {
@@ -41,17 +31,24 @@ export const useCalendar = () => {
   const [isLoading, setIsLoading] = useState(false)
   const isAuthorized = useIsAuthorized()
 
-  const { daysOfWeek, next, previous, reset, currentWeek, showingCurrentWeek } =
-    useCalendarControls()
+  const {
+    daysOfWeek,
+    next,
+    previous,
+    reset,
+    currentDay,
+    calendarView,
+    setCalendarView,
+  } = useCalendarControls()
 
   const fetchEventsForPage = async () =>
     new Promise<UpdateStatus>((resolve) => {
       setIsLoading(true)
 
       // clear events while next page is loading
-      // dispatch({
-      //   type: 'clear_events',
-      // })
+      dispatch({
+        type: 'clear_events',
+      })
 
       const startTime = daysOfWeek[0]
       const endTime = daysOfWeek[6]
@@ -87,7 +84,7 @@ export const useCalendar = () => {
     if (!isAuthorized) return
     // fetch each time page changes
     fetchEventsForPage()
-  }, [currentWeek])
+  }, [currentDay])
 
   const updateEvent = async (event: CalendarEvent) =>
     new Promise<UpdateStatus>((resolve) => {
@@ -216,10 +213,19 @@ export const useCalendar = () => {
         })
     })
 
-  const events = calculateEventDisplayPositions(state.events)
+  const eventsById: {
+    [key: string]: CalendarEvent
+  } = {}
+
+  state.events.forEach((event) => {
+    eventsById[event.id] = event
+  })
+
+  const events = calculateEventDisplayPositions(state.events, daysOfWeek)
 
   return {
     isLoading,
+    eventsById,
     updateEvent,
     addEvent,
     deleteEvent,
@@ -228,6 +234,8 @@ export const useCalendar = () => {
     next,
     previous,
     reset,
-    showingCurrentWeek,
+    currentDay,
+    calendarView,
+    setCalendarView,
   }
 }

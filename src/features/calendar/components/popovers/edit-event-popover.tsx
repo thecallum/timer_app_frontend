@@ -41,23 +41,13 @@ export const EditEventPopover = (props: Props) => {
   const [startDate, setStartDate] = useState<string>(
     dateFormat(start, 'yyyy-mm-dd"T"HH:MM:ss'),
   )
-  const [endTime, setEndTime] = useState<string>(dateFormat(end, 'HH:MM:ss'))
+  const [endDate, setEndTime] = useState<string>(
+    dateFormat(end, 'yyyy-mm-dd"T"HH:MM:ss'),
+  )
   const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
-  const getEndTimeAsDate = () => {
-    const [hour, minute, second] = endTime.split(':').map(Number)
-
-    const date = new Date(startDate)
-    date.setHours(hour)
-    date.setMinutes(minute)
-    date.setSeconds(second)
-    date.setMilliseconds(0)
-
-    return date
-  }
-
   const timeDifferenceInSeconds =
-    (getEndTimeAsDate().getTime() - new Date(startDate).getTime()) / 1000
+    (new Date(endDate).getTime() - new Date(startDate).getTime()) / 1000
 
   const onDeleteEvent = () => {
     setRequestError(null)
@@ -75,7 +65,7 @@ export const EditEventPopover = (props: Props) => {
   const validate = () => {
     const errors: { [key: string]: string } = {}
 
-    if (new Date(startDate) > getEndTimeAsDate()) {
+    if (new Date(startDate) > new Date(endDate)) {
       errors['end'] = 'End time must be after start'
     }
 
@@ -97,7 +87,7 @@ export const EditEventPopover = (props: Props) => {
     }
 
     event.startTime = new Date(startDate)
-    event.endTime = getEndTimeAsDate()
+    event.endTime = new Date(endDate)
     event.description = description
     event.projectId = selectedProjectId
 
@@ -119,7 +109,10 @@ export const EditEventPopover = (props: Props) => {
   return (
     <PopoverContainer id="editEventPopover">
       <form onSubmit={handleSubmit}>
-        <PopoverLayout title="Edit Event" onDelete={onDeleteEvent}>
+        <PopoverLayout
+          title={`Edit Event ${event.id}`}
+          onDelete={onDeleteEvent}
+        >
           <>
             <div className="mb-2">
               <TextInput
@@ -175,11 +168,11 @@ export const EditEventPopover = (props: Props) => {
                   End
                 </label>
                 <input
-                  step={1}
-                  type="time"
+                  // step={1}
+                  type="datetime-local"
                   name="eventEndTime"
                   aria-label="Event end time"
-                  value={endTime}
+                  value={endDate}
                   onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setEndTime(e.target.value)
                   }

@@ -9,10 +9,11 @@ import dateFormat from 'dateformat'
 interface Props {
   day: Date
   containerRef: HTMLDivElement | null
+  gridSizeMultiplier: number
 }
 
 export const CalendarColumn = memo(function CalendarColumn(props: Props) {
-  const { day, containerRef } = props
+  const { day, containerRef, gridSizeMultiplier } = props
 
   const {
     handleOpen,
@@ -77,7 +78,8 @@ export const CalendarColumn = memo(function CalendarColumn(props: Props) {
 
           return (
             <div
-              className="border-slate-200 h-32 border-b flex flex-col"
+              className="border-slate-200 border-b flex flex-col"
+              style={{ height: `${64 * gridSizeMultiplier}px` }}
               key={cellIndex}
             >
               {buttonLabels.map((label, buttonIndex) => {

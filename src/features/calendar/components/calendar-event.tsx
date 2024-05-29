@@ -1,20 +1,31 @@
-import { useProjectsContext } from '@/contexts/projectsContext'
-import { CalendarEventView } from './calendar-event-view'
+import {
+  CalendarEventDisplayPosition as DisplayType,
+  CalendarEvent as CalendarEventType,
+} from '@/types/calendarEvents'
+import { PopoverComponentWrapper } from './PopoverComponentWrapper'
 import { EditEventPopover } from './popovers/edit-event-popover'
-import { CalendarEvent as CalendarEventType } from '@/types/calendarEvents'
+import { CalendarEventView } from './calendar-event-view'
+import { useProjectsContext } from '@/contexts/projectsContext'
+import { usePopover } from '../hooks/usePopover'
 import { defaultProjectColor } from '@/types/projects'
 import dateFormat from 'dateformat'
-import { usePopover } from '../hooks/usePopover'
-import { PopoverComponentWrapper } from './PopoverComponentWrapper'
 
 interface Props {
   event: CalendarEventType
+  eventDisplayPosition: DisplayType
   containerRef: HTMLDivElement | null
+  gridSizeMultiplier: number
+  columnCount: number
 }
 
 export const CalendarEvent = (props: Props) => {
-  const { event, containerRef } = props
-  const { getProjectById } = useProjectsContext()
+  const {
+    event,
+    eventDisplayPosition,
+    containerRef,
+    gridSizeMultiplier,
+    columnCount,
+  } = props
 
   const {
     handleOpen,
@@ -26,27 +37,21 @@ export const CalendarEvent = (props: Props) => {
     popperAttributes,
   } = usePopover(containerRef)
 
-  const {
-    description,
-    projectId,
-    dayOfWeek,
-    durationInSeconds,
-    height,
-    top,
-    left,
-    width,
-    startTime,
-  } = event
+  const { description, projectId, durationInSeconds, startTime } = event
 
-  const eventStyles = {
-    height: `${height}px`,
-    top: `${top}px`,
-    left: `calc((100% / 7 * ${dayOfWeek - 1}) + (100% / 7 * ${left}))`,
-    width: `calc((100%/7)*${width})`,
-  }
+  const { getProjectById } = useProjectsContext()
 
   const project = getProjectById(projectId)
   const projectColor = project?.projectColor ?? defaultProjectColor
+
+  const { height, top, left, width, column } = eventDisplayPosition
+
+  const eventStyles = {
+    height: `${(height / 2) * gridSizeMultiplier}px`,
+    top: `${(top / 2) * gridSizeMultiplier}px`,
+    left: `calc((100% / ${columnCount} * ${column}) + (100% / ${columnCount} * ${left}))`,
+    width: `calc((100%/${columnCount})*${width})`,
+  }
 
   return (
     <li className="relative">

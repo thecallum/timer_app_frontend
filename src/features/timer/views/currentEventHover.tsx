@@ -4,10 +4,17 @@ import { useCalendarEventsContext } from '@/contexts/calendarEventContext'
 import { defaultProjectColor } from '@/types/projects'
 import { useProjectsContext } from '@/contexts/projectsContext'
 import { HEIGHT_ONE_MINUTE } from '@/constants/calendar-constants'
-import { getDayOfWeek, getMinuteValue } from '@/helpers/timeHelpers'
+import { getDayOfWeek, getMinuteValue, isSameDay } from '@/helpers/timeHelpers'
+import { getTodaysDate } from '@/helpers/getTodaysDate'
 
-export const CurrentEventHover = () => {
-  const { showingCurrentWeek } = useCalendarEventsContext()
+interface Props {
+  gridSizeMultiplier: number
+}
+
+export const CurrentEventHover = (props: Props) => {
+  const { gridSizeMultiplier } = props
+
+  const { currentDay, daysOfWeek } = useCalendarEventsContext()
   const { time, isRunning, startedAt, description, projectId } =
     useTimerContext()
 
@@ -23,15 +30,18 @@ export const CurrentEventHover = () => {
 
   const projectColor = project?.projectColor ?? defaultProjectColor
 
-  if (!isRunning || !showingCurrentWeek) return null
+  if (!isRunning) return null
+
+  // only show if on current page
+  if (!isSameDay(currentDay, getTodaysDate())) return null
 
   return (
     <div
-      className={`absolute w-[calc(100%/7)] p-[2px]`}
+      className={`absolute w-[calc(100%/${daysOfWeek.length})] p-[2px]`}
       style={{
-        left: `calc(100%/7 * ${dayOfWeek - 1} )`,
-        top: `${startedAtInMinutes * HEIGHT_ONE_MINUTE}px`,
-        height: `${Math.max(timeInMinutes, 15) * HEIGHT_ONE_MINUTE}px`,
+        left: `calc(100%/${daysOfWeek.length} * ${(daysOfWeek.length === 1 ? 1 : dayOfWeek) - 1} )`,
+        top: `${((startedAtInMinutes * HEIGHT_ONE_MINUTE) / 2) * gridSizeMultiplier}px`,
+        height: `${((Math.max(timeInMinutes, 15) * HEIGHT_ONE_MINUTE) / 2) * gridSizeMultiplier}px`,
       }}
       role="status"
       aria-live="polite"
