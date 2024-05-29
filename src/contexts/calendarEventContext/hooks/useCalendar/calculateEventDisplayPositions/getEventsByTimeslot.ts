@@ -5,7 +5,13 @@ export const getEventsByTimeslot = (
   events: CalendarEvent[],
   dayOfWeek: Date,
 ) => {
-  const timeslotsByTimestamp: { [key: number]: Set<string> } = {}
+  
+  // let's try using an array immediatly instead of an object
+  
+  const timeslotsByTimestamp: string[][] = []
+  
+  
+  // const timeslotsByTimestamp: { [key: number]: string[] } = {}
 
   // 1. group events into 5 minute timeslots
   // eg [05:10]: [event1, event2]
@@ -45,18 +51,22 @@ export const getEventsByTimeslot = (
       if (Object.prototype.hasOwnProperty.call(timeslotsByTimestamp, i)) {
         // timeslotsByTimestamp[i].push(event.id)
 
-        timeslotsByTimestamp[i] = new Set<string>([
-          ...timeslotsByTimestamp[i],
-          event.id,
-        ])
+        // timeslotsByTimestamp[i] = new Set<string>([
+        //   ...timeslotsByTimestamp[i],
+        //   event.id,
+        // ])
+        timeslotsByTimestamp[i].push(event.id)
       } else {
-        timeslotsByTimestamp[i] = new Set<string>([event.id])
+        // timeslotsByTimestamp[i] = new Set<string>([event.id])
+        timeslotsByTimestamp[i] = [event.id]
       }
     }
   })
 
   // flatten the timeslots (we dont actually care about the times anymore)
-  const timeSlots = Object.entries(timeslotsByTimestamp).map((x) => x[1])
+  // const timeSlots = Object.entries(timeslotsByTimestamp).map((x) => x[1])
 
-  return timeSlots
+  return timeslotsByTimestamp.map(x => new Set<string>(x))
+
+  // return timeSlots
 }
