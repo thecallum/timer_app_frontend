@@ -54,7 +54,7 @@ export const calculateEventDisplayPositions = (
 
         // 4. assign the position
         displayPosition.eventColumnOrder = calculateEventColumnOrder(
-          displayPosition.idsOfEventsOfLargestTimeSlots,
+          displayPosition.largestTimelsots,
           initialDisplayPositions,
         )
 
@@ -95,6 +95,8 @@ export const calculateEventDisplayPositions = (
     const pairedEvents = findPairedEvents(eventsToUpdate, displayPositionsById)
 
     pairedEvents.forEach((eventPair) => {
+      console.log({ eventPair })
+
       const primaryEventId = eventPair[0]
       const primaryEvent = displayPositionsById[primaryEventId]
 
@@ -104,9 +106,7 @@ export const calculateEventDisplayPositions = (
       // ordered by display position/
 
       const displayPositionsOfOtherEvents = [
-        ...new Set(
-          primaryEvent.idsOfEventsOfLargestTimeSlots.map((x) => [...x]).flat(),
-        ),
+        ...new Set(primaryEvent.largestTimelsots.map((x) => [...x]).flat()),
       ]
         .map((x) => displayPositionsById[x])
         .sort((a, b) => a.eventColumnOrder - b.eventColumnOrder)
@@ -258,12 +258,15 @@ const findPairedEvents = (
     // identify sibling events
     const pairedEventsForThisEvent: string[] = [eventId.toString()]
 
-    event.idsOfEventsOfLargestTimeSlots.forEach((id) => {
-      if (idsToUpdate.has(id.toString())) {
-        pairedEventsForThisEvent.push(id.toString())
-        idsToUpdate.delete(id.toString())
-      }
-    })
+    event.largestTimelsots
+      .map((x) => [...x])
+      .flat()
+      .forEach((timeslotId) => {
+        if (idsToUpdate.has(timeslotId.toString())) {
+          pairedEventsForThisEvent.push(timeslotId.toString())
+          idsToUpdate.delete(timeslotId.toString())
+        }
+      })
 
     pairedEvents.push(pairedEventsForThisEvent)
   })

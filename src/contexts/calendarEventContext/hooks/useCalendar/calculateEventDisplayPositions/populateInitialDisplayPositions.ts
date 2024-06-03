@@ -43,7 +43,7 @@ export const populateInitialDisplayPositions = (
       height: 0,
       eventColumnOrder: 0,
       column: columnIndex,
-      idsOfEventsOfLargestTimeSlots: idsOfEventsOfLargestTimeSlots,
+      largestTimelsots: idsOfEventsOfLargestTimeSlots,
       largestTimeslotContainingThisEvent: largestTimeslotSize,
     }
 
