@@ -1,4 +1,4 @@
-import { getMidnightDates, isSameDay } from '@/helpers/timeHelpers'
+import { getMidnightDates } from '@/helpers/timeHelpers'
 import { CalendarEvent } from '@/types/calendarEvents'
 
 export const groupEventsByDayOfWeek = (
@@ -8,20 +8,14 @@ export const groupEventsByDayOfWeek = (
   const eventsPerDayOfWeek: CalendarEvent[][] = daysOfWeek.map(() => [])
 
   allEvents.forEach((event) => {
-    const daysThatTheEventOccuredIn = getMidnightDates(
-      event.startTime,
-      event.endTime,
+    const daysThatTheEventOccuredIn = new Set<number>(
+      getMidnightDates(event.startTime, event.endTime).map((x) => x.getTime()),
     )
 
-    daysThatTheEventOccuredIn.forEach((date) => {
-      // def needs refactoring
-
-      daysOfWeek.forEach((dayOfWeek, index) => {
-        if (isSameDay(date, dayOfWeek)) {
-          eventsPerDayOfWeek[index].push(event)
-          return
-        }
-      })
+    daysOfWeek.forEach((dayOfWeek, index) => {
+      if (daysThatTheEventOccuredIn.has(dayOfWeek.getTime())) {
+        eventsPerDayOfWeek[index].push(event)
+      }
     })
   })
 
