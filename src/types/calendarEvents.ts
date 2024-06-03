@@ -15,7 +15,7 @@ export type CalendarEventDisplayPosition = {
   column: number
   eventId: string
   largestTimeslotContainingThisEvent: number
-  idsOfEventsOfLargestTimeSlots: Set<string>[]
+  largestTimelsots: Set<string>[]
 }
 
 export class CalendarEvent {

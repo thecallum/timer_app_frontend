@@ -43,7 +43,7 @@ export function isSameDay(date1: Date, date2: Date) {
   )
 }
 
-export function getMidnightDates(startDate: Date, endDate: Date): Date[] {
+export function getMidnightDates(startDate: Date, endDate: Date) {
   const midnightDates: Date[] = []
   const currentDate = new Date(startDate)
 
